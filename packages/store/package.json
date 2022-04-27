@@ -17,9 +17,7 @@
     }
   },
   "scripts": {
-    "dev": "vite -c ../../vite.config.ts",
-    "build": "tsc && VITE_LIB=store vite build -c ../../vite.config.ts",
-    "preview": "vite preview"
+    "build": "tsc && VITE_LIB=store vite build -c ../../vite.config.ts"
   },
   "dependencies": {
     "@formily/antd": "^2.0.20",
