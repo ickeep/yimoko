@@ -20,10 +20,17 @@
     "build": "tsc && VITE_LIB=store vite build -c ../../vite.config.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@formily/antd": "^2.0.20",
     "@formily/core": "^2.0.20",
+    "@formily/path": "^2.0.20",
     "@formily/react": "^2.0.20",
     "@formily/reactive": "^2.0.20",
+    "@formily/reactive-react": "^2.0.20",
+    "@formily/shared": "^2.0.20",
+    "@formily/validator": "^2.0.20",
+    "@types/lodash-es": "^4.17.6",
+    "lodash-es": "^4.17.21",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

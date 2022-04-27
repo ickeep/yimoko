@@ -4,12 +4,24 @@ const path = require('path');
 const CracoLessPlugin = require('craco-less');
 
 const  externals = {
-  react: { amd: 'React', var: 'React', root: 'React', commonjs2: 'react', commonjs: 'react' },
-  'react-dom': { amd: 'ReactDOM', var: 'ReactDOM', root: 'ReactDOM', commonjs2: 'react-dom', commonjs: 'react-dom' },
-  'react-router-dom': { amd: 'ReactRouterDOM', var: 'ReactRouterDOM', root: 'ReactRouterDOM', commonjs2: 'react-router-dom', commonjs: 'react-router-dom' },
+  react: 'React',
+  'react-is': 'ReactIs',
+  'react-dom': 'ReactDOM',
+  'react-router-dom': 'ReactRouterDOM',
   antd: 'antd',
+  '@ant-design/icons': 'icons',
   moment: 'moment',
   axios: 'axios',
+  'lodash-es': '_',
+  '@formily/path': 'Formily.Path',
+  '@formily/shared': 'Formily.Shared',
+  '@formily/reactive': 'Formily.Reactive',
+  '@formily/validator': 'Formily.Validator',
+  '@formily/core': 'Formily.Core',
+  '@formily/reactive-react': 'Formily.ReactiveReact',
+  '@formily/react': 'Formily.React',
+  '@formily/antd': 'Formily.Antd',
+  '@formily/json-schema': 'Formily.JSONSchema',
 };
 
 module.exports = {
