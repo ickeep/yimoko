@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "target": "es5",
+    "noUnusedLocals": false,
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@yimoko/*": [
+        "packages/*/src",
+        "devtools/*/src"
+      ],
+      "@/root/*": [
+        "./*"
+      ]
+    },
+    "lib": [
+      "ESNext"
+    ]
+  }
+}
