@@ -21,12 +21,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "paths": {
-      "@yimoko/*": [
-        "packages/*/src",
-        "devtools/*/src"
-      ]
-    },
     "lib": [
       "ESNext"
     ]

@@ -1,68 +1,20 @@
-import { action, IBoundable, observable } from '@formily/reactive';
+import { action, define, observable } from '@formily/reactive';
+import { AxiosRequestConfig } from 'axios';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
-import { IHTTPResponse } from './http';
-import { getIsEmpty } from './tool';
+import { httpRequest, IHTTPResponse } from './http';
+import { judgeIsEmpty } from './tool';
 
-const actionBound = action.bound as Required<IBoundable>['bound'];
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   defaultValues: IV<V>;
-  values: IV<V>;
   dictConfig?: IStoreDictConfig<V>;
   api: IStoreApi<V, R>;
 
-  dict: IStoreDict<V> = observable({});
-  response: IStoreResponse<R, V> = observable({});
-  loading = observable.box(false);
-
-  setValues = actionBound((values: Partial<V>) => {
-    Object.entries(values).forEach((item) => {
-      const [key, value] = item as [keyof typeof values, any];
-      this.values[key] = value;
-    });
-  });
-
-  resetValues = actionBound(() => this.values = cloneDeep(this.defaultValues));
-
-  resetValuesByFields = actionBound((fields: Array<keyof V>) => {
-    this.setValues(cloneDeep(pick(this.defaultValues, fields)));
-  });
-
-  setValuesByField = actionBound((field: IField<V>, value: any) => this.values[field] = value);
-
-  setDict = actionBound((dict: IStoreDict<V>) => this.dict = dict);
-
-  setDictByField = actionBound((field: IField<V>, value: any) => {
-    this.dict[field] = value;
-  });
-
-  setLoading = actionBound((loading: boolean) => this.loading.set(loading));
-
-  setResponse = actionBound((data: IStoreResponse<R, V>) => this.response = data);
-
-  fetchData = actionBound(async () => {
-    this.setLoading(true);
-    this.lastFetchID += 1;
-    const fetchID = this.lastFetchID;
-    const params = pickBy(this.values, value => (!getIsEmpty(value))) as IV<V>;
-    const response = await this.api(params);
-    if (fetchID === this.lastFetchID) {
-      this.setResponse(response);
-      this.setLoading(false);
-    }
-    return response;
-  });
-
-  fetchDataByField = actionBound((field: IField<V>, value: any) => {
-    this.setValuesByField(field, value);
-    return this.fetchData();
-  });
-
-  fetchDataByValues = actionBound((values: Partial<V>) => {
-    this.setValues(values);
-    return this.fetchData();
-  });
+  values: IV<V>;
+  dict: IStoreDict<V> = {};
+  response: IStoreResponse<R, V> = {};
+  loading = false;
 
   private lastFetchID = 0;
 
@@ -72,8 +24,75 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     this.dictConfig = dictConfig;
     this.api = api;
 
-    this.values = observable<V>(cloneDeep(defaultValues));
+    this.values = cloneDeep(defaultValues);
+    define(this, {
+      values: observable,
+      dict: observable,
+      response: observable,
+      loading: observable,
+
+      setValues: action,
+      resetValues: action,
+      resetValuesByFields: action,
+
+      setDict: action,
+      setDictByField: action,
+
+      setLoading: action,
+
+      setResponse: action,
+      fetchData: action,
+      fetchDataByField: action,
+      fetchDataByValues: action,
+    });
   }
+
+  setValues = (values: Partial<V>) => {
+    Object.entries(values).forEach((item) => {
+      const [key, value] = item as [keyof typeof values, any];
+      this.values[key] = value;
+    });
+  };
+
+  resetValues = () => this.values = cloneDeep(this.defaultValues);
+
+  resetValuesByFields = (fields: Array<keyof V>) => {
+    this.setValues(cloneDeep(pick(this.defaultValues, fields)));
+  };
+
+  setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
+
+  setDict = (dict: IStoreDict<V>) => this.dict = dict;
+
+  setDictByField = (field: IField<V>, value: any) => this.dict[field] = value;
+
+  setLoading = (loading: boolean) => this.loading = loading;
+
+  setResponse = (data: IStoreResponse<R, V>) => this.response = data;
+
+  fetchData = async () => {
+    this.setLoading(true);
+    this.lastFetchID += 1;
+    const fetchID = this.lastFetchID;
+    const params = pickBy(this.values, value => (!judgeIsEmpty(value))) as IV<V>;
+    const { api } = this;
+    const response = await (typeof api === 'function' ? api(params) : httpRequest(api));
+    if (fetchID === this.lastFetchID) {
+      this.setResponse(response);
+      this.setLoading(false);
+    }
+    return response;
+  };
+
+  fetchDataByField = (field: IField<V>, value: any) => {
+    this.setValuesByField(field, value);
+    return this.fetchData();
+  };
+
+  fetchDataByValues = (values: Partial<V>) => {
+    this.setValues(values);
+    return this.fetchData();
+  };
 }
 
 export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
@@ -90,7 +109,7 @@ export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?:
 
 export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreApi<V, R> = (params: V) => Promise<IStoreResponse<R, V>>;
+export type IStoreApi<V, R> = AxiosRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 

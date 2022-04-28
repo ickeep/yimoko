@@ -10,41 +10,74 @@ export const autoTransformDataType: AxiosRequestTransformer = (data, headers) =>
   return data;
 };
 
+// 设置 Content-Type 为 form-data
+export const setContentTypeFormData = (config: AxiosRequestConfig) => {
+  const newConfig = config;
+  !newConfig.headers && (newConfig.headers = {});
+  newConfig.headers['Content-Type'] = 'multipart/form-data';
+  return newConfig;
+};
+
 export const http = axios.create({
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
   transformRequest: autoTransformDataType,
 });
 
-export const httpGet: IHTTPGet = http.get;
-export const httpDelete: IHTTPGet = http.delete;
-export const httpHead: IHTTPGet = http.head;
-export const httpOptions: IHTTPGet = http.options;
-
-export const httpPost: IHTTPPost = http.post;
-export const httpPut: IHTTPPost = http.put;
-export const httpPatch: IHTTPPost = http.patch;
-export const httpPostForm: IHTTPPost = http.postForm;
-export const httpPutForm: IHTTPPost = http.putForm;
-export const httpPatchForm: IHTTPPost = http.patchForm;
-
-// 使用拦截器,将 response 处理为统一的 { code, data, message } 格式
-http.interceptors.response.use(response => handleResponse(response), (e) => {
-  const { response, ...args } = e;
-  if (!response) {
-    return handleResponse({
-      ...args,
-      status: IHTTPCode.networkError,
-      statusText: e?.mesaage ?? '网络出错',
-    });
+// 将 response 处理为统一的 { code, data, message } 格式
+export const httpRequest: IHTTPRequest = async (config) => {
+  try {
+    const response = await http(config);
+    return handleResponse(response);
+  } catch (e: any) {
+    const { response, ...args } = e;
+    if (!response) {
+      return handleResponse({
+        ...args,
+        status: IHTTPCode.networkError,
+        statusText: e?.mesaage ?? '网络出错',
+      });
+    }
+    return handleResponse(response);
   }
-  return handleResponse(response);
-});
+};
+
+export const httpGet: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'get' });
+export const httpDelete: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'delete' });
+export const httpHead: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'head' });
+export const httpOptions: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'options' });
+
+export const httpPost: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'post' });
+export const httpPut: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'put' });
+export const httpPatch: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'patch' });
+
+export const httpPostForm: IHTTPPost = (url, data, config) => httpRequest(setContentTypeFormData({ ...config, url, data, method: 'post' }));
+export const httpPutForm: IHTTPPost = (url, data, config) => httpRequest(setContentTypeFormData({ ...config, url, data, method: 'put' }));
+export const httpPatchForm: IHTTPPost = (url, data, config) => httpRequest(setContentTypeFormData({ ...config, url, data, method: 'patch' }));
+
+// 不使用拦截器, 留给业务
+// http.interceptors.response.use(response => handleResponse(response), (e) => {
+//   const { response, ...args } = e;
+//   if (!response) {
+//     return handleResponse({
+//       ...args,
+//       status: IHTTPCode.networkError,
+//       statusText: e?.mesaage ?? '网络出错',
+//     });
+//   }
+//   return handleResponse(response);
+// });
 
 // 判断请求是否成功
-export const getIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
+export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
 
 // 判断请求是否未授权
-export const getIsUnauthorized = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.unauthorized;
+export const judgeIsUnauthorized = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.unauthorized;
+
+// 判断请求是否被禁止，通常用于接口参数校验 或者 权限校验
+export const judgeIsForbidden = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.forbidden;
+
+// 判断请求是否网络出错
+export const judgeIsNetworkError = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.networkError;
 
 // 处理请求返回的数据
 export const handleResponse = <T = Record<string, any>>(response: AxiosResponse<T>): IHTTPResponse<T> => {
@@ -67,20 +100,23 @@ export const getResponseData = (response: AxiosResponse): Record<string, any> =>
   return (typeof data?.code !== 'undefined' && (typeof data?.msg !== 'undefined' || typeof data?.data !== 'undefined')) ? data : response;
 };
 
-export type IHTTPGet = <R = any, P = any>(url: string, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
-
-export type IHTTPPost = <R = any, P = any> (url: string, data?: Record<string, any>, config?: AxiosRequestConfig) => Promise<IHTTPResponse<R, P>>;
-
 export enum IHTTPCode {
   success = 0,
   unauthorized = 401,
   forbidden = 403,
   networkError = 600,
 }
+
 export interface IHTTPResponse<T = any, D = any> extends Partial<AxiosResponse<T, D>> {
   code: IHTTPCode | number
   msg: string,
 }
+
+export type IHTTPRequest = <R = any, P = any>(config: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
+
+export type IHTTPGet = <R = any, P = any>(url: string, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
+
+export type IHTTPPost = <R = any, P = Record<string, any>> (url: string, data?: P, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
 
 export interface IPageData<T extends object = Record<string, any>> {
   page: number,

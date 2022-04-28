@@ -47,6 +47,11 @@ module.exports = {
 
     configure: (webpackConfig) => {
       const newConf = webpackConfig;
+      newConf.resolve.plugins.pop();
+      const tsRule = newConf.module.rules[1].oneOf[2];
+      tsRule.include = undefined;
+      tsRule.exclude = /node_modules/;
+
       newConf.externals = externals;
       if (process.env.NODE_ENV === 'production') {
         // newConf.output.publicPath = 'https://merchant-rsstu-1251135819.file.myqcloud.com/';
