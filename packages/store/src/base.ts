@@ -1,7 +1,7 @@
 import { action, IBoundable, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
-import { IResponse } from './http';
+import { IHTTPResponse } from './http';
 import { getIsEmpty } from './tool';
 
 const actionBound = action.bound as Required<IBoundable>['bound'];
@@ -13,7 +13,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   api: IStoreApi<V, R>;
 
   dict: IStoreDict<V> = observable({});
-  response: IStoreResponse<R> = observable({});
+  response: IStoreResponse<R, V> = observable({});
   loading = observable.box(false);
 
   setValues = actionBound((values: Partial<V>) => {
@@ -31,7 +31,6 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setValuesByField = actionBound((field: IField<V>, value: any) => this.values[field] = value);
 
-
   setDict = actionBound((dict: IStoreDict<V>) => this.dict = dict);
 
   setDictByField = actionBound((field: IField<V>, value: any) => {
@@ -40,7 +39,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setLoading = actionBound((loading: boolean) => this.loading.set(loading));
 
-  setResponse = actionBound((data: IStoreResponse<R>) => this.response = data);
+  setResponse = actionBound((data: IStoreResponse<R, V>) => this.response = data);
 
   fetchData = actionBound(async () => {
     this.setLoading(true);
@@ -89,9 +88,9 @@ type IV<V = IStoreValues> = V & Record<string, any>;
 
 export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?: any };
 
-export type IStoreResponse<R> = Partial<IResponse<R>>;
+export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreApi<V, R> = (params: V) => Promise<IStoreResponse<R>>;
+export type IStoreApi<V, R> = (params: V) => Promise<IStoreResponse<R, V>>;
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 
@@ -100,7 +99,7 @@ export type IDictConfigItem<V extends object = IStoreValues> = {
 } & ({
   type?: 'self'
   data?: IOptions | any,
-  fetchData?: () => Promise<IResponse<IOptions | any>>
+  fetchData?: () => Promise<IHTTPResponse<IOptions | any>>
 } | IDictConfigItemBy<V>);
 
 export interface IDictConfigItemBy<V extends object = IStoreValues> {
@@ -108,7 +107,7 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
   type: 'by'
   byField: IField<V>,
   getData?: (value: any) => IOptions | any
-  fetchData?: (value?: any) => Promise<IResponse<IOptions | any>>
+  fetchData?: (value?: any) => Promise<IHTTPResponse<IOptions | any>>
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
