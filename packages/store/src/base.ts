@@ -1,15 +1,15 @@
 import { action, define, observable } from '@formily/reactive';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
-import { httpRequest, IHTTPResponse } from './http';
 import { judgeIsEmpty } from './tool';
-
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   defaultValues: IV<V>;
   dictConfig?: IStoreDictConfig<V>;
-  api: IStoreApi<V, R>;
+  // 兼容不同端 如 小程序 web rn
+  apiExecutor?: IHTTPRequest;
+  api: IStoreAPI<V, R>;
 
   values: IV<V>;
   dict: IStoreDict<V> = {};
@@ -41,9 +41,9 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       setLoading: action,
 
       setResponse: action,
-      fetchData: action,
-      fetchDataByField: action,
-      fetchDataByValues: action,
+      runAPI: action,
+      runAPIByField: action,
+      runAPIByValues: action,
     });
   }
 
@@ -70,34 +70,34 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setResponse = (data: IStoreResponse<R, V>) => this.response = data;
 
-  fetchData = async () => {
+  runAPI = async () => {
     this.setLoading(true);
     this.lastFetchID += 1;
     const fetchID = this.lastFetchID;
     const params = pickBy(this.values, value => (!judgeIsEmpty(value))) as IV<V>;
     const { api } = this;
-    const response = await (typeof api === 'function' ? api(params) : httpRequest(api));
-    if (fetchID === this.lastFetchID) {
+    const response = await (typeof api === 'function' ? api(params) : this.apiExecutor?.(api));
+    if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);
     }
     return response;
   };
 
-  fetchDataByField = (field: IField<V>, value: any) => {
+  runAPIByField = (field: IField<V>, value: any) => {
     this.setValuesByField(field, value);
-    return this.fetchData();
+    return this.runAPI();
   };
 
-  fetchDataByValues = (values: Partial<V>) => {
+  runAPIByValues = (values: Partial<V>) => {
     this.setValues(values);
-    return this.fetchData();
+    return this.runAPI();
   };
 }
 
 export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues: V,
-  api: IStoreApi<V, R>,
+  api: IStoreAPI<V, R>,
   dictConfig?: IStoreDictConfig<V>
 };
 
@@ -109,7 +109,7 @@ export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?:
 
 export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreApi<V, R> = AxiosRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
+export type IStoreAPI<V, R> = AxiosRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 
@@ -118,7 +118,7 @@ export type IDictConfigItem<V extends object = IStoreValues> = {
 } & ({
   type?: 'self'
   data?: IOptions | any,
-  fetchData?: () => Promise<IHTTPResponse<IOptions | any>>
+  runAPI?: () => Promise<IHTTPResponse<IOptions | any>>
 } | IDictConfigItemBy<V>);
 
 export interface IDictConfigItemBy<V extends object = IStoreValues> {
@@ -126,9 +126,16 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
   type: 'by'
   byField: IField<V>,
   getData?: (value: any) => IOptions | any
-  fetchData?: (value?: any) => Promise<IHTTPResponse<IOptions | any>>
+  runAPI?: (value?: any) => Promise<IHTTPResponse<IOptions | any>>
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
 
 export type IOptions = Array<{ label: string, value: any }>;
+
+export interface IHTTPResponse<T = any, D = any> extends Partial<AxiosResponse<T, D>> {
+  code: number
+  msg: string,
+}
+
+export type IHTTPRequest = <R = any, P = any>(config: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
