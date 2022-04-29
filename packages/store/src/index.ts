@@ -1,2 +1,2 @@
-export { BaseStore } from './base';
-export { judgeIsEmpty } from './tool';
+export * from './base';
+export * from './tool';
