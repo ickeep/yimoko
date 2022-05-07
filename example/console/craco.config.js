@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 
-const CracoLessPlugin = require('craco-less');
-
 const  externals = {
   react: 'React',
   'react-is': 'ReactIs',
@@ -25,20 +23,6 @@ const  externals = {
 };
 
 module.exports = {
-  plugins: [
-    {
-      plugin: CracoLessPlugin,
-      options: {
-        lessLoaderOptions: {
-          lessOptions: {
-            modifyVars: {
-            },
-            javascriptEnabled: true,
-          },
-        },
-      },
-    },
-  ],
   webpack: {
     alias: {
       '@/src': path.resolve(__dirname, './src'),
