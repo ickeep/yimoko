@@ -7,6 +7,7 @@ import dts from 'vite-plugin-dts';
 export default defineConfig({
   build: {
     lib: {
+      formats: ['cjs', 'es', 'umd'],
       entry: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/src/index.ts`),
       name: `Yimoko${process.env.VITE_LIB?.replace(process.env.VITE_LIB[0], process.env.VITE_LIB[0].toUpperCase())}`,
       fileName: format => `yimoko-${process.env.VITE_LIB}.${format}.js`,
@@ -26,6 +27,7 @@ export default defineConfig({
         '@formily/reactive',
         '@formily/react',
         '@formily/antd',
+        '@tarojs/taro',
         '@yimoko/store',
       ],
       output: {
@@ -48,6 +50,7 @@ export default defineConfig({
           '@formily/react': 'Formily.React',
           '@formily/antd': 'Formily.Antd',
           '@formily/json-schema': 'Formily.JSONSchema',
+          '@tarojs/taro': 'taro',
 
           '@yimoko/store': 'YimokoStore',
         },

@@ -1,22 +1,27 @@
-import { Component } from 'react'
-import { View, Text } from '@tarojs/components'
-import './index.less'
+import { observer } from '@formily/reactive-react';
+import { View, Text, Button } from '@tarojs/components';
 
-export default class Index extends Component {
+import { useStore } from '@yimoko/taro';
 
-  componentDidMount () { }
+import './index.less';
 
-  componentWillUnmount () { }
 
-  componentDidShow () { }
+const IndexPage = observer(() => {
+  const { values, setValues } = useStore({ defaultValues: { name: 'xxx' }, api: { url: 'www.baidu.com' } });
+  // useEffect(() => {
+  //   runAPI();
+  // }, [runAPI]);
 
-  componentDidHide () { }
+  console.log('index 111', values);
+  return (
+    <View className='index'>
+      <Text>{values.name}</Text>
+      <Button onClick={() => {
+        setValues({ name: `${Math.random()}` });
+        console.log(values);
+      }}>btn</Button>
+    </View>
+  );
+});
 
-  render () {
-    return (
-      <View className='index'>
-        <Text>Hello world!</Text>
-      </View>
-    )
-  }
-}
+export default IndexPage;

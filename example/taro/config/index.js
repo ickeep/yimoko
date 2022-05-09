@@ -1,4 +1,12 @@
+const path=require('path');
+
 const config = {
+  alias:{
+    "react":path.resolve(__dirname, '..', 'node_modules/react'),
+    "@formily/react":path.resolve(__dirname, '..', 'node_modules/@formily/react'),
+    "@formily/reactive":path.resolve(__dirname, '..', 'node_modules/@formily/reactive'),
+    "@formily/reactive-react":path.resolve(__dirname, '..', 'node_modules/@formily/reactive-react'),
+  },
   projectName: 'taro',
   date: '2022-5-7',
   designWidth: 750,

@@ -41,12 +41,17 @@
   "author": "",
   "dependencies": {
     "@babel/runtime": "^7.7.7",
+    "@formily/react": "^2.1.0",
+    "@formily/reactive": "^2.1.0",
+    "@formily/reactive-react": "^2.1.0",
     "@tarojs/components": "3.4.8",
+    "@tarojs/plugin-framework-react": "3.4.8",
     "@tarojs/react": "3.4.8",
     "@tarojs/runtime": "3.4.8",
-    "@tarojs/taro": "3.4.8",
+    "@tarojs/taro": "^3.4.8",
     "@tarojs/taro-rn": "3.4.8",
-    "@tarojs/plugin-framework-react": "3.4.8",
+    "@yimoko/store": "^0.1.0",
+    "@yimoko/taro": "^0.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-native": "^0.67.3"
@@ -60,6 +65,8 @@
     "@types/react": "^17.0.2",
     "@types/react-native": "^0.67.0",
     "@types/webpack-env": "^1.13.6",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
     "babel-preset-taro": "3.4.8",
     "eslint": "^8.12.0",
     "eslint-config-taro": "3.4.8",
@@ -69,8 +76,6 @@
     "install-peerdeps": "^3.0.3",
     "pod-install": "^0.1.23",
     "stylelint": "9.3.0",
-    "@typescript-eslint/parser": "^5.20.0",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
     "typescript": "^4.1.0"
   }
 }
