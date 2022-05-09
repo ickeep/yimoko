@@ -1,5 +1,9 @@
 {
-  "npmClient": "npm",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "npmClientArgs": [
+    "--ignore-engines"
+  ],
   "packages": [
     "packages/*",
     "example/*"

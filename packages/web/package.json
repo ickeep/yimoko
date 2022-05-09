@@ -36,7 +36,7 @@
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@formily/antd": "^2.1.0",
     "@formily/core": "^2.1.0",
@@ -51,7 +51,9 @@
     "axios": "^0.27.2",
     "lodash-es": "^4.17.21",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
     "@types/node": "^17.0.29",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
