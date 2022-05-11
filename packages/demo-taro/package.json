@@ -41,9 +41,9 @@
   "author": "",
   "dependencies": {
     "@babel/runtime": "^7.7.7",
-    "@formily/react": "^2.1.0",
-    "@formily/reactive": "^2.1.0",
-    "@formily/reactive-react": "^2.1.0",
+    "@formily/react": "^2.1.1",
+    "@formily/reactive": "^2.1.1",
+    "@formily/reactive-react": "^2.1.1",
     "@tarojs/components": "3.4.8",
     "@tarojs/plugin-framework-react": "3.4.8",
     "@tarojs/plugin-mock": "^0.0.9",

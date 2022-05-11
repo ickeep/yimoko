@@ -20,9 +20,9 @@
     "build": "tsc && VITE_LIB=taro vite build -c ../../vite.config.ts"
   },
   "peerDependencies": {
-    "@formily/react": "^2.1.0",
-    "@formily/reactive": "^2.1.0",
-    "@formily/reactive-react": "^2.1.0",
+    "@formily/react": "^2.1.1",
+    "@formily/reactive": "^2.1.1",
+    "@formily/reactive-react": "^2.1.1",
     "@tarojs/taro": "^3.4.8",
     "@types/lodash-es": "^4.17.6",
     "@yimoko/store": "^0.1.0",
@@ -31,9 +31,9 @@
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "@formily/react": "^2.1.0",
-    "@formily/reactive": "^2.1.0",
-    "@formily/reactive-react": "^2.1.0",
+    "@formily/react": "^2.1.1",
+    "@formily/reactive": "^2.1.1",
+    "@formily/reactive-react": "^2.1.1",
     "@tarojs/taro": "^3.4.8",
     "@types/lodash-es": "^4.17.6",
     "@yimoko/store": "^0.1.0",
