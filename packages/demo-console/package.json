@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^6.4.3",
-    "react-scripts": "*",
+    "react-scripts": "^5.0.1",
     "@types/lodash-es": "^4.17.6"
   }
 }
