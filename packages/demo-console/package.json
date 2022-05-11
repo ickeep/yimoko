@@ -2,6 +2,23 @@
   "name": "@yimoko/console",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "build": "SKIP_PREFLIGHT_CHECK=true craco build",
+    "start": "SKIP_PREFLIGHT_CHECK=true PORT=8083 craco start",
+    "test": "SKIP_PREFLIGHT_CHECK=true craco test"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@formily/antd": "^2.1.1",
@@ -33,26 +50,9 @@
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true PORT=8083 craco start",
-    "build": "SKIP_PREFLIGHT_CHECK=true craco build",
-    "test": "SKIP_PREFLIGHT_CHECK=true craco test"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
     "@craco/craco": "^6.4.3",
-    "react-scripts": "^5.0.1",
-    "@types/lodash-es": "^4.17.6"
+    "@types/lodash-es": "^4.17.6",
+    "react-scripts": "^5.0.1"
   }
 }

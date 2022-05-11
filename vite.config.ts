@@ -57,7 +57,8 @@ export default defineConfig({
       },
     },
   },
-  // @ts-ignore
-  plugins: [react(), dts({ outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`) })],
+  plugins: [react({
+    fastRefresh: process.env.NODE_ENV !== 'test',
+  }), dts({ outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`) })],
 });
 
