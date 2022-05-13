@@ -2,11 +2,15 @@ import { action, define, observable } from '@formily/reactive';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
+import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from './field';
 import { judgeIsEmpty } from './tool';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
-  defaultValues: IV<V>;
   dictConfig?: IStoreDictConfig<V>;
+  fieldsConfig: IFieldsConfig = {};
+  formFieldsConfig: IFieldNames = [];
+
+  defaultValues: IV<V>;
   // 兼容不同端 如 小程序 web rn
   apiExecutor?: IHTTPRequest;
   api: IStoreAPI<V, R>;
@@ -19,32 +23,45 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   private lastFetchID = 0;
 
   constructor(config: IStoreConfig<V, R>) {
-    const { defaultValues, api, dictConfig } = config;
+    const { defaultValues, api, dictConfig, fieldsConfig } = config;
     this.defaultValues = defaultValues;
     this.dictConfig = dictConfig;
     this.api = api;
+    fieldsConfig && (this.fieldsConfig = fieldsConfig);
 
     this.values = cloneDeep(defaultValues);
     define(this, {
+      formFieldsConfig: observable,
       values: observable,
       dict: observable,
       response: observable,
       loading: observable,
 
+      formFields: observable.computed,
+
       setValues: action,
       resetValues: action,
       resetValuesByFields: action,
+      setValuesByField: action,
+      setValuesBySearch: action,
 
       setDict: action,
       setDictByField: action,
 
       setLoading: action,
-
       setResponse: action,
+
       runAPI: action,
       runAPIByField: action,
       runAPIByValues: action,
+      runAPIDataBySearch: action,
     });
+  }
+
+  getDefaultValues = () => cloneDeep(this.defaultValues);
+
+  get formFields() {
+    return getFields(this.formFieldsConfig, this.fieldsConfig);
   }
 
   setValues = (values: Partial<V>) => {
@@ -54,13 +71,35 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     });
   };
 
-  resetValues = () => this.values = cloneDeep(this.defaultValues);
+  resetValues = () => this.values = this.getDefaultValues();
 
   resetValuesByFields = (fields: Array<keyof V>) => {
-    this.setValues(cloneDeep(pick(this.defaultValues, fields)));
+    this.setValues(pick(this.getDefaultValues(), fields));
   };
 
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
+
+  setValuesBySearch = (search: string) => {
+    const newValues = this.getDefaultValues();
+    const searchParams = new URLSearchParams(search);
+    Object.keys(this.values).forEach((key) => {
+      // @ts-ignore
+      searchParams.has(key) && (newValues[key] = getValueBySearchParam(searchParams.get(key) ?? '', this.fieldsConfig[key]));
+    });
+    this.setValues(newValues);
+  };
+
+  getURLSearch = () => {
+    const searchParams = new URLSearchParams();
+    Object.entries(this.values).forEach(([key, value]) => {
+      const defaultValue = this.defaultValues[key];
+      if (value !== defaultValue && (!judgeIsEmpty(value) || !judgeIsEmpty(defaultValue))) {
+        const str = getSearchParamByValue(value);
+        searchParams.append(key, str);
+      }
+    });
+    return searchParams.toString();
+  };
 
   setDict = (dict: IStoreDict<V>) => this.dict = dict;
 
@@ -93,15 +132,23 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     this.setValues(values);
     return this.runAPI();
   };
+
+  runAPIDataBySearch = async (search: string) => {
+    this.setValuesBySearch(search);
+    return this.runAPI();
+  };
 }
 
 export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
+  fieldsConfig?: IFieldsConfig;
   defaultValues: V,
   api: IStoreAPI<V, R>,
   dictConfig?: IStoreDictConfig<V>
 };
 
-export type IStoreValues = Record<string, any>;
+export interface IStoreValues extends Object {
+  [key: string]: any
+}
 
 type IV<V = IStoreValues> = V & Record<string, any>;
 
@@ -118,7 +165,7 @@ export type IDictConfigItem<V extends object = IStoreValues> = {
 } & ({
   type?: 'self'
   data?: IOptions | any,
-  runAPI?: () => Promise<IHTTPResponse<IOptions | any>>
+  api?: IStoreAPI<any, IOptions[] | any>
 } | IDictConfigItemBy<V>);
 
 export interface IDictConfigItemBy<V extends object = IStoreValues> {
@@ -126,12 +173,12 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
   type: 'by'
   byField: IField<V>,
   getData?: (value: any) => IOptions | any
-  runAPI?: (value?: any) => Promise<IHTTPResponse<IOptions | any>>
+  api?: IStoreAPI<any, IOptions[] | any>
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
 
-export type IOptions = Array<{ label: string, value: any }>;
+export type IOptions = Array<{ label: string, value: any, [key: string]: any }>;
 
 export interface IHTTPResponse<T = any, D = any> extends Partial<AxiosResponse<T, D>> {
   code: number
@@ -139,3 +186,4 @@ export interface IHTTPResponse<T = any, D = any> extends Partial<AxiosResponse<T
 }
 
 export type IHTTPRequest = <R = any, P = any>(config: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
+

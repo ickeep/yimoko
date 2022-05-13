@@ -10,3 +10,12 @@ export const JSONParse = (text: string, defaultValue: object = {}, reviver?: (th
     return defaultValue;
   }
 };
+
+export const JSONStringify = (value: any, defaultValue = '', ...args: any[]) => {
+  try {
+    return JSON.stringify(value, ...args);
+  } catch (error) {
+    console.error(error);
+    return defaultValue;
+  }
+};

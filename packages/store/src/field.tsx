@@ -1,7 +1,7 @@
 import { ISchema } from '@formily/react';
 import { toString } from 'lodash-es';
 
-import { JSONParse } from './tool';
+import { JSONParse, JSONStringify } from './tool';
 
 export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((field) => {
   if (typeof field === 'string') {
@@ -12,12 +12,12 @@ export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((fie
 
 export const getSearchParamByValue = (value: any) => {
   if (typeof value === 'object') {
-    JSON.stringify(value);
+    JSONStringify(value);
   }
   return toString(value);
 };
 
-export const getValueBySearchParam = (searchParam: string, schema: ISchema) => {
+export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}) => {
   const { type = 'string' } = schema;
   const typeFnMap: Record<string, Function> = {
     number: (value: string) => Number(value),
