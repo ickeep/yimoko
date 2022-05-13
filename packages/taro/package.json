@@ -17,7 +17,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && VITE_LIB=taro vite build -c ../../vite.config.ts"
+    "build": "tsc && VITE_LIB=taro vite build -c ../../vite.config.ts",
+    "dev": "VITE_LIB=taro VITE_WATCH=true  vite build -c ../../vite.config.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.29",

@@ -17,7 +17,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && VITE_LIB=web vite build -c ../../vite.config.ts"
+    "build": "tsc && VITE_LIB=web vite build -c ../../vite.config.ts",
+    "dev": "VITE_LIB=web VITE_WATCH=true  vite build -c ../../vite.config.ts"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

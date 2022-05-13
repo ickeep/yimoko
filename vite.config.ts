@@ -12,6 +12,7 @@ export default defineConfig({
       name: `Yimoko${process.env.VITE_LIB?.replace(process.env.VITE_LIB[0], process.env.VITE_LIB[0].toUpperCase())}`,
       fileName: format => `yimoko-${process.env.VITE_LIB}.${format}.js`,
     },
+    watch: process.env.VITE_WATCH ? { buildDelay: 100 } : null,
     outDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/dist`),
     rollupOptions: {
       external: [

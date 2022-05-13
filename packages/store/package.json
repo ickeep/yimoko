@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "build": "tsc && VITE_LIB=store vite build -c ../../vite.config.ts",
-    "dev": "vite",
+    "dev": "VITE_LIB=store VITE_WATCH=true vite build -c ../../vite.config.ts",
     "test:unit": "jest",
     "test:watch": "jest --watchAll"
   },
