@@ -1,6 +1,15 @@
-import { isEmpty, isNumber } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
-export const judgeIsEmpty = (value: any) => (!isNumber(value) && isEmpty(value));
+export const judgeIsEmpty = (value: any) => {
+  const type = typeof value;
+  if (type === 'boolean') {
+    return false;
+  }
+  if (type === 'number') {
+    return false;
+  }
+  return isEmpty(value);
+};
 
 export const JSONParse = (text: string, defaultValue: object = {}, reviver?: (this: any, key: string, value: any) => any) => {
   try {
@@ -12,6 +21,10 @@ export const JSONParse = (text: string, defaultValue: object = {}, reviver?: (th
 };
 
 export const JSONStringify = (value: any, defaultValue = '', ...args: any[]) => {
+  if (!value || typeof value !== 'object') {
+    return defaultValue;
+  }
+
   try {
     return JSON.stringify(value, ...args);
   } catch (error) {
@@ -19,3 +32,4 @@ export const JSONStringify = (value: any, defaultValue = '', ...args: any[]) => 
     return defaultValue;
   }
 };
+
