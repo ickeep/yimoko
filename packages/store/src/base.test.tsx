@@ -77,8 +77,27 @@ describe('BaseStore', () => {
     expect(store.getURLSearch()).toBe('id=2&name=name&type=t2');
     store.setValues({ id: 1, type: 't1' });
     expect(store.getURLSearch()).toBe('name=name');
-    store.setValues({ name: '' });
+
+    // @ts-ignore
+    store.setValues({ name: [] });
     expect(store.getURLSearch()).toBe('');
+
+    store.setValues({ type: '' });
+    expect(store.getURLSearch()).toBe('type=');
+
+    store.setValues({ name: '', type: 't1' });
+    expect(store.getURLSearch()).toBe('');
+  });
+
+  test('getAPIParams', () => {
+    expect(store.getAPIParams()).toEqual({ id: 1, type: 't1' });
+    store.isFilterEmptyAtRun = false;
+    expect(store.getAPIParams()).toEqual({ id: 1, type: 't1', name: '' });
+    store.isFilterEmptyAtRun = true;
+    store.setValuesByField('obj', {});
+    store.setValuesByField('arr', []);
+    expect(store.values).toEqual({ ...defaultValues, obj: {}, arr: [] });
+    expect(store.getAPIParams()).toEqual({ id: 1, type: 't1' });
   });
 
   test('apiExecutor', () => {
@@ -96,6 +115,28 @@ describe('BaseStore', () => {
     const res = { msg: '', code: 0, data: { id: 1, type: 't1' } };
     expect(await hasApiStore.runAPI()).toEqual(res);;
     expect(hasApiStore.response).toEqual(res);
+
+    expect((await hasApiStore.runAPIByField('name', 'n1'))?.data.name).toBe('n1');
+    expect(hasApiStore.response?.data.name).toBe('n1');
+
+    expect((await hasApiStore.runAPIByValues({ name: 'n2' }))?.data.name).toBe('n2');
+    expect(hasApiStore.response?.data.name).toBe('n2');
+
+    expect((await hasApiStore.runAPIDataBySearch('name=n3'))?.data.name).toBe('n3');
+    expect(hasApiStore.response?.data.name).toBe('n3');
+  });
+
+  test('lastFetchID', async () => {
+    jest.useFakeTimers();
+    const apiExecutor: IHTTPRequest = ({ time = 100 }) => new Promise(resolve => setTimeout(() => resolve({ msg: '', code: 0, data: time }), time));
+    const hasApiExecutorStore = new BaseStore({ defaultValues: { time: 100 }, api: { url: '' }, apiExecutor });
+    jest.useFakeTimers();
+    hasApiExecutorStore.runAPIByField('time', 200);
+    hasApiExecutorStore.runAPIByField('time', 100);
+
+    jest.advanceTimersByTime(100);
+    await jest.runAllTimers();
+    expect(hasApiExecutorStore.response.data).toBe(100);
   });
 });
 
