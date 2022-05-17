@@ -19,6 +19,8 @@ describe('judgeIsEmpty', () => {
 });
 
 describe('JSONParse', () => {
+  jest.spyOn(console, 'error');
+
   test('JSONParse', () => {
     expect(JSONParse('{"a":1}')).toEqual({ a: 1 });
     expect(JSONParse('{"a":1}', {})).toEqual({ a: 1 });
@@ -37,6 +39,7 @@ describe('JSONParse', () => {
 });
 
 describe('JSONStringify', () => {
+  jest.spyOn(console, 'error');
   test('JSONStringify', () => {
     expect(JSONStringify({ a: 1 })).toEqual('{"a":1}');
   });

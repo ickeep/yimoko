@@ -1,7 +1,47 @@
-import { BaseStore } from './base';
+import { BaseStore, IHTTPRequest } from './base';
+import { IFieldNames } from './field';
 
 describe('BaseStore', () => {
-  const store = new BaseStore({ defaultValues: { id: 1, name: '', type: 't1' }, api: {} });
+  const defaultValues = { id: 1, name: '', type: 't1' };
+  const store = new BaseStore({ defaultValues, api: { url: '' } });
+
+  test('dictConfig', () => {
+    expect(store.dictConfig).toEqual([]);
+    const dictConfig = [{ field: 'type', data: [] }];
+    const hasDictConfigStore = new BaseStore({ defaultValues, api: { url: '' }, dictConfig });
+    expect(hasDictConfigStore.dictConfig).toEqual(dictConfig);
+  });
+
+  test('fieldsConfig', () => {
+    expect(store.fieldsConfig).toEqual({});
+    const fieldsConfig = { type: { type: 'string' } };
+    const hasFieldsConfigStore = new BaseStore({ defaultValues, api: { url: '' }, fieldsConfig });
+    expect(hasFieldsConfigStore.fieldsConfig).toEqual(fieldsConfig);
+  });
+
+  test('formFieldsConfig', () => {
+    expect(store.formFieldsConfig).toEqual([]);
+    const fieldsConfig = { type: { type: 'string' } };
+    const formFieldsConfig: IFieldNames = ['name', { name: 'type', title: '类型' }];
+    const hasFormFieldsConfigStore = new BaseStore({ defaultValues, api: { url: '' }, formFieldsConfig, fieldsConfig });
+    expect(hasFormFieldsConfigStore.formFieldsConfig).toEqual(formFieldsConfig);
+    expect(hasFormFieldsConfigStore.formFields).toEqual([{ name: 'name' }, { name: 'type', title: '类型', type: 'string' }]);
+  });
+
+  test('defaultValues', () => {
+    expect(store.defaultValues).toEqual(defaultValues);
+    expect(store.defaultValues !== defaultValues).toBeFalsy();
+    expect(store.getDefaultValues()).toEqual(defaultValues);
+    expect(store.getDefaultValues() !== defaultValues).toBeTruthy();
+  });
+
+  test('values', () => {
+    expect(store.values).toEqual(defaultValues);
+    const values = { value: 'val' };
+    const hasValueStore = new BaseStore({ defaultValues: values, api: { url: '' } });
+    expect(hasValueStore.values).toEqual(values);
+  });
+
   test('setValues', () => {
     store.setValues({ name: 'name' });
     expect(store.values).toEqual({ id: 1, name: 'name', type: 't1' });
@@ -9,7 +49,7 @@ describe('BaseStore', () => {
 
   test('resetValues', () => {
     store.resetValues();
-    expect(store.values).toEqual({ id: 1, name: '', type: 't1' });
+    expect(store.values).toEqual(defaultValues);
   });
 
   test('setValuesByField', () => {
@@ -19,10 +59,43 @@ describe('BaseStore', () => {
 
   test('resetValuesByFields', () => {
     store.resetValuesByFields(['name']);
-    expect(store.values).toEqual({ id: 1, name: '', type: 't1' });
+    expect(store.values).toEqual(defaultValues);
     store.setValues({ id: 2, name: 'name', type: 't2' });
     store.resetValuesByFields(['name', 'type']);
     expect(store.values).toEqual({ id: 2, name: '', type: 't1' });
+  });
+
+  test('setValuesBySearch', () => {
+    store.fieldsConfig = { id: { type: 'number' } };
+    store.setValuesBySearch('?name=name&xxx=xxx&id=2');
+    expect(store.values).toEqual({ id: 2, name: 'name', type: 't1' });
+  });
+
+  test('getURLSearch', () => {
+    expect(store.getURLSearch()).toBe('id=2&name=name');
+    store.setValues({ type: 't2' });
+    expect(store.getURLSearch()).toBe('id=2&name=name&type=t2');
+    store.setValues({ id: 1, type: 't1' });
+    expect(store.getURLSearch()).toBe('name=name');
+    store.setValues({ name: '' });
+    expect(store.getURLSearch()).toBe('');
+  });
+
+  test('apiExecutor', () => {
+    expect(store.apiExecutor).toBeUndefined();
+    const apiExecutor: IHTTPRequest = async () => ({ msg: '', code: 0, data: {} });
+    const hasApiExecutorStore = new BaseStore({ defaultValues, api: { url: '' }, apiExecutor });
+    expect(hasApiExecutorStore.apiExecutor).toBe(apiExecutor);
+  });
+
+  test('api', async () => {
+    expect(store.api).toEqual({ url: '' });
+    const api = async (p: any) => ({ msg: '', code: 0, data: p });;
+    const hasApiStore = new BaseStore({ defaultValues, api });
+    expect(hasApiStore.api).toEqual(api);
+    const res = { msg: '', code: 0, data: { id: 1, type: 't1' } };
+    expect(await hasApiStore.runAPI()).toEqual(res);;
+    expect(hasApiStore.response).toEqual(res);
   });
 });
 

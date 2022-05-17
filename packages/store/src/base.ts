@@ -1,35 +1,37 @@
 import { action, define, observable } from '@formily/reactive';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
 import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from './field';
 import { judgeIsEmpty } from './tool';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
-  dictConfig?: IStoreDictConfig<V>;
+  isFilterEmptyAtRun = true;
+  dictConfig: IStoreDictConfig<V> = [];
   fieldsConfig: IFieldsConfig = {};
   formFieldsConfig: IFieldNames = [];
 
   defaultValues: IV<V>;
-  // 兼容不同端 如 小程序 web rn
-  apiExecutor?: IHTTPRequest;
+  apiExecutor?: IHTTPRequest<R, V>;
   api: IStoreAPI<V, R>;
 
-  values: IV<V>;
   dict: IStoreDict<V> = {};
+  values: IV<V>;
   response: IStoreResponse<R, V> = {};
   loading = false;
 
   private lastFetchID = 0;
 
   constructor(config: IStoreConfig<V, R>) {
-    const { defaultValues, api, dictConfig, fieldsConfig } = config;
+    const { defaultValues, api, isFilterEmptyAtRun = true, dictConfig = [], fieldsConfig = {}, formFieldsConfig = [], apiExecutor } = config;
     this.defaultValues = defaultValues;
     this.dictConfig = dictConfig;
+    this.fieldsConfig = fieldsConfig;
+    this.formFieldsConfig = formFieldsConfig;
     this.api = api;
-    fieldsConfig && (this.fieldsConfig = fieldsConfig);
-
+    this.isFilterEmptyAtRun = isFilterEmptyAtRun;
+    apiExecutor && (this.apiExecutor = apiExecutor);
     this.values = cloneDeep(defaultValues);
+
     define(this, {
       formFieldsConfig: observable,
       values: observable,
@@ -109,13 +111,15 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setResponse = (data: IStoreResponse<R, V>) => this.response = data;
 
+  getAPIParams = () => (this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values) as IV<V>;
+
   runAPI = async () => {
     this.setLoading(true);
     this.lastFetchID += 1;
     const fetchID = this.lastFetchID;
-    const params = pickBy(this.values, value => (!judgeIsEmpty(value))) as IV<V>;
     const { api } = this;
-    const response = await (typeof api === 'function' ? api(params) : this.apiExecutor?.(api));
+    const params = this.getAPIParams();
+    const response = await (typeof api === 'function' ? api(params) : this.apiExecutor?.({ ...api, params, data: params }));
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);
@@ -140,10 +144,13 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 }
 
 export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
-  fieldsConfig?: IFieldsConfig;
   defaultValues: V,
   api: IStoreAPI<V, R>,
   dictConfig?: IStoreDictConfig<V>
+  fieldsConfig?: IFieldsConfig;
+  formFieldsConfig?: IFieldNames;
+  isFilterEmptyAtRun?: boolean;
+  apiExecutor?: IHTTPRequest;
 };
 
 export interface IStoreValues extends Object {
@@ -156,9 +163,17 @@ export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?:
 
 export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreAPI<V, R> = AxiosRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
+export type IStoreAPI<V, R> = IAPIRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
+
+export type IAPIRequestConfig<V> = {
+  url: string,
+  method?: IMethod,
+  params?: V | any,
+  data?: V,
+  [key: string]: any
+};
 
 export type IDictConfigItem<V extends object = IStoreValues> = {
   field: IField<V>,
@@ -180,10 +195,17 @@ export type IField<P extends object = IStoreValues> = keyof P | string;
 
 export type IOptions = Array<{ label: string, value: any, [key: string]: any }>;
 
-export interface IHTTPResponse<T = any, D = any> extends Partial<AxiosResponse<T, D>> {
+export interface IHTTPResponse<R = any, P = any> {
   code: number
   msg: string,
+  data: R
+  config?: IAPIRequestConfig<P>
+  status?: number;
+  statusText?: string;
+  headers?: Record<string, any>;
+  [key: string]: any
 }
 
-export type IHTTPRequest = <R = any, P = any>(config: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
+export type IHTTPRequest<R = any, P = any> = (config: IAPIRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
 
+export type IMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | string;
