@@ -29,6 +29,7 @@ export default defineConfig({
         '@formily/react',
         '@formily/antd',
         '@tarojs/taro',
+        '@tarojs/components',
         '@yimoko/store',
       ],
       output: {
@@ -52,14 +53,16 @@ export default defineConfig({
           '@formily/antd': 'Formily.Antd',
           '@formily/json-schema': 'Formily.JSONSchema',
           '@tarojs/taro': 'taro',
+          '@tarojs/components': 'taroComponents',
 
           '@yimoko/store': 'YimokoStore',
         },
       },
     },
   },
-  plugins: [react({
-    fastRefresh: process.env.NODE_ENV !== 'test',
-  }), dts({ outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`) })],
+  plugins: [
+    react({ fastRefresh: process.env.NODE_ENV !== 'test' }),
+    dts({ outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`) }),
+  ],
 });
 

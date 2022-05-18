@@ -18,7 +18,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && VITE_LIB=store vite build -c ../../vite.config.ts",
+    "build": "VITE_LIB=store vite build -c ../../vite.config.ts",
     "dev": "VITE_LIB=store VITE_WATCH=true vite build -c ../../vite.config.ts",
     "test:unit": "react-scripts test --coverage --watchAll=false",
     "test:watch": "react-scripts test --watchAll --coverage"

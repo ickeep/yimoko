@@ -2,6 +2,7 @@
   "name": "@yimoko/taro",
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/yimoko-taro.es.js",
@@ -17,8 +18,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc && VITE_LIB=taro vite build -c ../../vite.config.ts",
-    "dev": "VITE_LIB=taro VITE_WATCH=true  vite build -c ../../vite.config.ts"
+    "build": "VITE_LIB=taro vite build -c ../../vite.config.ts",
+    "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.29",
@@ -34,6 +35,7 @@
     "@formily/reactive": "^2.1.1",
     "@formily/reactive-react": "^2.1.1",
     "@tarojs/taro": "^3.4.8",
+    "@tarojs/components": "3.4.8",
     "@types/lodash-es": "^4.17.6",
     "@yimoko/store": "^0.1.0",
     "lodash-es": "^4.17.21",
