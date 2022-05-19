@@ -1,5 +1,4 @@
 import { ISchema } from '@formily/react';
-import { toString } from 'lodash-es';
 
 import { JSONParse, JSONStringify } from './tool';
 
@@ -10,12 +9,7 @@ export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((fie
   return { ...config[field.name], ...field };
 });
 
-export const getSearchParamByValue = (value: any) => {
-  if (typeof value === 'object') {
-    JSONStringify(value);
-  }
-  return toString(value);
-};
+export const getSearchParamByValue = (value: any) => (typeof value === 'object' ? JSONStringify(value) : value?.toString?.());
 
 export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}) => {
   const { type = 'string' } = schema;
