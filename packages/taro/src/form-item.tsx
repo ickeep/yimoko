@@ -21,7 +21,7 @@ export interface IFormItemProps extends ViewProps {
 }
 
 export const FormBaseItem: React.FC<IFormItemProps> = (props) => {
-  const { style, label, colon = false, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
+  const { style, label, colon, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
   const [vStyle, setVStyle] = useState<CSSProperties>({});
   const [lStyle, setLStyle] = useState<CSSProperties>({});
 
