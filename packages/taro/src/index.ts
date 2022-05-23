@@ -3,4 +3,6 @@ export * from './use-store';
 export * from './form-item';
 export * from './form';
 export * from './input';
-export * from './config/lang';
+export * from './store/lang';
+export * from './out/text';
+export * from './out/icon';

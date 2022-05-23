@@ -18,7 +18,7 @@ const config = {
     828: 1.81 / 2,
   },
   sourceRoot: 'src',
-  outputRoot: 'dist',
+  outputRoot: `dist/${process.env.TARO_ENV}`,
   plugins: [],
   defineConstants: {
   },
@@ -55,6 +55,7 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
+
     postcss: {
       autoprefixer: {
         enable: true,

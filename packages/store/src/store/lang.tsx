@@ -24,9 +24,7 @@ export class LangStore<T extends ILang = ILang> {
     return pick(this.lang, keys);
   };
 
-  setLang = (lang: T) => {
-    this.lang = lang;
-  };
+  setLang = (lang: T) => this.lang = lang;
 
   setLoading = (loading: boolean) => this.loading = loading;
 }

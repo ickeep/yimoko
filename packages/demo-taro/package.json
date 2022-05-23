@@ -73,6 +73,7 @@
     "install-peerdeps": "^3.0.3",
     "pod-install": "^0.1.23",
     "stylelint": "9.3.0",
+    "webpack": "^4",
     "typescript": "^4.1.0"
   },
   "templateInfo": {

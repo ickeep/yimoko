@@ -1,27 +1,29 @@
-import { connect, mapProps } from '@formily/react';
-import { View, ViewProps, Text, Label } from '@tarojs/components';
-
+import { connect, mapProps, observer } from '@formily/react';
+import { Label } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import React, { useEffect, useState, CSSProperties } from 'react';
 
-export interface IFormItemProps extends ViewProps {
+import { Icon } from './out/icon';
+import { Text } from './out/text';
+import { ViewProps, View } from './out/view';
+import { Ilayout, ISize } from './props';
+
+export interface FormItemProps extends ViewProps {
   style?: CSSProperties
   label?: React.ReactNode
   colon?: boolean
-  help?: React.ReactNode
+  help?: string
   helpIcon?: React.ReactNode
-  layout?: 'vertical' | 'horizontal' | 'inline'
+  layout?: Ilayout
   labelStyle?: CSSProperties
   labelAlign?: 'left' | 'right'
-  labelWrap?: boolean
   labelWidth?: number | string
-  size?: 'small' | 'default' | 'large'
-  inset?: boolean
+  size?: ISize
   extra?: React.ReactNode
-  children?: React.ReactNode
 }
 
-export const FormBaseItem: React.FC<IFormItemProps> = (props) => {
-  const { style, label, colon, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
+export const FormBaseItem: React.FC<FormItemProps> = (props) => {
+  const { style, label, help, helpIcon, colon, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
   const [vStyle, setVStyle] = useState<CSSProperties>({});
   const [lStyle, setLStyle] = useState<CSSProperties>({});
 
@@ -36,20 +38,27 @@ export const FormBaseItem: React.FC<IFormItemProps> = (props) => {
     setLStyle(style);
   }, [labelAlign, labelStyle, labelWidth]);
 
-  console.log(args);
-
   return (
     <View {...args} style={vStyle}>
       <Label style={lStyle}>
-        <Text>{label}{colon && ':'}</Text>
+        <Text>{label}</Text><Help help={help} helpIcon={helpIcon} /><Text>{colon && ':'}</Text>
         <View>{children}</View>
-
       </Label>
-
       {extra && <View>{extra}</View>}
     </View>
   );
 };
+
+const Help = observer((props: Pick<FormItemProps, 'help' | 'helpIcon'>) => {
+  const { help, helpIcon = 'help' } = props;
+  if (!help) {
+    return null;
+  }
+  const click = () => {
+    Taro.showToast({ title: help, icon: 'none' });
+  };
+  return <View style={{ display: 'inline-block' }} onClick={click}>{typeof helpIcon === 'string' ? <Icon src={helpIcon} /> : helpIcon}</View>;
+});
 
 
 export const FormItem = connect(

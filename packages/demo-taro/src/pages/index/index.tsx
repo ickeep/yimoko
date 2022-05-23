@@ -1,8 +1,8 @@
 import { createForm } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { View, Text, Button } from '@tarojs/components';
-import { Form, FormItem, Input, useLang, langStore } from '@yimoko/taro';
+import { View } from '@tarojs/components';
+import { Form, FormItem, Input } from '@yimoko/taro';
 import { useState } from 'react';
 
 const normalSchema = {
@@ -13,6 +13,9 @@ const normalSchema = {
       title: '用户名',
       required: true,
       'x-decorator': 'FormItem',
+      'x-decorator-props': {
+        help: '1232',
+      },
       'x-component': 'Input',
     },
     // password: {
@@ -31,7 +34,6 @@ const normalSchema = {
 
 const IndexPage = observer(() => {
   const [form] = useState(() => createForm({ validateFirst: true, initialValues: { username: 'user' } }));
-  const [lang, loading] = useLang('name');
   const [SchemaField] = useState(() => createSchemaField({
     components: {
       FormItem,
@@ -42,11 +44,6 @@ const IndexPage = observer(() => {
 
   return (
     <View className='index'>
-      <Text>name:{lang.name}</Text>
-      <Text>loading:{loading.toString()}</Text>
-      <Text>age:{lang.age}</Text>
-      <Button onClick={() => langStore.setLang({ name: `${Math.random()}` })}>set lang</Button>
-      <Button onClick={() => langStore.setLoading(!loading)}>set lang</Button>
       <Form form={form} >
         <SchemaField schema={normalSchema} />
       </Form>
