@@ -1,15 +1,16 @@
 import { connect, mapProps, observer } from '@formily/react';
 import { Label } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import React, { useEffect, useState, CSSProperties } from 'react';
+import classNames from 'classNames';
+import { useEffect, useState, CSSProperties } from 'react';
 
-import { Icon } from './out/icon';
-import { Text } from './out/text';
-import { ViewProps, View } from './out/view';
-import { Ilayout, ISize } from './props';
+import { Icon } from '../out/icon';
+import { Text } from '../out/text';
+import { ViewProps, View } from '../out/view';
+import { Ilayout, ISize } from '../props';
+import { getCssSize } from '../tools/style';
 
 export interface FormItemProps extends ViewProps {
-  style?: CSSProperties
   label?: React.ReactNode
   colon?: boolean
   help?: string
@@ -23,23 +24,17 @@ export interface FormItemProps extends ViewProps {
 }
 
 export const FormBaseItem: React.FC<FormItemProps> = (props) => {
-  const { style, label, help, helpIcon, colon, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
-  const [vStyle, setVStyle] = useState<CSSProperties>({});
+  const { className, label, help, helpIcon, colon, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
   const [lStyle, setLStyle] = useState<CSSProperties>({});
 
   useEffect(() => {
-    const wStyle: CSSProperties = { ...style };
-    setVStyle(wStyle);
-  }, [style]);
-
-  useEffect(() => {
     const style: CSSProperties = { ...labelStyle, textAlign: labelAlign ?? 'left' };
-    typeof labelWidth !== 'undefined' && (style.width = labelWidth);
+    typeof labelWidth !== 'undefined' && (style.width = getCssSize(labelWidth));
     setLStyle(style);
   }, [labelAlign, labelStyle, labelWidth]);
 
   return (
-    <View {...args} style={vStyle}>
+    <View {...args} className={classNames('y-form-item', className)} >
       <Label style={lStyle}>
         <Text>{label}</Text><Help help={help} helpIcon={helpIcon} /><Text>{colon && ':'}</Text>
         <View>{children}</View>

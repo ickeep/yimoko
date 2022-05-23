@@ -2,8 +2,8 @@ import { observer } from '@formily/reactive-react';
 import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
 import { useState, CSSProperties, useEffect } from 'react';
 
-import { useTheme } from './store/theme';
-import { getCssSize } from './tools/style';
+import { useTheme } from '../store/theme';
+import { getCssSize } from '../tools/style';
 
 export interface InputProps extends TInputProps {
   onChange?: (value?: string) => void
