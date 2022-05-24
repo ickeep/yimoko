@@ -21,9 +21,12 @@ export interface FormItemInheritProps {
   labelAlign?: 'left' | 'right'
   labelWidth?: number | string
   size?: ISize
+  feedbackStatus?: string
 }
 
 export interface FormItemProps extends ViewProps {
+  for?: string
+  required?: boolean,
   label?: React.ReactNode
   help?: string
   extra?: React.ReactNode
@@ -31,7 +34,11 @@ export interface FormItemProps extends ViewProps {
 
 // eslint-disable-next-line complexity
 export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (props) => {
-  const { className, label, help, helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign, children, extra, ...args } = props;
+  const {
+    required, for: lableID, className, children, extra, label, help, feedbackStatus = 'loading',
+    helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign,
+    ...args
+  } = props;
   const [lStyle, setLStyle] = useState<CSSProperties>({});
   const formInherit = useFormInherit();
   const [mergeProps, setMergePropss] = useState<FormItemInheritProps>({});
@@ -49,25 +56,33 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
 
   return (
     <View {...args} className={classNames('y-form-item', mergeProps.layout && `y-form-item-${mergeProps.layout}`, className)} >
-      <Label className={classNames('y-form-item-label', mergeProps.layout && `y-form-item-label-${mergeProps.layout}`)} style={lStyle}>
+      <Label for={lableID} className={classNames('y-form-item-label', mergeProps.layout && `y-form-item-label-${mergeProps.layout}`)} style={lStyle}>
+        {required && <Text size={mergeProps.size} className="y-text-danger">*</Text>}
         <Text size={mergeProps.size}>{label}</Text>
-        <Help help={help} helpIcon={mergeProps.helpIcon} />
+        <Help help={help} helpIcon={mergeProps.helpIcon} size={mergeProps.size} />
         {mergeProps.colon && <Text size={mergeProps.size}>:</Text>}
       </Label>
-      <View className='y-form-item-in'>{children}  {extra && <View>{extra}</View>}</View>
+      <View className='y-form-item-in'>
+        {children}  {extra && <View>{extra}</View>}
+        <Icon src={feedbackStatus} size={mergeProps.size} />
+      </View>
     </View>
   );
 };
 
-const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' | 'helpIcon'>) => {
-  const { help, helpIcon = 'help' } = props;
+const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' | 'helpIcon' | 'size'>) => {
+  const { size, help, helpIcon = 'help' } = props;
   if (!help) {
     return null;
   }
   const click = () => {
     Taro.showToast({ title: help, icon: 'none' });
   };
-  return <View style={{ display: 'inline-block' }} onClick={click}>{typeof helpIcon === 'string' ? <Icon src={helpIcon} /> : helpIcon}</View>;
+  return (
+    <View style={{ display: 'inline-block' }} onClick={click}>
+      {typeof helpIcon === 'string' ? <Icon size={size} src={helpIcon} /> : helpIcon}
+    </View>
+  );
 });
 
 
@@ -78,6 +93,8 @@ export const FormItem = connect(
     return {
       label: props.label || field.title,
       extra: props.extra || field.description,
+      // @ts-ignore
+      required: field.required,
     };
   }),
 );

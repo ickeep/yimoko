@@ -1,15 +1,19 @@
 import { observer } from '@formily/reactive-react';
 import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
 import classNames from 'classNames';
-import { CSSProperties } from 'react';
+
+import { Text } from '../out/text';
 
 export interface InputProps extends TInputProps {
   onChange?: (value?: string) => void
-  style?: CSSProperties
+  readOnly?: boolean
 }
 
 export const Input = observer((props: InputProps) => {
-  const { onChange, onInput, className, ...args } = props;
+  const { onChange, onInput, className, readOnly, ...args } = props;
+  if (readOnly) {
+    return <Text>{args.value}</Text>;
+  }
 
   return (
     <TInput

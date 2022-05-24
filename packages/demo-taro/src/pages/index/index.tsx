@@ -15,10 +15,12 @@ const normalSchema = {
       'x-decorator': 'FormItem',
       'x-decorator-props': {
         help: '1232',
+        for: 'username',
       },
       'x-component': 'Input',
       'x-component-props': {
         placeholder: '请输入用户名',
+        id: 'username',
       },
     },
     mail: {
