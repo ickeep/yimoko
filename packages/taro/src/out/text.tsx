@@ -1,28 +1,19 @@
 import { observer } from '@formily/reactive-react';
 import { Text as TText, TextProps as TTextProps } from '@tarojs/components';
-import { CSSProperties, ReactNode, useEffect, useState } from 'react';
+import classNames from 'classnames';
+import { ReactNode } from 'react';
 
-import { useTheme } from '../store/theme';
-import { getCssSize } from '../tools/style';
+import { ISize } from '../props';
+
 
 export interface TextProps extends TTextProps {
+  size?: ISize
   value?: ReactNode
   children?: ReactNode,
-  style?: CSSProperties
 }
 
 export const Text = observer((props: TextProps) => {
-  const { style, value, children, ...args } = props;
-  const { fontSizeBase, textColor } = useTheme();
-  const [tStyle, setStyle] = useState<CSSProperties>();
+  const { className, size, value, children, ...args } = props;
 
-  useEffect(() => {
-    setStyle({
-      color: textColor,
-      ...style, fontSize:
-        getCssSize(style?.fontSize ?? fontSizeBase),
-    });
-  }, [textColor, style, fontSizeBase]);
-
-  return <TText {...args} style={tStyle} >{value ?? children}</TText>;
+  return <TText {...args} className={classNames('y-text', size && `y-text-${size}`, className)}  >{value ?? children}</TText>;
 });

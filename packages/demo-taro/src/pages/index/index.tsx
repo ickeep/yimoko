@@ -17,20 +17,27 @@ const normalSchema = {
         help: '1232',
       },
       'x-component': 'Input',
+      'x-component-props': {
+        placeholder: '请输入用户名',
+      },
     },
-    // password: {
-    //   type: 'string',
-    //   title: '密码',
-    //   required: true,
-    //   'x-decorator': 'FormItem',
-    //   'x-component': 'Password',
-    //   'x-component-props': {
-    //     prefix: '{{icon(\'LockOutlined\')}}',
-    //   },
-    // },
+    mail: {
+      type: 'string',
+      title: '邮箱',
+      required: true,
+      'x-decorator': 'FormItem',
+      'x-decorator-props': {
+        help: '邮箱地址',
+        colon: true,
+        layout: 'vertical',
+      },
+      'x-component': 'Input',
+      'x-component-props': {
+        placeholder: '请输入邮箱',
+      },
+    },
   },
 };
-
 
 const IndexPage = observer(() => {
   const [form] = useState(() => createForm({ validateFirst: true, initialValues: { username: 'user' } }));
@@ -41,10 +48,9 @@ const IndexPage = observer(() => {
     },
   }));
 
-
   return (
     <View className='index'>
-      <Form form={form} >
+      <Form form={form} layout="horizontal" >
         <SchemaField schema={normalSchema} />
       </Form>
     </View>

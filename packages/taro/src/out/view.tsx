@@ -10,6 +10,5 @@ export interface ViewProps extends TViewProps {
 export const View = observer((props: ViewProps) => {
   const { value, children, className, ...args } = props;
 
-
   return <TView {...args} className={classNames('y-view', className)} >{value ?? children}</TView>;
 });

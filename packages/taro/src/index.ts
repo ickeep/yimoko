@@ -1,5 +1,6 @@
 export * from './http';
 export * from './use-store';
+export * from './in/label';
 export * from './in/form-item';
 export * from './in/form';
 export * from './in/input';

@@ -1,3 +1,25 @@
+@import url('../theme.less');
+
 .y-form-item {
   display: flex;
+  border-bottom: 1px solid @borderColor;
+  padding: @spaceBase;
+  column-gap: @spaceBase;
+
+  &-vertical {
+    flex-direction: column;
+  }
+
+  &-label {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    &-vertical {
+      margin-bottom: (@spaceBase/2);
+    }
+  }
+
+  &-in {
+    flex-grow: 1;
+  }
 }
