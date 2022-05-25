@@ -21,6 +21,7 @@ export const Icon = observer((props: IconProps) => {
   return (
     <Image
       {...args}
+      mode="aspectFit"
       className={classNames('y-icon', size && `y-icon-${size}`)}
       src={staticConfig.icon + src + (src?.indexOf('.') > 0 ? '' : '.png')} />
   );

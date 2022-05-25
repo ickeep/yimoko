@@ -4,16 +4,19 @@
   width: @iconSizeMedium;
   height: @iconSizeMedium;
   position: relative;
-  top: 4px;
+  top: ((@iconSizeMedium*@lineHeight - @iconSizeMedium)/2 - 2);
   padding: 0 2px;
+  flex-shrink: 0;
 
   &-small {
     width: @iconSizeSmall;
     height: @iconSizeSmall;
+    top: ((@iconSizeSmall*@lineHeight - @iconSizeSmall)/2);
   }
 
   &-large {
     width: @iconSizeLarge;
     height: @iconSizeLarge;
+    top: ((@iconSizeLarge*@lineHeight - @iconSizeLarge)/2);
   }
 }

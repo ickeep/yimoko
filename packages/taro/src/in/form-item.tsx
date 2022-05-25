@@ -1,3 +1,4 @@
+import { isVoidField } from '@formily/core';
 import { connect, mapProps, observer } from '@formily/react';
 import Taro from '@tarojs/taro';
 import classNames from 'classNames';
@@ -7,7 +8,7 @@ import { useEffect, useState, CSSProperties } from 'react';
 import { Icon } from '../out/icon';
 import { Text } from '../out/text';
 import { ViewProps, View } from '../out/view';
-import { Ilayout, ISize } from '../props';
+import { downSize, getColorByStatus, Ilayout, ISize, IStatus } from '../props';
 import { getCssSize } from '../tools/style';
 
 import { useFormInherit } from './form';
@@ -21,7 +22,8 @@ export interface FormItemInheritProps {
   labelAlign?: 'left' | 'right'
   labelWidth?: number | string
   size?: ISize
-  feedbackStatus?: string
+  feedbackText?: string
+  feedbackStatus?: IStatus
 }
 
 export interface FormItemProps extends ViewProps {
@@ -32,10 +34,9 @@ export interface FormItemProps extends ViewProps {
   extra?: React.ReactNode
 }
 
-// eslint-disable-next-line complexity
 export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (props) => {
   const {
-    required, for: lableID, className, children, extra, label, help, feedbackStatus = 'loading',
+    required, for: lableID, className, children, extra, label, help, feedbackStatus, feedbackText,
     helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign,
     ...args
   } = props;
@@ -55,18 +56,24 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
   }, [labelAlign, labelStyle, labelWidth]);
 
   return (
-    <View {...args} className={classNames('y-form-item', mergeProps.layout && `y-form-item-${mergeProps.layout}`, className)} >
-      <Label for={lableID} className={classNames('y-form-item-label', mergeProps.layout && `y-form-item-label-${mergeProps.layout}`)} style={lStyle}>
+    <View {...args} className={classNames('y-form-item', { [`y-form-item-${mergeProps.layout}`]: mergeProps.layout }, className)} >
+      <Label
+        for={lableID}
+        style={lStyle}
+        className={classNames('y-form-item-label', { [`y-form-item-label-${mergeProps.layout}`]: mergeProps.layout })}
+      >
         {required && <Text size={mergeProps.size} className="y-text-danger">*</Text>}
         <Text size={mergeProps.size}>{label}</Text>
         <Help help={help} helpIcon={mergeProps.helpIcon} size={mergeProps.size} />
         {mergeProps.colon && <Text size={mergeProps.size}>:</Text>}
       </Label>
       <View className='y-form-item-in'>
-        {children}  {extra && <View>{extra}</View>}
-        <Icon src={feedbackStatus} size={mergeProps.size} />
+        <View>
+          {children}  {extra && <View>{extra}</View>}
+        </View>
+        <Feedback feedbackStatus={feedbackStatus} feedbackText={feedbackText} size={mergeProps.size} />
       </View>
-    </View>
+    </View >
   );
 };
 
@@ -79,8 +86,22 @@ const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' 
     Taro.showToast({ title: help, icon: 'none' });
   };
   return (
-    <View style={{ display: 'inline-block' }} onClick={click}>
+    <View className='y-form-item-help' onClick={click}>
       {typeof helpIcon === 'string' ? <Icon size={size} src={helpIcon} /> : helpIcon}
+    </View>
+  );
+});
+
+const Feedback = observer((props: Pick<FormItemProps & FormItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
+  const { size, feedbackStatus, feedbackText } = props;
+  if (!feedbackStatus) {
+    return null;
+  }
+  const fSize = downSize(size);
+  return (
+    <View className='y-form-item-feedback'>
+      <Icon src={feedbackStatus} size={fSize} />
+      <Text size={fSize} color={getColorByStatus(feedbackStatus)}>{feedbackText}</Text>
     </View>
   );
 });
@@ -89,12 +110,36 @@ const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' 
 export const FormItem = connect(
   FormBaseItem,
   mapProps((props, field) => {
-    if (!field) return props;
+    const getLable = () => field.title || props.label;
+    if (isVoidField(field)) {
+      return { label: getLable() };
+    };
+    if (!field) {
+      return props;
+    };
+    const takeFeedbackStatus = () => {
+      if (field.validating) return 'loading';
+      return field.decoratorProps.feedbackStatus || field.validateStatus;
+    };
+    const takeMessage = () => {
+      if (field.validating) return '';
+      if (props.feedbackText) return props.feedbackText;
+      const { selfErrors, selfWarnings, selfSuccesses } = field;
+      const textArr = [selfErrors, selfWarnings, selfSuccesses].find(v => v && v.length > 0);
+      return !textArr
+        ? ''
+        : textArr.reduce((buf, text, index) => {
+          if (!text) return buf;
+          return index < textArr.length - 1
+            ? buf.concat([text, ', '])
+            : buf.concat([text]);
+        }, []);
+    };
     return {
-      label: props.label || field.title,
-      extra: props.extra || field.description,
-      // @ts-ignore
-      required: field.required,
+      label: getLable(),
+      feedbackStatus: takeFeedbackStatus(),
+      feedbackText: takeMessage(),
+      required: props.required ?? field.required,
     };
   }),
 );

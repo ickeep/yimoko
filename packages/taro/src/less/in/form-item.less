@@ -5,6 +5,7 @@
   border-bottom: 1px solid @borderColor;
   padding: @spaceBase;
   column-gap: @spaceBase;
+  flex-direction: row;
 
   &-vertical {
     flex-direction: column;
@@ -19,7 +20,18 @@
     }
   }
 
+  &-help {
+    display: inline;
+    position: relative;
+  }
+
   &-in {
     flex-grow: 1;
+    flex-direction: column;
+  }
+
+  &-feedback {
+    flex-direction: row;
+    margin-top: (@spaceBase/2);
   }
 }
