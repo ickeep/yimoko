@@ -2,10 +2,9 @@ import { observer } from '@formily/reactive-react';
 import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
 import classNames from 'classNames';
 
+import { useSize } from '../hooks/use-size';
 import { Text } from '../out/text';
 import { ISize } from '../props';
-
-import { useFormInherit } from './form';
 
 export interface InputProps extends TInputProps {
   size?: ISize
@@ -14,11 +13,8 @@ export interface InputProps extends TInputProps {
 }
 
 export const Input = observer((props: InputProps) => {
-  const formProps = useFormInherit();
   const { onChange, onInput, size, className, readOnly, ...args } = props;
-  const iSize = size ?? formProps.size;
-
-  console.log('isize', iSize);
+  const iSize = useSize(size);
 
   if (readOnly) {
     return <Text>{args.value}</Text>;

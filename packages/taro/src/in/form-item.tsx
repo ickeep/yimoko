@@ -59,8 +59,6 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
   }, [labelAlign, labelStyle, labelWidth]);
 
   const labelSize = layout !== 'vertical' ? upSize(mergeProps.size) : mergeProps.size;
-  console.log('labelSize', labelSize);
-
 
   return (
     <View {...args} className={classNames('y-form-item', { [`y-form-item-${mergeProps.layout}`]: mergeProps.layout }, className)} >

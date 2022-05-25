@@ -6,7 +6,6 @@ export type IStatus = 'info' | 'success' | 'error' | 'warning' | 'loading';
 
 export type IColor = 'default' | 'primary' | 'success' | 'warning' | 'danger';
 
-
 export const getColorByStatus = (status?: IStatus): IColor => {
   const colorMap: Record<IStatus, IColor> = {
     info: 'primary',
@@ -17,7 +16,6 @@ export const getColorByStatus = (status?: IStatus): IColor => {
   };
   return status ? colorMap[status] : 'default';
 };
-
 
 export const upSize = (size?: ISize): ISize => {
   if (!size) return 'large';

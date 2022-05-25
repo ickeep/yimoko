@@ -67,7 +67,7 @@ const IndexPage = observer(() => {
 
   return (
     <View className='index'>
-      <Form form={form} size="large">
+      <Form form={form}>
         <SchemaField schema={normalSchema} />
       </Form>
     </View>
