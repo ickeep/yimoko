@@ -1,5 +1,6 @@
 import { isVoidField } from '@formily/core';
-import { connect, mapProps, observer } from '@formily/react';
+import { connect, mapProps } from '@formily/react';
+import { observer } from '@formily/reactive-react';
 import Taro from '@tarojs/taro';
 import classNames from 'classNames';
 import { pickBy } from 'lodash-es';
@@ -7,6 +8,7 @@ import { useEffect, useState, CSSProperties } from 'react';
 
 import { Icon } from '../out/icon';
 import { Text } from '../out/text';
+import { Value } from '../out/value';
 import { ViewProps, View } from '../out/view';
 import { downSize, getColorByStatus, Ilayout, ISize, IStatus } from '../props';
 import { getCssSize } from '../tools/style';
@@ -62,15 +64,19 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
         style={lStyle}
         className={classNames('y-form-item-label', { [`y-form-item-label-${mergeProps.layout}`]: mergeProps.layout })}
       >
-        {required && <Text size={mergeProps.size} className="y-text-danger">*</Text>}
+        {required && <Text size={mergeProps.size} color="danger" >*</Text>}
         <Text size={mergeProps.size}>{label}</Text>
         <Help help={help} helpIcon={mergeProps.helpIcon} size={mergeProps.size} />
         {mergeProps.colon && <Text size={mergeProps.size}>:</Text>}
       </Label>
       <View className='y-form-item-in'>
-        <View>
-          {children}  {extra && <View>{extra}</View>}
-        </View>
+        {extra
+          ? <View className='y-form-item-extra-box'>
+            <View className='y-form-item-extra-in'>{children}</View>
+            <Value classname="y-form-item-extra" value={extra} />
+          </View>
+          : <View>{children}</View>
+        }
         <Feedback feedbackStatus={feedbackStatus} feedbackText={feedbackText} size={mergeProps.size} />
       </View>
     </View >
@@ -94,7 +100,7 @@ const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' 
 
 const Feedback = observer((props: Pick<FormItemProps & FormItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
   const { size, feedbackStatus, feedbackText } = props;
-  if (!feedbackStatus) {
+  if (!feedbackText) {
     return null;
   }
   const fSize = downSize(size);

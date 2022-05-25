@@ -20,5 +20,6 @@ export const Text = observer((props: TextProps) => {
     setCn(classNames('y-text', { [`y-text-${size}`]: size, [`y-text-${color}`]: color }, className));
   }, [className, size, color]);
 
+  // @ts-ignore
   return <TText {...args} className={cn}  >{value ?? children}</TText>;
 });

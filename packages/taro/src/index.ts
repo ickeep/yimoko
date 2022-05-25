@@ -7,3 +7,6 @@ export * from './in/input';
 export * from './store/lang';
 export * from './out/text';
 export * from './out/icon';
+export * from './out/view';
+export * from './out/value';
+

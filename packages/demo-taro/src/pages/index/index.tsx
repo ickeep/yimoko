@@ -1,8 +1,7 @@
 import { createForm } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { View } from '@tarojs/components';
-import { Form, FormItem, Input } from '@yimoko/taro';
+import { Form, FormItem, Input, View } from '@yimoko/taro';
 import { useState } from 'react';
 
 const normalSchema = {
