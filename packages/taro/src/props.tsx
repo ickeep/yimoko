@@ -1,4 +1,4 @@
-export type ISize = 'small' | 'medium' | 'large';
+export type ISize = 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
 
 export type Ilayout = 'vertical' | 'horizontal';
 
@@ -22,9 +22,11 @@ export const getColorByStatus = (status?: IStatus): IColor => {
 export const upSize = (size?: ISize): ISize => {
   if (!size) return 'large';
   const sizeMap: Record<ISize, ISize> = {
+    'extra-small': 'small',
     small: 'medium',
     medium: 'large',
-    large: 'large',
+    large: 'extra-large',
+    'extra-large': 'extra-large',
   };
   return sizeMap[size];
 };
@@ -32,9 +34,11 @@ export const upSize = (size?: ISize): ISize => {
 export const downSize = (size?: ISize): ISize => {
   if (!size) return 'small';
   const sizeMap: Record<ISize, ISize> = {
-    small: 'small',
+    'extra-small': 'extra-small',
+    small: 'extra-small',
     medium: 'small',
     large: 'medium',
+    'extra-large': 'large',
   };
   return sizeMap[size];
 };

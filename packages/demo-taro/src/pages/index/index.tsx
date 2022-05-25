@@ -37,6 +37,22 @@ const normalSchema = {
         placeholder: '请输入邮箱',
       },
     },
+    mail2: {
+      type: 'string',
+      title: '邮箱2',
+      required: true,
+      'x-decorator': 'FormItem',
+      'x-decorator-props': {
+        help: '邮箱地址',
+        colon: true,
+        layout: 'vertical',
+      },
+      'x-component': 'Input',
+      'x-component-props': {
+        placeholder: '请输入邮箱',
+        disabled: true,
+      },
+    },
   },
 };
 
@@ -51,7 +67,7 @@ const IndexPage = observer(() => {
 
   return (
     <View className='index'>
-      <Form form={form} layout="horizontal" >
+      <Form form={form} size="large">
         <SchemaField schema={normalSchema} />
       </Form>
     </View>

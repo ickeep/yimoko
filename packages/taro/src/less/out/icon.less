@@ -8,6 +8,12 @@
   padding: 0 2px;
   flex-shrink: 0;
 
+  &-extra-small {
+    width: @iconSizeExtraSmall;
+    height: @iconSizeExtraSmall;
+    top: ((@iconSizeExtraSmall*@lineHeight - @iconSizeExtraSmall)/2);
+  }
+
   &-small {
     width: @iconSizeSmall;
     height: @iconSizeSmall;
@@ -18,5 +24,11 @@
     width: @iconSizeLarge;
     height: @iconSizeLarge;
     top: ((@iconSizeLarge*@lineHeight - @iconSizeLarge)/2);
+  }
+
+  &-extra-large {
+    width: @iconSizeExtraLarge;
+    height: @iconSizeExtraLarge;
+    top: ((@iconSizeExtraLarge*@lineHeight - @iconSizeExtraLarge)/2);
   }
 }

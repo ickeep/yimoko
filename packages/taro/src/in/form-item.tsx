@@ -10,7 +10,7 @@ import { Icon } from '../out/icon';
 import { Text } from '../out/text';
 import { Value } from '../out/value';
 import { ViewProps, View } from '../out/view';
-import { downSize, getColorByStatus, Ilayout, ISize, IStatus } from '../props';
+import { downSize, getColorByStatus, Ilayout, ISize, IStatus, upSize } from '../props';
 import { getCssSize } from '../tools/style';
 
 import { useFormInherit } from './form';
@@ -36,6 +36,7 @@ export interface FormItemProps extends ViewProps {
   extra?: React.ReactNode
 }
 
+// eslint-disable-next-line complexity
 export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (props) => {
   const {
     required, for: lableID, className, children, extra, label, help, feedbackStatus, feedbackText,
@@ -57,6 +58,10 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
     setLStyle(style);
   }, [labelAlign, labelStyle, labelWidth]);
 
+  const labelSize = layout !== 'vertical' ? upSize(mergeProps.size) : mergeProps.size;
+  console.log('labelSize', labelSize);
+
+
   return (
     <View {...args} className={classNames('y-form-item', { [`y-form-item-${mergeProps.layout}`]: mergeProps.layout }, className)} >
       <Label
@@ -64,10 +69,10 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
         style={lStyle}
         className={classNames('y-form-item-label', { [`y-form-item-label-${mergeProps.layout}`]: mergeProps.layout })}
       >
-        {required && <Text size={mergeProps.size} color="danger" >*</Text>}
-        <Text size={mergeProps.size}>{label}</Text>
-        <Help help={help} helpIcon={mergeProps.helpIcon} size={mergeProps.size} />
-        {mergeProps.colon && <Text size={mergeProps.size}>:</Text>}
+        {required && <Text size={labelSize} color="danger" >*</Text>}
+        <Text size={labelSize}>{label}</Text>
+        <Help help={help} helpIcon={mergeProps.helpIcon} size={labelSize} />
+        {mergeProps.colon && <Text size={labelSize}>:</Text>}
       </Label>
       <View className='y-form-item-in'>
         {extra
