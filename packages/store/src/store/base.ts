@@ -22,7 +22,10 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   private lastFetchID = 0;
 
   constructor(config: IStoreConfig<V, R>) {
-    const { defaultValues, api, isFilterEmptyAtRun = true, dictConfig = [], fieldsConfig = {}, formFieldsConfig = [], apiExecutor } = config;
+    const {
+      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isRunNow,
+      dictConfig = [], fieldsConfig = {}, formFieldsConfig = [], apiExecutor,
+    } = config;
     this.defaultValues = defaultValues;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -58,6 +61,8 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       runAPIByValues: action,
       runAPIDataBySearch: action,
     });
+
+    isRunNow && this.runAPI();
   }
 
   getDefaultValues = () => cloneDeep(this.defaultValues);
@@ -144,12 +149,13 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 }
 
 export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
-  defaultValues: V,
+  defaultValues?: V,
   api: IStoreAPI<V, R>,
   dictConfig?: IStoreDictConfig<V>
   fieldsConfig?: IFieldsConfig;
   formFieldsConfig?: IFieldNames;
   isFilterEmptyAtRun?: boolean;
+  isRunNow?: boolean,
   apiExecutor?: IHTTPRequest;
 };
 
@@ -169,7 +175,7 @@ export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfi
 
 export type IAPIRequestConfig<V> = {
   url: string,
-  method?: IMethod,
+  method?: IMethod | string,
   params?: V | any,
   data?: V,
   [key: string]: any

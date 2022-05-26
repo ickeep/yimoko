@@ -9,6 +9,8 @@ export * from './in/input';
 export * from './in/label';
 
 export * from './out/icon';
+export * from './out/match-media';
+export * from './out/page';
 export * from './out/popover';
 export * from './out/text';
 export * from './out/value';
@@ -17,7 +19,4 @@ export * from './out/view';
 export * from './store/config';
 export * from './store/lang';
 
-
 export * from './tools/style';
-
-

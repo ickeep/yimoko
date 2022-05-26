@@ -19,7 +19,9 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: `dist/${process.env.TARO_ENV}`,
-  plugins: [],
+  plugins: [
+    '@tarojs/plugin-mock',
+  ],
   defineConstants: {
   },
   copy: {

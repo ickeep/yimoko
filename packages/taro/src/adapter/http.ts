@@ -44,6 +44,7 @@ export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<
   const resData = getResponseData(response);
   return {
     ...response,
+    ...resData,
     code: resData?.code ?? getCodeByStatus(statusCode),
     msg: resData?.msg ?? errMsg,
     data: resData.data ?? data,
@@ -69,6 +70,7 @@ export enum IHTTPCode {
 export interface IHTTPResponse<T = any> extends Partial<ITaroResponse<T>> {
   code: IHTTPCode | number
   msg: string,
+  [key: string]: any
 }
 
 export type IHTTPRequest = <R = any, P = any>(config: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
@@ -256,3 +258,4 @@ interface ITaroResponse<T = any> {
   /** cookies */
   cookies?: string[]
 }
+

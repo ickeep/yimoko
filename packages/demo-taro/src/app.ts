@@ -1,9 +1,17 @@
+import Taro from '@tarojs/taro';
 import { Component } from 'react';
 
 import './app.less';
 
 class App extends Component {
-  componentDidMount() { }
+  componentDidMount() {
+    Taro.addInterceptor((chain) => {
+      const { requestParams } = chain;
+      const { url } = requestParams;
+      requestParams.url = /^[\w]+:\/\//.test(url) ? url : `http://localhost:9527${url}`;
+      return chain.proceed(requestParams);
+    });
+  }
 
   componentDidShow() { }
 
