@@ -1,7 +1,7 @@
 import { createForm } from '@formily/core';
 import { createSchemaField, ISchema } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { Page, Form, FormItem, Icon, Input, useStore } from '@yimoko/taro';
+import { Page, Form, FormItem, Icon, Input, useStore, Button } from '@yimoko/taro';
 import { useState } from 'react';
 
 const IndexPage = observer(() => {
@@ -12,6 +12,7 @@ const IndexPage = observer(() => {
       FormItem,
       Input,
       Icon,
+      Button,
     },
   }));
 

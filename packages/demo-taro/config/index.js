@@ -4,6 +4,8 @@ const path = require('path');
 const config = {
   alias: {
     react: path.resolve(__dirname, '../../..', 'node_modules/react'),
+    '@taroify/core': path.resolve(__dirname, '../../..', 'node_modules/@taroify/core'),
+    '@taroify/icons': path.resolve(__dirname, '../../..', 'node_modules/@taroify/icons'),
     '@formily/core': path.resolve(__dirname, '../../..', 'node_modules/@formily/core'),
     '@formily/react': path.resolve(__dirname, '../../..', 'node_modules/@formily/react'),
     '@formily/reactive': path.resolve(__dirname, '../../..', 'node_modules/@formily/reactive'),
@@ -21,6 +23,26 @@ const config = {
   outputRoot: `dist/${process.env.TARO_ENV}`,
   plugins: [
     '@tarojs/plugin-mock',
+    // 'taro-plugin-compiler-optimization',
+    // [
+    //   'import',
+    //   {
+    //     libraryName: '@taroify/core',
+    //     libraryDirectory: '',
+    //     style: true,
+    //   },
+    //   '@taroify/core',
+    // ],
+    // [
+    //   'import',
+    //   {
+    //     libraryName: '@taroify/icons',
+    //     libraryDirectory: '',
+    //     camel2DashComponentName: false,
+    //     style: () => '@taroify/icons/style',
+    //   },
+    //   '@taroify/icons',
+    // ],
   ],
   defineConstants: {
   },
@@ -57,7 +79,6 @@ const config = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
-
     postcss: {
       autoprefixer: {
         enable: true,

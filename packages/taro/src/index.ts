@@ -8,6 +8,7 @@ export * from './in/form';
 export * from './in/input';
 export * from './in/label';
 
+export * from './out/button';
 export * from './out/icon';
 export * from './out/match-media';
 export * from './out/page';

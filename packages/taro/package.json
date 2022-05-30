@@ -22,6 +22,8 @@
     "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts"
   },
   "devDependencies": {
+    "@taroify/core": "0.0.29-alpha.9",
+    "@taroify/icons": "0.0.29-alpha.9",
     "@types/node": "^17.0.29",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -33,6 +35,9 @@
     "vite-plugin-dts": "^1.1.1"
   },
   "peerDependencies": {
+    "@taroify/core": "0.0.29-alpha.9",
+    "@taroify/icons": "0.0.29-alpha.9",
+    "@taroify/commerce": "0.0.29-alpha.9",
     "@formily/react": "^2.1.1",
     "@formily/reactive": "^2.1.1",
     "@formily/reactive-react": "^2.1.1",

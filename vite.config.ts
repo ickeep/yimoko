@@ -24,6 +24,8 @@ export default defineConfig({
         'moment',
         'axios',
         'antd',
+        '@taroify/core',
+        '@taroify/icons',
         '@formily/core',
         '@formily/reactive',
         '@formily/react',
