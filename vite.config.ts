@@ -24,6 +24,7 @@ export default defineConfig({
         'moment',
         'axios',
         'antd',
+        '@antmjs/vantui',
         '@taroify/core',
         '@taroify/icons',
         '@formily/core',

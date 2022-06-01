@@ -8,7 +8,7 @@ class App extends Component {
     Taro.addInterceptor((chain) => {
       const { requestParams } = chain;
       const { url } = requestParams;
-      requestParams.url = /^[\w]+:\/\//.test(url) ? url : `http://localhost:9527${url}`;
+      requestParams.url = /^[\w]+:\/\//.test(url) ? url : `http://127.0.0.1:9527${url}`;
       return chain.proceed(requestParams);
     });
   }

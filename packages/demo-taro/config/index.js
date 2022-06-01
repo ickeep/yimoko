@@ -4,6 +4,8 @@ const path = require('path');
 const config = {
   alias: {
     react: path.resolve(__dirname, '../../..', 'node_modules/react'),
+    '@tarojs/taro': path.resolve(__dirname, '../../..', 'node_modules/@tarojs/taro'),
+    '@antmjs/vantui': path.resolve(__dirname, '../../..', 'node_modules/@antmjs/vantui'),
     '@taroify/core': path.resolve(__dirname, '../../..', 'node_modules/@taroify/core'),
     '@taroify/icons': path.resolve(__dirname, '../../..', 'node_modules/@taroify/icons'),
     '@formily/core': path.resolve(__dirname, '../../..', 'node_modules/@formily/core'),

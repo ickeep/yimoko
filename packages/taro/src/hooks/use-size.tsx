@@ -1,7 +1,7 @@
-import { useFormInherit } from '../in/form';
 import { ISize } from '../props';
+import { useSchemaInherit } from '../schema/context';
 
 export const useSize = (size?: ISize) => {
-  const { size: formSize } = useFormInherit();
-  return size ?? formSize;
+  const { size: boxSize } = useSchemaInherit();
+  return size ?? boxSize;
 };

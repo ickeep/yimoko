@@ -17,6 +17,10 @@ export * from './out/text';
 export * from './out/value';
 export * from './out/view';
 
+export * from './schema/box';
+export * from './schema/context';
+export * from './schema/page';
+
 export * from './store/config';
 export * from './store/lang';
 

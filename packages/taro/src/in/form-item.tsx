@@ -10,23 +10,11 @@ import { Icon } from '../out/icon';
 import { Text } from '../out/text';
 import { Value } from '../out/value';
 import { ViewProps, View } from '../out/view';
-import { downSize, getColorByStatus, Ilayout, ISize, IStatus, upSize } from '../props';
+import { downSize, getColorByStatus, IStatus, upSize } from '../props';
+import { SchemaItemInheritProps, useSchemaInherit } from '../schema/context';
 import { getCssSize } from '../tools/style';
 
-import { useFormInherit } from './form';
 import { Label } from './label';
-
-export interface FormItemInheritProps {
-  colon?: boolean
-  helpIcon?: React.ReactNode
-  layout?: Ilayout
-  labelStyle?: CSSProperties
-  labelAlign?: 'left' | 'right'
-  labelWidth?: number | string
-  size?: ISize
-  feedbackText?: string
-  feedbackStatus?: IStatus
-}
 
 export interface FormItemProps extends ViewProps {
   for?: string
@@ -34,18 +22,20 @@ export interface FormItemProps extends ViewProps {
   label?: React.ReactNode
   help?: string
   extra?: React.ReactNode
+  feedbackText?: string
+  feedbackStatus?: IStatus
 }
 
 // eslint-disable-next-line complexity
-export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (props) => {
+export const FormBaseItem: React.FC<FormItemProps & SchemaItemInheritProps> = (props) => {
   const {
-    required, for: lableID, className, children, extra, label, help, feedbackStatus, feedbackText,
-    helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign,
+    required, for: lableID, className, children, extra, label, help,
+    helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign, feedbackStatus, feedbackText,
     ...args
   } = props;
   const [lStyle, setLStyle] = useState<CSSProperties>({});
-  const formInherit = useFormInherit();
-  const [mergeProps, setMergePropss] = useState<FormItemInheritProps>({});
+  const formInherit = useSchemaInherit();
+  const [mergeProps, setMergePropss] = useState<SchemaItemInheritProps>({});
 
   useEffect(() => {
     const itemProps = pickBy({ colon, helpIcon, layout, labelStyle, labelAlign, labelWidth, size }, v => v !== undefined);
@@ -86,7 +76,7 @@ export const FormBaseItem: React.FC<FormItemProps & FormItemInheritProps> = (pro
   );
 };
 
-const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' | 'helpIcon' | 'size'>) => {
+const Help = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'help' | 'helpIcon' | 'size'>) => {
   const { size, help, helpIcon = 'help' } = props;
   if (!help) {
     return null;
@@ -101,7 +91,7 @@ const Help = observer((props: Pick<FormItemProps & FormItemInheritProps, 'help' 
   );
 });
 
-const Feedback = observer((props: Pick<FormItemProps & FormItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
+const Feedback = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
   const { size, feedbackStatus, feedbackText } = props;
   if (!feedbackText) {
     return null;

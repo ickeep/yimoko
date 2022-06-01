@@ -11,7 +11,7 @@ export const httpRequest: IHTTPRequest = async (config) => {
       return handleResponse({
         ...args,
         statusCode: IHTTPCode.networkError,
-        errMsg: e?.mesaage ?? '网络出错',
+        errMsg: e?.errMsg ?? '网络出错',
       });
     }
     return handleResponse(response);

@@ -1,26 +1,25 @@
-import { createForm } from '@formily/core';
-import { createSchemaField, ISchema } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { Page, Form, FormItem, Icon, Input, useStore, Button } from '@yimoko/taro';
-import { useState } from 'react';
+import { Page, FormItem, Icon, Input, useStore, Button, SchemaPage, judgeIsSuccess, SchemaPageProps } from '@yimoko/taro';
+
+const components = {
+  FormItem,
+  Input,
+  Icon,
+  Button,
+};
 
 const IndexPage = observer(() => {
-  const { loading, response } = useStore<{}, ISchema>({ api: { url: '/api/page/detail' }, isRunNow: true });
-  const [form] = useState(() => createForm({ validateFirst: true, initialValues: { username: 'user', icon: 'success' } }));
-  const [SchemaField] = useState(() => createSchemaField({
-    components: {
-      FormItem,
-      Input,
-      Icon,
-      Button,
-    },
-  }));
+  const { loading, response } = useStore<{}, SchemaPageProps>({ api: { url: '/api/page/detail' }, isRunNow: true });
+  console.log(loading, response);
 
   return (
     <Page loading={loading} data={response} className='index'>
-      <Form form={form}>
-        <SchemaField schema={response.data} />
-      </Form>
+      {judgeIsSuccess(response) && <SchemaPage
+        options={response.data?.options}
+        components={components}
+        schema={response.data?.schema}
+        type="form"
+      />}
     </Page>
   );
 });
