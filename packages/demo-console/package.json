@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "mock": "mocker ./mock",
     "build": "SKIP_PREFLIGHT_CHECK=true craco build",
     "start": "SKIP_PREFLIGHT_CHECK=true PORT=8083 craco start",
     "test": "SKIP_PREFLIGHT_CHECK=true craco test"
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@craco/craco": "^6.4.3",
     "@types/lodash-es": "^4.17.6",
+    "mocker-api": "^2.9.5",
     "react-scripts": "^5.0.1"
   }
 }
