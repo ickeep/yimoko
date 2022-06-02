@@ -5,6 +5,7 @@ const config = {
   alias: {
     react: path.resolve(__dirname, '../../..', 'node_modules/react'),
     '@tarojs/taro': path.resolve(__dirname, '../../..', 'node_modules/@tarojs/taro'),
+    '@tarojs/components': path.resolve(__dirname, '../../..', 'node_modules/@tarojs/components'),
     '@antmjs/vantui': path.resolve(__dirname, '../../..', 'node_modules/@antmjs/vantui'),
     '@taroify/core': path.resolve(__dirname, '../../..', 'node_modules/@taroify/core'),
     '@taroify/icons': path.resolve(__dirname, '../../..', 'node_modules/@taroify/icons'),

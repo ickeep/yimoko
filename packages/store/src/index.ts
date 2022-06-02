@@ -4,3 +4,5 @@ export * from './store/theme';
 export * from './store/config';
 export * from './tool';
 export * from './field';
+
+export * from './data/options';

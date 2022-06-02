@@ -95,6 +95,5 @@ const useOptions = (options?: IOptions, input?: string, keys?: IKeys, api?: IAPI
     setData(transformOptions(options, keys));
   }, [keys, options]);
 
-
   return [data, loading];
 };

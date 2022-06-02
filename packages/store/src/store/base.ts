@@ -1,6 +1,8 @@
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
+import { IOptions } from '../data/options';
+
 import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from '../field';
 import { judgeIsEmpty } from '../tool';
 
@@ -198,8 +200,6 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
-
-export type IOptions = Array<{ label: string, value: any, [key: string]: any }>;
 
 export interface IHTTPResponse<R = any, P = any> {
   code: number
