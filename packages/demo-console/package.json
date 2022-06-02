@@ -20,6 +20,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://localhost:3721",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@formily/antd": "^2.1.1",

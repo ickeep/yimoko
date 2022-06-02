@@ -1,5 +1,5 @@
 import { observer } from '@formily/reactive-react';
-import { useStore } from '@yimoko/web';
+import { useStore, Select } from '@yimoko/web';
 import { Button } from 'antd';
 
 export const App = observer(() => {
@@ -16,6 +16,7 @@ export const App = observer(() => {
         setValues({ name: `${Math.random()}`, id: values.id += 1 });
       }
       } >{values.name}</Button>
+      <Select style={{ width: 220 }} api={{ isSearch: true, isEmptyRequest: true, url: '/api/data/options' }} />
     </div>
   );
 });

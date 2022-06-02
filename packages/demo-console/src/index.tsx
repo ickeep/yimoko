@@ -4,6 +4,7 @@ import { App } from './app';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+// http.defaults.baseURL = 'http://localhost:3721';
 root.render((
   <App />
 ));
