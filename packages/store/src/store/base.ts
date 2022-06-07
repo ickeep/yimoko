@@ -1,6 +1,8 @@
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
+import { IAPIRequestConfig, IHTTPResponse } from '../data/api';
+
 import { IOptions } from '../data/options';
 
 import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from '../field';
@@ -175,14 +177,6 @@ export type IStoreAPI<V, R> = IAPIRequestConfig<V> | ((params: V) => Promise<ISt
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 
-export type IAPIRequestConfig<V> = {
-  url: string,
-  method?: IMethod | string,
-  params?: V | any,
-  data?: V,
-  [key: string]: any
-};
-
 export type IDictConfigItem<V extends object = IStoreValues> = {
   field: IField<V>,
 } & ({
@@ -201,17 +195,6 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
 
-export interface IHTTPResponse<R = any, P = any> {
-  code: number
-  msg: string,
-  data: R
-  config?: IAPIRequestConfig<P>
-  status?: number;
-  statusText?: string;
-  headers?: Record<string, any>;
-  [key: string]: any
-}
 
 export type IHTTPRequest<R = any, P = any> = (config: IAPIRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
 
-export type IMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | string;

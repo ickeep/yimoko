@@ -16,7 +16,7 @@ export const App = observer(() => {
         setValues({ name: `${Math.random()}`, id: values.id += 1 });
       }
       } >{values.name}</Button>
-      <Select style={{ width: 220 }} api={{ isSearch: true, isEmptyRequest: true, url: '/api/data/options' }} />
+      <Select style={{ width: 220 }} value={values.name} apiType="search" api={{ url: '/api/data/options' }} />
     </div>
   );
 });

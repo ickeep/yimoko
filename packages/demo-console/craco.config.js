@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 
-const  externals = {
+const externals = {
   react: 'React',
   'react-is': 'ReactIs',
   'react-dom': 'ReactDOM',
@@ -27,6 +27,8 @@ module.exports = {
     alias: {
       '@/src': path.resolve(__dirname, './src'),
       '@/tests': path.resolve(__dirname, './tests'),
+      // 解决 Context 值指向不一致的问题
+      '@yimoko/store': path.resolve(__dirname, '../store'),
     },
 
     configure: (webpackConfig) => {

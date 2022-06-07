@@ -1,26 +1,26 @@
-import { transformOptions } from './options';
+import { arrToOptions } from './options';
 
-describe('transformOptions', () => {
+describe('arrToOptions', () => {
   test('null', () => {
-    expect(transformOptions()).toEqual([]);
+    expect(arrToOptions()).toEqual([]);
   });
 
   test('no keys', () => {
     const options = [{ label: '1', value: '1' }, { label: '2', value: '2' }];
-    expect(transformOptions(options)).toEqual(options);
+    expect(arrToOptions(options)).toEqual(options);
   });
 
   test('no options', () => {
     const keys = { label: 'label', value: 'value' };
-    expect(transformOptions(undefined, keys)).toEqual([]);
+    expect(arrToOptions(undefined, keys)).toEqual([]);
   });
 
   test('keys', () => {
-    const options = [{ label1: '1', value1: '1' }, { label1: '2', value1: '2' }];
+    const options = [{ label1: '1', value1: '1', x: 'x1' }, { label1: '2', value1: '2', x: 'x2' }];
     const keys = { label: 'label1', value: 'value1' };
-    expect(transformOptions(options, keys)).toEqual([
-      { label1: '1', value1: '1', label: '1', value: '1' },
-      { label1: '2', value1: '2', label: '2', value: '2' },
+    expect(arrToOptions(options, keys)).toEqual([
+      { label: '1', value: '1', x: 'x1' },
+      { label: '2', value: '2', x: 'x2' },
     ]);
   });
 });

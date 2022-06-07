@@ -1,78 +1,39 @@
 import { Select as TSelect } from '@formily/antd';
 import { observer } from '@formily/reactive-react';
-import { IOptions, IKeys, judgeIsEmpty, transformOptions } from '@yimoko/store';
-import { SelectProps as TSelectProps } from 'antd';
-import { AxiosRequestConfig } from 'axios';
-import { useState, useCallback, useEffect } from 'react';
-
-import { httpRequest, judgeIsSuccess } from '../http';
+import { IOptions, IKeys, IOptionsAPISearchConfig, useAPIOptions, useAPISearchOptions, IOptionsAPI } from '@yimoko/store';
+import { Spin, SelectProps as TSelectProps } from 'antd';
+import { useState } from 'react';
 
 export type SelectProps = TSelectProps & IOptionsProps;
 
 export const Select = observer((props: SelectProps) => {
-  const { keys, options, api, ...args } = props;
+  const { splitter, keys, options, api, apiType, searchConfig, value, ...args } = props;
   const [searchVal, setSearchVal] = useState('');
-  const [data, loading] = useOptions(options, searchVal, keys, api);
+  const [data, loading] = apiType === 'search'
+    ? useAPISearchOptions(searchVal, value, options, api, searchConfig, keys, splitter)
+    : useAPIOptions(options, api, keys, splitter);
+
   return (<TSelect
-    allowClear
-    optionFilterProp="label"
-    showSearch={api?.isSearch}
+    allowClear={!loading}
+    showSearch={apiType === 'search'}
+    filterOption={apiType !== 'search'}
+    notFoundContent={loading ? <Spin size='small' /> : null}
     loading={loading}
     options={data}
     {...args}
     searchValue={searchVal}
-    onSearch={setSearchVal}
-    onChange={(e) => {
-      console.log('onChange', e);
-    }}
+    onSearch={apiType === 'search' ? setSearchVal : undefined}
+    value={value}
   />);
 });
 
 
-export type IAPI = AxiosRequestConfig & { paramKey?: string, isSearch?: boolean, isEmptyRequest?: boolean };
 export interface IOptionsProps<T extends string = 'label' | 'value'> {
+  splitter?: string
   keys?: IKeys<T>
   options?: IOptions<T>
-  api?: IAPI
+  api?: IOptionsAPI
+  // 搜索相关参数
+  apiType: 'search' | 'data'
+  searchConfig?: IOptionsAPISearchConfig<T>
 }
-
-
-const useOptions = (options?: IOptions, input?: string, keys?: IKeys, api?: IAPI): [IOptions, boolean] => {
-  const [data, setData] = useState<IOptions>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // eslint-disable-next-line complexity
-  const getAPIData = useCallback(async (value?: string) => {
-    if (api) {
-      const { paramKey = 'name', isSearch = false, isEmptyRequest = false, data: apiData = {}, ...args } = api;
-      if (isSearch) {
-        if (!isEmptyRequest && judgeIsEmpty(value)) {
-          return [];
-        }
-        apiData[paramKey] = value;
-      }
-      setLoading(true);
-      const res = await httpRequest({ ...args, params: apiData, data: apiData });
-      setLoading(false);
-      if (judgeIsSuccess(res)) {
-        return transformOptions(res.data, keys);
-      }
-      return null;
-    }
-    return null;
-  }, [api, keys]);
-
-  useEffect(() => {
-    !api?.isSearch && getAPIData().then(data => data && setData(data));
-  }, [api, getAPIData]);
-
-  useEffect(() => {
-    api?.isSearch && getAPIData(input).then(data => data && setData(data));
-  }, [input, getAPIData, api]);
-
-  useEffect(() => {
-    setData(transformOptions(options, keys));
-  }, [keys, options]);
-
-  return [data, loading];
-};
