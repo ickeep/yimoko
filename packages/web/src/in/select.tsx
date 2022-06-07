@@ -13,18 +13,20 @@ export const Select = observer((props: SelectProps) => {
     ? useAPISearchOptions(searchVal, value, options, api, searchConfig, keys, splitter)
     : useAPIOptions(options, api, keys, splitter);
 
-  return (<TSelect
-    allowClear={!loading}
-    showSearch={apiType === 'search'}
-    filterOption={apiType !== 'search'}
-    notFoundContent={loading ? <Spin size='small' /> : null}
-    loading={loading}
-    options={data}
-    {...args}
-    searchValue={searchVal}
-    onSearch={apiType === 'search' ? setSearchVal : undefined}
-    value={value}
-  />);
+  return (
+    <TSelect
+      allowClear={!loading}
+      showSearch={apiType === 'search'}
+      filterOption={apiType !== 'search'}
+      notFoundContent={loading ? <Spin size='small' /> : null}
+      loading={loading}
+      options={data}
+      {...args}
+      searchValue={searchVal}
+      onSearch={apiType === 'search' ? setSearchVal : undefined}
+      value={value}
+    />
+  );
 });
 
 
@@ -34,6 +36,6 @@ export interface IOptionsProps<T extends string = 'label' | 'value'> {
   options?: IOptions<T>
   api?: IOptionsAPI
   // 搜索相关参数
-  apiType: 'search' | 'data'
+  apiType?: 'search' | 'data'
   searchConfig?: IOptionsAPISearchConfig<T>
 }

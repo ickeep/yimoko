@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
 
-import { IAPIExecutor, useAPIExecutor } from '../context/api';
-import { IAPIRequestConfig, judgeIsSuccess } from '../data/api';
+import { useAPIExecutor } from '../context/api';
+import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../data/api';
 import { IKeys, IOptions, dataToOptions } from '../data/options';
 
-export type IOptionsAPI = IAPIExecutor | IAPIRequestConfig;
+export type IOptionsAPI = IAPIRequestConfig | ((config?: IAPIRequestConfig) => Promise<IHTTPResponse>);
 
 export const useAPIOptions = <T extends string = 'label' | 'value'>(
   data?: any, api?: IOptionsAPI, keys?: IKeys<T>, splitter?: string,

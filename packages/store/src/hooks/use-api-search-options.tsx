@@ -10,7 +10,7 @@ import { IOptionsAPI } from './use-api-options';
 export interface IOptionsAPISearchConfig<T extends string = 'label' | 'value'> {
   request?: IKeys
   keys?: IKeys<T>
-  labelAPI: IOptionsAPI
+  labelAPI?: IOptionsAPI | true
   wait?: number
 }
 
@@ -38,11 +38,19 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
     const params = { [getKey()]: values };
     const { labelAPI } = searchConfig;
 
+    if (labelAPI === true) {
+      if (typeof api === 'function') {
+        return api(params);
+      }
+      return apiExecutor({ ...api, params, data: params });
+    }
+
     if (typeof labelAPI === 'function') {
       return labelAPI(params);
     }
+
     return apiExecutor({ ...labelAPI, params, data: params });
-  }), [searchConfig, keys, apiExecutor]);
+  }), [searchConfig, apiExecutor, keys?.value, api]);
 
   // 时序、防抖 控制
   const fetcher = useMemo(() => (fn?: (value: any) => Promise<IHTTPResponse>) => {
