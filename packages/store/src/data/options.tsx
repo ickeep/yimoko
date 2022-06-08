@@ -7,13 +7,16 @@ export type IOptions<T extends string = 'label' | 'value'> = Record<T | string, 
 
 export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;
 
+export const DF_KEYS: IKeys = { label: 'label', value: 'value' };
+
 export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOptions<T>, keys?: IKeys<T>) => {
   if (!keys) {
     return options ?? [];
   }
   const optionsKeys = Object.keys(keys) as T[];
+  const optionsValues = Object.values(keys);
   return options?.map((item) => {
-    const newItem: Record<string, string> = omit(item, optionsKeys);
+    const newItem: Record<string, string> = omit(item, optionsValues);
     optionsKeys.forEach(key => newItem[key] = item[keys[key]]);
     return newItem;
   }) ?? [];

@@ -10,7 +10,6 @@ export const Select = observer((props: SelectProps) => {
   const { splitter, keys, options, api, apiType, searchConfig, value, ...args } = props;
   const [searchVal, setSearchVal] = useState('');
 
-
   const [data, loading] = apiType === 'search'
     ? useAPISearchOptions(searchVal, value, options, api, searchConfig, keys, splitter)
     : useAPIOptions(options, api, keys, splitter);

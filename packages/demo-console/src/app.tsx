@@ -1,8 +1,8 @@
 import { observer } from '@formily/reactive-react';
-import { useStore, Select } from '@yimoko/web';
+import { useStore, Select, httpGet } from '@yimoko/web';
 import { Button } from 'antd';
 
-const api = { url: '/api/data/options' };
+const api = () => httpGet('/api/data/options');
 
 export const App = observer(() => {
   const store = useStore({ defaultValues: { name: 'name', id: 0 }, api: { url: '' } });
@@ -19,7 +19,10 @@ export const App = observer(() => {
       }
       } >{values.name}</Button>
 
-      <Select style={{ width: 220 }} onChange={v => setValues({ name: v })} apiType="data" value={values.name} api={api} />
+
+      <Select style={{ width: 220 }}
+        keys={{ value: 'value', lable: 'lable' }}
+        onChange={v => setValues({ name: v })} apiType="data" value={values.name} api={api} />
     </div>
   );
 });

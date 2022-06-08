@@ -7,6 +7,7 @@ import { IOptions } from '../data/options';
 
 import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from '../field';
 import { judgeIsEmpty } from '../tool';
+import { changeNumInRange } from '../tools/num';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = true;
@@ -124,7 +125,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   runAPI = async () => {
     this.setLoading(true);
-    this.lastFetchID += 1;
+    this.lastFetchID = changeNumInRange(this.lastFetchID);;
     const fetchID = this.lastFetchID;
     const { api } = this;
     const params = this.getAPIParams();

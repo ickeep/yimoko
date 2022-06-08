@@ -1,8 +1,10 @@
-import { useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
+import { useState, useMemo, Dispatch, SetStateAction } from 'react';
 
 import { useAPIExecutor } from '../context/api';
 import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../data/api';
 import { IKeys, IOptions, dataToOptions } from '../data/options';
+
+import { useDeepEffect } from './use-deep-effect';
 
 export type IOptionsAPI = IAPIRequestConfig | ((config?: IAPIRequestConfig) => Promise<IHTTPResponse>);
 
@@ -21,11 +23,11 @@ export const useAPIOptions = <T extends string = 'label' | 'value'>(
     return typeof api === 'function' ? api : () => apiExecutor(api);
   }, [apiExecutor, api]);
 
-  useEffect(() => {
+  useDeepEffect(() => {
     data && setOptions(dataToOptions(data, keys, splitter));
   }, [data, keys, splitter]);
 
-  useEffect(() => {
+  useDeepEffect(() => {
     setLoading(true);
     apiFn?.().then((res) => {
       judgeIsSuccess(res) && setOptions(dataToOptions(res.data, keys, splitter));
