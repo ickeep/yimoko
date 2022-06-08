@@ -7,30 +7,27 @@ import { useMemo, useState } from 'react';
 export type SelectProps = TSelectProps & IOptionsProps;
 
 export const Select = observer((props: SelectProps) => {
-  const { splitter, keys, options, api, apiType, searchConfig, value, ...args } = props;
+  const { splitter, keys, options, api, labelAPI, apiType, searchConfig, value, ...args } = props;
   const [searchVal, setSearchVal] = useState('');
 
   const [data, loading] = apiType === 'search'
-    ? useAPISearchOptions(searchVal, value, options, api, searchConfig, keys, splitter)
+    ? useAPISearchOptions(searchVal, value, options, api, labelAPI, searchConfig, keys, splitter)
     : useAPIOptions(options, api, keys, splitter);
 
-  const searchProps = useMemo(() => {
-    const isApiSearch = apiType === 'search';
-    if (isApiSearch) {
-      return {
-        showSearch: true,
-        filterOption: false,
-        searchValue: searchVal,
-        onSearch: setSearchVal,
-      };
+  const searchProps = useMemo(() => (apiType !== 'search'
+    ? {}
+    : {
+      showSearch: true,
+      filterOption: false,
+      searchValue: searchVal,
+      onSearch: setSearchVal,
+      notFoundContent: loading ? <Spin size='small' /> : null,
     }
-    return {};
-  }, [apiType, searchVal]);
+  ), [apiType, loading, searchVal]);
 
   return (
     <TSelect
       allowClear={!loading}
-      notFoundContent={loading ? <Spin size='small' /> : null}
       loading={loading}
       options={data}
       {...searchProps}
@@ -47,6 +44,7 @@ export interface IOptionsProps<T extends string = 'label' | 'value'> {
   options?: IOptions<T>
   api?: IOptionsAPI
   // 搜索相关参数
+  labelAPI?: IOptionsAPI | boolean,
   apiType?: 'search' | 'data'
   searchConfig?: IOptionsAPISearchConfig<T>
 }
