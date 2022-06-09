@@ -5,9 +5,10 @@ import { IAPIRequestConfig, IHTTPResponse } from '../data/api';
 
 import { IOptions } from '../data/options';
 
-import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from '../field';
-import { judgeIsEmpty } from '../tool';
 import { changeNumInRange } from '../tools/num';
+import { judgeIsEmpty } from '../tools/tool';
+
+import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from './utils/field';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = true;

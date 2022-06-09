@@ -1,6 +1,6 @@
 import { ISchema } from '@formily/react';
 
-import { JSONParse, JSONStringify } from './tool';
+import { JSONParse, JSONStringify } from '../../tools/tool';
 
 export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((field) => {
   if (typeof field === 'string') {

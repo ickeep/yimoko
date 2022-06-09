@@ -1,6 +1,6 @@
-import { IFieldNames } from '../field';
-
 import { BaseStore, IHTTPRequest } from './base';
+import { IFieldNames } from './utils/field';
+
 
 describe('BaseStore', () => {
   const defaultValues = { id: 1, name: '', type: 't1' };
