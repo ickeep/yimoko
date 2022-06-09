@@ -6,7 +6,8 @@
     "mock": "mocker ./mock",
     "build": "SKIP_PREFLIGHT_CHECK=true craco build",
     "start": "SKIP_PREFLIGHT_CHECK=true PORT=8083 craco start",
-    "test": "SKIP_PREFLIGHT_CHECK=true craco test"
+    "test": "SKIP_PREFLIGHT_CHECK=true craco test",
+    "npm-to-cos": "ts-node ./devops/npm-to-cos.ts"
   },
   "browserslist": {
     "production": [
@@ -56,6 +57,8 @@
     "@craco/craco": "^6.4.3",
     "@types/lodash-es": "^4.17.6",
     "mocker-api": "^2.9.5",
+    "cos-nodejs-sdk-v5": "^2.11.9",
+    "ts-node": "^10.8.1",
     "react-scripts": "^5.0.1"
   }
 }

@@ -19,55 +19,17 @@
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Yimoko</title>
-  <link href="https://cdn.jsdelivr.net/npm/antd@4.20.1/dist/antd.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@formily/antd@2.1.1/dist/antd.css" rel="stylesheet">
+  <% htmlWebpackPlugin.options.cdnCSS.forEach(function(css){ %>
+    <link href="<%= css %>" rel="stylesheet">
+    <% }) %>
 </head>
 
 <body>
   <noscript>您需要启用JavaScript才能运行此应用。</noscript>
   <div id="root"></div>
-  <% if (process.env.NODE_ENV==='development' ) { %>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react@18.1.0/umd/react.development.min.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-is@18.1.0/umd/react-is.development.min.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-dom@18.1.0/umd/react-dom.development.min.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.development.min.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.3/min/moment.min.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.3/locale/zh-cn.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/antd@4.20.1/dist/antd.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/path@2.1.1/dist/formily.path.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/shared@2.1.1/dist/formily.shared.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/reactive@2.1.1/dist/formily.reactive.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/validator@2.1.1/dist/formily.validator.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/core@2.1.1/dist/formily.core.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/reactive-react@2.1.1/dist/formily.reactive-react.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/react@2.1.1/dist/formily.react.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/json-schema@2.1.1/dist/formily.json-schema.umd.development.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@ant-design/icons@4.7.0/dist/index.umd.js"></script>
-    <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/antd@2.1.1/dist/formily.antd.umd.development.js"></script>
-
-    <% }else{%>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react@18.1.0/umd/react.production.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-is@18.1.0/umd/react-is.production.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-dom@18.1.0/umd/react-dom.production.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.production.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.3/min/moment.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.3/locale/zh-cn.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/antd@4.20.1/dist/antd.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.min.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/path@2.1.1/dist/formily.path.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/shared@2.1.1/dist/formily.shared.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/reactive@2.1.1/dist/formily.reactive.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/validator@2.1.1/dist/formily.validator.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/core@2.1.1/dist/formily.core.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/reactive-react@2.1.1/dist/formily.reactive-react.umd.deveproductionlopment.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/react@2.1.1/dist/formily.react.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/json-schema@2.1.1/dist/formily.json-schema.umd.production.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@ant-design/icons@4.7.0/dist/index.umd.js"></script>
-      <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/@formily/antd@2.1.1/dist/formily.antd.umd.production.js"></script>
-      <% }%>
+  <% htmlWebpackPlugin.options.cdnJS.forEach(function(js){ %>
+    <script crossorigin type="text/javascript" src="<%= js %>"></script>
+    <% }) %>
 </body>
 
 </html>

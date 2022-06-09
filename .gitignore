@@ -26,3 +26,4 @@ dist-ssr
 coverage
 package-lock.json
 
+*.local.*
