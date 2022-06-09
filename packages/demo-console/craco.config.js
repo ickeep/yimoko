@@ -7,6 +7,8 @@ const externals = {
   react: 'React',
   'react-is': 'ReactIs',
   'react-dom': 'ReactDOM',
+  history: 'HistoryLibrary',
+  'react-router': 'ReactRouter',
   'react-router-dom': 'ReactRouterDOM',
   antd: 'antd',
   '@ant-design/icons': 'icons',
@@ -43,6 +45,12 @@ const cdn = {
     'https://cdn.jsdelivr.net/npm/react@18.1.0/umd/react.development.min.js',
     'https://cdn.jsdelivr.net/npm/react-is@18.1.0/umd/react-is.development.min.js',
     'https://cdn.jsdelivr.net/npm/react-dom@18.1.0/umd/react-dom.development.min.js',
+
+    'https://cdn.jsdelivr.net/npm/history@5.3.0/umd/history.development.js',
+    'https://cdn.jsdelivr.net/npm/history@5.3.0/umd/history.development.js.map',
+
+    'https://cdn.jsdelivr.net/npm/react-router@6.3.0/umd/react-router.development.js',
+    'https://cdn.jsdelivr.net/npm/react-router@6.3.0/umd/react-router.development.js.map',
 
     'https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.development.js',
     'https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.development.js.map',
@@ -94,6 +102,12 @@ const cdn = {
     'https://cdn.jsdelivr.net/npm/react@18.1.0/umd/react.production.min.js',
     'https://cdn.jsdelivr.net/npm/react-is@18.1.0/umd/react-is.production.min.js',
     'https://cdn.jsdelivr.net/npm/react-dom@18.1.0/umd/react-dom.production.min.js',
+
+    'https://cdn.jsdelivr.net/npm/history@5.3.0/umd/history.production.min.js',
+    'https://cdn.jsdelivr.net/npm/history@5.3.0/umd/history.production.min.js.map',
+
+    'https://cdn.jsdelivr.net/npm/react-router@6.3.0/umd/react-router.production.min.js',
+    'https://cdn.jsdelivr.net/npm/react-router@6.3.0/umd/react-router.production.min.js.map',
 
     'https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.production.min.js',
     'https://cdn.jsdelivr.net/npm/react-router-dom@6.3.0/umd/react-router-dom.production.min.js.map',

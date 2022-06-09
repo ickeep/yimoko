@@ -1,26 +1,15 @@
-import { observer } from '@formily/reactive-react';
-import { useStore, Select } from '@yimoko/web';
-import { Button } from 'antd';
+import { APIExecutorProvider } from '@yimoko/store';
+import { httpRequest } from '@yimoko/web';
+import { BrowserRouter } from 'react-router-dom';
 
-export const App = observer(() => {
-  const store = useStore({ defaultValues: { name: 'name', id: 0 }, api: { url: '' } });
-  const { dict, values, setValues, setDict, runAPI } = store;
+import { Routes } from './routes';
 
-  return (
-    <div className="App">
-      <h3>{values.id}</h3>
-      <p>dict {dict.name}</p>
-      <Button onClick={() => {
-        runAPI();
-        setDict({ name: `${Math.random()}` });
-        setValues({ name: `${Math.random()}`, id: values.id += 1 });
-      }
-      } >{values.name}</Button>
+// http.defaults.baseURL = 'http://localhost:3721';
 
-      <Select style={{ width: 220 }}
-        keys={{ value: 'value', lable: 'lable' }}
-        searchConfig={{ request: { value: 'id' } }}
-        onChange={v => setValues({ name: v })} apiType="search" value={values.name} api={{ url: '/api/data/options' }} labelAPI />
-    </div>
-  );
-});
+export const App = () => (
+  <APIExecutorProvider value={httpRequest}>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+  </APIExecutorProvider>
+);
