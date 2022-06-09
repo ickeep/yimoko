@@ -40,11 +40,8 @@ const { devCSS, prodCSS, devJS, prodJS } = buildConf.cdn;
 const files = Array.from(new Set([...devCSS, ...prodCSS, ...devJS, ...prodJS]));
 
 files.forEach((file) => {
-  const key = file
-    .replace('https://cdn.jsdelivr.net/npm/', '')
-    .replace('https://unpkg.com/', '')
-    .replace(/@(\d+)/, '/$1');
   axios.get(file, { responseType: 'arraybuffer' }).then((res) => {
+    const key = file.replace(/https:\/\/(cdn.jsdelivr.net\/npm|unpkg.com)\//, '').replace(/@(\d+)/, '/$1');
     upload(key, res.data);
   });
 });
