@@ -1,4 +1,5 @@
 export * from './context/api';
+export * from './context/schema-field';
 
 export * from './data/options';
 export * from './data/api';
@@ -9,6 +10,8 @@ export * from './hooks/use-deep-effect';
 export * from './hooks/use-deep-memo';
 export * from './hooks/use-options';
 export * from './hooks/use-store';
+
+export * from './schema/template';
 
 export * from './store/utils/field';
 

@@ -1,73 +1,33 @@
-import { Form, FormItem, Input, Password } from '@formily/antd';
-import { createForm } from '@formily/core';
-import { createSchemaField } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
-const normalForm = createForm({
-  validateFirst: true,
-});
+import { SchemaPage } from '@yimoko/web';
 
 const normalSchema = {
-  type: 'void',
-  'x-component': 'Layout',
   properties: {
-    header: {
+    layout: {
       type: 'void',
-      'x-component': 'Header',
-    },
-    content: {
-      type: 'void',
-      'x-component': 'Content',
+      'x-component': 'LoadTemplate',
+      'x-component-props': {
+        template: 'layout-h-s-cf',
+      },
       properties: {
-        sider: {
+        title: {
           type: 'void',
-          'x-component': 'Sider',
-          properties: {
-            sider: {
-              type: 'void',
-              'x-component': 'Input',
+          'x-component': 'Title',
+          'x-component-props': {
+            children: '标题',
+            level: 1,
+            style: {
+              height: '2000px',
+              background: '#fff',
             },
           },
         },
-        content: {
-          type: 'void',
-          'x-component': 'Content',
-        },
       },
-    },
-    footer: {
-      type: 'void',
-      'x-component': 'Footer',
     },
   },
 };
 
-const SchemaField = createSchemaField({
-  components: {
-    Layout,
-    FormItem,
-    Input,
-    Password,
-    Header,
-    Footer,
-    Sider,
-    Content,
-  },
-});
-
-export const LayoutPage = observer(() => <>
-  <Form
-    form={normalForm}
-    layout="vertical"
-    size="large"
-    onAutoSubmit={console.log}
-  >
-    <SchemaField schema={normalSchema} />
-  </Form>
-  <Layout>
-    <Header>Header</Header>
-    <Content>Content</Content>
-    <Footer>Footer</Footer>
-  </Layout>
-</>);
+export const LayoutPage = observer(() => (
+  <SchemaPage style={{ height: '100%' }} schema={normalSchema} >
+  </SchemaPage>
+));

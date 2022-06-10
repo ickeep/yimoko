@@ -1,15 +1,22 @@
-import { APIExecutorProvider } from '@yimoko/store';
-import { httpRequest } from '@yimoko/web';
+import { createSchemaField } from '@formily/react';
+import { APIExecutorProvider, SchemaFieldProvider } from '@yimoko/store';
+import { http, httpRequest } from '@yimoko/web';
 import { BrowserRouter } from 'react-router-dom';
+
+import { componentsMap } from './components';
 
 import { Routes } from './routes';
 
-// http.defaults.baseURL = 'http://localhost:3721';
+const SchemaField = createSchemaField({ components: componentsMap });
+
+http.defaults.baseURL = 'http://localhost:3721';
 
 export const App = () => (
   <APIExecutorProvider value={httpRequest}>
-    <BrowserRouter>
-      <Routes />
-    </BrowserRouter>
+    <SchemaFieldProvider value={SchemaField}>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </SchemaFieldProvider>
   </APIExecutorProvider>
 );

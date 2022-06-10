@@ -28,8 +28,11 @@ const externals = {
 
 const cdn = {
   devCSS: [
-    'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.css',
-    'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.css.map',
+    // 'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.css',
+    // 'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.css.map',
+
+    'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.min.css',
+    'https://cdn.jsdelivr.net/npm/antd@4.21.0/dist/antd.variable.min.css.map',
 
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.4/dist/antd.css',
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.4/dist/antd.css.map',
@@ -164,6 +167,7 @@ module.exports = {
       '@/tests': path.resolve(__dirname, './tests'),
       // 解决 Context 值指向不一致的问题
       '@yimoko/store': path.resolve(__dirname, '../store'),
+      '@yimoko/web': path.resolve(__dirname, '../web'),
     },
 
     configure: (webpackConfig) => {
