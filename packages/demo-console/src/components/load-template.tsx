@@ -15,14 +15,16 @@ export const LoadTemplate = observer((props: LoadTemplateProps) => {
   const { runAPIByField, loading, response } = useStore({ defaultValues: { name: '' }, api: { url: '/api/template' } });
 
   const schema = useMemo(() => (typeof template === 'string' ? response.data : template) as ISchema, [template, response.data]);
-
   const spinProps = useMemo(() => (typeof spin === 'object' ? spin : {}), [spin]);
-
-  const content = schema ? <SchemaTemplate schema={schema}>{children}</SchemaTemplate> : children;
+  const content = useMemo(() => (schema ? <SchemaTemplate schema={schema}>{children}</SchemaTemplate> : children), [children, schema]);
 
   useDeepEffect(() => {
     typeof template === 'string' && runAPIByField('name', template);
   }, [template]);
+
+  if (!loading) {
+    return <>{content}</>;
+  }
 
   if (spin) {
     return <Spin {...spinProps} spinning={loading}>{content}</Spin>;
