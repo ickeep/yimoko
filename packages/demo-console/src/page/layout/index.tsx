@@ -1,5 +1,5 @@
 import { observer } from '@formily/reactive-react';
-import { SchemaPage } from '@yimoko/web';
+import { Icon, SchemaPage } from '@yimoko/web';
 
 const normalSchema = {
   properties: {
@@ -8,6 +8,7 @@ const normalSchema = {
       'x-component': 'LoadTemplate',
       'x-component-props': {
         template: 'layout-h-s-cf',
+        spin: true,
       },
       properties: {
         title: {
@@ -17,9 +18,40 @@ const normalSchema = {
             children: '标题',
             level: 1,
             style: {
-              height: '2000px',
               background: '#fff',
             },
+          },
+        },
+        icon1: {
+          type: 'void',
+          'x-component': 'Icon',
+          'x-component-props': {
+            name: 'CheckSquareOutlined',
+            style: { color: 'hotpink' },
+          },
+        },
+        icon2: {
+          type: 'void',
+          'x-component': 'Icon',
+          'x-component-props': {
+            name: 'customize',
+            style: { color: 'hotpink' },
+          },
+        },
+        icon3: {
+          type: 'void',
+          'x-component': 'Icon',
+          'x-component-props': {
+            name: 'customize',
+            style: { color: 'hotpink' },
+          },
+        },
+        icon4: {
+          type: 'void',
+          'x-component': 'Icon',
+          'x-component-props': {
+            name: 'customize',
+            style: { color: 'hotpink' },
           },
         },
       },
@@ -29,5 +61,6 @@ const normalSchema = {
 
 export const LayoutPage = observer(() => (
   <SchemaPage style={{ height: '100%' }} schema={normalSchema} >
+    <h1>123</h1>  <Icon name="customize" />
   </SchemaPage>
 ));

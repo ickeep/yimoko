@@ -1,4 +1,5 @@
 export * from './context/api';
+export * from './context/config';
 export * from './context/schema-field';
 
 export * from './data/options';
@@ -16,7 +17,6 @@ export * from './schema/template';
 export * from './store/utils/field';
 
 export * from './store/base';
-export * from './store/config';
 export * from './store/lang';
 export * from './store/root';
 export * from './store/theme';

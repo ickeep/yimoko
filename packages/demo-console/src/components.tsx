@@ -1,4 +1,5 @@
 import { FormItem, Input, Password } from '@formily/antd';
+import { Icon } from '@yimoko/web';
 import { Layout, Typography } from 'antd';
 
 import { LoadTemplate } from './components/load-template';
@@ -17,4 +18,5 @@ export const componentsMap = {
   Title,
   Text,
   LoadTemplate,
+  Icon,
 };

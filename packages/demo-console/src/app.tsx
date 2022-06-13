@@ -1,5 +1,6 @@
 import { createSchemaField } from '@formily/react';
-import { APIExecutorProvider, SchemaFieldProvider } from '@yimoko/store';
+// @ts-ignore
+import { APIExecutorProvider, ConfigProvider, SchemaFieldProvider } from '@yimoko/store';
 import { http, httpRequest } from '@yimoko/web';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -12,11 +13,13 @@ const SchemaField = createSchemaField({ components: componentsMap });
 http.defaults.baseURL = 'http://localhost:3721';
 
 export const App = () => (
-  <APIExecutorProvider value={httpRequest}>
-    <SchemaFieldProvider value={SchemaField}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </SchemaFieldProvider>
-  </APIExecutorProvider>
+  <ConfigProvider value={{ static: { icon: '/api/svg/', img: '' } }}>
+    <APIExecutorProvider value={httpRequest}>
+      <SchemaFieldProvider value={SchemaField}>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </SchemaFieldProvider>
+    </APIExecutorProvider>
+  </ConfigProvider >
 );
