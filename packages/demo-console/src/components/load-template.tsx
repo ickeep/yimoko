@@ -30,7 +30,5 @@ export const LoadTemplate = observer((props: LoadTemplateProps) => {
     return <Spin {...spinProps} spinning={loading}>{content}</Spin>;
   }
 
-  const isFirstLoad = loading && judgeIsEmpty(response.data);
-
-  return <Skeleton active  {...skeleton} loading={isFirstLoad}>{content}</Skeleton>;
+  return <Skeleton active  {...skeleton} loading={judgeIsEmpty(response.data)} />;
 });
