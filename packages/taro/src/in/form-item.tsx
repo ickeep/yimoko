@@ -2,7 +2,7 @@ import { isVoidField } from '@formily/core';
 import { connect, mapProps } from '@formily/react';
 import { observer } from '@formily/reactive-react';
 import Taro from '@tarojs/taro';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { pickBy } from 'lodash-es';
 import { useEffect, useState, CSSProperties } from 'react';
 

@@ -1,7 +1,7 @@
 import { Button as TButton } from '@antmjs/vantui';
 import { observer } from '@formily/reactive-react';
 import { ButtonProps as TButtonProps } from '@taroify/core/button';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 import { Ilayout } from '../props';

@@ -1,6 +1,6 @@
 import { observer } from '@formily/reactive-react';
 import { Label as TLabel, LabelProps as TLabelProps } from '@tarojs/components';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 export interface LabelProps extends TLabelProps {
   value?: ReactNode

@@ -1,5 +1,5 @@
 import { observer } from '@formily/reactive-react';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { useState, useEffect, CSSProperties } from 'react';
 
 import { getSystemInfo } from '../adapter/system';

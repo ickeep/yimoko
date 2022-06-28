@@ -1,6 +1,6 @@
 import { observer } from '@formily/reactive-react';
 import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
-import classNames from 'classNames';
+import classNames from 'classnames';
 
 import { useSize } from '../hooks/use-size';
 import { Text } from '../out/text';
