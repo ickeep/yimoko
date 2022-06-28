@@ -14,8 +14,6 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
   schema?: ISchema
 }
 
-export const StorePage = observer(StorePageFn);
-
 function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) {
   const { store, options, scope, ...args } = props;
   const curStore = useMemo(() => (store instanceof BaseStore ? store : new BaseStore(store)), [store]);
@@ -23,3 +21,5 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
 
   return <SchemaPage options={{ ...options, values }} scope={{ ...scope, curStore }}  {...args} />;
 }
+
+export const StorePage = observer(StorePageFn);
