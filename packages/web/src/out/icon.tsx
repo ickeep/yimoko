@@ -5,14 +5,13 @@ import { Spin } from 'antd';
 import htmr from 'htmr';
 import { useEffect, useMemo, useState } from 'react';
 
-export interface IconProps extends CustomIconComponentProps {
+export interface IconProps extends Partial<CustomIconComponentProps> {
   name?: string
   value?: string
 }
 
 const fetchMap: Record<string, Promise<string | null>> = {};
-// @ts-ignore
-const icons: Record<string, any> = globalThis.icons ?? {};
+const { icons = {} } = globalThis as any;
 
 export const Icon = (props: IconProps) => {
   const { name, value, ...args } = props;
@@ -21,22 +20,20 @@ export const Icon = (props: IconProps) => {
   const { static: { icon } } = useConfig();
 
   const file = name ?? value ?? '';
-
   const src = useMemo(() => (file.includes('://') ? file : `${icon + file}.svg`), [file, icon]);
-
   const component = icons[file];
 
   useEffect(() => {
     if (!component) {
       const fetch = fetchMap[src] ?? (fetchMap[src] = new Promise((resolve) => {
-        setLoading(true);
-        http({ url: src }).then((res) => {
-          setLoading(false);
-          resolve(judgeIsSuccess(res) ? res.data : null);
-        });
+        http({ url: src }).then(res => resolve(judgeIsSuccess(res) ? res.data : null));
       }));
-
-      fetch.then(data => icons[file] = () => (data ? htmr(data) : null));
+      setLoading(true);
+      fetch.then((data) => {
+        data && (icons[file] = () => (data ? htmr(data) : null));
+        delete fetchMap[src];
+        setLoading(false);
+      });
     }
   }, [component, file, http, src]);
 

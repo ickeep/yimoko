@@ -1,5 +1,5 @@
 import { observer } from '@formily/reactive-react';
-import { Icon, SchemaPage } from '@yimoko/web';
+import { SchemaPage } from '@yimoko/web';
 
 const normalSchema = {
   properties: {
@@ -60,7 +60,5 @@ const normalSchema = {
 };
 
 export const LayoutPage = observer(() => (
-  <SchemaPage style={{ height: '100%' }} schema={normalSchema} >
-    <h1>123</h1>  <Icon name="customize" />
-  </SchemaPage>
+  <SchemaPage style={{ height: '100%' }} schema={normalSchema} />
 ));

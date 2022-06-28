@@ -31,8 +31,8 @@ const upload = (key: string, body: UploadBody) => {
     Region: cosConf.Region,
     Key: key,
     Body: body,
-  }, (err, data) => {
-    err ? console.error(err) : console.log(data);
+  }, (err) => {
+    err && console.error(key, err);
   });
 };
 
