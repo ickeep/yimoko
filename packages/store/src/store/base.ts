@@ -130,7 +130,20 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const fetchID = this.lastFetchID;
     const { api } = this;
     const params = this.getAPIParams();
-    const response = await (typeof api === 'function' ? api(params) : this.apiExecutor?.({ ...api, params, data: params }));
+    let response: Partial<IHTTPResponse<R, IV<V>>> | undefined;
+    if (typeof api === 'function') {
+      response = await api(params);
+    } else {
+      const getAPIConfig = () => {
+        const { method = 'GET' } = api;
+        if (['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase())) {
+          return { ...api, params };
+        }
+        return { ...api, data: params };
+      };
+      response = await this.apiExecutor?.(getAPIConfig());
+    }
+
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);

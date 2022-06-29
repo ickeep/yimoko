@@ -21,11 +21,14 @@ export const setContentTypeFormData = (config: AxiosRequestConfig) => {
 
 export const http = axios.create({
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
-  transformRequest: autoTransformDataType,
+  // @ts-ignore
+  transformRequest: [autoTransformDataType, ...axios.defaults.transformRequest],
 });
 
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
+  console.log('config', config);
+
   try {
     const response = await http(config);
     return handleResponse(response);

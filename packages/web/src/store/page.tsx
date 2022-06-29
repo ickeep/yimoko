@@ -1,7 +1,7 @@
 import { IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { BaseStore, IStoreConfig, IStoreValues } from '@yimoko/store';
+import { BaseStore, IStoreConfig, IStoreValues, useAPIExecutor } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { SchemaPage } from '../schema/page';
@@ -16,7 +16,8 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
 
 function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) {
   const { store, options, scope, ...args } = props;
-  const curStore = useMemo(() => (store instanceof BaseStore ? store : new BaseStore(store)), [store]);
+  const apiExecutor = useAPIExecutor();
+  const curStore = useMemo(() => (store instanceof BaseStore ? store : new BaseStore({ ...store, apiExecutor })), [apiExecutor, store]);
   const { defaultValues, values } = curStore;
 
   // @ts-ignore - 忽略类型错误 类型嵌套比较深，都是 extends object

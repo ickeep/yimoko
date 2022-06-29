@@ -1,5 +1,5 @@
 import {
-  FormLayout, FormItem, FormGrid, FormButtonGroup, Space,
+  Form, FormLayout, FormItem, FormGrid, FormButtonGroup, Space,
   Submit, Reset, Cascader, Checkbox, DatePicker, Input, NumberPicker,
   Password, Radio, Switch, TimePicker, Transfer, TreeSelect, Upload,
   ArrayCards, ArrayItems, ArrayTable, ArrayTabs, Editable, FormCollapse,
@@ -40,6 +40,7 @@ export const components: Record<string, any> = {
   Paragraph,
 
   // @formily/antd 插件
+  Form,
   FormLayout,
   FormItem,
   FormGrid,
