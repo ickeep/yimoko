@@ -10,8 +10,6 @@ const components = {
 
 const IndexPage = observer(() => {
   const { loading, response } = useStore<{}, SchemaPageProps>({ api: { url: '/api/page/detail' }, isRunNow: true });
-  console.log(loading, response);
-
   return (
     <Page loading={loading} data={response} className='index'>
       {judgeIsSuccess(response) && <SchemaPage

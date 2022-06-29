@@ -27,8 +27,6 @@ export const http = axios.create({
 
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
-  console.log('config', config);
-
   try {
     const response = await http(config);
     return handleResponse(response);
