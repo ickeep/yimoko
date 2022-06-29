@@ -1527,6 +1527,15 @@
     "@formily/shared" "2.1.8"
     "@formily/validator" "2.1.8"
 
+"@formily/core@2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2fcore/-/core-2.1.9.tgz#ecb5e9d490986349dc59204c05f9b3a98377450a"
+  integrity sha512-i32C5X5IbqsJ5Haj5Vdc+e/6CoVs69asF6ORAd2UMaVoc15nLMtM0yci2CzwG2p7rwZmC1X2EmrPwWiohVl4rw==
+  dependencies:
+    "@formily/reactive" "2.1.9"
+    "@formily/shared" "2.1.9"
+    "@formily/validator" "2.1.9"
+
 "@formily/grid@2.1.8":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2fgrid/-/grid-2.1.8.tgz#cde9a33f516a6b02535411c36647291e71361aef"
@@ -1544,12 +1553,26 @@
     "@formily/reactive" "2.1.8"
     "@formily/shared" "2.1.8"
 
+"@formily/json-schema@2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2fjson-schema/-/json-schema-2.1.9.tgz#cd0ed21195421cb13fc5f0b14d6145b58dfa6a9d"
+  integrity sha512-IiBAc0ryaqiUIb6aEsbi6J6A5Fv/3bhofAZjJlR93LQXNOOO59FiyEMOhYpdhjBynOJpeKa6cZm86OvbKmqxTA==
+  dependencies:
+    "@formily/core" "2.1.9"
+    "@formily/reactive" "2.1.9"
+    "@formily/shared" "2.1.9"
+
 "@formily/path@2.1.8", "@formily/path@^2.1.4":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2fpath/-/path-2.1.8.tgz#cd9db9010787682e753559c9f3bc9a06b6d8f577"
   integrity sha512-iHgjq8WAQq7LRtkT0zA4BAQnkWWynCJbwHvx/U2qT0zJ9du8S3AhGlqBSJMv+bkXysT/AvcKhsQeU/S6fqckKw==
 
-"@formily/react@2.1.8", "@formily/react@^2.1.4", "@formily/react@^2.1.8":
+"@formily/path@2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2fpath/-/path-2.1.9.tgz#bba0ae4c2ce19e43cd3927f4b3a15865d50b99cb"
+  integrity sha512-oMCKu6v5IoZiNAq7mKeXUDJagEquBhgkJ5kskvuMPjGCWBQQiAOCLtLMBSDWwTk7gAjpl6S9sxQmxHGvPzDGsg==
+
+"@formily/react@2.1.8", "@formily/react@^2.1.4":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2freact/-/react-2.1.8.tgz#21a986739c9a71a9d805300a8db7ec606a2436c1"
   integrity sha512-gSVG9myuSfK67x2RpP1Uagp1fsmBMq7YErVgIoR+Z/d/F28BT0qn+OvMyNh/oJCLgMqhrO5fA4KVxrIcUg457g==
@@ -1562,7 +1585,20 @@
     "@formily/validator" "2.1.8"
     hoist-non-react-statics "^3.3.2"
 
-"@formily/reactive-react@2.1.8", "@formily/reactive-react@^2.1.4", "@formily/reactive-react@^2.1.8":
+"@formily/react@^2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2freact/-/react-2.1.9.tgz#232582f7336b78fceedab7ff3e064fd6fcf636a2"
+  integrity sha512-io5jjAneBcrt2SnOp/naP/gKCEuwXAHh9uzUPljVhjWWfhftwEAtdCD8l8cO2zdOn/+dZ1cmB4DwM1DD7ZtBpA==
+  dependencies:
+    "@formily/core" "2.1.9"
+    "@formily/json-schema" "2.1.9"
+    "@formily/reactive" "2.1.9"
+    "@formily/reactive-react" "2.1.9"
+    "@formily/shared" "2.1.9"
+    "@formily/validator" "2.1.9"
+    hoist-non-react-statics "^3.3.2"
+
+"@formily/reactive-react@2.1.8", "@formily/reactive-react@^2.1.4":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2freactive-react/-/reactive-react-2.1.8.tgz#9c6d9ad7009303c10b3d68b8d72bc2c8d1c95440"
   integrity sha512-ZXx6Ry0I0eXh5UlRffulPV+P3Oth6+VUhGPq4Zv7DYg8V5+OF5nXOCEkd2R58TAXJwvf76FWEJeg6VVMNXlyLg==
@@ -1570,10 +1606,23 @@
     "@formily/reactive" "2.1.8"
     hoist-non-react-statics "^3.3.2"
 
-"@formily/reactive@2.1.8", "@formily/reactive@^2.1.4", "@formily/reactive@^2.1.8":
+"@formily/reactive-react@2.1.9", "@formily/reactive-react@^2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2freactive-react/-/reactive-react-2.1.9.tgz#34a1623511d03ac7893623338a428889a908f006"
+  integrity sha512-KbzuDEIvj0RmXG2N0kkxQNutp3khTUxYlX2AdyEk39z9zB6w6IS0tBEih/5I/yFVdrPyJLQtLR2kE2cnpkcCTA==
+  dependencies:
+    "@formily/reactive" "2.1.9"
+    hoist-non-react-statics "^3.3.2"
+
+"@formily/reactive@2.1.8", "@formily/reactive@^2.1.4":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2freactive/-/reactive-2.1.8.tgz#f6fc4587a9496168cd5e3142ddaeb80285f460be"
   integrity sha512-uVc8LB0f4BpVOKyPGdjkTn+WkaFzt0YqFgSQ02qfGExMLyzXxPa55siL77dFPr+t0nTqY9Ma2VTRX8hgIJK4AQ==
+
+"@formily/reactive@2.1.9", "@formily/reactive@^2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2freactive/-/reactive-2.1.9.tgz#f4619a4521a068d9dc4a9f0a01254a75c3d5168d"
+  integrity sha512-rpZdf0FhhNsE7mepEqsSDYF+HW6VSYBHbJYwDnaymRT4NWrvpBjB88aFvgoKbJ2udM/5GLB5fji5Kf6toV8cpg==
 
 "@formily/shared@2.1.8", "@formily/shared@^2.1.4":
   version "2.1.8"
@@ -1588,12 +1637,32 @@
     pascal-case "^3.1.1"
     upper-case "^2.0.1"
 
+"@formily/shared@2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2fshared/-/shared-2.1.9.tgz#4bbe91948e80e6ddd1e0c54853134f5ef314f67d"
+  integrity sha512-6qg7bTVNmoT9N/uSRU7QgmYq/atL+EpLxZz864CDzk2/MltSIgmlKijjMZ1z+V8KsrZFWdRY8bYg+tJMtPnILA==
+  dependencies:
+    "@formily/path" "2.1.9"
+    camel-case "^4.1.1"
+    lower-case "^2.0.1"
+    no-case "^3.0.4"
+    param-case "^3.0.4"
+    pascal-case "^3.1.1"
+    upper-case "^2.0.1"
+
 "@formily/validator@2.1.8", "@formily/validator@^2.1.4":
   version "2.1.8"
   resolved "https://mirrors.tencent.com/npm/@formily%2fvalidator/-/validator-2.1.8.tgz#c22ae6f2750d5a5e6eb7919f0b8da2e54105e8a7"
   integrity sha512-uuUqlY3qyVc8x8cQp5Bym+t1KLZCcjnjBYC4dvXwNWoXv7rdomK8gZNPVxkmFKQrjT2aybiTZHZF0HXnHcEoPg==
   dependencies:
     "@formily/shared" "2.1.8"
+
+"@formily/validator@2.1.9":
+  version "2.1.9"
+  resolved "https://mirrors.tencent.com/npm/@formily%2fvalidator/-/validator-2.1.9.tgz#2b8c082023fe34ddddf05e52f856349897343097"
+  integrity sha512-BLiSvrPhE/qYpC770OzODILrjmFztUmKVo3HIwCA/6En58j3LScLXgI/IXbJDoHbOqzLkZF9hH8Ru2FA+PUQbg==
+  dependencies:
+    "@formily/shared" "2.1.9"
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"
@@ -12710,7 +12779,7 @@ http-proxy-middleware@^1.0.3:
     is-plain-obj "^3.0.0"
     micromatch "^4.0.2"
 
-http-proxy-middleware@^2.0.3:
+http-proxy-middleware@^2.0.3, http-proxy-middleware@^2.0.6:
   version "2.0.6"
   resolved "https://mirrors.tencent.com/npm/http-proxy-middleware/-/http-proxy-middleware-2.0.6.tgz#e1a4dd6979572c7ab5a4e4b55095d1f32a74963f"
   integrity sha512-ya/UeJ6HVBYxrgYotAZo1KvPWlgB48kUJLDePFeneHsVujFaW5WNj2NgWCAE//B1Dl02BIfYlpNgBy8Kf8Rjmw==

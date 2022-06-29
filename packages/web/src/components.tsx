@@ -6,7 +6,7 @@ import {
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { Layout, Typography } from 'antd';
+import { Layout, Typography, Button } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
@@ -38,6 +38,8 @@ export const components: Record<string, any> = {
   Text,
   Link,
   Paragraph,
+
+  Button,
 
   // @formily/antd 插件
   Form,
