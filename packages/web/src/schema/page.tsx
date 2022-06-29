@@ -1,7 +1,7 @@
 import { IFormProps, createForm } from '@formily/core';
 import { ISchema, SchemaReactComponents } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { useSchemaField } from '@yimoko/store';
+import { useSchemaField, useSchemaComponents } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { SchemaBox } from './box';
@@ -14,10 +14,11 @@ export interface SchemaPageProps<T extends object = Record<string, any>> extends
 }
 
 export const SchemaPage = observer((props: SchemaPageProps) => {
-  const { options, components, scope, schema, children, ...args } = props;
+  const { options, components, scope, schema, children = null, ...args } = props;
 
   const model = useMemo(() => createForm(options), [options]);
-  const SchemaField = useSchemaField(components, scope);
+  const curComponents = useSchemaComponents(components);
+  const SchemaField = useSchemaField(curComponents, scope);
 
   return (
     <SchemaBox model={model} {...args}>

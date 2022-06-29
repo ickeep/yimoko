@@ -1,6 +1,7 @@
 export * from './context/api';
 export * from './context/config';
 export * from './context/schema-field';
+export * from './context/schema-components';
 
 export * from './data/options';
 export * from './data/api';
