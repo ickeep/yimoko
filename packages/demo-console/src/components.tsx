@@ -1,7 +1,7 @@
 import { ArrayBase } from '@formily/antd';
 import { createForm } from '@formily/core';
 import { Schema } from '@formily/json-schema';
-import { RecursionField, useExpressionScope, useFieldSchema, useForm } from '@formily/react';
+import { RecordScope, RecordsScope, RecursionField, useExpressionScope, useFieldSchema, useForm } from '@formily/react';
 import { observer } from '@formily/reactive-react';
 import { BaseStore, IPageData, JSONStringify, useSchemaField } from '@yimoko/store';
 import { components, SchemaBox } from '@yimoko/web';
@@ -12,10 +12,14 @@ import { useMemo } from 'react';
 import { LoadTemplate } from './components/load-template';
 
 export const Test = observer((props: any) => {
-  console.log(props);
   const { value } = props;
+  const schema = useFieldSchema();
+  const scope = useExpressionScope();
+  console.log('$record', JSONStringify(scope.$record));
 
-  return <div>{typeof value === 'object' ? JSONStringify(value) : props.value?.toString() ?? null}</div>;
+
+  return <div>{typeof value === 'object' ? JSONStringify(value) : props.value?.toString() ?? null}
+  </div>;
 });
 
 export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange'> & (
@@ -26,25 +30,15 @@ export type StoreTableProps<T extends object = Record<string, any>> = Omit<Table
 
 export const StoreColumn = observer((props: any) => {
   const { index, record, schema } = props;
-  console.log(schema);
 
-  // console.log('form', form);
-
-  // console.log(props.schema.toJSON());
-  // @ts-ignore
-  return <ArrayBase.Item index={index} record={record} >
-    <RecursionField schema={new Schema({ type: 'object', properties: { id: { 'x-component': 'div' } } })} />
-    {/* <SchemaField schema={{
-      type: 'array', properties: {
-        [`[${index}]`]: {
-          type: 'object',
-          properties: {
-            id: props.schema.toJSON(),
-          },
-        },
-      },
-    }} /> */}
-  </ArrayBase.Item>;
+  return (
+    <RecordScope getRecord={() => record} getIndex={() => index}>
+      <RecursionField
+        schema={{ ...schema.parent, properties: { [schema.name]: schema } }}
+        onlyRenderProperties
+      />
+    </RecordScope>
+  );
 });
 
 export function StoreTableFn<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
@@ -75,29 +69,7 @@ export function StoreTableFn<T extends object = Record<string, any>>(props: Stor
       const col: ColumnType<T> = { title, dataIndex: key, ...colProps };
 
       if (component) {
-        col.render = (v, r, i) => <StoreColumn value={value} record={r} index={i}
-          schema={schema.properties?.[key]} />;
-        //  {
-        //   console.log(v, r, i, schema);
-        //   console.log(key);
-
-        //   return (
-        //     <RecursionField
-        //       onlyRenderProperties
-        // schema={{
-        //   ...schema,
-        //   properties: {
-        //     [key]: {
-        //       type: 'void',
-        //       'x-component': component,
-        //       'x-component-props': { value: v, children: v, _r: r, _i: i, ...componentProps },
-        //       ...rest,
-        //     },
-        //   },
-        // }}
-        // />
-        //   );
-        // };
+        col.render = (v, r, i) => <StoreColumn value={v} record={r} index={i} schema={value} />;
       }
       return col;
     });
@@ -105,9 +77,8 @@ export function StoreTableFn<T extends object = Record<string, any>>(props: Stor
 
   const { loading } = curStore;
 
-  const model = useMemo(() => createForm({ values: dataSource }), [dataSource]);
   return !storeInUse ? null : (
-    <SchemaBox model={model}>
+    <RecordsScope getRecords={() => dataSource}>
       <Table
         rowKey="id"
         size='small'
@@ -116,7 +87,7 @@ export function StoreTableFn<T extends object = Record<string, any>>(props: Stor
         columns={curColumns}
         dataSource={dataSource}
       />
-    </SchemaBox>
+    </RecordsScope>
   );
 }
 

@@ -24,11 +24,17 @@ export const StorePageList = observer(() => (
 
           },
         },
+        name: {
+          type: 'string', 'x-component': 'Test',
+        },
         table: {
-          type: 'void',
+          type: 'array',
           'x-component': 'StoreTable',
           properties: {
-            id: { 'x-decorator-props': { width: 60 }, 'x-component': 'Test' },
+            id: {
+              'x-decorator-props': { width: 60 }, 'x-component': 'Test',
+              properties: { id: { 'x-component': 'Test', 'x-component-props': { children: 'xxx' } } },
+            },
             name: { 'x-decorator-props': { width: 100 } },
           },
         },
