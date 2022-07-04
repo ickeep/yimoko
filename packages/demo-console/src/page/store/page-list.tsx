@@ -3,7 +3,14 @@ import { StorePage } from '@yimoko/web';
 
 export const StorePageList = observer(() => (
   <StorePage
-    store={{ defaultValues: { type: '', name: '123' }, api: { url: '/api/page/list' }, isRunNow: true }}
+    store={{
+      defaultValues: {
+        type: '', name: '123',
+        table: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }],
+      },
+      api: { url: '/api/page/list' },
+      isRunNow: true,
+    }}
     options={{ validateFirst: true }}
     schema={{
       type: 'object',
@@ -21,19 +28,62 @@ export const StorePageList = observer(() => (
                 reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
               },
             },
-
           },
         },
-        name: {
-          type: 'string', 'x-component': 'Test',
+        // tableTest: {
+        //   type: 'void',
+        //   properties: {
+        //     table: { type: 'array', 'x-component': 'Test' },
+        //   },
+        // },
+        // tableTest2: {
+        //   type: 'void',
+        //   properties: {
+        //     table: {
+        //       type: 'array', 'x-component': 'Table',
+        //       properties: {
+        //         id: { type: 'number', 'x-component': 'Test' },
+        //         name: {
+        //           type: 'void', 'x-component': 'Space', properties: {
+        //             name: {
+        //               type: 'stirng', 'x-component': 'Text',
+        //               'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
+        //             },
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
+        'curStore.response.data': {
+          type: 'array', 'x-component': 'RedirectValues',
+          'x-component-props': { values: '{{curStore.response.data}}' },
+          properties: {
+            data: {
+              type: 'array', 'x-component': 'Table',
+              properties: {
+                id: { type: 'number', 'x-component': 'Test' },
+                name: {
+                  type: 'void', 'x-component': 'Space', properties: {
+                    name: {
+                      type: 'stirng', 'x-component': 'Text',
+                      'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          // 'x-component-props': { values: '{{curStore.response?.data?.data}}' },
         },
         table: {
           type: 'array',
           'x-component': 'StoreTable',
+          'x-component-props': { bordered: '{{curStore.loading}}', title: '{{()=>curStore.loading?"加载中":"表格"}}' },
           properties: {
             id: {
-              'x-decorator-props': { width: 60 }, 'x-component': 'Test',
-              properties: { id: { 'x-component': 'Test', 'x-component-props': { children: 'xxx' } } },
+              'x-decorator-props': { width: 60 }, 'x-component': 'Test', 'x-component-props': { children: '1111' },
+              properties: { id: { 'x-component': 'Test', 'x-component-props': { children: '2222' } } },
             },
             name: { 'x-decorator-props': { width: 100 } },
           },
