@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { MatchMedia as TMatchMedia, MatchMediaProps as TMatchMediaProps } from '@tarojs/components';
 import classNames from 'classnames';
 import { ReactNode, useEffect, useState } from 'react';

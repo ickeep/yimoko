@@ -6,11 +6,12 @@ import {
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
+import { SchemaBox, RedirectValues, RedirectListData } from '@yimoko/store';
 import { Layout, Typography, Button } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
-import { SchemaBox } from './schema/box';
+import { TableDisplay } from './out/table';
 import { SchemaPage } from './schema/page';
 import { StorePage } from './store/page';
 
@@ -21,12 +22,17 @@ export const components: Record<string, any> = {
   Select,
 
   Icon,
-
-  SchemaBox,
+  TableDisplay,
 
   SchemaPage,
 
   StorePage,
+
+  // yimoko/store 组件
+  RedirectListData,
+  RedirectValues,
+  SchemaBox,
+
   // antd 组件
   Layout,
   Header,

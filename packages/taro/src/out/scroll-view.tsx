@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { ScrollView as TScrollView, ScrollViewProps as TScrollViewProps } from '@tarojs/components';
 import classNames from 'classnames';
 import { ReactNode, useEffect, useState } from 'react';

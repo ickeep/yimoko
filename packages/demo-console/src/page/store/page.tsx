@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { StorePage } from '@yimoko/web';
 
 export const StorePageDemo = observer(() => (

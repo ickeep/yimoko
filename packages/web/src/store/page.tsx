@@ -1,6 +1,5 @@
 import { IFormProps } from '@formily/core';
-import { SchemaReactComponents, ISchema } from '@formily/react';
-import { observer } from '@formily/reactive-react';
+import { SchemaReactComponents, ISchema, observer } from '@formily/react';
 import { BaseStore, IStoreConfig, IStoreValues, useAPIExecutor } from '@yimoko/store';
 import { useMemo } from 'react';
 

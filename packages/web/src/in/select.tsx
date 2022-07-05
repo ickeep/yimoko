@@ -1,5 +1,5 @@
 import { Select as TSelect } from '@formily/antd';
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { IOptions, IKeys, IOptionsAPISearchConfig, useAPIOptions, useAPISearchOptions, IOptionsAPI } from '@yimoko/store';
 import { Spin, SelectProps as TSelectProps } from 'antd';
 import { useMemo, useState } from 'react';

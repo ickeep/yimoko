@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { View as TView, ViewProps as TViewProps } from '@tarojs/components';
 import classNames from 'classnames';
 import { ReactNode } from 'react';

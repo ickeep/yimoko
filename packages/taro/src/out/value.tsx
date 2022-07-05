@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { StandardProps } from '@tarojs/components';
 import { JSONStringify, judgeIsEmpty } from '@yimoko/store';
 import { isValidElementType } from 'react-is';

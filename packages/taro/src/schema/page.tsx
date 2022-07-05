@@ -1,6 +1,5 @@
 import { IFormProps, createForm } from '@formily/core';
-import { createSchemaField, ISchema, SchemaReactComponents } from '@formily/react';
-import { observer } from '@formily/reactive-react';
+import { createSchemaField, ISchema, SchemaReactComponents, observer } from '@formily/react';
 import { useMemo } from 'react';
 
 import { SchemaBox } from './box';

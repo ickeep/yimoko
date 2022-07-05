@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import classNames from 'classnames';
 import { IStoreResponse } from 'packages/store/types';
 import React from 'react';

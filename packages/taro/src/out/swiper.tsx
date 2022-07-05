@@ -1,5 +1,5 @@
 import { Skeleton, Image } from '@antmjs/vantui';
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps } from '@tarojs/components';
 import { judgeIsEmpty } from '@yimoko/store';
 import { useCallback, useEffect, useState } from 'react';

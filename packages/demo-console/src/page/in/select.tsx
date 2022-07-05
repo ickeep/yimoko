@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { Select } from '@yimoko/web';
 
 export const App = observer(() => (

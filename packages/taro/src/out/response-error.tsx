@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { IStoreResponse } from 'packages/store/types';
 
 import { judgeIsSuccess } from '../adapter/http';

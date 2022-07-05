@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { Page, FormItem, Icon, Input, useStore, Button, SchemaPage, judgeIsSuccess, SchemaPageProps } from '@yimoko/taro';
 
 const components = {

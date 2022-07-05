@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { Image, ImageProps } from '@tarojs/components';
 import classNames from 'classnames';
 

@@ -1,10 +1,8 @@
 import { IFormProps, createForm } from '@formily/core';
-import { ISchema, SchemaReactComponents } from '@formily/react';
-import { observer } from '@formily/reactive-react';
-import { useSchemaField, useSchemaComponents } from '@yimoko/store';
+import { ISchema, SchemaReactComponents, observer } from '@formily/react';
+import { useSchemaField, useSchemaComponents, SchemaBox } from '@yimoko/store';
 import { useMemo } from 'react';
 
-import { SchemaBox } from './box';
 
 export interface SchemaPageProps<T extends object = Record<string, any>> extends React.HTMLAttributes<HTMLDivElement> {
   options?: IFormProps<T>,

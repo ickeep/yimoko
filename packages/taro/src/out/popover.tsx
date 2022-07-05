@@ -1,4 +1,4 @@
-import { observer } from '@formily/reactive-react';
+import { observer } from '@formily/react';
 import { View } from '@tarojs/components';
 import React from 'react';
 
