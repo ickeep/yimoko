@@ -1,6 +1,7 @@
 export * from './components/redirect-list-data';
 export * from './components/redirect-values';
 export * from './components/schema-box';
+export * from './components/store-dict';
 
 export * from './context/api';
 export * from './context/config';
@@ -22,7 +23,9 @@ export * from './schema/template';
 export * from './store/utils/field';
 
 export * from './store/base';
+export * from './store/index';
 export * from './store/lang';
+export * from './store/list';
 export * from './store/root';
 export * from './store/theme';
 

@@ -4,8 +4,13 @@ import { StorePage } from '@yimoko/web';
 export const StorePageList = observer(() => (
   <StorePage
     store={{
+      type: 'list',
+      dictConfig: [
+        { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
+        { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
+      ],
       defaultValues: {
-        type: '', name: '123',
+        type: '', name: 'n1',
         // table: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }],
       },
       api: { url: '/api/page/list' },
@@ -33,15 +38,18 @@ export const StorePageList = observer(() => (
         table: {
           'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
           properties: {
-            id: { type: 'number', 'x-component': 'Test' },
+            id: { type: 'number', 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
             name: {
-              type: 'void', 'x-component': 'Space', properties: {
+              type: 'void', 'x-component': 'Space',
+              'x-decorator-props': { sorter: true, filterMultiple: true },
+              properties: {
                 name: {
                   type: 'stirng', 'x-component': 'Text',
                   'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
                 },
               },
             },
+            type: { 'x-decorator-props': { filterMultiple: false } },
           },
         },
         // table: {

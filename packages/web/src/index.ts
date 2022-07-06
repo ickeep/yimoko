@@ -7,6 +7,8 @@ export * from './schema/page';
 
 export * from './store/page';
 
+export * from './config';
+
 export * from './http';
 
 export * from './components';

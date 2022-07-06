@@ -3,7 +3,6 @@ import { ISchema, SchemaReactComponents, observer } from '@formily/react';
 import { useSchemaField, useSchemaComponents, SchemaBox } from '@yimoko/store';
 import { useMemo } from 'react';
 
-
 export interface SchemaPageProps<T extends object = Record<string, any>> extends React.HTMLAttributes<HTMLDivElement> {
   options?: IFormProps<T>,
   components?: SchemaReactComponents;

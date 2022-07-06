@@ -8,13 +8,13 @@ import { IOptions } from '../data/options';
 import { changeNumInRange } from '../tools/num';
 import { judgeIsEmpty } from '../tools/tool';
 
-import { getSearchParamByValue, getFields, getValueBySearchParam, IFieldsConfig, IFieldNames } from './utils/field';
+import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = true;
+  isBindSearch = false;
   dictConfig: IStoreDictConfig<V> = [];
   fieldsConfig: IFieldsConfig = {};
-  formFieldsConfig: IFieldNames = [];
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
@@ -27,28 +27,27 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   private lastFetchID = 0;
 
-  constructor(config: IStoreConfig<V, R>) {
+  constructor(config: IBaseStoreConfig<V, R>) {
     const {
-      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isRunNow,
-      dictConfig = [], fieldsConfig = {}, formFieldsConfig = [], apiExecutor,
+      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow,
+      dictConfig = [], fieldsConfig = {}, apiExecutor,
     } = config;
-    this.defaultValues = defaultValues;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
-    this.formFieldsConfig = formFieldsConfig;
-    this.api = api;
-    this.isFilterEmptyAtRun = isFilterEmptyAtRun;
-    apiExecutor && (this.apiExecutor = apiExecutor);
+
+    this.defaultValues = defaultValues;
     this.values = cloneDeep(defaultValues);
 
+    this.api = api;
+    this.isFilterEmptyAtRun = isFilterEmptyAtRun;
+    this.isBindSearch = isBindSearch;
+    apiExecutor && (this.apiExecutor = apiExecutor);
+
     define(this, {
-      formFieldsConfig: observable,
       values: observable,
       dict: observable,
       response: observable,
       loading: observable,
-
-      formFields: observable.computed,
 
       setValues: action,
       resetValues: action,
@@ -72,10 +71,6 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   }
 
   getDefaultValues = () => cloneDeep(this.defaultValues);
-
-  get formFields() {
-    return getFields(this.formFieldsConfig, this.fieldsConfig);
-  }
 
   setValues = (values: Partial<V>) => {
     Object.entries(values).forEach((item) => {
@@ -167,13 +162,14 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   };
 }
 
-export type IStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
+export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues?: V,
   api: IStoreAPI<V, R>,
+  keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
   fieldsConfig?: IFieldsConfig;
-  formFieldsConfig?: IFieldNames;
   isFilterEmptyAtRun?: boolean;
+  isBindSearch?: boolean;
   isRunNow?: boolean,
   apiExecutor?: IHTTPRequest;
 };
@@ -209,7 +205,6 @@ export interface IDictConfigItemBy<V extends object = IStoreValues> {
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
-
 
 export type IHTTPRequest<R = any, P = any> = (config: IAPIRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
 

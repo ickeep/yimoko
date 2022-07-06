@@ -1,9 +1,9 @@
 import { BaseStore } from '@yimoko/store';
-import { IStoreValues, IStoreConfig } from '@yimoko/store/types/base';
+import { IStoreValues, IBaseStoreConfig } from '@yimoko/store/types/base';
 import { httpRequest } from '@yimoko/taro';
 import { useState } from 'react';
 
-export function useStore<V extends object = IStoreValues, R = IStoreValues>(config: IStoreConfig<V, R>) {
+export function useStore<V extends object = IStoreValues, R = IStoreValues>(config: IBaseStoreConfig<V, R>) {
   const [store] = useState<BaseStore<V, R>>(() => {
     const cur = new BaseStore(config);
     // @ts-ignore

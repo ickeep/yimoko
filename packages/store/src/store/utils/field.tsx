@@ -1,6 +1,7 @@
 import { ISchema } from '@formily/react';
 
 import { JSONParse, JSONStringify } from '../../tools/tool';
+import { BaseStore } from '../base';
 
 export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((field) => {
   if (typeof field === 'string') {
@@ -31,3 +32,19 @@ export type IFieldsConfig<P extends object = Record<string, any>> = Record<keyof
 export type IGetFields<P extends object = Record<string, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];
 
 export type IFieldNames<P extends object = Record<string, any>> = ((ISchema & { name: string }) | keyof P | string)[];
+
+
+export const getFieldSplitter = (field: string, store: BaseStore<any, any>) => store.fieldsConfig?.[field]?.['x-component-props']?.splitter ?? ',';
+
+export const getFieldType = (field: string, store: BaseStore<any, any>) => {
+  const { fieldsConfig, defaultValues } = store;
+  const type = fieldsConfig?.[field]?.type;
+  if (type) {
+    return type;
+  }
+  const valType = typeof defaultValues[field];
+  if (valType !== 'undefined') {
+    return valType;
+  }
+  return undefined;
+};

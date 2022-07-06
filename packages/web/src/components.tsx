@@ -14,6 +14,7 @@ import { Icon } from './out/icon';
 import { TableDisplay } from './out/table';
 import { SchemaPage } from './schema/page';
 import { StorePage } from './store/page';
+import { StoreTable } from './store/table';
 
 const { Header, Footer, Sider, Content } = Layout;
 const { Title, Text, Link, Paragraph } = Typography;
@@ -27,6 +28,7 @@ export const components: Record<string, any> = {
   SchemaPage,
 
   StorePage,
+  StoreTable,
 
   // yimoko/store 组件
   RedirectListData,
