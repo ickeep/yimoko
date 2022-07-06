@@ -1,4 +1,4 @@
-import { define, observable, action } from '@formily/reactive';
+import { observable, action } from '@formily/reactive';
 import { Key } from 'react';
 
 import { BaseStore, IBaseStoreConfig, IStoreValues } from './base';
@@ -22,11 +22,13 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
     const curDefaultValues = Object.assign({ [sortOrder]: [], [page]: 1, [pageSize]: 20 }, defaultValues);
 
     super({
-      isBindSearch: true, ...config, defaultValues: curDefaultValues, defineConfig: {
+      isBindSearch: true, ...config, defaultValues: curDefaultValues,
+      defineConfig: {
         selectedRowKeys: observable,
         setSelectedRowKeys: action,
       },
     });
+
     this.keysConfig = curKeysConfig;
   }
 
