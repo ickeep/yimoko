@@ -16,16 +16,23 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   queryRoutingType: 'push' | 'replace' = 'push';
 
   constructor(config: IListStoreConfig<V, R>) {
-    super({ isBindSearch: true, ...config });
-    const { keysConfig = {} } = config;
-    this.keysConfig = { ...defaultKeysConfig, ...keysConfig };
-    define(this, {
-      selectedRowKeys: observable,
-      setSelectedRowKeys: action,
+    const { keysConfig = {}, defaultValues } = config;
+    const curKeysConfig = { ...defaultKeysConfig, ...keysConfig };
+    const { sortOrder, page, pageSize } = curKeysConfig;
+    const curDefaultValues = Object.assign({ [sortOrder]: [], [page]: 1, [pageSize]: 20 }, defaultValues);
+
+    super({
+      isBindSearch: true, ...config, defaultValues: curDefaultValues, defineConfig: {
+        selectedRowKeys: observable,
+        setSelectedRowKeys: action,
+      },
     });
+    this.keysConfig = curKeysConfig;
   }
 
-  setSelectedRowKeys = (keys: Key[] = []) => this.selectedRowKeys = keys;
+  setSelectedRowKeys = (keys: Key[] = []) => {
+    this.selectedRowKeys = observable(keys);
+  };
 }
 
 export interface IListStoreConfig<V extends object = IStoreValues, R = IStoreValues> extends IBaseStoreConfig<V, R> {

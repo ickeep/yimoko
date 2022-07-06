@@ -4,7 +4,7 @@ import { ListStore, getFieldSplitter, getFieldType, IPageData, useListData } fro
 import { Table, TableProps } from 'antd';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
 import { TableCurrentDataSource, FilterValue, SorterResult } from 'antd/lib/table/interface';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DF_PAGINATION } from '../config';
@@ -17,7 +17,7 @@ export type StoreTableProps<T extends object = Record<string, any>> = Omit<Table
 );
 
 function StoreTableBase<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
-  const { store, isControlled = true, columns, onChange, pagination, ...args } = props;
+  const { store, isControlled = true, columns, onChange, pagination, rowSelection, ...args } = props;
   const scope = useExpressionScope();
   const schema = useFieldSchema();
   const dataSource = useListData(store);
@@ -28,10 +28,19 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
   const curUseStore = store ?? curStore as ListStore<any, any>;
   const {
     setValuesByField, runAPI, setSelectedRowKeys, getURLSearch,
-    response: { data } = {},
+    selectedRowKeys, response: { data } = {},
     isBindSearch, queryRoutingType,
     keysConfig: { total, page, pageSize, sortOrder },
   } = curUseStore;
+
+  const curRowSelection = useMemo(() => ((rowSelection && isControlled)
+    ? {
+      ...rowSelection,
+      selectedRowKeys,
+      onChange: (keys: Key[]) => setSelectedRowKeys?.(keys),
+    }
+    : rowSelection
+  ), [isControlled, rowSelection, selectedRowKeys, setSelectedRowKeys]);
 
   const curPagination = useMemo(() => {
     if (pagination === false) {
@@ -59,8 +68,6 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
   const queryData = () => {
     runAPI();
     setSelectedRowKeys();
-    console.log('isBindSearch', isBindSearch);
-
     if (isBindSearch) {
       const { pathname, search } = location;
       const valSearch = getURLSearch();
@@ -115,6 +122,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
         loading={curUseStore.loading}
         columns={curUseColumns}
         dataSource={dataSource}
+        rowSelection={curRowSelection}
         pagination={curPagination}
         onChange={(pagination, filters, sorter, extra) => {
           onChange?.(pagination, filters, sorter, extra);

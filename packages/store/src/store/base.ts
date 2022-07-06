@@ -30,7 +30,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   constructor(config: IBaseStoreConfig<V, R>) {
     const {
       defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow,
-      dictConfig = [], fieldsConfig = {}, apiExecutor,
+      dictConfig = [], fieldsConfig = {}, apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -65,6 +65,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       runAPIByField: action,
       runAPIByValues: action,
       runAPIDataBySearch: action,
+      ...defineConfig,
     });
 
     isRunNow && this.runAPI();
@@ -172,6 +173,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> 
   isBindSearch?: boolean;
   isRunNow?: boolean,
   apiExecutor?: IHTTPRequest;
+  defineConfig?: Record<string, any>;
 };
 
 export interface IStoreValues extends Object {

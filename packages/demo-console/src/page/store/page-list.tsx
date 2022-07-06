@@ -36,7 +36,7 @@ export const StorePageList = observer(() => (
           },
         },
         table: {
-          'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
+          'x-component': 'StoreTable', 'x-decorator': 'RedirectListData', 'x-component-props': { rowSelection: { fixed: true } },
           properties: {
             id: { type: 'number', 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
             name: {
