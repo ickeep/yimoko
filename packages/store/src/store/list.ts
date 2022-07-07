@@ -10,6 +10,7 @@ export const defaultKeysConfig: Record<string, string> = {
   total: 'count',
 };
 
+const { computed } = observable;
 export class ListStore<V extends object = IStoreValues, R = IStoreValues> extends BaseStore<V, R> {
   selectedRowKeys: Key[] = [];
   keysConfig: Record<string, string> = {};
@@ -28,6 +29,9 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
       defaultValues: curDefaultValues,
       defineConfig: {
         selectedRowKeys: observable,
+
+        listData: computed,
+
         setSelectedRowKeys: action,
       },
     });
@@ -37,6 +41,12 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   setSelectedRowKeys = (keys: Key[] = []) => {
     this.selectedRowKeys = observable(keys);
   };
+
+  get listData() {
+    const { response: { data } } = this;
+    // @ts-ignore
+    return Array.isArray(data) ? data : (data?.data ?? []);
+  }
 }
 
 export interface IListStoreConfig<V extends object = IStoreValues, R = IStoreValues> extends IBaseStoreConfig<V, R> {

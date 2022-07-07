@@ -1,6 +1,6 @@
 import { observer, useExpressionScope } from '@formily/react';
 
-import { BaseStore } from '../store/base';
+import { ListStore } from '../store/list';
 
 import { RedirectValues } from './redirect-values';
 
@@ -10,10 +10,9 @@ export const RedirectListData = observer(() => {
   return <RedirectValues values={values} />;
 });
 
-export const useListData = (store?: BaseStore<any, any>) => {
+export const useListData = (store?: ListStore<any, any>) => {
   const scope = useExpressionScope();
   const { curStore = {} } = scope;
-  const { response } = store ?? curStore;
-  const values = Array.isArray(response?.data) ? response.data : (response?.data?.data ?? []);
-  return values;
+  const { listData } = store ?? curStore;
+  return listData;
 };
