@@ -13,6 +13,7 @@ import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './u
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = true;
   isBindSearch = false;
+  isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
   fieldsConfig: IFieldsConfig = {};
 
@@ -29,7 +30,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   constructor(config: IBaseStoreConfig<V, R>) {
     const {
-      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow,
+      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow = false,
       dictConfig = [], fieldsConfig = {}, apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
@@ -39,6 +40,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     this.values = cloneDeep(defaultValues);
 
     this.api = api;
+    this.isRunNow = isRunNow;
     this.isFilterEmptyAtRun = isFilterEmptyAtRun;
     this.isBindSearch = isBindSearch;
     apiExecutor && (this.apiExecutor = apiExecutor);
@@ -68,7 +70,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       ...defineConfig,
     });
 
-    isRunNow && this.runAPI();
+    isRunNow && !isBindSearch && this.runAPI();
   }
 
   getDefaultValues = () => cloneDeep(this.defaultValues);

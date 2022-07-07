@@ -22,13 +22,15 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
     const curDefaultValues = Object.assign({ [sortOrder]: [], [page]: 1, [pageSize]: 20 }, defaultValues);
 
     super({
-      isBindSearch: true, ...config, defaultValues: curDefaultValues,
+      isBindSearch: true,
+      isRunNow: true,
+      ...config,
+      defaultValues: curDefaultValues,
       defineConfig: {
         selectedRowKeys: observable,
         setSelectedRowKeys: action,
       },
     });
-
     this.keysConfig = curKeysConfig;
   }
 

@@ -1,6 +1,6 @@
 import { useForm } from '@formily/react';
 import { isEqual } from 'lodash-es';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { IStore } from '../store';
 import { ListStore } from '../store/list';
@@ -9,6 +9,14 @@ import { judgeIsEmpty } from '../tools/tool';
 
 export const useStoreSearch = (store: IStore, search: string) => {
   const form = useForm();
+  const isNotFirst = useRef(false);
+  const { isRunNow } = store;
+
+  const getIsRun = useCallback(() => {
+    const bool = store instanceof ListStore && (isRunNow || isNotFirst.current);
+    isNotFirst.current = true;
+    return bool;
+  }, [isRunNow, store]);
 
   useEffect(() => {
     const { fieldsConfig, isBindSearch, values, defaultValues, setValues, runAPI } = store;
@@ -22,10 +30,10 @@ export const useStoreSearch = (store: IStore, search: string) => {
           !isEqual(val, value) && (newValues[key] = val);
         }
       });
-      setValues(newValues);
-      if (store instanceof ListStore) {
-        !judgeIsEmpty(newValues) && form.submit().then(() => runAPI());
+      if (!judgeIsEmpty(newValues)) {
+        setValues(newValues);
+        getIsRun() && form.submit().then(() => runAPI());
       }
     }
-  }, [form, search, store]);
+  }, [form, getIsRun, search, store]);
 };

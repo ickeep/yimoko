@@ -94,8 +94,8 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
           const type = getFieldType(key, curUseStore) ?? 'string';
           const splitter = getFieldSplitter(key, curUseStore);
           type === 'string' && (val = value.join(splitter));
-          newValues[key] = val;
         }
+        newValues[key] = val;
       });
       setValues(newValues);
       queryData();
