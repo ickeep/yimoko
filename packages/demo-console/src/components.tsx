@@ -6,6 +6,8 @@ import { LoadTemplate } from './components/load-template';
 
 export const Test = observer((props: any) => {
   const { value, children } = props;
+  console.log('test', props);
+
   return (
     <>
       <div>value:{typeof value === 'object' ? JSONStringify(value) : props.value?.toString() ?? null}</div>

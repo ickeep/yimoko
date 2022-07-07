@@ -1,9 +1,11 @@
-import { IFormProps } from '@formily/core';
+import { createForm, IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema, observer } from '@formily/react';
-import { BaseStore, StoreMap, IStore, IStoreConfig, IStoreValues, useAPIExecutor, StoreDict } from '@yimoko/store';
+import { BaseStore, StoreMap, IStore, IStoreConfig, IStoreValues, useAPIExecutor, useStoreDict, SchemaBox } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { SchemaPage } from '../schema/page';
+
+import { StoreSearch } from './search';
 
 export interface StorePageProps<V extends object = IStoreValues, R = IStoreValues> extends React.HTMLAttributes<HTMLDivElement> {
   store: IStore<V, R> | IStoreConfig<V, R>;
@@ -24,11 +26,15 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
     return new StoreMap[type]({ apiExecutor, ...args });
   }, [apiExecutor, store]);
 
-  const { defaultValues, values } = curStore;
+  const model = useMemo(() => createForm({ ...options, values: curStore.values, initialValues: store.defaultValues }), [curStore, options, store]);
+
+  useStoreDict(curStore);
 
   return <>
-    <SchemaPage options={{ ...options, values, initialValues: defaultValues }} scope={{ ...scope, curStore }}  {...args} />;
-    <StoreDict store={curStore} />
+    <SchemaBox model={model} {...args}>
+      <SchemaPage model={model} scope={{ ...scope, curStore }}  {...args} />;
+      <StoreSearch store={curStore} />
+    </SchemaBox>
   </>;
 }
 

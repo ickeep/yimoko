@@ -14,7 +14,7 @@ export const StorePageList = observer(() => (
         // table: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }],
       },
       api: { url: '/api/page/list' },
-      isRunNow: true,
+      // isRunNow: true,
     }}
     options={{ validateFirst: true }}
     schema={{

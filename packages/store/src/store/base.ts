@@ -89,7 +89,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
 
   setValuesBySearch = (search: string) => {
-    const newValues = this.getDefaultValues();
+    const newValues = {};
     const searchParams = new URLSearchParams(search);
     Object.keys(this.values).forEach((key) => {
       // @ts-ignore

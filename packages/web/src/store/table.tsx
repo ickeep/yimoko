@@ -8,7 +8,6 @@ import { Key, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DF_PAGINATION } from '../config';
-
 import { getColumnsForSchema } from '../out/table';
 
 export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource'> & (
@@ -27,7 +26,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
   const { curStore } = scope;
   const curUseStore = store ?? curStore as ListStore<any, any>;
   const {
-    setValuesByField, runAPI, setSelectedRowKeys, getURLSearch,
+    setValues, setValuesByField, runAPI, setSelectedRowKeys, getURLSearch,
     selectedRowKeys, response: { data } = {},
     isBindSearch, queryRoutingType,
     keysConfig: { total, page, pageSize, sortOrder },
@@ -37,7 +36,10 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     ? {
       ...rowSelection,
       selectedRowKeys,
-      onChange: (keys: Key[]) => setSelectedRowKeys?.(keys),
+      onChange: (keys: Key[], selectedRows: any[], info: any) => {
+        rowSelection?.onChange?.(keys, selectedRows, info);
+        setSelectedRowKeys?.(keys);
+      },
     }
     : rowSelection
   ), [isControlled, rowSelection, selectedRowKeys, setSelectedRowKeys]);
@@ -71,11 +73,11 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     if (isBindSearch) {
       const { pathname, search } = location;
       const valSearch = getURLSearch();
-      search !== valSearch && nav(`${pathname}?${valSearch}`, { replace: queryRoutingType === 'replace' });
+      search !== `?${valSearch}` && nav(`${pathname}?${valSearch}`, { replace: queryRoutingType === 'replace' });
     }
   };
 
-  const handlepagination = (pagination: TablePaginationConfig, extra: TableCurrentDataSource<T>) => {
+  const handlePagination = (pagination: TablePaginationConfig, extra: TableCurrentDataSource<T>) => {
     if (extra.action === 'paginate') {
       setValuesByField(page, pagination.current);
       setValuesByField(pageSize, pagination.pageSize);
@@ -85,17 +87,18 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
 
   const handleFilters = (filters: Record<string, FilterValue | null>, extra: TableCurrentDataSource<T>) => {
     if (extra.action === 'filter') {
+      const newValues: Record<string, any> = { [page]: 1 };
       Object.entries(filters).forEach(([key, value]) => {
         let val: any = value;
         if (value !== null) {
           const type = getFieldType(key, curUseStore) ?? 'string';
           const splitter = getFieldSplitter(key, curUseStore);
           type === 'string' && (val = value.join(splitter));
+          newValues[key] = val;
         }
-        setValuesByField(page, 1);
-        setValuesByField(key, val);
-        queryData();
       });
+      setValues(newValues);
+      queryData();
     }
   };
 
@@ -127,7 +130,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
         onChange={(pagination, filters, sorter, extra) => {
           onChange?.(pagination, filters, sorter, extra);
           if (isControlled) {
-            handlepagination(pagination, extra);
+            handlePagination(pagination, extra);
             handleFilters(filters, extra);
             handleSorter(sorter, extra);
           }

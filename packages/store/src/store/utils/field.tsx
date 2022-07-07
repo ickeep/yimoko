@@ -12,8 +12,8 @@ export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((fie
 
 export const getSearchParamByValue = (value: any) => (typeof value === 'object' ? JSONStringify(value) : value?.toString?.());
 
-export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}) => {
-  const { type = 'string' } = schema;
+export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}, dfValue: any = '') => {
+  const { type = typeof dfValue } = schema;
   const typeFnMap: Record<string, Function> = {
     number: (value: string) => Number(value),
     boolean: (value: string) => value === 'true',

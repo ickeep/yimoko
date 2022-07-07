@@ -1,9 +1,8 @@
-import { observer } from '@formily/react';
 import { useEffect } from 'react';
 
 import { IStore } from '../store';
 
-export const StoreDict = observer(({ store }: { store: IStore }) => {
+export const useStoreDict = (store: IStore) => {
   const { dictConfig } = store;
   useEffect(() => {
     dictConfig?.forEach((conf) => {
@@ -14,5 +13,4 @@ export const StoreDict = observer(({ store }: { store: IStore }) => {
       }
     });
   }, [dictConfig, store]);
-  return null;
-});
+};
