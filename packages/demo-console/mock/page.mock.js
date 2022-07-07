@@ -1,18 +1,19 @@
 module.exports = {
   'GET /api/page/list': (req, res) => {
     const { name = '', id } = req.query;
+    const i = parseInt(Math.random() * 100);
     const data = {
       "data": [
         {
-          "id": "4",
+          "id": "4" + i,
           "name": "微信",
         },
         {
-          "id": "2",
+          "id": "2" + i,
           "name": "QQ",
         },
         {
-          "id": "1",
+          "id": "1" + i,
           "name": "钉钉",
         }
       ],

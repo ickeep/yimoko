@@ -128,7 +128,8 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
         rowSelection={curRowSelection}
         pagination={curPagination}
         onChange={(pagination, filters, sorter, extra) => {
-          onChange?.(pagination, filters, sorter, extra);
+          // todo 影响值
+          // onChange?.(pagination, filters, sorter, extra);
           if (isControlled) {
             handlePagination(pagination, extra);
             handleFilters(filters, extra);

@@ -6,6 +6,7 @@ import { RedirectValues } from './redirect-values';
 
 export const RedirectListData = observer(() => {
   const values = useListData();
+
   return <RedirectValues values={values} />;
 });
 

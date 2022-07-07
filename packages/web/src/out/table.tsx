@@ -37,6 +37,7 @@ export const getColumnsForSchema = (schema: Schema) => Object.entries(schema?.pr
         <RecursionField schema={{ ...colSchema, name, 'x-component': component }} name={`${i}.${key}`} />
       </RecordScope>
     );
+    col.shouldCellUpdate = (record: Record<string, any>, prevRecord: Record<string, any>) => record !== prevRecord;
   }
   return col;
 });

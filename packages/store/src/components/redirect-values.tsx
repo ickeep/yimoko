@@ -1,6 +1,6 @@
 import { createForm } from '@formily/core';
 import { useExpressionScope, useFieldSchema } from '@formily/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useSchemaComponents } from '../context/schema-components';
 import { useSchemaField } from '../context/schema-field';
@@ -15,20 +15,26 @@ export const RedirectValues = (props: RedirectValuesProps) => {
   const { values } = props;
   const scope = useExpressionScope();
   const schema = useFieldSchema();
-  const { properties, 'x-decorator': decorator, ...args } = schema?.toJSON();
   const curComponents = useSchemaComponents();
   const SchemaField = useSchemaField(curComponents, scope);
-  const model = useMemo(() => createForm({ values: { values } }), [values]);
+  const [model] = useState(() => createForm({ values }));
 
-  const isDecorator = decorator?.indexOf('Redirect') > -1;
+  useEffect(() => {
+    model.setValues({ values });
+  }, [model, values]);
 
-  const propertiesSchema = isDecorator
-    ? { values: { ...args, type: typeof values, properties } }
-    : { values: { type: typeof values, properties } };
+  const type = typeof values;
+
+  const curSchema = useMemo(() => {
+    const { properties, 'x-decorator': decorator, ...args } = schema?.toJSON();
+    const isDecorator = decorator?.indexOf('Redirect') > -1;
+    const propertiesSchema = isDecorator ? { values: { ...args, type, properties } } : { values: { type, properties } };
+    return { type: 'object', properties: propertiesSchema };
+  }, [schema, type]);
 
   return (
     <SchemaBox model={model} >
-      <SchemaField schema={{ type: 'object', properties: propertiesSchema }} />
+      <SchemaField schema={curSchema} />
     </SchemaBox>
   );
 };
