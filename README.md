@@ -6,9 +6,6 @@
 全局安装 lerna
 关于 [lerna](https://github.com/lerna/lerna) 
 
-### `npm i or yarn`
-安装基础依赖
-
 ### `lerna bootstrap`
 在当前 Lerna 仓库中执行引导流程（bootstrap）。安装所有 依赖项并链接任何交叉依赖。
 
