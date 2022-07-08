@@ -37,12 +37,12 @@
   },
   "peerDependencies": {
     "@antmjs/vantui": "^1.9.5",
-    "@taroify/core": "0.0.29-alpha.9",
-    "@taroify/icons": "0.0.29-alpha.9",
-    "@taroify/commerce": "0.0.29-alpha.9",
     "@formily/react": "^2.1.9",
     "@formily/reactive": "^2.1.9",
     "@formily/reactive-react": "^2.1.9",
+    "@taroify/commerce": "0.0.29-alpha.9",
+    "@taroify/core": "0.0.29-alpha.9",
+    "@taroify/icons": "0.0.29-alpha.9",
     "@tarojs/components": "3.4.9",
     "@tarojs/taro": "3.4.9",
     "@types/lodash-es": "^4.17.6",
@@ -51,5 +51,6 @@
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-is": "^16.8.0 || ^17.0.0 || ^18.0.0"
-  }
+  },
+  "gitHead": "616809cc3220a1e4f0ce0a56a91956c1b2f6954a"
 }
