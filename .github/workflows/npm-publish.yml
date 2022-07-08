@@ -15,8 +15,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - run: npm test
+      - run: npm install --global lerna
+      - run: npm i
+      - run: lerna bootstrap
+      - run: npm run build:npm
 
   publish-npm:
     needs: build
@@ -27,10 +29,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm install --global lerna
-      - run: npm i
-      - run: lerna bootstrap
-      - run: npm run build:npm
       - run: lerna publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
