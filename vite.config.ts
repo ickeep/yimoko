@@ -6,6 +6,8 @@ import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   build: {
+    sourcemap: !process.env.VITE_WATCH,
+    target: process.env.VITE_WATCH ? 'modules' : 'es2015',
     lib: {
       formats: ['cjs', 'es', 'umd'],
       entry: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/src/index.ts`),
@@ -25,6 +27,8 @@ export default defineConfig({
         'lodash-es',
         'moment',
         'axios',
+        'classnames',
+        '@ant-design/icons',
         'antd',
         '@antmjs/vantui',
         '@taroify/core',
@@ -49,6 +53,7 @@ export default defineConfig({
           '@ant-design/icons': 'icons',
           moment: 'moment',
           axios: 'axios',
+          classnames: 'classnames',
           'lodash-es': '_',
           '@formily/path': 'Formily.Path',
           '@formily/shared': 'Formily.Shared',
