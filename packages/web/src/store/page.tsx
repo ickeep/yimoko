@@ -30,12 +30,12 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
 
   useStoreDict(curStore);
 
-  return <>
+  return (
     <SchemaBox model={model} {...args}>
-      <SchemaPage model={model} scope={{ ...scope, curStore }}  {...args} />;
+      <SchemaPage model={model} scope={{ ...scope, curStore }}  {...args} />
       <StoreSearch store={curStore} />
     </SchemaBox>
-  </>;
+  );
 }
 
 export const StorePage = observer(StorePageFn);
