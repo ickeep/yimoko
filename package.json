@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "eslint ./packages --ext ts,tsx",
     "lint:fix": "eslint ./packages/*/src --ext ts,tsx --fix",
-    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build"
+    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build",
+    "release": "lerna publish from-package --yes --no-verify-access"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.21.0",
