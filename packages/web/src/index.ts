@@ -1,5 +1,3 @@
-export * from './hooks/use-store-dict';
-
 export * from './in/select';
 
 export * from './out/icon';
