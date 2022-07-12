@@ -10,13 +10,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DF_PAGINATION } from '../config';
 import { getColumnsForSchema } from '../out/table';
 
-export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource'> & (
+export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange'> & (
   { isControlled: false, store?: ListStore<any, T[]> } |
   { isControlled?: true, store?: ListStore<any, IPageData<T>> }
-);
+) & {
+  onPage?: (pagination: TablePaginationConfig) => void | Promise<void>;
+  onSort?: (pagination: SorterResult<T> | SorterResult<T>[]) => void | Promise<void>;
+  onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
+};
 
 function StoreTableBase<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
-  const { store, isControlled = true, columns, onChange, pagination, rowSelection, ...args } = props;
+  const { store, isControlled = true, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
   const scope = useExpressionScope();
   const schema = useFieldSchema();
   const dataSource = useListData(store);
@@ -79,40 +83,49 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
 
   const handlePagination = (pagination: TablePaginationConfig, extra: TableCurrentDataSource<T>) => {
     if (extra.action === 'paginate') {
-      setValuesByField(page, pagination.current);
-      setValuesByField(pageSize, pagination.pageSize);
-      queryData();
+      onPage?.(pagination);
+      if (isControlled) {
+        setValuesByField(page, pagination.current);
+        setValuesByField(pageSize, pagination.pageSize);
+        queryData();
+      }
     }
   };
 
   const handleFilters = (filters: Record<string, FilterValue | null>, extra: TableCurrentDataSource<T>) => {
     if (extra.action === 'filter') {
-      const newValues: Record<string, any> = { [page]: 1 };
-      Object.entries(filters).forEach(([key, value]) => {
-        let val: any = value;
-        if (value !== null) {
-          const type = getFieldType(key, curUseStore) ?? 'string';
-          const splitter = getFieldSplitter(key, curUseStore);
-          type === 'string' && (val = value.join(splitter));
-        }
-        newValues[key] = val;
-      });
-      setValues(newValues);
-      queryData();
+      onFilter?.(filters);
+      if (isControlled) {
+        const newValues: Record<string, any> = { [page]: 1 };
+        Object.entries(filters).forEach(([key, value]) => {
+          let val: any = value;
+          if (value !== null) {
+            const type = getFieldType(key, curUseStore) ?? 'string';
+            const splitter = getFieldSplitter(key, curUseStore);
+            type === 'string' && (val = value.join(splitter));
+          }
+          newValues[key] = val;
+        });
+        setValues(newValues);
+        queryData();
+      }
     }
   };
 
   const handleSorter = (sorter: SorterResult<T> | SorterResult<T>[], extra: TableCurrentDataSource<T>) => {
     if (extra.action === 'sort') {
-      const val: ISortOrder[] = [];
-      (Array.isArray(sorter) ? sorter : [sorter]).forEach((item) => {
-        const { field, order } = item;
-        const key = `${field}`;
-        typeof order === 'string' && val.push({ field: key, order });
-      });
-      setValuesByField(page, 1);
-      setValuesByField(sortOrder, val);
-      queryData();
+      onSort?.(sorter);
+      if (isControlled) {
+        const val: ISortOrder[] = [];
+        (Array.isArray(sorter) ? sorter : [sorter]).forEach((item) => {
+          const { field, order } = item;
+          const key = `${field}`;
+          typeof order === 'string' && val.push({ field: key, order });
+        });
+        setValuesByField(page, 1);
+        setValuesByField(sortOrder, val);
+        queryData();
+      }
     }
   };
 
@@ -128,13 +141,9 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
         rowSelection={curRowSelection}
         pagination={curPagination}
         onChange={(pagination, filters, sorter, extra) => {
-          // todo 影响值
-          // onChange?.(pagination, filters, sorter, extra);
-          if (isControlled) {
-            handlePagination(pagination, extra);
-            handleFilters(filters, extra);
-            handleSorter(sorter, extra);
-          }
+          handlePagination(pagination, extra);
+          handleFilters(filters, extra);
+          handleSorter(sorter, extra);
         }}
       />
     </RecordsScope>

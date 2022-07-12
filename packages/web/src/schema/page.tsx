@@ -18,10 +18,14 @@ export const SchemaPage = observer((props: SchemaPageProps) => {
   const curComponents = useSchemaComponents(components);
   const SchemaField = useSchemaField(curComponents, scope);
 
+  const { curStore: { fieldsConfig = {} } = {} } = scope;
+
+  const curSchema = useMemo(() => (fieldsConfig ? { ...schema, definitions: fieldsConfig } : schema), [fieldsConfig, schema]);
+
   return (
     <div className={classnames('schema-page', className)} {...args}>
       <SchemaBox model={curModel} >
-        {schema && <SchemaField schema={schema} />}
+        {curSchema && <SchemaField schema={curSchema} />}
         {children}
       </SchemaBox>
     </div>

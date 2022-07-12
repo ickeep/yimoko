@@ -1,4 +1,4 @@
-import { createForm } from '@formily/core';
+import { createForm, IFormProps } from '@formily/core';
 import { useExpressionScope, useFieldSchema } from '@formily/react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -11,13 +11,14 @@ export interface RedirectValuesProps {
   values: any;
 }
 
-export const RedirectValues = (props: RedirectValuesProps) => {
+export const RedirectValues = (props: IFormProps) => {
   const { values } = props;
   const scope = useExpressionScope();
   const schema = useFieldSchema();
   const curComponents = useSchemaComponents();
   const SchemaField = useSchemaField(curComponents, scope);
-  const [model] = useState(() => createForm({ values }));
+
+  const [model] = useState(() => createForm(props));
 
   useEffect(() => {
     model.setValues({ values });

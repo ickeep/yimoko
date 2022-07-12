@@ -1,6 +1,6 @@
 import { Form } from '@formily/core';
 import { useParentForm, FormProvider, ExpressionScope } from '@formily/react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 export interface SchemaBoxProps {
   model?: Form
@@ -11,10 +11,6 @@ export const SchemaBox = (props: SchemaBoxProps) => {
   const { model, children } = props;
   const top = useParentForm();
   const value = useMemo(() => ({ $$form: model ?? top }), [model, top]);
-
-  useEffect(() => {
-    console.log('SchemaBox children', children);
-  }, [children]);
 
   if (model) {
     return (

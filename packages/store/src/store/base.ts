@@ -15,7 +15,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isBindSearch = false;
   isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
-  fieldsConfig: IFieldsConfig = {};
+  fieldsConfig: IFieldsConfig<V> = Object({});
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
@@ -31,7 +31,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   constructor(config: IBaseStoreConfig<V, R>) {
     const {
       defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow = false,
-      dictConfig = [], fieldsConfig = {}, apiExecutor, defineConfig,
+      dictConfig = [], fieldsConfig = Object({}), apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -170,7 +170,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> 
   api: IStoreAPI<V, R>,
   keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
-  fieldsConfig?: IFieldsConfig;
+  fieldsConfig?: IFieldsConfig<V>;
   isFilterEmptyAtRun?: boolean;
   isBindSearch?: boolean;
   isRunNow?: boolean,

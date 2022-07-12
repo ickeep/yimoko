@@ -3,13 +3,6 @@ import { ISchema } from '@formily/react';
 import { JSONParse, JSONStringify } from '../../tools/tool';
 import { BaseStore } from '../base';
 
-export const getFields: IGetFields = (fieldNames, config) => fieldNames.map((field) => {
-  if (typeof field === 'string') {
-    return config[field] ?? { name: field };
-  }
-  return { ...config[field.name], ...field };
-});
-
 export const getSearchParamByValue = (value: any) => (typeof value === 'object' ? JSONStringify(value) : value?.toString?.());
 
 export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}, dfValue: any = '') => {
@@ -27,7 +20,7 @@ export const getValueBySearchParam = (searchParam: string, schema: ISchema = {},
   return typeFnMap[type]?.(searchParam) ?? searchParam;
 };
 
-export type IFieldsConfig<P extends object = Record<string, any>> = Record<keyof P | string, ISchema>;
+export type IFieldsConfig<P extends object = Record<string, any>> = Record<keyof P | string, ISchema<any>>;
 
 export type IGetFields<P extends object = Record<string, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];
 

@@ -4,6 +4,10 @@ import { StorePage } from '@yimoko/web';
 export const StorePageList = observer(() => (
   <StorePage
     store={{
+      fieldsConfig: {
+        type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem' },
+        name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
+      },
       type: 'list',
       dictConfig: [
         { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
@@ -20,13 +24,14 @@ export const StorePageList = observer(() => (
     options={{ validateFirst: true }}
     schema={{
       type: 'object',
+      definitions: {},
       properties: {
         form: {
           type: 'void', 'x-component': 'Form', 'x-component-props': { onAutoSubmit: '{{curStore.runAPI}}', layout: 'inline' },
           properties: {
             title: { type: 'void', 'x-component': 'Title', 'x-component-props': { children: '列表页' } },
-            type: { type: 'string', title: '类型', 'x-component': 'Input', 'x-decorator': 'FormItem' },
-            name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
+            type: { $ref: '#/definitions/type' },
+            name: { $ref: '#/definitions/name' },
             btns: {
               type: 'void', 'x-component': 'Space',
               properties: {
@@ -40,13 +45,15 @@ export const StorePageList = observer(() => (
           'x-component': 'StoreTable', 'x-decorator': 'RedirectListData', 'x-component-props': { rowSelection: { fixed: true } },
           properties: {
             id: { type: 'number', 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
-            name: {
+            name: {},
+            name2: {
+              $ref: '#/definitions/name',
               type: 'void', 'x-component': 'Space',
               'x-decorator-props': { sorter: true, filterMultiple: true },
               properties: {
                 name: {
                   type: 'stirng', 'x-component': 'Text',
-                  'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
+                  // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
                 },
               },
             },

@@ -12,11 +12,19 @@ export const useStoreSearch = (store: IStore, search: string) => {
   const isNotFirst = useRef(false);
   const { isRunNow } = store;
 
-  const getIsRun = useCallback(() => {
-    const bool = store instanceof ListStore && (isRunNow || isNotFirst.current);
+  const getIsRun = useCallback((isEmpty: boolean) => {
+    const isFirst = !isNotFirst.current;
     isNotFirst.current = true;
+
+    let bool = false;
+    if (isEmpty) {
+      bool = isFirst && isRunNow;
+    } else {
+      bool = isRunNow || !isFirst;
+    }
+
     return bool;
-  }, [isRunNow, store]);
+  }, [isRunNow]);
 
   useEffect(() => {
     const { fieldsConfig, isBindSearch, values, defaultValues, setValues, runAPI } = store;
@@ -30,10 +38,11 @@ export const useStoreSearch = (store: IStore, search: string) => {
           !isEqual(val, value) && (newValues[key] = val);
         }
       });
-      if (!judgeIsEmpty(newValues)) {
-        setValues(newValues);
-        getIsRun() && form.submit().then(() => runAPI());
-      }
+      const isEmpaty = judgeIsEmpty(newValues);
+      !isEmpaty && setValues(newValues);
+      // 列表页 search 参数变化，则重新请求数据
+      const heandleRun = () => store instanceof ListStore && getIsRun(isEmpaty) && form.submit().then(() => runAPI());
+      heandleRun();
     }
   }, [form, getIsRun, search, store]);
 };
