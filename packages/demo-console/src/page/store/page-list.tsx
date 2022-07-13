@@ -52,7 +52,8 @@ export const StorePageList = observer(() => (
               'x-decorator-props': { sorter: true, filterMultiple: true },
               properties: {
                 name: {
-                  type: 'stirng', 'x-component': 'Text',
+                  type: 'stirng', 'x-component': 'Link',
+                  'x-component-props': { href: 'http://www.baidu.xxx' },
                   // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
                 },
               },

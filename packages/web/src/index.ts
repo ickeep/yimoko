@@ -1,6 +1,7 @@
 export * from './in/select';
 
 export * from './out/icon';
+export * from './out/link';
 export * from './out/table';
 
 export * from './schema/page';

@@ -6,18 +6,19 @@ import {
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { SchemaBox, RedirectValues, RedirectListData } from '@yimoko/store';
+import { SchemaBox, RedirectValues, RedirectListData, withValueChildren } from '@yimoko/store';
 import { Layout, Typography, Button } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
+import { Link } from './out/link';
 import { TableDisplay } from './out/table';
 import { SchemaPage } from './schema/page';
 import { StorePage } from './store/page';
 import { StoreTable } from './store/table';
 
 const { Header, Footer, Sider, Content } = Layout;
-const { Title, Text, Link, Paragraph } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 export const components: Record<string, any> = {
   Select,
@@ -42,12 +43,12 @@ export const components: Record<string, any> = {
   Sider,
   Content,
 
-  Title,
-  Text,
-  Link,
+  Title: withValueChildren(Title),
+  Text: withValueChildren(Text),
+  Link: withValueChildren(Link),
   Paragraph,
 
-  Button,
+  Button: withValueChildren(Button),
 
   // @formily/antd 插件
   Form,

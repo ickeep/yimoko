@@ -14,7 +14,7 @@ export const RenderValue = (props: RenderValueProps) => {
   const type = typeof value;
 
   if (judgeIsEmpty(value)) {
-    return '';
+    return null;
   }
   if (isValidElement(value) || type === 'string') {
     return value;
