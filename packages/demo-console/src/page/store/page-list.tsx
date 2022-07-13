@@ -13,10 +13,7 @@ export const StorePageList = observer(() => (
         { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
         { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
       ],
-      defaultValues: {
-        type: '', name: 'n1',
-        // table: [{ id: '1', name: 'n1' }, { id: '2', name: 'n2' }],
-      },
+      defaultValues: { type: '', name: 'n1' },
       api: { url: '/api/page/list' },
       // isRunNow: false,
       // isBindSearch: false,
@@ -52,8 +49,8 @@ export const StorePageList = observer(() => (
               'x-decorator-props': { sorter: true, filterMultiple: true },
               properties: {
                 name: {
-                  type: 'stirng', 'x-component': 'Link',
-                  'x-component-props': { href: 'http://www.baidu.xxx' },
+                  type: 'stirng', 'x-component': 'Paragraph',
+                  'x-component-props': { copyable: true },
                   // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
                 },
               },

@@ -46,7 +46,7 @@ export const components: Record<string, any> = {
   Title: withValueChildren(Title),
   Text: withValueChildren(Text),
   Link: withValueChildren(Link),
-  Paragraph,
+  Paragraph: withValueChildren(Paragraph),
 
   Button: withValueChildren(Button),
 
