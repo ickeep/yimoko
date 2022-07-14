@@ -53,7 +53,7 @@ export default defineConfig({
           '@ant-design/icons': 'icons',
           moment: 'moment',
           axios: 'axios',
-          classnames: 'classnames',
+          classnames: 'classNames',
           'lodash-es': '_',
           '@formily/path': 'Formily.Path',
           '@formily/shared': 'Formily.Shared',
