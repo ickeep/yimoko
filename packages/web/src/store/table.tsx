@@ -1,4 +1,3 @@
-
 import { useExpressionScope, useFieldSchema, observer, RecordsScope } from '@formily/react';
 import { ListStore, getFieldSplitter, getFieldType, IPageData, useListData } from '@yimoko/store';
 import { Table, TableProps } from 'antd';
@@ -22,13 +21,14 @@ export type StoreTableProps<T extends object = Record<string, any>> = Omit<Table
 function StoreTableBase<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
   const { store, isControlled = true, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
   const scope = useExpressionScope();
-  const schema = useFieldSchema();
-  const dataSource = useListData(store);
-  const curColumns = useMemo(() => (columns ? columns : getColumnsForSchema(schema)), [columns, schema]);
-  const location = useLocation();
-  const nav = useNavigate();
   const { curStore } = scope;
   const curUseStore = store ?? curStore as ListStore<any, any>;
+
+  const schema = useFieldSchema();
+  const dataSource = useListData(store);
+  const curColumns = useMemo(() => (columns ? columns : getColumnsForSchema(schema, curUseStore)), [columns, curUseStore, schema]);
+  const location = useLocation();
+  const nav = useNavigate();
   const {
     setValues, setValuesByField, runAPI, setSelectedRowKeys, getURLSearch,
     selectedRowKeys, response: { data } = {},

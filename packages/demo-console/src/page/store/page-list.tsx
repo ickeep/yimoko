@@ -23,25 +23,27 @@ export const StorePageList = observer(() => (
       type: 'object',
       definitions: {},
       properties: {
+        title: { type: 'void', 'x-component': 'Title', 'x-component-props': { children: '列表页' } },
         form: {
-          type: 'void', 'x-component': 'Form', 'x-component-props': { onAutoSubmit: '{{curStore.runAPI}}', layout: 'inline' },
+          type: 'void', 'x-component': 'StoreForm',
+          'x-component-props': { fields: ['type', { field: 'name', title: 'xxx' }] },
           properties: {
-            title: { type: 'void', 'x-component': 'Title', 'x-component-props': { children: '列表页' } },
-            type: { $ref: '#/definitions/type' },
-            name: { $ref: '#/definitions/name' },
-            btns: {
-              type: 'void', 'x-component': 'Space',
-              properties: {
-                submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
-                reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
-              },
-            },
+            // type: { $ref: '#/definitions/type' },
+            // name: { $ref: '#/definitions/name' },
+
+          },
+        },
+        btns: {
+          type: 'void', 'x-component': 'Space',
+          properties: {
+            submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
+            reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
           },
         },
         table: {
           'x-component': 'StoreTable', 'x-decorator': 'RedirectListData', 'x-component-props': { rowSelection: { fixed: true } },
           properties: {
-            id: { type: 'number', 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
+            id: { 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
             name: {},
             name2: {
               $ref: '#/definitions/name',
@@ -49,8 +51,8 @@ export const StorePageList = observer(() => (
               'x-decorator-props': { sorter: true, filterMultiple: true },
               properties: {
                 name: {
-                  type: 'stirng', 'x-component': 'Paragraph',
-                  'x-component-props': { copyable: true },
+                  type: 'stirng', 'x-component': 'Link',
+                  'x-component-props': { href: 'https://www.baidu.com', copyable: true },
                   // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
                 },
               },
@@ -58,18 +60,6 @@ export const StorePageList = observer(() => (
             type: { 'x-decorator-props': { filterMultiple: false } },
           },
         },
-        // table: {
-        //   type: 'array',
-        //   'x-component': 'StoreTable',
-        //   'x-component-props': { bordered: '{{curStore.loading}}', title: '{{()=>curStore.loading?"加载中":"表格"}}' },
-        //   properties: {
-        //     id: {
-        //       'x-decorator-props': { width: 60 }, 'x-component': 'Test', 'x-component-props': { children: '1111' },
-        //       properties: { id: { 'x-component': 'Test', 'x-component-props': { children: '2222' } } },
-        //     },
-        //     name: { 'x-decorator-props': { width: 100 } },
-        //   },
-        // },
       },
     }}
   />

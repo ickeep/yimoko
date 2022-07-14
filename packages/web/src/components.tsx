@@ -7,7 +7,7 @@ import {
 } from '@formily/antd';
 
 import { SchemaBox, RedirectValues, RedirectListData, withValueChildren } from '@yimoko/store';
-import { Layout, Typography, Button } from 'antd';
+import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
@@ -37,18 +37,31 @@ export const components: Record<string, any> = {
   SchemaBox,
 
   // antd 组件
-  Layout,
-  Header,
-  Footer,
-  Sider,
-  Content,
-
+  Button: withValueChildren(Button),
   Title: withValueChildren(Title),
   Text: withValueChildren(Text),
   Link: withValueChildren(Link),
   Paragraph: withValueChildren(Paragraph),
 
-  Button: withValueChildren(Button),
+  Divider: withValueChildren(Divider),
+  Row,
+  Col: withValueChildren(Col),
+  Layout,
+  Header: withValueChildren(Header),
+  Footer: withValueChildren(Footer),
+  Sider: withValueChildren(Sider),
+  Content: withValueChildren(Content),
+
+  Affix,
+  // Breadcrumb todo 适配
+  // Dropdown todo 适配
+  // Menu todo 适配
+  // PageHeader todo 适配
+  Pagination,
+  // Steps todo 适配
+
+  // AutoComplete todo 适配
+
 
   // @formily/antd 插件
   Form,
