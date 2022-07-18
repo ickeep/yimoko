@@ -1,8 +1,7 @@
-import { BaseStore } from '@yimoko/store';
 import { useState } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IBaseStoreConfig, IStoreValues } from '../store/base';
+import { BaseStore, IBaseStoreConfig, IStoreValues } from '../store/base';
 
 export function useStore<V extends object = IStoreValues, R = IStoreValues>(config: IBaseStoreConfig<V, R>) {
   const api = useAPIExecutor();

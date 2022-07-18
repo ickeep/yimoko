@@ -14,6 +14,7 @@ import { Icon } from './out/icon';
 import { Link } from './out/link';
 import { TableDisplay } from './out/table';
 import { SchemaPage } from './schema/page';
+import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StoreTable } from './store/table';
 
@@ -28,6 +29,7 @@ export const components: Record<string, any> = {
 
   SchemaPage,
 
+  StoreForm,
   StorePage,
   StoreTable,
 

@@ -1,7 +1,6 @@
 import { IFormProps, createForm, Form } from '@formily/core';
 import { ISchema, SchemaReactComponents, observer } from '@formily/react';
 import { useSchemaField, useSchemaComponents, SchemaBox } from '@yimoko/store';
-import classnames from 'classnames';
 import { useMemo } from 'react';
 
 export interface SchemaPageProps<T extends object = Record<string, any>> extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,7 +12,7 @@ export interface SchemaPageProps<T extends object = Record<string, any>> extends
 }
 
 export const SchemaPage = observer((props: SchemaPageProps) => {
-  const { model, options, components, scope, schema, children = null, className, ...args } = props;
+  const { model, options, components, scope, schema, children = null, ...args } = props;
   const curModel = useMemo(() => (model ? model : createForm(options)), [model, options]);
   const curComponents = useSchemaComponents(components);
   const SchemaField = useSchemaField(curComponents, scope);
@@ -23,7 +22,7 @@ export const SchemaPage = observer((props: SchemaPageProps) => {
   const curSchema = useMemo(() => (fieldsConfig ? { ...schema, definitions: fieldsConfig } : schema), [fieldsConfig, schema]);
 
   return (
-    <div className={classnames('schema-page', className)} {...args}>
+    <div  {...args}>
       <SchemaBox model={curModel} >
         {curSchema && <SchemaField schema={curSchema} />}
         {children}

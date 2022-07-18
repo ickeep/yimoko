@@ -2,9 +2,7 @@ import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
 import { IAPIRequestConfig, IHTTPResponse } from '../data/api';
-
 import { IOptions } from '../data/options';
-
 import { changeNumInRange } from '../tools/num';
 import { judgeIsEmpty } from '../tools/tool';
 

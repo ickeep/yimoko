@@ -30,16 +30,16 @@ export const StorePageList = observer(() => (
           properties: {
             // type: { $ref: '#/definitions/type' },
             // name: { $ref: '#/definitions/name' },
+            btns: {
+              type: 'void', 'x-component': 'Space',
+              properties: {
+                submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
+                reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
+              },
+            },
+          },
+        },
 
-          },
-        },
-        btns: {
-          type: 'void', 'x-component': 'Space',
-          properties: {
-            submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
-            reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
-          },
-        },
         table: {
           'x-component': 'StoreTable', 'x-decorator': 'RedirectListData', 'x-component-props': { rowSelection: { fixed: true } },
           properties: {
