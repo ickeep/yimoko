@@ -2,8 +2,10 @@ import { debounce } from 'lodash-es';
 import { useState, useRef, SetStateAction, Dispatch, useEffect, useMemo } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IHTTPResponse, judgeIsSuccess } from '../data/api';
+import { judgeIsSuccess } from '../data/api';
 import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../data/options';
+import { IStoreResponse } from '../store/base';
+import { runStoreAPI } from '../store/utils/api';
 import { changeNumInRange } from '../tools/num';
 
 import { IOptionsAPI } from './use-api-options';
@@ -31,32 +33,25 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
   const apiFn = useDeepMemo(() => (!api ? undefined : (values: string) => {
     const getKey = () => searchConfig?.request?.label ?? keys?.label ?? 'name';
     const params = { [getKey()]: values };
-    if (typeof api === 'function') {
-      return api(params);
-    }
-    return apiExecutor({ ...api, params, data: params });
+    return runStoreAPI(api, apiExecutor, params);
   }), [searchConfig, keys, api, apiExecutor]);
 
-  const apiFnForValue = useDeepMemo(() => (!labelAPI ? undefined : (values: string) => {
-    const getKey = () => searchConfig?.request?.value ?? searchConfig?.keys?.value ?? keys?.value ?? 'id';
-    const params = { [getKey()]: values };
-
-    if (labelAPI === true) {
-      if (typeof api === 'function') {
-        return api(params);
+  const apiFnForValue = useDeepMemo(() => {
+    if (!labelAPI || !(labelAPI === true && api)) {
+      return undefined;
+    }
+    return (values: string) => {
+      const getKey = () => searchConfig?.request?.value ?? searchConfig?.keys?.value ?? keys?.value ?? 'id';
+      const params = { [getKey()]: values };
+      if (labelAPI === true) {
+        return runStoreAPI(api, apiExecutor, params);
       }
-      return apiExecutor({ ...api, params, data: params });
-    }
-
-    if (typeof labelAPI === 'function') {
-      return labelAPI(params);
-    }
-
-    return apiExecutor({ ...labelAPI, params, data: params });
-  }), [searchConfig, apiExecutor, keys?.value, api]);
+      return runStoreAPI(labelAPI, apiExecutor, params);
+    };
+  }, [searchConfig, apiExecutor, keys?.value, api]);
 
   // 时序、防抖 控制
-  const fetcher = useDeepMemo(() => (fn?: (value: any) => Promise<IHTTPResponse>) => {
+  const fetcher = useDeepMemo(() => (fn?: (value: any) => Promise<IStoreResponse>) => {
     if (typeof fn !== 'function') {
       return undefined;
     }

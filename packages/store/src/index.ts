@@ -1,6 +1,8 @@
 export * from './components/redirect-list-data';
 export * from './components/redirect-values';
+export * from './components/render-value';
 export * from './components/schema-box';
+export * from './components/store-dict';
 
 export * from './context/api';
 export * from './context/config';
@@ -17,7 +19,6 @@ export * from './hooks/use-api-search-options';
 export * from './hooks/use-deep-effect';
 export * from './hooks/use-deep-memo';
 export * from './hooks/use-options';
-export * from './hooks/use-store-dict';
 export * from './hooks/use-store-search';
 export * from './hooks/use-store';
 

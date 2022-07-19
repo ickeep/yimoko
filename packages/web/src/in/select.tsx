@@ -1,13 +1,13 @@
 import { Select as TSelect } from '@formily/antd';
 import { observer } from '@formily/react';
-import { IOptions, IKeys, IOptionsAPISearchConfig, useAPIOptions, useAPISearchOptions, IOptionsAPI } from '@yimoko/store';
+import { IOptions, IKeys, IOptionsAPISearchConfig, useAPIOptions, useAPISearchOptions, IOptionsAPI, strToArr } from '@yimoko/store';
 import { Spin, SelectProps as TSelectProps } from 'antd';
 import { useMemo, useState } from 'react';
 
 export type SelectProps = TSelectProps & IOptionsProps;
 
 export const Select = observer((props: SelectProps) => {
-  const { splitter, keys, options, api, labelAPI, apiType, searchConfig, value, ...args } = props;
+  const { splitter, keys, options, api, labelAPI, apiType, searchConfig, value, valueType, mode, onChange, ...args } = props;
   const [searchVal, setSearchVal] = useState('');
 
   const [data, loading] = apiType === 'search'
@@ -25,6 +25,13 @@ export const Select = observer((props: SelectProps) => {
     }
   ), [apiType, loading, searchVal]);
 
+  const curValue = useMemo(() => {
+    if (mode && ['multiple', 'tags'].includes(mode) && typeof value === 'string') {
+      return strToArr(value, splitter);
+    }
+    return value;
+  }, [mode, splitter, value]);
+
   return (
     <TSelect
       allowClear={!loading}
@@ -32,7 +39,11 @@ export const Select = observer((props: SelectProps) => {
       options={data}
       {...searchProps}
       {...args}
-      value={value}
+      mode={mode}
+      value={curValue}
+      onChange={(val, options) => {
+        onChange?.(valueType === 'string' && Array.isArray(val) ? val.join(splitter) : val, options);
+      }}
     />
   );
 });
@@ -43,6 +54,7 @@ export interface IOptionsProps<T extends string = 'label' | 'value'> {
   keys?: IKeys<T>
   options?: IOptions<T>
   api?: IOptionsAPI
+  valueType?: 'none' | 'string' | 'array'
   // 搜索相关参数
   labelAPI?: IOptionsAPI | boolean,
   apiType?: 'search' | 'data'

@@ -1,7 +1,7 @@
 import { ISchema } from '@formily/react';
 
 import { JSONParse, JSONStringify } from '../../tools/tool';
-import { BaseStore } from '../base';
+import { BaseStore, IField } from '../base';
 
 export const getSearchParamByValue = (value: any) => (typeof value === 'object' ? JSONStringify(value) : value?.toString?.());
 
@@ -27,9 +27,12 @@ export type IGetFields<P extends object = Record<string, any>> = (fieldNames: IF
 export type IFieldNames<P extends object = Record<string, any>> = ((ISchema & { name: string }) | keyof P | string)[];
 
 
-export const getFieldSplitter = (field: string, store: BaseStore<any, any>) => store.fieldsConfig?.[field]?.['x-component-props']?.splitter ?? ',';
+export const getFieldSplitter = (field: IField<any>, store: BaseStore<any, any>) => {
+  const { fieldsConfig } = store;
+  return fieldsConfig?.[field]?.['x-component-props']?.splitter ?? ',';
+};
 
-export const getFieldType = (field: string, store: BaseStore<any, any>) => {
+export const getFieldType = (field: IField<any>, store: BaseStore<any, any>) => {
   const { fieldsConfig, defaultValues } = store;
   const type = fieldsConfig?.[field]?.type;
   if (type) {
@@ -40,4 +43,14 @@ export const getFieldType = (field: string, store: BaseStore<any, any>) => {
     return valType;
   }
   return undefined;
+};
+
+export const getFieldIsMultiple = (field: IField<any>, store: BaseStore<any, any>) => {
+  const mode = store.fieldsConfig?.[field]?.['x-component-props']?.mode;
+  return mode && ['multiple', 'tags'].includes(mode);
+};
+
+export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => {
+  const { fieldsConfig } = store;
+  return fieldsConfig?.[field]?.['x-component-props']?.keys;
 };

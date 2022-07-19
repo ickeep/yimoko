@@ -184,9 +184,9 @@ type IV<V = IStoreValues> = V & Record<string, any>;
 
 export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?: any };
 
-export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
+export type IStoreResponse<R = any, V = any> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreAPI<V, R> = IAPIRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
+export type IStoreAPI<V = any, R = any> = IAPIRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 
@@ -195,15 +195,17 @@ export type IDictConfigItem<V extends object = IStoreValues> = {
 } & ({
   type?: 'self'
   data?: IOptions | any,
-  api?: IStoreAPI<any, IOptions[] | any>
+  api?: IAPIRequestConfig | (() => Promise<IStoreResponse>)
 } | IDictConfigItemBy<V>);
 
-export interface IDictConfigItemBy<V extends object = IStoreValues> {
+export interface IDictConfigItemBy<V extends object = any> {
   field: IField<V>,
   type: 'by'
   byField: IField<V>,
   getData?: (value: any) => IOptions | any
   api?: IStoreAPI<any, IOptions[] | any>
+  paramKey?: string
+  isUpdateValue?: boolean
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;

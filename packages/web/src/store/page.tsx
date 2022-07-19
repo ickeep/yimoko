@@ -1,6 +1,6 @@
 import { createForm, IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema, observer } from '@formily/react';
-import { BaseStore, StoreMap, IStore, IStoreConfig, IStoreValues, useAPIExecutor, useStoreDict, SchemaBox } from '@yimoko/store';
+import { BaseStore, StoreMap, IStore, IStoreConfig, IStoreValues, useAPIExecutor, StoreDict, SchemaBox } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { SchemaPage } from '../schema/page';
@@ -28,11 +28,10 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
 
   const model = useMemo(() => createForm({ ...options, values: curStore.values, initialValues: store.defaultValues }), [curStore, options, store]);
 
-  useStoreDict(curStore);
-
   return (
     <SchemaBox model={model} {...args}>
       <SchemaPage model={model} scope={{ ...scope, curStore }}  {...args} />
+      <StoreDict store={curStore} />
       <StoreSearch store={curStore} />
     </SchemaBox>
   );
