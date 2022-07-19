@@ -1,9 +1,9 @@
 import { useState, useMemo, Dispatch, SetStateAction } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../data/api';
-import { IKeys, IOptions, dataToOptions } from '../data/options';
 import { runStoreAPI } from '../store/utils/api';
+import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../tools/api';
+import { IKeys, IOptions, dataToOptions } from '../tools/options';
 
 import { useDeepEffect } from './use-deep-effect';
 

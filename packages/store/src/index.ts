@@ -9,9 +9,6 @@ export * from './context/config';
 export * from './context/schema-field';
 export * from './context/schema-components';
 
-export * from './data/options';
-export * from './data/api';
-
 export * from './hoc/value-children';
 
 export * from './hooks/use-api-options';
@@ -33,7 +30,9 @@ export * from './store/list';
 export * from './store/root';
 export * from './store/theme';
 
+export * from './tools/api';
 export * from './tools/num';
+export * from './tools/options';
 export * from './tools/str';
 export * from './tools/tool';
 

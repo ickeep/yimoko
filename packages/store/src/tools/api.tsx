@@ -2,13 +2,13 @@
 export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
 
 // 判断请求是否未授权
-export const judgeIsUnauthorized = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.unauthorized;
+export const judgeIsUnauthorized = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.unauthorized;
 
 // 判断请求是否被禁止，通常用于接口参数校验 或者 权限校验
-export const judgeIsForbidden = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.forbidden;
+export const judgeIsForbidden = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.forbidden;
 
 // 判断请求是否网络出错
-export const judgeIsNetworkError = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.networkError;
+export const judgeIsNetworkError = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.networkError;
 
 export const getCodeByStatus = (status: number) => ((status >= 200 && status < 300) ? IHTTPCode.success : status);
 

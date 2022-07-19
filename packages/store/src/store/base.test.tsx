@@ -1,6 +1,4 @@
 import { BaseStore, IHTTPRequest } from './base';
-import { IFieldNames } from './utils/field';
-
 
 describe('BaseStore', () => {
   const defaultValues = { id: 1, name: '', type: 't1' };
@@ -18,15 +16,6 @@ describe('BaseStore', () => {
     const fieldsConfig = { type: { type: 'string' } };
     const hasFieldsConfigStore = new BaseStore({ defaultValues, api: { url: '' }, fieldsConfig });
     expect(hasFieldsConfigStore.fieldsConfig).toEqual(fieldsConfig);
-  });
-
-  test('formFieldsConfig', () => {
-    expect(store.formFieldsConfig).toEqual([]);
-    const fieldsConfig = { type: { type: 'string' } };
-    const formFieldsConfig: IFieldNames = ['name', { name: 'type', title: '类型' }];
-    const hasFormFieldsConfigStore = new BaseStore({ defaultValues, api: { url: '' }, formFieldsConfig, fieldsConfig });
-    expect(hasFormFieldsConfigStore.formFieldsConfig).toEqual(formFieldsConfig);
-    expect(hasFormFieldsConfigStore.formFields).toEqual([{ name: 'name' }, { name: 'type', title: '类型', type: 'string' }]);
   });
 
   test('defaultValues', () => {

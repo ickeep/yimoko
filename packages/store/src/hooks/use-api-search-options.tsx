@@ -2,11 +2,11 @@ import { debounce } from 'lodash-es';
 import { useState, useRef, SetStateAction, Dispatch, useEffect, useMemo } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { judgeIsSuccess } from '../data/api';
-import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../data/options';
 import { IStoreResponse } from '../store/base';
 import { runStoreAPI } from '../store/utils/api';
+import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
+import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../tools/options';
 
 import { IOptionsAPI } from './use-api-options';
 import { useDeepEffect } from './use-deep-effect';

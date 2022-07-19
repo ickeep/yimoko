@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { IAPIRequestConfig, IHTTPCode, IHTTPResponse } from '../data/api';
+import { IAPIRequestConfig, IHTTPCode, IHTTPResponse } from '../tools/api';
 
 export type IAPIExecutor = <T extends object = IAPIRequestConfig> (config: T) => Promise<IHTTPResponse>;
 

@@ -12,5 +12,4 @@ export function runStoreAPI<V = any, P = any>(api: IStoreAPI<V | undefined, P>, 
   return apiExecutor({ ...api, params: { ...api.params, ...params } });
 }
 
-
 export const isMethodPost = (method = '') => ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase());

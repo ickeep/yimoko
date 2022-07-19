@@ -1,9 +1,9 @@
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
-import { IAPIRequestConfig, IHTTPResponse } from '../data/api';
-import { IOptions } from '../data/options';
+import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
+import { IOptions } from '../tools/options';
 import { judgeIsEmpty } from '../tools/tool';
 
 import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';

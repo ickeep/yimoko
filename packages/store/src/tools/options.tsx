@@ -3,10 +3,6 @@ import { omit } from 'lodash-es';
 
 import { strToArr } from '../tools/str';
 
-export type IOptions<T extends string = 'label' | 'value'> = Record<T | string, any>[];
-
-export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;
-
 export const DF_KEYS: IKeys = { label: 'label', value: 'value' };
 
 export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOptions<T>, keys?: IKeys<T>) => {
@@ -22,7 +18,7 @@ export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOp
   }) ?? [];
 };
 
-export const strToOptions = <T extends string = 'label' | 'value'>(str: string, splitter = ',', keys?: IKeys<T>): IOptions<T> => {
+export const strToOptions = <T extends string = 'label' | 'value'>(str = '', splitter = ',', keys?: IKeys<T>): IOptions<T> => {
   const optionKeys = Object.keys(keys ?? { label: '', value: '' }) as T[];
   const arr = strToArr(str, splitter);
 
@@ -33,17 +29,17 @@ export const strToOptions = <T extends string = 'label' | 'value'>(str: string, 
   });
 };
 
-export const objToOptions = <T extends string = 'label' | 'value'>(obj: Record<string, any>, keys?: IKeys<T>): IOptions<T> => {
-  const options = Object.entries(obj).map(([key, value]) => {
+export const objToOptions = <T extends string = 'label' | 'value'>(obj: Record<string, any> = {}, keys?: IKeys<T>): IOptions<T> => {
+  const options = !obj ? [] : Object.entries(obj).map(([key, value]) => {
     if (value && typeof value === 'object') {
       return { value: key, ...value };
     }
-    return { value: key, label: value?.toString?.() ?? '' };
+    return { value: key, label: value?.toString?.() ?? key };
   });
   return arrToOptions(options, keys);
 };
 
-export const dataToOptions = <T extends string = 'label' | 'value'>(data: any, keys?: IKeys<T>, splitter = ','): IOptions<T> => {
+export const dataToOptions = <T extends string = 'label' | 'value'>(data?: any, keys?: IKeys<T>, splitter = ','): IOptions<T> => {
   if (Array.isArray(data)) {
     return arrToOptions(data, keys);
   }
@@ -63,20 +59,6 @@ export const judgeValueInOptions = (value: any, options: IOptions<'value'>, keys
   return options?.some(item => item[key] === value);
 };
 
+export type IOptions<T extends string = 'label' | 'value'> = Record<T | string, any>[];
 
-// 获取选项数据里的有效值，常用于数据联动，如 省 改变，则 市 的数据应该发生变化
-export const getValidValueForOptions = (oldValue: any, options: IOptions<'value'>, keys?: IKeys<'value'>, splitter = ',') => {
-  if (typeof oldValue === 'string') {
-    return (
-      strToArr(oldValue, splitter)
-        .filter(item => judgeValueInOptions(item, options, keys))
-        .join(splitter)
-    );
-  }
-
-  if (Array.isArray(oldValue)) {
-    return oldValue.filter(item => judgeValueInOptions(item, options, keys));
-  }
-
-  return judgeValueInOptions(oldValue, options, keys) ? oldValue : '';
-};
+export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;

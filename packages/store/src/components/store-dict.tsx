@@ -3,21 +3,20 @@ import { reaction } from '@formily/reactive';
 import { useEffect } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { judgeIsSuccess } from '../data/api';
-import { dataToOptions, DF_KEYS } from '../data/options';
 import { IStore } from '../store';
 import { IDictConfigItemBy } from '../store/base';
 import { runStoreAPI } from '../store/utils/api';
 import { getFieldIsMultiple, getFieldKeys, getFieldSplitter } from '../store/utils/field';
+import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
+import { dataToOptions, DF_KEYS } from '../tools/options';
 import { strToArr } from '../tools/str';
 
 // 使用组件的方式，可以把 observer 的变化范围放到组件的内部，避免 props 的变化对其他组件的影响
 export const StoreDict = observer((props: { store: IStore }) => {
   const { store } = props;
-  const { dictConfig, values } = store;
-
-  const apiExecutor = useAPIExecutor();
+  const dfAPIExecutor = useAPIExecutor();
+  const { dictConfig, values, apiExecutor = dfAPIExecutor } = store;
 
   // 初始化字典数据
   useEffect(() => {
