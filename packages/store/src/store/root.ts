@@ -1,5 +1,4 @@
 import { action, define, observable } from '@formily/reactive';
-import { createContext, useContext } from 'react';
 
 // 全局数据管理，结合 Hooks 和 React.useContext 便捷使用
 export class RootStore<
@@ -45,24 +44,6 @@ export class RootStore<
     data && this.setData(data);
   };
 }
-
-export const RootContext = createContext(new RootStore());
-
-export const RootProvider = RootContext.Provider;
-
-export const RootConsumer = RootContext.Consumer;
-
-export const useRoot = () => useContext(RootContext);
-
-export const useUesr = () => useContext(RootContext).user;
-
-export const useMenus = () => useContext(RootContext).menus;
-
-export const useData = (name?: string) => {
-  const { data } = useContext(RootContext);
-  return typeof name === 'undefined' ? data : data[name];
-};
-
 export interface IRootInitVal<U, M, D> {
   user?: U,
   menus?: M,
