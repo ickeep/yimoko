@@ -17,7 +17,7 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   queryRoutingType: 'push' | 'replace' = 'push';
 
   constructor(config: IListStoreConfig<V, R>) {
-    const { keysConfig = {}, defaultValues } = config;
+    const { keysConfig = {}, defaultValues, queryRoutingType, ...args } = config;
     const curKeysConfig = { ...defaultKeysConfig, ...keysConfig };
     const { sortOrder, page, pageSize } = curKeysConfig;
     const curDefaultValues = Object.assign({ [sortOrder]: [], [page]: 1, [pageSize]: 20 }, defaultValues);
@@ -26,30 +26,35 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
       isFilterEmptyAtRun: true,
       isBindSearch: true,
       isRunNow: true,
-      ...config,
+      ...args,
       defaultValues: curDefaultValues,
       defineConfig: {
         selectedRowKeys: observable,
+        queryRoutingType: observable,
 
         listData: computed,
 
         setSelectedRowKeys: action,
       },
     });
+    queryRoutingType && (this.queryRoutingType = queryRoutingType);
     this.keysConfig = curKeysConfig;
   }
 
   setSelectedRowKeys = (keys: Key[] = []) => {
-    this.selectedRowKeys = observable(keys);
+    this.selectedRowKeys = keys;
   };
 
   get listData() {
-    const { response: { data } } = this;
-    // @ts-ignore
-    return Array.isArray(data) ? data : (data?.data ?? []);
+    const data = this.response.data as Array<any> | { data?: Array<any> };
+    if (Array.isArray(data)) {
+      return data;
+    }
+    return Array.isArray(data?.data) ? data.data : [];
   }
 }
 
 export interface IListStoreConfig<V extends object = IStoreValues, R = IStoreValues> extends IBaseStoreConfig<V, R> {
+  queryRoutingType?: 'push' | 'replace';
   keysConfig?: Record<string, string>,
 };
