@@ -6,10 +6,12 @@ import { changeNumInRange } from '../tools/num';
 import { IOptions } from '../tools/options';
 import { judgeIsEmpty } from '../tools/tool';
 
+import { runStoreAPI } from './utils/api';
+
 import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
-  isFilterEmptyAtRun = true;
+  isFilterEmptyAtRun = false;
   isBindSearch = false;
   isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
@@ -28,8 +30,14 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   constructor(config: IBaseStoreConfig<V, R>) {
     const {
-      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow = false,
-      dictConfig = [], fieldsConfig = Object({}), apiExecutor, defineConfig,
+      api,
+      isFilterEmptyAtRun = false,
+      defaultValues = Object({}),
+      isBindSearch = false,
+      isRunNow = false,
+      dictConfig = [],
+      fieldsConfig = Object({}),
+      apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -126,20 +134,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const fetchID = this.lastFetchID;
     const { api } = this;
     const params = this.getAPIParams();
-    let response: Partial<IHTTPResponse<R, IV<V>>> | undefined;
-    if (typeof api === 'function') {
-      response = await api(params);
-    } else {
-      const getAPIConfig = () => {
-        const { method = 'GET' } = api;
-        if (['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase())) {
-          return { ...api, params };
-        }
-        return { ...api, data: params };
-      };
-      response = await this.apiExecutor?.(getAPIConfig());
-    }
-
+    const response = await runStoreAPI(api, this.apiExecutor, params);
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);

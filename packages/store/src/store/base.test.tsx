@@ -4,6 +4,38 @@ describe('BaseStore', () => {
   const defaultValues = { id: 1, name: '', type: 't1' };
   const store = new BaseStore({ defaultValues, api: { url: '' } });
 
+  test('df', () => {
+    const dfStore = new BaseStore({ api: {} });
+    expect(dfStore.isFilterEmptyAtRun).toBeFalsy();
+    expect(dfStore.isBindSearch).toBeFalsy();
+    expect(dfStore.isRunNow).toBeFalsy();
+    expect(dfStore.dictConfig).toEqual([]);
+    expect(dfStore.fieldsConfig).toEqual({});
+  });
+
+  test('init run', () => {
+    const res = { code: 0, msg: '', data: '' };
+    const fn = jest.fn(async () => res);
+    new BaseStore({ api: fn });
+    expect(fn.mock.calls.length).toBe(0);
+    new BaseStore({ api: fn, isRunNow: true });
+    expect(fn.mock.calls.length).toBe(1);
+    new BaseStore({ api: fn, isRunNow: false });
+    expect(fn.mock.calls.length).toBe(1);
+    new BaseStore({ api: fn, isRunNow: true, isBindSearch: true });
+    expect(fn.mock.calls.length).toBe(1);
+    new BaseStore({ api: fn, isRunNow: true, isBindSearch: false });
+    expect(fn.mock.calls.length).toBe(2);
+    new BaseStore({ api: fn, isRunNow: false, isBindSearch: true });
+    expect(fn.mock.calls.length).toBe(2);
+    new BaseStore({ api: fn, isRunNow: false, isBindSearch: false });
+    expect(fn.mock.calls.length).toBe(2);
+    new BaseStore({ api: fn, isBindSearch: true });
+    expect(fn.mock.calls.length).toBe(2);
+    new BaseStore({ api: fn, isBindSearch: false });
+    expect(fn.mock.calls.length).toBe(2);
+  });
+
   test('dictConfig', () => {
     expect(store.dictConfig).toEqual([]);
     const dictConfig = [{ field: 'type', data: [] }];
@@ -80,9 +112,9 @@ describe('BaseStore', () => {
   });
 
   test('getAPIParams', () => {
-    expect(store.getAPIParams()).toEqual({ id: 1, type: 't1' });
-    store.isFilterEmptyAtRun = false;
     expect(store.getAPIParams()).toEqual({ id: 1, type: 't1', name: '' });
+    store.isFilterEmptyAtRun = true;
+    expect(store.getAPIParams()).toEqual({ id: 1, type: 't1' });
     store.isFilterEmptyAtRun = true;
     store.setValuesByField('obj', {});
     store.setValuesByField('arr', []);
@@ -100,7 +132,7 @@ describe('BaseStore', () => {
   test('api', async () => {
     expect(store.api).toEqual({ url: '' });
     const api = async (p: any) => ({ msg: '', code: 0, data: p });;
-    const hasApiStore = new BaseStore({ defaultValues, api });
+    const hasApiStore = new BaseStore({ defaultValues, api, isFilterEmptyAtRun: true });
     expect(hasApiStore.api).toEqual(api);
     const res = { msg: '', code: 0, data: { id: 1, type: 't1' } };
     expect(await hasApiStore.runAPI()).toEqual(res);;
