@@ -20,8 +20,8 @@
   "scripts": {
     "build": "VITE_LIB=store vite build -c ../../vite.config.ts",
     "dev": "VITE_LIB=store VITE_WATCH=true vite build -c ../../vite.config.ts",
-    "test:unit": "react-scripts test --coverage --watchAll=false",
-    "test:watch": "react-scripts test --watchAll --coverage"
+    "test:unit": "react-scripts test --maxWorkers=1 --coverage --watchAll=false",
+    "test:watch": "react-scripts test --maxWorkers=1 --watchAll --coverage"
   },
   "jest": {
     "moduleNameMapper": {

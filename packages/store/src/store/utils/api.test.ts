@@ -24,8 +24,7 @@ describe('api', () => {
     expect(r1).toEqual(res);
     expect(apiExecutor).toHaveBeenLastCalledWith({ method: 'POST', data: params });
 
-    // @ts-ignore
-    await runStoreAPI({ method: 'POST', data: { d: 'd' } }, apiExecutor, params);
+    await runStoreAPI<any>({ method: 'POST', data: { d: 'd' } }, apiExecutor, params);
     expect(apiExecutor).toHaveBeenLastCalledWith({ method: 'POST', data: { d: 'd', ...params } });
 
     const r2 = await runStoreAPI({}, apiExecutor, params);
