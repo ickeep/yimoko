@@ -13,7 +13,6 @@ export interface RedirectListDataProps extends Omit<IFormProps, 'values'> {
 export const RedirectListData = observer((props: RedirectListDataProps) => {
   const { children, ...args } = props;
   const values = useListData();
-
   return <RedirectValues {...args} values={values} />;
 });
 
