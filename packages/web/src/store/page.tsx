@@ -1,6 +1,6 @@
 import { createForm, IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema, observer } from '@formily/react';
-import { BaseStore, StoreMap, IStore, IStoreConfig, IStoreValues, useAPIExecutor, StoreDict, SchemaBox, SchemaPage } from '@yimoko/store';
+import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaBox, SchemaPage, useStore } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { StoreSearch } from './search';
@@ -15,15 +15,7 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
 
 function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) {
   const { store, options, scope, ...args } = props;
-  const apiExecutor = useAPIExecutor();
-  const curStore = useMemo(() => {
-    if (store instanceof BaseStore) {
-      return store;
-    }
-    const { type = 'base', ...args } = store;
-    return new StoreMap[type]({ apiExecutor, ...args });
-  }, [apiExecutor, store]);
-
+  const curStore = useStore(store);
   const model = useMemo(() => createForm({ ...options, values: curStore.values, initialValues: curStore.defaultValues }), [curStore, options]);
 
   return (
