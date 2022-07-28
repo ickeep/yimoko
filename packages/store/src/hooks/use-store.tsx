@@ -8,6 +8,10 @@ export function useStore<V extends object = IStoreValues, R = IStoreValues>(stor
   const apiExecutor = useAPIExecutor();
   const curStore = useMemo(() => {
     if (store instanceof BaseStore) {
+      if (!store.apiExecutor) {
+        // eslint-disable-next-line no-param-reassign
+        store.apiExecutor = apiExecutor;
+      }
       return store;
     }
     const { type = 'base', ...args } = store;
