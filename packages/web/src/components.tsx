@@ -6,14 +6,13 @@ import {
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { SchemaBox, RedirectValues, RedirectListData, withValueChildren } from '@yimoko/store';
+import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage } from '@yimoko/store';
 import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
 import { Link } from './out/link';
 import { TableDisplay } from './out/table';
-import { SchemaPage } from './schema/page';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StoreTable } from './store/table';

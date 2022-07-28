@@ -2,6 +2,7 @@ export * from './components/redirect-list-data';
 export * from './components/redirect-values';
 export * from './components/render-value';
 export * from './components/schema-box';
+export * from './components/schema-page';
 export * from './components/store-dict';
 
 export * from './context/api';

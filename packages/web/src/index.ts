@@ -4,8 +4,6 @@ export * from './out/icon';
 export * from './out/link';
 export * from './out/table';
 
-export * from './schema/page';
-
 export * from './store/form';
 export * from './store/page';
 export * from './store/search';

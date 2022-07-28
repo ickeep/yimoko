@@ -33,15 +33,24 @@ export const useStoreSearch = (store: IStore, search: string) => {
       const newValues: Record<string, any> = {};
       const searchParams = new URLSearchParams(search);
       Object.entries(values).forEach(([key, value]) => {
-        if (searchParams.has(key)) {
-          const val = getValueBySearchParam(searchParams.get(key) ?? '', fieldsConfig[key], defaultValues[key]);
+        const strVal = searchParams.get(key);
+        if (strVal !== null) {
+          const val = getValueBySearchParam(strVal, fieldsConfig[key], defaultValues[key]);
           !isEqual(val, value) && (newValues[key] = val);
         }
       });
       const isEmpaty = judgeIsEmpty(newValues);
       !isEmpaty && setValues(newValues);
       // 列表页 search 参数变化，则重新请求数据
-      const heandleRun = () => store instanceof ListStore && getIsRun(isEmpaty) && form.submit().then(() => runAPI());
+      const heandleRun = () => {
+        if (store instanceof ListStore && getIsRun(isEmpaty)) {
+          if (form) {
+            form.submit().then(() => runAPI());
+          } else {
+            runAPI();
+          }
+        }
+      };
       heandleRun();
     }
   }, [form, getIsRun, search, store]);
