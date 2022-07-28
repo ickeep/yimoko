@@ -15,6 +15,8 @@ describe('judgeIsEmpty', () => {
     expect(judgeIsEmpty([1])).toBe(false);
     expect(judgeIsEmpty({})).toBe(true);
     expect(judgeIsEmpty({ a: 1 })).toBe(false);
+    expect(judgeIsEmpty(BigInt('1'))).toBe(false);
+    expect(judgeIsEmpty(() => '')).toBe(false);
   });
 });
 

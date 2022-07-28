@@ -34,5 +34,5 @@ export const RenderValue = (props: RenderValueProps) => {
     ),
   };
 
-  return typeFnMap[type]?.() ?? null;
+  return typeFnMap[type]?.();
 };

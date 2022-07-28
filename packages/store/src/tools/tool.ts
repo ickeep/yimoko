@@ -2,10 +2,7 @@ import { isEmpty } from 'lodash-es';
 
 export const judgeIsEmpty = (value: any) => {
   const type = typeof value;
-  if (type === 'boolean') {
-    return false;
-  }
-  if (type === 'number') {
+  if (['boolean', 'number', 'bigint', 'function'].includes(type)) {
     return false;
   }
   return isEmpty(value);
