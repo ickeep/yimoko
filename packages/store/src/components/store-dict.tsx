@@ -11,6 +11,7 @@ import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { dataToOptions, DF_KEYS } from '../tools/options';
 import { strToArr } from '../tools/str';
+import { judgeIsEmpty } from '../tools/tool';
 
 // 使用组件的方式，可以把 observer 的变化范围放到组件的内部，避免 props 的变化对其他组件的影响
 export const StoreDict = observer((props: { store: IStore }) => {
@@ -26,7 +27,7 @@ export const StoreDict = observer((props: { store: IStore }) => {
         const { data, api } = conf;
         store.setDictByField(field, data);
         if (api) {
-          runStoreAPI(api, apiExecutor)?.then(res => judgeIsSuccess(res) && store.setDictByField(field, res.data));;
+          runStoreAPI(api, apiExecutor)?.then?.(res => judgeIsSuccess(res) && store.setDictByField(field, res.data));
         }
       }
     });
@@ -39,12 +40,17 @@ export const StoreDict = observer((props: { store: IStore }) => {
     dictConfig?.forEach((conf) => {
       const { type } = conf;
       if (type === 'by') {
-        const { field, getData, api, paramKey = conf.field } = conf;
+        const { field, getData, api, paramKey = conf.byField, isEmptyGetData = false } = conf;
         const byField = String(conf.byField);
         lastDisposerMap[byField] = 0;
 
-        disposerArr.push(reaction(() => values[byField], (newVal, prevVal) => {
-          if (newVal !== prevVal) {
+        // eslint-disable-next-line complexity
+        const updateDict = (newVal: any) => {
+          if (!isEmptyGetData && judgeIsEmpty(newVal)) {
+            lastDisposerMap[byField] = changeNumInRange(lastDisposerMap[byField]);
+            store.setDictByField(field, []);
+            updateValueByDict(conf, [], store);
+          } else {
             if (getData) {
               const dictData = getData(newVal);
               store.setDictByField(field, dictData);
@@ -62,6 +68,14 @@ export const StoreDict = observer((props: { store: IStore }) => {
               });
             }
           }
+        };
+
+        const value = values[byField];
+
+        updateDict(value);
+
+        disposerArr.push(reaction(() => values[byField], (newVal) => {
+          updateDict(newVal);
         }));
       }
     });
@@ -107,7 +121,7 @@ export const updateValueByDict = (config: IDictConfigItemBy, dict: any, store: I
         return isMultiple && type === 'string' ? newArr.join(splitter) : newArr[0];
       };
 
-      store.setValuesByField(field, getNewValue);
+      store.setValuesByField(field, getNewValue());
     }
   }
 };

@@ -201,6 +201,7 @@ export interface IDictConfigItemBy<V extends object = any> {
   api?: IStoreAPI<any, IOptions[] | any>
   paramKey?: string
   isUpdateValue?: boolean
+  isEmptyGetData?: boolean
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;
