@@ -19,10 +19,14 @@ export interface IOptionsAPISearchConfig<T extends string = 'label' | 'value'> {
 }
 
 export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
-
-  input?: string, value?: any, data?: any, api?: IOptionsAPI, labelAPI?: IOptionsAPI | boolean,
-  searchConfig?: IOptionsAPISearchConfig, keys?: IKeys<T>, splitter?: string,
-
+  input?: string,
+  value?: any,
+  data?: any,
+  api?: IOptionsAPI,
+  labelAPI?: IOptionsAPI | boolean,
+  searchConfig?: IOptionsAPISearchConfig,
+  keys?: IKeys<T>,
+  splitter?: string,
 ): [IOptions<T>, boolean, Dispatch<SetStateAction<IOptions<T>>>] => {
   const [options, setOptions] = useState<IOptions<T>>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,37 +34,35 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
 
   const apiExecutor = useAPIExecutor();
 
-  const apiFn = useDeepMemo(() => (!api ? undefined : (values: string) => {
+  const apiFn = useDeepMemo(() => (!api ? undefined : (value: string) => {
     const getKey = () => searchConfig?.request?.label ?? keys?.label ?? 'name';
-    const params = { [getKey()]: values };
+    const params = { [getKey()]: value };
     return runStoreAPI(api, apiExecutor, params);
   }), [searchConfig, keys, api, apiExecutor]);
 
+  // eslint-disable-next-line complexity
   const apiFnForValue = useDeepMemo(() => {
-    if (!labelAPI || !(labelAPI === true && api)) {
-      return undefined;
+    const getKey = () => searchConfig?.request?.value ?? searchConfig?.keys?.value ?? keys?.value ?? 'id';
+    if (labelAPI && typeof labelAPI !== 'boolean') {
+      return (value: string) => runStoreAPI(labelAPI, apiExecutor, { [getKey()]: value });
     }
-    return (values: string) => {
-      const getKey = () => searchConfig?.request?.value ?? searchConfig?.keys?.value ?? keys?.value ?? 'id';
-      const params = { [getKey()]: values };
-      if (labelAPI === true) {
-        return runStoreAPI(api, apiExecutor, params);
-      }
-      return runStoreAPI(labelAPI, apiExecutor, params);
-    };
+    if (labelAPI === true && api) {
+      return (value: string) => runStoreAPI(api, apiExecutor, { [getKey()]: value });
+    }
+    return undefined;
   }, [searchConfig, apiExecutor, keys?.value, api]);
 
   // 时序、防抖 控制
-  const fetcher = useDeepMemo(() => (fn?: (value: any) => Promise<IStoreResponse>) => {
+  const fetcher = useDeepMemo(() => (fn?: (value: any) => undefined | Promise<IStoreResponse>) => {
     if (typeof fn !== 'function') {
       return undefined;
     }
-    const loadOptions = (values: string) => {
+    const loadOptions = (value: string) => {
       fetchRef.current = changeNumInRange(fetchRef.current);
       const fetchId = fetchRef.current;
       setOptions([]);
       setLoading(true);
-      fn(values).then((res) => {
+      fn(value)?.then((res) => {
         if (fetchId === fetchRef.current) {
           setLoading(false);
           judgeIsSuccess(res) && setOptions(dataToOptions(res.data, searchConfig?.keys ?? keys, splitter));
@@ -69,7 +71,6 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
     };
     return debounce(loadOptions, searchConfig?.wait ?? 300);
   }, [keys, searchConfig, splitter]);
-
 
   const fetchOptions = useMemo(() => fetcher(apiFn), [apiFn, fetcher]);
 
