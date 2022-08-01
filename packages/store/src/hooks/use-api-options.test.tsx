@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { render, screen, act } from '@testing-library/react';
-import _ from 'lodash';
 
 import { APIExecutorProvider } from '../context/api';
 import { IKeys } from '../tools/options';
