@@ -24,8 +24,8 @@ export const useAPIOptions = <T extends string = 'label' | 'value'>(
   }, [data, keys, splitter]);
 
   useDeepEffect(() => {
-    setLoading(true);
-    apiFn?.().then((res) => {
+    apiFn && setLoading(true);
+    apiFn?.()?.then((res) => {
       judgeIsSuccess(res) && setOptions(dataToOptions(res.data, keys, splitter));
       setLoading(false);
     });
