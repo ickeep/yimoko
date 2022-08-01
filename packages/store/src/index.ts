@@ -3,6 +3,7 @@ export * from './components/redirect-values';
 export * from './components/render-value';
 export * from './components/schema-box';
 export * from './components/schema-page';
+export * from './components/schema-template';
 export * from './components/store-dict';
 
 export * from './context/api';
@@ -21,8 +22,6 @@ export * from './hooks/use-deep-memo';
 export * from './hooks/use-options';
 export * from './hooks/use-store-search';
 export * from './hooks/use-store';
-
-export * from './schema/template';
 
 export * from './store/utils/field';
 
