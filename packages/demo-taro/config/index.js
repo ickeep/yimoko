@@ -23,7 +23,8 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [
+  cache: true,
+  plugins: process.env.NODE_ENV === 'production' ? [] : [
     '@tarojs/plugin-mock',
   ],
   defineConstants: {
