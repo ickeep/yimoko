@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro';
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
   try {
-    const response = await Taro.request(config);
+    const response = await Taro.request({ url: '', ...config });
     return handleResponse(response);
   } catch (e: any) {
     const { response, ...args } = e;
@@ -70,6 +70,7 @@ export enum IHTTPCode {
 export interface IHTTPResponse<T = any> extends Partial<ITaroResponse<T>> {
   code: IHTTPCode | number
   msg: string,
+  data: any,
   [key: string]: any
 }
 
@@ -89,7 +90,7 @@ export interface IPageData<T extends object = Record<string, any>> {
 
 export interface IHTTPConfig<P = any> {
   /** 开发者服务器接口地址 */
-  url: string
+  url?: string
   /** 请求的参数 */
   data?: P
   /** 设置请求的 header，header 中不能设置 Referer。

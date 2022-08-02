@@ -26,6 +26,7 @@ export * from './hooks/use-store';
 export * from './store/utils/field';
 
 export * from './store/base';
+export * from './store/config';
 export * from './store/index';
 export * from './store/lang';
 export * from './store/list';
