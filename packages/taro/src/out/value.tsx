@@ -1,7 +1,6 @@
 import { observer } from '@formily/react';
 import { StandardProps } from '@tarojs/components';
 import { JSONStringify, judgeIsEmpty } from '@yimoko/store';
-import { isValidElementType } from 'react-is';
 
 import { Text } from './text';
 
@@ -21,10 +20,10 @@ export const Value = observer((props: ValueProps) => {
     return <Text {...args}>{value}</Text>;
   }
 
-  if (isValidElementType(value)) {
-    const C: any = value;
-    return <C {...args} />;
-  }
+  // if (isValidElementType(value)) {
+  //   const C: any = value;
+  //   return <C {...args} />;
+  // }
 
   if (type === 'object') {
     if (value.default && value.__esModule) {

@@ -73,7 +73,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    react({ fastRefresh: process.env.NODE_ENV !== 'test' }),
+    react({ fastRefresh: process.env.NODE_ENV !== 'test', jsxRuntime: 'classic' }),
     dts({
       entryRoot: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/src`),
       outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`),

@@ -3,7 +3,7 @@ import { ISchema, SchemaReactComponents } from '@formily/react';
 import { useMemo } from 'react';
 
 import { useSchemaComponents } from '../context/schema-components';
-import { useSchemaField } from '../context/schema-field';
+import { SchemaFieldProvider, useSchemaField } from '../context/schema-field';
 
 import { SchemaBox } from './schema-box';
 
@@ -32,8 +32,10 @@ export function SchemaPage<T extends object = Record<string, any>>(props: Schema
   }, [fieldsConfig, schema]);
 
   return (
-    <SchemaBox model={curModel} >
-      <SchemaField schema={curSchema} />
-    </SchemaBox>
+    <SchemaFieldProvider value={SchemaField}>
+      <SchemaBox model={curModel} >
+        <SchemaField schema={curSchema} />
+      </SchemaBox>
+    </SchemaFieldProvider>
   );
 };
