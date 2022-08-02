@@ -1,14 +1,12 @@
 export * from './adapter/http';
 
 export * from './hooks/use-size';
-export * from './hooks/use-store';
 
 export * from './in/form-item';
 export * from './in/form';
 export * from './in/input';
 export * from './in/label';
 
-export * from './out/button';
 export * from './out/icon';
 export * from './out/match-media';
 export * from './out/page';
@@ -17,11 +15,12 @@ export * from './out/text';
 export * from './out/value';
 export * from './out/view';
 
-export * from './schema/box';
 export * from './schema/context';
-export * from './schema/page';
 
 export * from './store/config';
 export * from './store/lang';
 
 export * from './tools/style';
+
+export * from './components';
+

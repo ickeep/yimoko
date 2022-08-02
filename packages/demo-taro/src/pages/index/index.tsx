@@ -1,25 +1,22 @@
-import { Switch } from '@antmjs/vantui';
 import { observer } from '@formily/react';
-import { useBaseStore } from '@yimoko/store';
-import { Page, FormItem, Icon, Input, Button, SchemaPage, judgeIsSuccess, SchemaPageProps } from '@yimoko/taro';
+import { SchemaPage, useBaseStore, judgeIsSuccess } from '@yimoko/store';
+import { Page } from '@yimoko/taro';
 
-const components = {
-  FormItem,
-  Input,
-  Icon,
-  Button,
-};
 
 const IndexPage = observer(() => {
-  const { loading, response } = useBaseStore<{}, SchemaPageProps>({ api: { url: '/api/page/detail' }, isRunNow: true });
+  const { loading, response } = useBaseStore({ api: { url: '/api/page/detail' }, isRunNow: true });
+  console.log('judgeIsSuccess(response)', response.data?.schema);
+
   return (
     <Page loading={loading} data={response} className='index'>
-      <Switch />
+      {/* <Form>
+        <FormItem label='步进器' name='stepper'>
+          <Switch />
+        </FormItem>
+      </Form> */}
       {judgeIsSuccess(response) && <SchemaPage
         options={response.data?.options}
-        components={components}
         schema={response.data?.schema}
-        type='form'
       />}
     </Page>
   );
