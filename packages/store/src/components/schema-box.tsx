@@ -1,6 +1,5 @@
-import { Form } from '@formily/core';
-import { useParentForm, FormProvider, ExpressionScope } from '@formily/react';
-import { useMemo } from 'react';
+import { Form, isForm } from '@formily/core';
+import { useParentForm, FormProvider, RecordScope } from '@formily/react';
 
 export interface SchemaBoxProps {
   model?: Form
@@ -10,17 +9,14 @@ export interface SchemaBoxProps {
 export const SchemaBox = (props: SchemaBoxProps) => {
   const { model, children } = props;
   const top = useParentForm();
-  const value = useMemo(() => ({ $$form: model ?? top }), [model, top]);
 
   if (model) {
     return (
-      <FormProvider form={model}>
-        <ExpressionScope value={value}>{children}</ExpressionScope>
-      </FormProvider>
+      <FormProvider form={model}><RecordScope getRecord={() => model.values}>{children}</RecordScope></FormProvider>
     );
   };
 
   if (!top) throw new Error('must pass form instance by createForm');
 
-  return <ExpressionScope value={value}>{children}</ExpressionScope>;
+  return <RecordScope getRecord={() => (isForm(top) ? top.values : top.value)}>{children}</RecordScope>;
 };

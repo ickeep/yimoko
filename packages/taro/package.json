@@ -46,9 +46,9 @@
   },
   "peerDependencies": {
     "@antmjs/vantui": "^1.9.5",
-    "@formily/react": "^2.1.9",
-    "@formily/reactive": "^2.1.9",
-    "@formily/reactive-react": "^2.1.9",
+    "@formily/react": "^2.1.11",
+    "@formily/reactive": "^2.1.11",
+    "@formily/reactive-react": "^2.1.11",
     "@taroify/commerce": "0.0.29-alpha.9",
     "@taroify/core": "0.0.29-alpha.9",
     "@taroify/icons": "0.0.29-alpha.9",
