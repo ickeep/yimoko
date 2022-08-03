@@ -7,6 +7,14 @@ import { IKeys, IOptions, dataToOptions } from '../tools/options';
 
 import { useDeepEffect } from './use-deep-effect';
 
+export interface IOptionsAPIProps<T extends string = 'label' | 'value'> {
+  splitter?: string
+  keys?: IKeys<T>
+  options?: IOptions<T>
+  api?: IOptionsAPI
+  valueType?: 'none' | 'string' | 'array'
+}
+
 export type IOptionsAPI = IAPIRequestConfig | ((config?: IAPIRequestConfig) => Promise<IHTTPResponse>);
 
 export const useAPIOptions = <T extends string = 'label' | 'value'>(

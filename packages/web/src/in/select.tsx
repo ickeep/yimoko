@@ -1,10 +1,10 @@
 import { Select as TSelect } from '@formily/antd';
 import { observer } from '@formily/react';
-import { IOptions, IKeys, IOptionsAPISearchConfig, useAPIOptions, useAPISearchOptions, IOptionsAPI, strToArr } from '@yimoko/store';
+import { useAPIOptions, useAPISearchOptions, strToArr, IOptionsAPISearchProps } from '@yimoko/store';
 import { Spin, SelectProps as TSelectProps } from 'antd';
 import { useMemo, useState } from 'react';
 
-export type SelectProps = TSelectProps & IOptionsProps;
+export type SelectProps = TSelectProps & IOptionsAPISearchProps;
 
 export const Select = observer((props: SelectProps) => {
   const { splitter, keys, options, api, labelAPI, apiType, searchConfig, value, valueType, mode, onChange, ...args } = props;
@@ -48,15 +48,3 @@ export const Select = observer((props: SelectProps) => {
   );
 });
 
-
-export interface IOptionsProps<T extends string = 'label' | 'value'> {
-  splitter?: string
-  keys?: IKeys<T>
-  options?: IOptions<T>
-  api?: IOptionsAPI
-  valueType?: 'none' | 'string' | 'array'
-  // 搜索相关参数
-  labelAPI?: IOptionsAPI | boolean,
-  apiType?: 'search' | 'data'
-  searchConfig?: IOptionsAPISearchConfig<T>
-}

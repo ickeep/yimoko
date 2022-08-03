@@ -8,7 +8,7 @@ import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../tools/options';
 
-import { IOptionsAPI } from './use-api-options';
+import { IOptionsAPI, IOptionsAPIProps } from './use-api-options';
 import { useDeepEffect } from './use-deep-effect';
 import { useDeepMemo } from './use-deep-memo';
 
@@ -16,6 +16,12 @@ export interface IOptionsAPISearchConfig<T extends string = 'label' | 'value'> {
   request?: IKeys
   keys?: IKeys<T>
   wait?: number
+}
+
+export interface IOptionsAPISearchProps<T extends string = 'label' | 'value'> extends IOptionsAPIProps<T> {
+  labelAPI?: IOptionsAPI | boolean,
+  apiType?: 'search' | 'data'
+  searchConfig?: IOptionsAPISearchConfig<T>
 }
 
 export const useAPISearchOptions = <T extends string = 'label' | 'value'>(

@@ -19,6 +19,5 @@ export const MatchMedia = observer((props: MatchMediaProps) => {
     setCn(classNames('y-match-media', { [`y-match-media-${size}`]: size }, className));
   }, [className, size]);
 
-  // @ts-ignore
   return <TMatchMedia {...args} className={cn}  >{value ?? children}</TMatchMedia>;
 });

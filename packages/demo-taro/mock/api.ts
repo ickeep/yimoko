@@ -23,14 +23,14 @@ export default {
                 id: 'username',
               },
             },
-            icon: {
-              type: 'void',
-              title: '图标',
-              'x-decorator': 'Icon',
-              'x-decorator-props': {
-                value: 'error',
-              },
-            },
+            // icon: {
+            //   type: 'void',
+            //   title: '图标',
+            //   'x-decorator': 'Icon',
+            //   'x-decorator-props': {
+            //     value: 'error',
+            //   },
+            // },
             mail: {
               type: 'string',
               title: '邮箱',
@@ -49,7 +49,7 @@ export default {
             btn: {
               type: 'string', title: '按钮',
               'x-component': 'Button',
-              'x-component-props': { value: '123' }
+              'x-component-props': { value: '123', type: "primary" }
             },
             mail2: {
               type: 'string',
