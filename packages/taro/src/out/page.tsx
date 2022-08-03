@@ -1,9 +1,7 @@
 import { observer } from '@formily/react';
+import { IStoreResponse, judgeIsSuccess } from '@yimoko/store';
 import classNames from 'classnames';
-import { IStoreResponse } from 'packages/store/types';
 import React from 'react';
-
-import { judgeIsSuccess } from '../adapter/http';
 
 import { Loading } from './loading';
 import { ResponseError } from './response-error';

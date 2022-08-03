@@ -1,7 +1,6 @@
 import { observer } from '@formily/react';
-import { IStoreResponse } from 'packages/store/types';
+import { IStoreResponse, judgeIsSuccess } from '@yimoko/store';
 
-import { judgeIsSuccess } from '../adapter/http';
 
 import { View } from './view';
 

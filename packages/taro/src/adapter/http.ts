@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+import { getCodeByStatus, IHTTPCode } from '@yimoko/store';
 
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
@@ -26,18 +27,6 @@ export const httpOptions: IHTTPGet = (url, config) => httpRequest({ ...config, u
 export const httpPost: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'POST' });
 export const httpPut: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'PUT' });
 
-// 判断请求是否成功
-export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
-
-// 判断请求是否未授权
-export const judgeIsUnauthorized = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.unauthorized;
-
-// 判断请求是否被禁止，通常用于接口参数校验 或者 权限校验
-export const judgeIsForbidden = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.forbidden;
-
-// 判断请求是否网络出错
-export const judgeIsNetworkError = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.networkError;
-
 // 处理请求返回的数据
 export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<T>): IHTTPResponse<T> => {
   const { data, statusCode, errMsg } = response;
@@ -51,21 +40,11 @@ export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<
   };
 };
 
-// 根据 status 获取 code
-export const getCodeByStatus = (status: number) => ((status >= 200 && status < 300) ? IHTTPCode.success : status);
-
 // 获取 response data
 export const getResponseData = (response: ITaroResponse): Record<string, any> => {
   const { data } = response;
   return (typeof data?.code !== 'undefined' && (typeof data?.msg !== 'undefined' || typeof data?.data !== 'undefined')) ? data : response;
 };
-
-export enum IHTTPCode {
-  success = 0,
-  unauthorized = 401,
-  forbidden = 403,
-  networkError = 600,
-}
 
 export interface IHTTPResponse<T = any> extends Partial<ITaroResponse<T>> {
   code: IHTTPCode | number
@@ -79,14 +58,6 @@ export type IHTTPRequest = <R = any, P = any>(config: IHTTPConfig<P>) => Promise
 export type IHTTPGet = <R = any, P = any>(url: string, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
 
 export type IHTTPPost = <R = any, P = Record<string, any>> (url: string, data?: P, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
-
-export interface IPageData<T extends object = Record<string, any>> {
-  page: number,
-  pageSize: number,
-  total: number,
-  totalPages: number,
-  data: T[],
-}
 
 export interface IHTTPConfig<P = any> {
   /** 开发者服务器接口地址 */
