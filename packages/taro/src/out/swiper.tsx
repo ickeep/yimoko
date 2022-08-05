@@ -2,7 +2,7 @@ import { Skeleton, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
 import { observer, RecursionField, useFieldSchema } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps } from '@tarojs/components';
-import { useAPIOptions, IOptionsAPIProps } from '@yimoko/store';
+import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps } from '@yimoko/store';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 
@@ -12,7 +12,7 @@ import { getCssSize } from '../tools/style';
 import { Text } from './text';
 import { View } from './view';
 
-export type SwiperProps = TSwiperProps & IOptionsAPIProps<'title' | 'desc' | 'img' | 'url' | 'click' | 'routeType'> & {
+export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
   value?: any;
   height?: number;
   itemStyle?: React.CSSProperties
@@ -22,12 +22,10 @@ export type SwiperProps = TSwiperProps & IOptionsAPIProps<'title' | 'desc' | 'im
   descStyle?: React.CSSProperties
 };
 
-const defaultKeys = { title: 'title', desc: 'desc', img: 'img', url: 'url', click: 'click', routeType: 'routeType' };
-
 export const Swiper = observer((props: SwiperProps) => {
   const { className, options, api, keys, splitter, value, height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args } = props;
   const { items } = useFieldSchema();
-  const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
+  const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curHeight = useMemo(() => getCssSize(height), [height]);
   const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
 

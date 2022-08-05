@@ -15,6 +15,10 @@ export interface IOptionsAPIProps<T extends string = 'label' | 'value'> {
   valueType?: 'none' | 'string' | 'array'
 }
 
+export const defaultOutOptionsKeys = { title: 'title', desc: 'desc', img: 'img', url: 'url', click: 'click', routeType: 'routeType' };
+
+export type IOptionsOutAPIProps<T extends string = keyof typeof defaultOutOptionsKeys> = Omit<IOptionsAPIProps<T>, 'valueType'>;
+
 export type IOptionsAPI = IAPIRequestConfig | ((config?: IAPIRequestConfig) => Promise<IHTTPResponse>);
 
 export const useAPIOptions = <T extends string = 'label' | 'value'>(
