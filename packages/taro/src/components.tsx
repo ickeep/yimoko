@@ -1,4 +1,4 @@
-import { Button } from '@antmjs/vantui';
+import { Button, Image } from '@antmjs/vantui';
 import { withValueChildren } from '@yimoko/store';
 
 import { Form } from './in/form';
@@ -16,4 +16,5 @@ export const components: Record<string, any> = {
   Icon,
   Swiper,
   Button: withValueChildren(Button),
+  Image,
 };

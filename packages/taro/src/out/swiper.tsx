@@ -1,33 +1,54 @@
 import { Skeleton, Image } from '@antmjs/vantui';
-import { observer } from '@formily/react';
+import { ImageProps } from '@antmjs/vantui/types/image';
+import { observer, RecursionField, useFieldSchema } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps } from '@tarojs/components';
 import { useAPIOptions, IOptionsAPIProps } from '@yimoko/store';
+import classNames from 'classnames';
+import React, { useMemo } from 'react';
+
+import { handleClick } from '../tools/handle-click';
+import { getCssSize } from '../tools/style';
 
 import { Text } from './text';
 import { View } from './view';
 
-
-export type SwiperProps = TSwiperProps & IOptionsAPIProps<'title' | 'desc' | 'img' | 'url' | 'click'> & {
+export type SwiperProps = TSwiperProps & IOptionsAPIProps<'title' | 'desc' | 'img' | 'url' | 'click' | 'routeType'> & {
   value?: any;
+  height?: number;
+  itemStyle?: React.CSSProperties
+  image?: ImageProps
+  textStyle?: React.CSSProperties
+  titleStyle?: React.CSSProperties
+  descStyle?: React.CSSProperties
 };
 
-const defaultKeys = { title: 'title', desc: 'desc', img: 'img', url: 'url', click: 'click' };
+const defaultKeys = { title: 'title', desc: 'desc', img: 'img', url: 'url', click: 'click', routeType: 'routeType' };
 
 export const Swiper = observer((props: SwiperProps) => {
-  const { options, api, keys, splitter, value, ...args } = props;
+  const { className, options, api, keys, splitter, value, height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args } = props;
+  const { items } = useFieldSchema();
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
+  const curHeight = useMemo(() => getCssSize(height), [height]);
+  const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
+
+  const curItems = useMemo(() => {
+    if (!items) return [];
+    return Array.isArray(items) ? items : [items];
+  }, [items]);
+
   return (
     <Skeleton loading={loading}>
-      <TSwiper {...args}>
+      <TSwiper {...args} className={classNames('y-swiper', className)}>
         {data?.map?.((item, i) => (
-          <SwiperItem key={item.title ?? i}>
-            <Image width="100px" height="100px" fit="cover" src={item.url} />
-            <View>
-              <Text>{item.title}</Text>
-              {item.desc && <Text>{item.desc}</Text>}
+          <SwiperItem key={item.title ?? i} style={curItemStyle} onClick={() => handleClick(item, i)}>
+            <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
+            <View className='c-text' style={textStyle}>
+              {item.desc && <Text style={titleStyle}>{item.title}</Text>}
+              {item.desc && <Text size="small" style={descStyle}>{item.desc}</Text>}
             </View>
           </SwiperItem>
         ))}
+        {curItems.map?.((item, i) => <SwiperItem key={i} style={curItemStyle}><RecursionField schema={item} name={i} /></SwiperItem>)}
       </TSwiper>
     </Skeleton>
   );

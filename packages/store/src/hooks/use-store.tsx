@@ -1,12 +1,13 @@
-import { useMemo } from 'react';
 
 import { useAPIExecutor } from '../context/api';
 import { IStore, IStoreConfig, StoreMap } from '../store';
 import { IStoreValues, BaseStore } from '../store/base';
 
+import { useDeepMemo } from './use-deep-memo';
+
 export function useStore<V extends object = IStoreValues, R = IStoreValues>(store: IStore<V, R> | IStoreConfig<V, R>) {
   const apiExecutor = useAPIExecutor();
-  const curStore = useMemo(() => {
+  const curStore = useDeepMemo(() => {
     if (store instanceof BaseStore) {
       if (!store.apiExecutor) {
         // eslint-disable-next-line no-param-reassign

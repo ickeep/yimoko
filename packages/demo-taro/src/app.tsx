@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 
 import { createSchemaField } from '@formily/react';
 import { APIExecutorProvider, SchemaComponentsProvider, SchemaFieldProvider } from '@yimoko/store';
-import { httpRequest } from '@yimoko/taro';
+import { httpRequest, configStore } from '@yimoko/taro';
 import { Component } from 'react';
 
 import './app.less';
@@ -12,6 +12,8 @@ const apiHost = 'http://localhost:9527';
 
 
 const SchemaField = createSchemaField({ components: componentsMap });
+
+configStore.config.tabURL = ['pages/index/index'];
 
 class App extends Component<any, any> {
   componentDidMount() {

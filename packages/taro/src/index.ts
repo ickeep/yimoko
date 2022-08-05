@@ -19,6 +19,8 @@ export * from './schema/context';
 
 export * from './store/config';
 export * from './store/lang';
+export * from './store/page';
+export * from './store/search';
 
 export * from './tools/style';
 

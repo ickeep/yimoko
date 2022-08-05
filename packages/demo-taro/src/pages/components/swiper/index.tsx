@@ -1,17 +1,40 @@
 import { observer } from '@formily/react';
-import { SchemaPage, useBaseStore, judgeIsSuccess } from '@yimoko/store';
-import { Page } from '@yimoko/taro';
+import { StorePage } from '@yimoko/taro';
 
 const IndexPage = observer(() => {
-  const { loading, response } = useBaseStore({ api: { url: '/api/components/swiper' }, isRunNow: true });
+  console.log('xxxx');
 
   return (
-    <Page loading={loading} data={response} >
-      {judgeIsSuccess(response) && <SchemaPage
-        options={response.data?.options}
-        schema={response.data?.schema}
-      />}
-    </Page>
+    <StorePage
+      store={{ api: {} }}
+      options={{}}
+      schema={{
+        type: 'object', properties: {
+          swiper: {
+            items: [{
+              type: 'void',
+              'x-component': 'Image',
+              'x-component-props': { src: 'https://img.yzcdn.cn/vant/t1.jpg', width: '100%', height: '100%' },
+            },
+            {
+              type: 'void',
+              'x-component': 'Image',
+              'x-component-props': { src: 'https://img.yzcdn.cn/vant/t1.jpg', width: '100%', height: '100%' },
+            }],
+            'x-component': 'Swiper',
+            'x-component-props': {
+              autoplay: true,
+              indicatorDots: true,
+              options: [
+                { title: 'T1', img: 'https://img.yzcdn.cn/vant/t1.jpg', desc: 'desc-1' },
+                { title: 'T2', img: 'https://img.yzcdn.cn/vant/t2.jpg', desc: 'desc-2' },
+              ],
+            },
+          },
+        },
+      }}
+    />
+
   );
 });
 
