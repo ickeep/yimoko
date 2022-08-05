@@ -38,15 +38,19 @@ export const Swiper = observer((props: SwiperProps) => {
     <Skeleton loading={loading}>
       <TSwiper {...args} className={classNames('y-swiper', className)}>
         {data?.map?.((item, i) => (
-          <SwiperItem key={item.title ?? i} style={curItemStyle} onClick={() => handleClick(item, i)}>
+          <SwiperItem key={i} style={curItemStyle} onClick={() => handleClick(item, i)}>
             <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
             <View className='c-text' style={textStyle}>
-              {item.desc && <Text style={titleStyle}>{item.title}</Text>}
+              {item.title && <Text style={titleStyle}>{item.title}</Text>}
               {item.desc && <Text size="small" style={descStyle}>{item.desc}</Text>}
             </View>
           </SwiperItem>
         ))}
-        {curItems.map?.((item, i) => <SwiperItem key={i} style={curItemStyle}><RecursionField schema={item} name={i} /></SwiperItem>)}
+        {curItems.map?.((item, i) => (
+          <SwiperItem key={data.length ?? 0 + i} style={curItemStyle}>
+            <RecursionField schema={item} name={i} />
+          </SwiperItem>
+        ))}
       </TSwiper>
     </Skeleton>
   );
