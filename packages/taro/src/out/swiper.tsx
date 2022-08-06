@@ -23,7 +23,9 @@ export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
 };
 
 export const Swiper = observer((props: SwiperProps) => {
-  const { className, options, api, keys, splitter, value, height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args } = props;
+  const { className, options, api, keys, splitter, value, children,
+    height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
+  } = props;
   const { items } = useFieldSchema();
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curHeight = useMemo(() => getCssSize(height), [height]);
@@ -38,7 +40,7 @@ export const Swiper = observer((props: SwiperProps) => {
     <Skeleton loading={loading}>
       <TSwiper {...args} className={classNames('y-swiper', className)}>
         {data?.map?.((item, i) => (
-          <SwiperItem key={i} style={curItemStyle} onClick={() => handleClick(item, i)}>
+          <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)}>
             <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
             <View className='c-text' style={textStyle}>
               {item.title && <Text style={titleStyle}>{item.title}</Text>}
@@ -47,10 +49,11 @@ export const Swiper = observer((props: SwiperProps) => {
           </SwiperItem>
         ))}
         {curItems.map?.((item, i) => (
-          <SwiperItem key={data.length ?? 0 + i} style={curItemStyle}>
+          <SwiperItem key={`item-${i}`} style={curItemStyle}>
             <RecursionField schema={item} name={i} />
           </SwiperItem>
         ))}
+        {children}
       </TSwiper>
     </Skeleton>
   );

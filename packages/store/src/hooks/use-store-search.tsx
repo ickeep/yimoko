@@ -7,7 +7,7 @@ import { ListStore } from '../store/list';
 import { getValueBySearchParam } from '../store/utils/field';
 import { judgeIsEmpty } from '../tools/tool';
 
-export const useStoreSearch = (store: IStore, search: string) => {
+export const useStoreSearch = (store: IStore, search: string | Partial<Record<string, string>>) => {
   const form = useForm();
   const isNotFirst = useRef(false);
   const { isRunNow } = store;
@@ -31,14 +31,21 @@ export const useStoreSearch = (store: IStore, search: string) => {
 
     if (isBindSearch) {
       const newValues: Record<string, any> = {};
-      const searchParams = new URLSearchParams(search);
-      Object.entries(values).forEach(([key, value]) => {
-        const strVal = searchParams.get(key);
-        if (strVal !== null) {
-          const val = getValueBySearchParam(strVal, fieldsConfig[key], defaultValues[key]);
-          !isEqual(val, value) && (newValues[key] = val);
-        }
-      });
+      if (typeof search === 'string') {
+        const searchParams = new URLSearchParams(search);
+        Object.entries(values).forEach(([key, value]) => {
+          const strVal = searchParams.get(key);
+          if (strVal !== null) {
+            const val = getValueBySearchParam(strVal, fieldsConfig[key], defaultValues[key]);
+            !isEqual(val, value) && (newValues[key] = val);
+          }
+        });
+      } else {
+        Object.entries(search).forEach(([key, value = '']) => {
+          const val = getValueBySearchParam(value, fieldsConfig[key], defaultValues[key]);
+          !isEqual(val, values[key]) && (newValues[key] = val);
+        });
+      }
       const isEmpaty = judgeIsEmpty(newValues);
       !isEmpaty && setValues(newValues);
       // 列表页 search 参数变化，则重新请求数据

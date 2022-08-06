@@ -1,5 +1,3 @@
-import { template } from 'lodash-es';
-
 import { IRouteType, navigate } from '../adapter/route';
 
 interface IItem {
@@ -15,7 +13,7 @@ export const handleClick = (item: IItem, i?: number) => {
     click(item, i);
   }
   if (typeof url === 'string' && url) {
-    const compiled = template(url);
-    navigate(compiled({ ...item, $index: i }), routeType);
+    // const compiled = template(url);
+    navigate(url, routeType);
   }
 };

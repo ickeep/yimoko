@@ -107,6 +107,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   };
 
   getURLSearch = () => {
+    // todo 兼容小程序 小程序不支持 URLSearchParams
     const searchParams = new URLSearchParams();
     Object.entries(this.values).forEach(([key, value]) => {
       const defaultValue = this.defaultValues[key];
