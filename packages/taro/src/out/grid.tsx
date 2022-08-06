@@ -26,6 +26,7 @@ export const Grid = observer((props: GridProps) => {
 
   return (
     <Skeleton loading={loading}>
+      {/* Grid 组件 childern 不支持 空 */}
       {!judgeIsEmpty(options) && <TGrid {...args} className={classNames('y-grid', className)}>
         {options?.map?.((item, i) => {
           const { title, desc, img, url, click, routeType, ...args } = item;

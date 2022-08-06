@@ -13,6 +13,7 @@ const IndexPage = observer(() => (
             title: '基础组件',
             options: [
               { title: 'Icon 图标', url: '/pages/components/icon/index' },
+              { title: 'Grid 宫格', url: '/pages/components/grid/index' },
             ],
           },
         },

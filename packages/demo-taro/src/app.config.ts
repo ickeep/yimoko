@@ -2,6 +2,7 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/components/index',
+    'pages/components/grid/index',
     'pages/components/swiper/index',
     'pages/components/icon/index',
   ],
