@@ -27,6 +27,7 @@ const IndexPage = observer(() => (
         cg2: {
           'x-component': 'CheckboxGroup',
           'x-component-props': {
+            direction: 'horizontal',
             valueType: 'string',
             options: [
               { label: '一', value: '1' },
