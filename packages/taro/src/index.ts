@@ -15,6 +15,7 @@ export * from './in/form';
 export * from './in/input';
 export * from './in/label';
 export * from './in/radio';
+export * from './in/rate';
 
 export * from './out/match-media';
 export * from './out/page';

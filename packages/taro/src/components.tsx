@@ -11,6 +11,7 @@ import { Form } from './in/form';
 import { FormItem } from './in/form-item';
 import { Input } from './in/input';
 import { Radio, RadioGroup } from './in/radio';
+import { Rate } from './in/rate';
 import { Grid } from './out/grid';
 import { Swiper } from './out/swiper';
 
@@ -35,6 +36,7 @@ export const components: Record<string, any> = {
   CheckboxGroup,
   Radio,
   RadioGroup,
+  Rate,
 
   // out
   Swiper,

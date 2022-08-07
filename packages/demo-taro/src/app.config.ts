@@ -9,6 +9,7 @@ export default defineAppConfig({
     // in
     'pages/components/checkbox/index',
     'pages/components/radio/index',
+    'pages/components/rate/index',
   ],
   tabBar: {
     list: [{
