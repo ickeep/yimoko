@@ -1,13 +1,16 @@
-import { Button, Cell, GridItem, Image } from '@antmjs/vantui';
 import { SwiperItem } from '@tarojs/components';
-import { withValueChildren } from '@yimoko/store';
 
+import { Button } from './base/button';
+import { Cell, CellGroup } from './base/cell';
+import { Icon } from './base/icon';
+import { Image } from './base/image';
+import { Col, Row } from './base/layout';
+import { Popup } from './base/popup';
+import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
 import { FormItem } from './in/form-item';
 import { Input } from './in/input';
-import { CellGroup } from './out/cell-group';
 import { Grid } from './out/grid';
-import { Icon } from './out/icon';
 import { Swiper } from './out/swiper';
 
 export const components: Record<string, any> = {
@@ -15,14 +18,23 @@ export const components: Record<string, any> = {
   Input,
   Form,
   FormItem,
-  // out
-  CellGroup,
+
+  // base
+  Button,
   Cell,
+  CellGroup,
   Icon,
+  Image,
+  Row,
+  Col,
+  Popup,
+
+  // in
+  Checkbox,
+  CheckboxGroup,
+
+  // out
   Swiper,
   SwiperItem,
   Grid,
-  GridItem: withValueChildren(GridItem),
-  Button: withValueChildren(Button),
-  Image,
 };

@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { useState, useEffect, CSSProperties } from 'react';
 
 import { getSystemInfo } from '../adapter/system';
+import { Icon } from '../base/icon';
 import { ISize } from '../props';
 import { getCssSize } from '../tools/style';
 
-import { Icon } from './icon';
 import { View, ViewProps } from './view';
 
 export interface LoadingProps extends ViewProps {
@@ -43,7 +43,7 @@ export const Loading = observer((props: LoadingProps) => {
 
   return (
     <View {...args} className={classNames('y-loading', { 'y-loading-full': isFull }, className)} style={lStyle}>
-      <Icon src={icon} size={iconSize} />
+      <Icon name={icon} size={iconSize} />
     </View>
   );
 });

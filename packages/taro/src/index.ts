@@ -2,12 +2,19 @@ export * from './adapter/http';
 
 export * from './hooks/use-size';
 
+export * from './base/button';
+export * from './base/cell';
+export * from './base/icon';
+export * from './base/image';
+export * from './base/layout';
+export * from './base/popup';
+
+export * from './in/checkbox';
 export * from './in/form-item';
 export * from './in/form';
 export * from './in/input';
 export * from './in/label';
 
-export * from './out/icon';
 export * from './out/match-media';
 export * from './out/page';
 export * from './out/popover';

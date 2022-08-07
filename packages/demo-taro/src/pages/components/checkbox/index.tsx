@@ -3,28 +3,10 @@ import { StorePage } from '@yimoko/taro';
 
 const IndexPage = observer(() => (
   <StorePage
-    store={{ api: {}, isBindSearch: true, defaultValues: { icon: 'star', c1: '', c2: 0, cg: [], cg2: '' } }}
+    store={{ api: {}, isBindSearch: true, defaultValues: { c1: '', c2: 0, cg: [], cg2: '' } }}
     options={{}}
     schema={{
       type: 'object', properties: {
-        icon: {
-          'x-component': 'Icon',
-          'x-component-props': {
-            name: 'search',
-          },
-        },
-        icon1: {
-          'x-component': 'Icon',
-          'x-component-props': {
-            name: 'search',
-          },
-        },
-        value: {
-          'x-component': 'Icon',
-          'x-component-props': {
-            name: 'question',
-          },
-        },
         c1: {
           'x-component': 'Checkbox',
           'x-component-props': { children: 'bool' },

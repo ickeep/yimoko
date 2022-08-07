@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { pickBy } from 'lodash-es';
 import { useEffect, useState, CSSProperties } from 'react';
 
-import { Icon } from '../out/icon';
+import { Icon } from '../base/icon';
 import { Text } from '../out/text';
 import { Value } from '../out/value';
 import { ViewProps, View } from '../out/view';
@@ -85,7 +85,7 @@ const Help = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'help
   };
   return (
     <View className='y-form-item-help' onClick={click}>
-      {typeof helpIcon === 'string' ? <Icon size={size} src={helpIcon} /> : helpIcon}
+      {typeof helpIcon === 'string' ? <Icon size={size} name={helpIcon} /> : helpIcon}
     </View>
   );
 });
@@ -98,7 +98,7 @@ const Feedback = observer((props: Pick<FormItemProps & SchemaItemInheritProps, '
   const fSize = downSize(size);
   return (
     <View className='y-form-item-feedback'>
-      <Icon src={feedbackStatus} size={fSize} />
+      <Icon name={feedbackStatus} size={fSize} />
       <Text size={fSize} color={getColorByStatus(feedbackStatus)}>{feedbackText}</Text>
     </View>
   );

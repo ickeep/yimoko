@@ -5,6 +5,9 @@ export default defineAppConfig({
     'pages/components/grid/index',
     'pages/components/swiper/index',
     'pages/components/icon/index',
+
+    // in
+    'pages/components/checkbox/index',
   ],
   tabBar: {
     list: [{

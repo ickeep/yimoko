@@ -7,13 +7,22 @@ const IndexPage = observer(() => (
     options={{}}
     schema={{
       type: 'object', properties: {
-        icon: {
+        base: {
           'x-component': 'CellGroup',
           'x-component-props': {
             title: '基础组件',
             options: [
               { title: 'Icon 图标', url: '/pages/components/icon/index' },
               { title: 'Grid 宫格', url: '/pages/components/grid/index' },
+            ],
+          },
+        },
+        in: {
+          'x-component': 'CellGroup',
+          'x-component-props': {
+            title: '表单组件',
+            options: [
+              { title: 'Checkbox 复选框', url: '/pages/components/checkbox/index' },
             ],
           },
         },
