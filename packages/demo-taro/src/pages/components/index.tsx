@@ -27,6 +27,7 @@ const IndexPage = observer(() => (
               { title: 'Rate 评分', url: '/pages/components/rate/index' },
               { title: 'Slider 滑块', url: '/pages/components/slider/index' },
               { title: 'Stepper 步进器', url: '/pages/components/stepper/index' },
+              { title: 'Switch 开关', url: '/pages/components/switch/index' },
             ],
           },
         },

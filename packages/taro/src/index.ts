@@ -20,6 +20,7 @@ export * from './in/radio';
 export * from './in/rate';
 export * from './in/slider';
 export * from './in/stepper';
+export * from './in/switch';
 
 export * from './out/match-media';
 export * from './out/divider';
