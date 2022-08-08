@@ -15,6 +15,7 @@ import { Input } from './in/input';
 import { Radio, RadioGroup } from './in/radio';
 import { Rate } from './in/rate';
 import { Slider } from './in/slider';
+import { Stepper } from './in/stepper';
 import { Divider } from './out/divider';
 import { Grid } from './out/grid';
 import { Swiper } from './out/swiper';
@@ -44,6 +45,7 @@ export const components: Record<string, any> = {
   RadioGroup,
   Rate,
   Slider,
+  Stepper,
 
   // out
   Divider,

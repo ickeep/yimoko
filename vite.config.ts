@@ -31,8 +31,6 @@ export default defineConfig({
         '@ant-design/icons',
         'antd',
         '@antmjs/vantui',
-        '@taroify/core',
-        '@taroify/icons',
         '@formily/core',
         '@formily/reactive',
         '@formily/react',

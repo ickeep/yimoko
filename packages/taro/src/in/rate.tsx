@@ -2,7 +2,7 @@ import { Rate as TRate } from '@antmjs/vantui';
 import { RateProps as TRateProps } from '@antmjs/vantui/types/rate';
 import { ITouchEvent } from '@tarojs/components';
 
-export interface RateProps extends Omit<TRateProps, 'onChange' | 'value'> {
+export interface RateProps extends Omit<TRateProps, 'onChange'> {
   onChange?: (value: any, event: ITouchEvent) => void
 }
 

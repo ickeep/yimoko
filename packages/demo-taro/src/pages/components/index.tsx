@@ -26,6 +26,7 @@ const IndexPage = observer(() => (
               { title: 'Radio 单选框', url: '/pages/components/radio/index' },
               { title: 'Rate 评分', url: '/pages/components/rate/index' },
               { title: 'Slider 滑块', url: '/pages/components/slider/index' },
+              { title: 'Stepper 步进器', url: '/pages/components/stepper/index' },
             ],
           },
         },

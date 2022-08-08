@@ -11,6 +11,7 @@ export default defineAppConfig({
     'pages/components/radio/index',
     'pages/components/rate/index',
     'pages/components/slider/index',
+    'pages/components/stepper/index',
   ],
   tabBar: {
     list: [{

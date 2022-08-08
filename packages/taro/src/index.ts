@@ -19,6 +19,7 @@ export * from './in/label';
 export * from './in/radio';
 export * from './in/rate';
 export * from './in/slider';
+export * from './in/stepper';
 
 export * from './out/match-media';
 export * from './out/divider';
