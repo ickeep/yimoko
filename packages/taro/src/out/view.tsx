@@ -3,6 +3,7 @@ import { View as TView, ViewProps as TViewProps } from '@tarojs/components';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 
+// todo 废弃
 import { Ilayout } from '../props';
 export interface ViewProps extends TViewProps {
   layout?: Ilayout

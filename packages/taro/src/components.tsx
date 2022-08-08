@@ -5,13 +5,17 @@ import { Cell, CellGroup } from './base/cell';
 import { Icon } from './base/icon';
 import { Image } from './base/image';
 import { Col, Row } from './base/layout';
+import { Page } from './base/page';
 import { Popup } from './base/popup';
+import { View } from './base/view';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
 import { FormItem } from './in/form-item';
 import { Input } from './in/input';
 import { Radio, RadioGroup } from './in/radio';
 import { Rate } from './in/rate';
+import { Slider } from './in/slider';
+import { Divider } from './out/divider';
 import { Grid } from './out/grid';
 import { Swiper } from './out/swiper';
 
@@ -29,7 +33,9 @@ export const components: Record<string, any> = {
   Image,
   Row,
   Col,
+  Page,
   Popup,
+  View,
 
   // in
   Checkbox,
@@ -37,8 +43,10 @@ export const components: Record<string, any> = {
   Radio,
   RadioGroup,
   Rate,
+  Slider,
 
   // out
+  Divider,
   Swiper,
   SwiperItem,
   Grid,

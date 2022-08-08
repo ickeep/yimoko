@@ -7,7 +7,9 @@ export * from './base/cell';
 export * from './base/icon';
 export * from './base/image';
 export * from './base/layout';
+export * from './base/page';
 export * from './base/popup';
+export * from './base/view';
 
 export * from './in/checkbox';
 export * from './in/form-item';
@@ -16,13 +18,13 @@ export * from './in/input';
 export * from './in/label';
 export * from './in/radio';
 export * from './in/rate';
+export * from './in/slider';
 
 export * from './out/match-media';
-export * from './out/page';
+export * from './out/divider';
 export * from './out/popover';
 export * from './out/text';
 export * from './out/value';
-export * from './out/view';
 
 export * from './schema/context';
 

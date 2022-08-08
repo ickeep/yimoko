@@ -10,6 +10,7 @@ export default defineAppConfig({
     'pages/components/checkbox/index',
     'pages/components/radio/index',
     'pages/components/rate/index',
+    'pages/components/slider/index',
   ],
   tabBar: {
     list: [{
