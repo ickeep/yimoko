@@ -12,6 +12,8 @@ export * from './base/popup';
 export * from './base/text';
 export * from './base/view';
 
+export * from './feedback/action-sheet';
+
 export * from './in/checkbox';
 export * from './in/form-item';
 export * from './in/form';

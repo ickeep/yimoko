@@ -32,6 +32,15 @@ const IndexPage = observer(() => (
             ],
           },
         },
+        feedback: {
+          'x-component': 'CellGroup',
+          'x-component-props': {
+            title: '反馈组件',
+            options: [
+              { title: 'ActionSheet 动作面板', url: '/pages/components/action-sheet/index' },
+            ],
+          },
+        },
       },
     }}
   />

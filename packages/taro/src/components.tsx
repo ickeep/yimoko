@@ -9,6 +9,7 @@ import { Page } from './base/page';
 import { Popup } from './base/popup';
 import { Text } from './base/text';
 import { View } from './base/view';
+import { ActionSheet } from './feedback/action-sheet';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
 import { FormItem } from './in/form-item';
@@ -41,6 +42,9 @@ export const components: Record<string, any> = {
   Text,
   View,
 
+  // feedback
+  ActionSheet,
+
   // in
   Checkbox,
   CheckboxGroup,
@@ -56,4 +60,6 @@ export const components: Record<string, any> = {
   Swiper,
   SwiperItem,
   Grid,
+
+
 };

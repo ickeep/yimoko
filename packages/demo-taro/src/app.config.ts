@@ -1,11 +1,15 @@
 export default defineAppConfig({
   pages: [
+    // base
     'pages/index/index',
     'pages/components/index',
     'pages/components/grid/index',
     'pages/components/swiper/index',
     'pages/components/icon/index',
     'pages/components/text/index',
+
+    // feedback
+    'pages/components/action-sheet/index',
 
     // in
     'pages/components/checkbox/index',
