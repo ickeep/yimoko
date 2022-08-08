@@ -1,43 +1,59 @@
-@import url('../theme.less');
+@import url('@antmjs/vantui/lib/style/var.less');
 
 .y-text {
-  color: @textColor;
-  font-size: @fontSizeBase;
-  line-height: 1.5;
+  .theme(color, '@text-color');
+  .theme(font-size, '@font-size-md');
+  .theme(line-height, '@line-height-md');
 
-  &-extra-small {
-    font-size: @fontSizeExtraSmall;
+  &--bold {
+    .theme(font-weight, '@font-weight-bold');
   }
 
-  &-small {
-    font-size: @fontSizeSmall;
+  &--block {
+    display: block;
   }
 
-  &-medium {
-    font-size: @fontSizeBase;
+  &--mini {
+    .theme(font-size, '@font-size-xs');
+    .theme(line-height, '@line-height-xs');
   }
 
-  &-large {
-    font-size: @fontSizeLarge;
+  &--small {
+    .theme(font-size, '@font-size-sm');
+    .theme(line-height, '@line-height-sm');
   }
 
-  &-extra-large {
-    font-size: @fontSizeExtraLarge;
+  &--normal {
+    .theme(font-size, '@font-size-md');
+    .theme(line-height, '@line-height-md');
   }
 
-  &-danger {
-    color: @dangerColor;
+  &--large {
+    .theme(font-size, '@font-size-lg');
+    .theme(line-height, '@line-height-lg');
   }
 
-  &-success {
-    color: @successColor;
+  &--default {
+    .theme(color, '@text-color');
   }
 
-  &-warning {
-    color: @warningColor;
+  &--primary {
+    .theme(color, '@green');
   }
 
-  &-primary {
-    color: @primaryColor;
+  &--info {
+    .theme(color, '@blue');
+  }
+
+  &--success {
+    .theme(color, '@green');
+  }
+
+  &--warning {
+    .theme(color, '@orange');
+  }
+
+  &--danger {
+    .theme(color, '@red');
   }
 }

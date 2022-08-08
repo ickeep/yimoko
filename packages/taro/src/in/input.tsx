@@ -2,8 +2,8 @@ import { observer } from '@formily/react';
 import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
 import classNames from 'classnames';
 
+import { Text } from '../base/text';
 import { useSize } from '../hooks/use-size';
-import { Text } from '../out/text';
 import { ISize } from '../props';
 
 export interface InputProps extends TInputProps {

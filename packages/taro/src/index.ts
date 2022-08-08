@@ -9,6 +9,7 @@ export * from './base/image';
 export * from './base/layout';
 export * from './base/page';
 export * from './base/popup';
+export * from './base/text';
 export * from './base/view';
 
 export * from './in/checkbox';
@@ -25,8 +26,6 @@ export * from './in/switch';
 export * from './out/match-media';
 export * from './out/divider';
 export * from './out/popover';
-export * from './out/text';
-export * from './out/value';
 
 export * from './schema/context';
 

@@ -1,14 +1,14 @@
 import { isVoidField } from '@formily/core';
 import { connect, mapProps, observer } from '@formily/react';
+import { ViewProps } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classNames from 'classnames';
 import { pickBy } from 'lodash-es';
 import { useEffect, useState, CSSProperties } from 'react';
 
 import { Icon } from '../base/icon';
-import { Text } from '../out/text';
-import { Value } from '../out/value';
-import { ViewProps, View } from '../out/view';
+import { Text } from '../base/text';
+import { View } from '../base/view';
 import { downSize, getColorByStatus, IStatus, upSize } from '../props';
 import { SchemaItemInheritProps, useSchemaInherit } from '../schema/context';
 import { getCssSize } from '../tools/style';
@@ -27,82 +27,86 @@ export interface FormItemProps extends ViewProps {
 
 // eslint-disable-next-line complexity
 export const FormBaseItem: React.FC<FormItemProps & SchemaItemInheritProps> = (props) => {
-  const {
-    required, for: lableID, className, children, extra, label, help,
-    helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign, feedbackStatus, feedbackText,
-    ...args
-  } = props;
-  const [lStyle, setLStyle] = useState<CSSProperties>({});
-  const formInherit = useSchemaInherit();
-  const [mergeProps, setMergePropss] = useState<SchemaItemInheritProps>({});
-
-  useEffect(() => {
-    const itemProps = pickBy({ colon, helpIcon, layout, labelStyle, labelAlign, labelWidth, size }, v => v !== undefined);
-    setMergePropss({ ...formInherit, ...itemProps });
-  }, [formInherit, colon, helpIcon, layout, labelStyle, labelAlign, labelWidth, size]);
-
-  useEffect(() => {
-    const style: CSSProperties = { ...labelStyle, textAlign: labelAlign ?? 'left' };
-    typeof labelWidth !== 'undefined' && (style.width = getCssSize(labelWidth));
-    setLStyle(style);
-  }, [labelAlign, labelStyle, labelWidth]);
-
-  const labelSize = layout !== 'vertical' ? upSize(mergeProps.size) : mergeProps.size;
-
-  return (
-    <View {...args} className={classNames('y-form-item', { [`y-form-item-${mergeProps.layout}`]: mergeProps.layout }, className)} >
-      <Label
-        for={lableID}
-        style={lStyle}
-        className={classNames('y-form-item-label', { [`y-form-item-label-${mergeProps.layout}`]: mergeProps.layout })}
-      >
-        {required && <Text size={labelSize} color="danger" >*</Text>}
-        <Text size={labelSize}>{label}</Text>
-        <Help help={help} helpIcon={mergeProps.helpIcon} size={labelSize} />
-        {mergeProps.colon && <Text size={labelSize}>:</Text>}
-      </Label>
-      <View className='y-form-item-in'>
-        {extra
-          ? <View className='y-form-item-extra-box'>
-            <View className='y-form-item-extra-in'>{children}</View>
-            <Value classname="y-form-item-extra" value={extra} />
-          </View>
-          : <View>{children}</View>
-        }
-        <Feedback feedbackStatus={feedbackStatus} feedbackText={feedbackText} size={mergeProps.size} />
-      </View>
-    </View >
-  );
+  console.log('FormBaseItem', props);
+  return null;
 };
 
-const Help = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'help' | 'helpIcon' | 'size'>) => {
-  const { size, help, helpIcon = 'help' } = props;
-  if (!help) {
-    return null;
-  }
-  const click = () => {
-    Taro.showToast({ title: help, icon: 'none' });
-  };
-  return (
-    <View className='y-form-item-help' onClick={click}>
-      {typeof helpIcon === 'string' ? <Icon size={size} name={helpIcon} /> : helpIcon}
-    </View>
-  );
-});
+//   const {
+//     required, for: lableID, extra, label, help,
+//     helpIcon, colon, layout, size, labelStyle, labelWidth, labelAlign, feedbackStatus, feedbackText,
+//     ...args
+//   } = props;
+//   const [lStyle, setLStyle] = useState<CSSProperties>({});
+//   const formInherit = useSchemaInherit();
+//   const [mergeProps, setMergePropss] = useState<SchemaItemInheritProps>({});
 
-const Feedback = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
-  const { size, feedbackStatus, feedbackText } = props;
-  if (!feedbackText) {
-    return null;
-  }
-  const fSize = downSize(size);
-  return (
-    <View className='y-form-item-feedback'>
-      <Icon name={feedbackStatus} size={fSize} />
-      <Text size={fSize} color={getColorByStatus(feedbackStatus)}>{feedbackText}</Text>
-    </View>
-  );
-});
+//   useEffect(() => {
+//     const itemProps = pickBy({ colon, helpIcon, layout, labelStyle, labelAlign, labelWidth, size }, v => v !== undefined);
+//     setMergePropss({ ...formInherit, ...itemProps });
+//   }, [formInherit, colon, helpIcon, layout, labelStyle, labelAlign, labelWidth, size]);
+
+//   useEffect(() => {
+//     const style: CSSProperties = { ...labelStyle, textAlign: labelAlign ?? 'left' };
+//     typeof labelWidth !== 'undefined' && (style.width = getCssSize(labelWidth));
+//     setLStyle(style);
+//   }, [labelAlign, labelStyle, labelWidth]);
+
+//   const labelSize = layout !== 'vertical' ? upSize(mergeProps.size) : mergeProps.size;
+
+//   return (
+//     <View {...args} className={classNames('y-form-item', { [`y-form-item-${mergeProps.layout}`]: mergeProps.layout }, className)} >
+//       <Label
+//         for={lableID}
+//         style={lStyle}
+//         className={classNames('y-form-item-label', { [`y-form-item-label-${mergeProps.layout}`]: mergeProps.layout })}
+//       >
+//         {required && <Text size={labelSize} color="danger" >*</Text>}
+//         <Text size={labelSize}>{label}</Text>
+//         <Help help={help} helpIcon={mergeProps.helpIcon} size={labelSize} />
+//         {mergeProps.colon && <Text size={labelSize}>:</Text>}
+//       </Label>
+//       <View className='y-form-item-in'>
+//         {extra
+//           ? <View className='y-form-item-extra-box'>
+//             <View className='y-form-item-extra-in'>{children}</View>
+//             <Value classname="y-form-item-extra" value={extra} />
+//           </View>
+//           : <View>{children}</View>
+//         }
+//         <Feedback feedbackStatus={feedbackStatus} feedbackText={feedbackText} size={mergeProps.size} />
+//       </View>
+//     </View >
+//   );
+// };
+
+// const Help = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'help' | 'helpIcon' | 'size'>) => {
+//   const { size, help, helpIcon = 'help' } = props;
+//   if (!help) {
+//     return null;
+//   }
+//   const click = () => {
+//     Taro.showToast({ title: help, icon: 'none' });
+//   };
+//   return (
+//     <View className='y-form-item-help' onClick={click}>
+//       {typeof helpIcon === 'string' ? <Icon size={size} name={helpIcon} /> : helpIcon}
+//     </View>
+//   );
+// });
+
+// const Feedback = observer((props: Pick<FormItemProps & SchemaItemInheritProps, 'feedbackStatus' | 'feedbackText' | 'size'>) => {
+//   const { size, feedbackStatus, feedbackText } = props;
+//   if (!feedbackText) {
+//     return null;
+//   }
+//   const fSize = downSize(size);
+//   return (
+//     <View className='y-form-item-feedback'>
+//       <Icon name={feedbackStatus} size={fSize} />
+//       <Text size={fSize} color={getColorByStatus(feedbackStatus)}>{feedbackText}</Text>
+//     </View>
+//   );
+// });
 
 
 export const FormItem = connect(

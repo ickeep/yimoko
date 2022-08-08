@@ -7,6 +7,7 @@ import { Image } from './base/image';
 import { Col, Row } from './base/layout';
 import { Page } from './base/page';
 import { Popup } from './base/popup';
+import { Text } from './base/text';
 import { View } from './base/view';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
@@ -37,6 +38,7 @@ export const components: Record<string, any> = {
   Col,
   Page,
   Popup,
+  Text,
   View,
 
   // in

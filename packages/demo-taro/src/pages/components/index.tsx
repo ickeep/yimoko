@@ -12,6 +12,7 @@ const IndexPage = observer(() => (
           'x-component-props': {
             title: '基础组件',
             options: [
+              { title: 'Text 文本', url: '/pages/components/text/index' },
               { title: 'Icon 图标', url: '/pages/components/icon/index' },
               { title: 'Grid 宫格', url: '/pages/components/grid/index' },
             ],

@@ -6,11 +6,10 @@ import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps } from '@yimo
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 
+import { Text } from '../base/text';
+import { View } from '../base/view';
 import { handleClick } from '../tools/handle-click';
 import { getCssSize } from '../tools/style';
-
-import { Text } from './text';
-import { View } from './view';
 
 export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
   value?: any;
