@@ -1,24 +1,9 @@
 export default defineAppConfig({
+  lazyCodeLoading: 'requiredComponents',
   pages: [
-    // base
     'pages/index/index',
     'pages/components/index',
-    'pages/components/grid/index',
-    'pages/components/swiper/index',
-    'pages/components/icon/index',
-    'pages/components/text/index',
-
-    // feedback
-    'pages/components/action-sheet/index',
-    'pages/components/dialog/index',
-
-    // in
-    'pages/components/checkbox/index',
-    'pages/components/radio/index',
-    'pages/components/rate/index',
-    'pages/components/slider/index',
-    'pages/components/stepper/index',
-    'pages/components/switch/index',
+    'pages/components/detail',
   ],
   tabBar: {
     list: [{

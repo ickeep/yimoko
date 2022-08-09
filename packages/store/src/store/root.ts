@@ -9,6 +9,8 @@ export class RootStore<
   user: U = Object({});
   menus?: M;
 
+  loading = false;
+
   // 用于存放自定义数据
   data: D = Object({});
 
@@ -17,11 +19,13 @@ export class RootStore<
       user: observable,
       menus: observable,
       data: observable,
+      loading: observable,
 
       setUser: action,
       setMenus: action,
       setData: action,
       setDataItem: action,
+      setLoading: action,
     });
 
     initVal && this.init(initVal);
@@ -36,6 +40,8 @@ export class RootStore<
   setDataItem = (name: keyof D, value: any) => this.data[name] = value;
 
   getDataItem = (name: keyof D) => this.data[name];
+
+  setLoading = (loading: boolean) => this.loading = loading;
 
   init = (value: IRootInitVal<U, M, D>) => {
     const { user, menus, data } = value;

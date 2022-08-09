@@ -1,4 +1,7 @@
+export * from './adapter/adapter';
 export * from './adapter/http';
+export * from './adapter/route';
+export * from './adapter/storage';
 
 export * from './hooks/use-size';
 

@@ -1,97 +1,84 @@
 
 import { observer } from '@formily/react';
-import { Page, StorePage } from '@yimoko/taro';
+import { useRoot } from '@yimoko/store';
+import { Page, StorePage, StorePageProps } from '@yimoko/taro';
 
-const IndexPage = observer(() => (
-  <Page>
-    <StorePage
-      store={{ api: {}, isBindSearch: true, defaultValues: {} }}
-      options={{}}
-      schema={{
-        type: 'object',
-        properties: {
-          d1: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '基本用法' } },
-          v1: {
-            type: 'void',
-            'x-component': 'Dialog',
-            'x-component-props': {
-              title: 'Dialog',
-              message: 'message',
-            },
-          },
+const IndexPage = observer(() => {
+  const { loading } = useRoot();
 
-          d2: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '取消' } },
-          v2: {
-            type: 'void',
-            'x-component': 'Dialog',
-            'x-component-props': {
-              title: 'Dialog',
-              showCancelButton: true,
-            },
-            properties: {
-              b: {
-                type: 'void',
-                'x-component': 'Text',
-                'x-component-props': { children: 'Text 自定义', type: 'info' },
-              },
-            },
-          },
+  console.log('root loading', loading);
 
-          d3: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '触发按钮属性' } },
-          v3: {
-            'x-component': 'Dialog',
-            'x-component-props': {
-              cancelText: '取消',
-              message: 'message',
-              button: { children: '弹出', type: 'primary' },
-            },
-          },
-          d4: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '弹窗内容' } },
-          v4: {
-            type: 'void',
-            'x-component': 'Dialog',
-            'x-component-props': {
-              button: { children: '自定义弹窗内容', type: 'primary' },
-            },
-            properties: {
-              children: {
-                type: 'void',
-                'x-component': 'Text',
-                'x-component-props': {
-                  children: 'Text',
-                  type: 'primary',
-                },
-              },
-            },
-          },
-          d5: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '触发内容' } },
-          v5: {
-            type: 'void',
-            'x-component': 'Dialog',
-            'x-component-props': { message: 'message' },
-            additionalProperties: {
-              type: 'void',
-              'x-component': 'Text',
-              'x-component-props': {
-                children: 'Text',
-                type: 'info',
-              },
-            },
-          },
-          d6: { type: 'void', 'x-component': 'Divider', 'x-component-props': { contentPosition: 'center', children: '微信原生能力' } },
-          v6: {
-            type: 'void',
-            'x-component': 'Dialog',
-            'x-component-props': {
-              confirmButtonOpenType: 'share',
-              button: { children: '确认分享', type: 'warning' },
-              message: 'message',
-            },
+  const props: StorePageProps = {
+    store: { api: {}, defaultValues: { r1: 4, r2: '2', r3: 3, r4: 4, r5: 10, r6: 1, r7: 2 } },
+    options: {},
+    schema: {
+      type: 'object',
+      properties: {
+        r1: {
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '基础用法' },
+          'x-component': 'Rate',
+        },
+        r2: {
+          'x-component': 'Rate',
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '自定义图标' },
+          'x-component-props': {
+            icon: 'like',
+            voidIcon: 'like-o',
           },
         },
-      }}
-    />
-  </Page>
-));
+        r3: {
+          'x-component': 'Rate',
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '自定义样式' },
+          'x-component-props': {
+            size: 25,
+            color: '#ffd21e',
+            voidIcon: 'star',
+            voidColor: '#eee',
+          },
+        },
+        r4: {
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '半星' },
+          'x-component': 'Rate',
+          'x-component-props': {
+            allowHalf: true,
+          },
+        },
+        r5: {
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '自定义数量' },
+          'x-component': 'Rate',
+          'x-component-props': {
+            count: 6,
+          },
+        },
+        r6: {
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '禁用状态' },
+          'x-component': 'Rate',
+          'x-component-props': {
+            disabled: true,
+          },
+        },
+        r7: {
+          'x-decorator': 'Cell',
+          'x-decorator-props': { title: '只读状态' },
+          'x-component': 'Rate',
+          'x-component-props': {
+            readonly: true,
+          },
+        },
+      },
+    },
+  };
+
+  // console.log(JSON.stringify(props));
+
+  // @ts-ignore
+  return <Page><StorePage {...props} /></Page>;
+});
 
 export default IndexPage;

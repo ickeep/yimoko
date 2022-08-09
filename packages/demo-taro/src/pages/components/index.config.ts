@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: 'components',
+  navigationBarTitleText: '组件列表',
 });

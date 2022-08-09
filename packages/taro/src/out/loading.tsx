@@ -1,29 +1,23 @@
+import { Loading as Tloading } from '@antmjs/vantui';
 import { observer } from '@formily/react';
 import { ViewProps } from '@tarojs/components';
-import classNames from 'classnames';
-import { useState, useEffect, CSSProperties } from 'react';
+import cls from 'classnames';
 
-import { getSystemInfo } from '../adapter/system';
-import { Icon } from '../base/icon';
-import { ISize } from '../props';
-import { getCssSize } from '../tools/style';
-
+import { View } from '../base/view';
 
 export interface LoadingProps extends ViewProps {
+  value?: boolean;
   loading?: boolean;
   isFull?: boolean;
-  iconSize?: ISize
-  icon?: string
-  style?: CSSProperties
+
 }
 
 // @ts-ignore
 export const Loading = observer((props: LoadingProps) => {
   console.log('Loading', props);
 
-  return null;
 
-  // const { loading, isFull, icon = 'loading', iconSize, className, children, style, ...args } = props;
+  const { loading, value, isFull, className, children, ...args } = props;
 
   // const [lStyle, setStyle] = useState<CSSProperties>();
 
@@ -45,10 +39,9 @@ export const Loading = observer((props: LoadingProps) => {
   //   return children ?? null;
   // }
 
-  // return (
-  //   <View {...args} className={classNames('y-loading', { 'y-loading-full': isFull }, className)} style={lStyle}>
-  //     <Icon name={icon} size={iconSize} />
-  //   </View>
-  // );
+  return (
+    <View {...args} className={cls('y-loading', { 'y-loading--full': isFull }, className)} >
+    </View>
+  );
 });
 
