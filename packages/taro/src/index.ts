@@ -17,6 +17,8 @@ export * from './base/view';
 
 export * from './feedback/action-sheet';
 export * from './feedback/dialog';
+export * from './feedback/loading';
+export * from './feedback/overlay';
 
 export * from './in/checkbox';
 export * from './in/form-item';

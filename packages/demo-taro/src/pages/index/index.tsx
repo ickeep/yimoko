@@ -9,67 +9,133 @@ const IndexPage = observer(() => {
   console.log('root loading', loading);
 
   const props: StorePageProps = {
-    store: { api: {}, defaultValues: { r1: 4, r2: '2', r3: 3, r4: 4, r5: 10, r6: 1, r7: 2 } },
+    store: { api: {}, defaultValues: { v1: false } },
     options: {},
     schema: {
       type: 'object',
       properties: {
-        r1: {
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '基础用法' },
-          'x-component': 'Rate',
-        },
-        r2: {
-          'x-component': 'Rate',
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '自定义图标' },
+        d1: {
+          type: 'void',
+          'x-component': 'Divider',
           'x-component-props': {
-            icon: 'like',
-            voidIcon: 'like-o',
+            contentPosition: 'center',
+            children: '基本用法 受控',
           },
         },
-        r3: {
-          'x-component': 'Rate',
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '自定义样式' },
+        v1: {
+          'x-component': 'Overlay',
           'x-component-props': {
-            size: 25,
-            color: '#ffd21e',
-            voidIcon: 'star',
-            voidColor: '#eee',
+            title: 'Overlay',
+            message: 'message',
+            children: 'children',
+          },
+          properties: {
+            c: {
+              type: 'void',
+              'x-component': 'Text',
+              'x-component-props': {
+                children: '受控模式下的内容',
+              },
+            },
           },
         },
-        r4: {
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '半星' },
-          'x-component': 'Rate',
-          'x-component-props': {
-            allowHalf: true,
+        checkbox: {
+          type: 'void',
+          'x-component': 'View',
+          properties: {
+            v1: {
+              'x-component': 'Checkbox',
+              'x-component-props': { children: '是否展示' },
+            },
           },
         },
-        r5: {
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '自定义数量' },
-          'x-component': 'Rate',
+        d2: {
+          type: 'void',
+          'x-component': 'Divider',
           'x-component-props': {
-            count: 6,
+            contentPosition: 'center',
+            children: '加载类型',
           },
         },
-        r6: {
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '禁用状态' },
-          'x-component': 'Rate',
+        v2: {
+          type: 'void',
+          'x-component': 'Overlay',
           'x-component-props': {
-            disabled: true,
+            type: 'spinner',
+          },
+
+        },
+        d3: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '加载文案',
           },
         },
-        r7: {
-          'x-decorator': 'Cell',
-          'x-decorator-props': { title: '只读状态' },
-          'x-component': 'Rate',
+        v3: {
+          type: 'void',
+          'x-component': 'Overlay',
           'x-component-props': {
-            readonly: true,
+            cancelText: '取消',
+            message: 'message',
+            button: {
+              children: '弹出',
+              type: 'primary',
+            },
           },
+          properties: {
+            b: {
+              type: 'void',
+              'x-component': 'Text',
+              'x-component-props': {
+                children: '加载中',
+                type: 'info',
+              },
+            },
+          },
+        },
+        d4: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '自定义颜色',
+          },
+        },
+        v4: {
+          type: 'void',
+          'x-component': 'Overlay',
+          'x-component-props': {
+            color: '#1989fa',
+          },
+          properties: {
+            children: {
+              type: 'void',
+              'x-component': 'Text',
+              'x-component-props': {
+                children: 'Text',
+                type: 'primary',
+              },
+            },
+          },
+        },
+        d5: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '垂直排列',
+          },
+        },
+        v5: {
+          type: 'void',
+          'x-component': 'Overlay',
+          'x-component-props': {
+            vertical: true,
+            children: '加载中',
+          },
+
         },
       },
     },
