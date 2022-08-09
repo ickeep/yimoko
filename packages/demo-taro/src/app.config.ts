@@ -10,6 +10,7 @@ export default defineAppConfig({
 
     // feedback
     'pages/components/action-sheet/index',
+    'pages/components/dialog/index',
 
     // in
     'pages/components/checkbox/index',

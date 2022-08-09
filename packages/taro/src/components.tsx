@@ -10,6 +10,7 @@ import { Popup } from './base/popup';
 import { Text } from './base/text';
 import { View } from './base/view';
 import { ActionSheet } from './feedback/action-sheet';
+import { Dialog } from './feedback/dialog';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
 import { FormItem } from './in/form-item';
@@ -44,6 +45,7 @@ export const components: Record<string, any> = {
 
   // feedback
   ActionSheet,
+  Dialog,
 
   // in
   Checkbox,

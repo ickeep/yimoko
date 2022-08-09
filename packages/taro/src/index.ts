@@ -13,6 +13,7 @@ export * from './base/text';
 export * from './base/view';
 
 export * from './feedback/action-sheet';
+export * from './feedback/dialog';
 
 export * from './in/checkbox';
 export * from './in/form-item';

@@ -38,6 +38,7 @@ const IndexPage = observer(() => (
             title: '反馈组件',
             options: [
               { title: 'ActionSheet 动作面板', url: '/pages/components/action-sheet/index' },
+              { title: 'Dialog 弹出框', url: '/pages/components/dialog/index' },
             ],
           },
         },
