@@ -54,23 +54,22 @@ const IndexPage = observer(() => {
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '加载类型',
+            children: '非受控',
           },
         },
         v2: {
           type: 'void',
           'x-component': 'Overlay',
           'x-component-props': {
-            type: 'spinner',
+            button: { children: '非受控' },
           },
-
         },
         d3: {
           type: 'void',
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '加载文案',
+            children: '嵌入内容',
           },
         },
         v3: {
@@ -80,7 +79,7 @@ const IndexPage = observer(() => {
             cancelText: '取消',
             message: 'message',
             button: {
-              children: '弹出',
+              children: '嵌入内容',
               type: 'primary',
             },
           },
@@ -89,59 +88,17 @@ const IndexPage = observer(() => {
               type: 'void',
               'x-component': 'Text',
               'x-component-props': {
-                children: '加载中',
+                children: '嵌入内容',
                 type: 'info',
               },
             },
           },
         },
-        d4: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: '自定义颜色',
-          },
-        },
-        v4: {
-          type: 'void',
-          'x-component': 'Overlay',
-          'x-component-props': {
-            color: '#1989fa',
-          },
-          properties: {
-            children: {
-              type: 'void',
-              'x-component': 'Text',
-              'x-component-props': {
-                children: 'Text',
-                type: 'primary',
-              },
-            },
-          },
-        },
-        d5: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: '垂直排列',
-          },
-        },
-        v5: {
-          type: 'void',
-          'x-component': 'Overlay',
-          'x-component-props': {
-            vertical: true,
-            children: '加载中',
-          },
-
-        },
       },
     },
   };
 
-  // console.log(JSON.stringify(props));
+  console.log(JSON.stringify(props));
 
   // @ts-ignore
   return <Page><StorePage {...props} /></Page>;

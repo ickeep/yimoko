@@ -22,22 +22,24 @@ export const Overlay = (props: OverlayProps) => {
   const { value, values, onChange, button, triggerStyle, children, className, contentAlign, ...args } = props;
   const [show, setShow] = useState(false);
 
+  const isControlled = value !== undefined;
+
   const curValue = useMemo(() => {
-    if (value === undefined) {
+    if (!isControlled) {
       return show;
     }
     if (values) {
       return value === values.true;
     }
     return !!value;
-  }, [show, value, values]);
+  }, [isControlled, show, value, values]);
 
   const fieldSchema = useFieldSchema();
   const { name, additionalProperties, properties } = fieldSchema ?? {};
 
   const triggerChildren = useMemo(() => {
     // 受控模式，不展示 trigger
-    if (value !== undefined) {
+    if (isControlled) {
       return null;
     }
 
@@ -54,30 +56,30 @@ export const Overlay = (props: OverlayProps) => {
         <RecursionField schema={additionalProperties} name={name} />
       </View>
     );
-  }, [additionalProperties, button, name, onChange, triggerStyle, value, values?.true]);
+  }, [additionalProperties, button, isControlled, name, onChange, triggerStyle, values?.true]);
 
   const curChildren = useMemo(() => {
-    if (value === undefined) {
+    if (!isControlled) {
       return children;
     }
     if (properties) {
       return <RecursionField schema={{ ...fieldSchema, 'x-component': undefined, 'x-decorator': undefined }} />;
     }
     return children;
-  }, [children, fieldSchema, properties, value]);
+  }, [children, fieldSchema, isControlled, properties]);
 
   return (
     <>
       <TOverlay
         {...args}
-        className={cls(className, 'y-overlay', { [`y-overlay-center--${contentAlign}`]: contentAlign })}
+        className={cls(className, 'y-overlay', { [`y-overlay--${contentAlign}`]: contentAlign })}
         show={curValue} onClick={(e) => {
           setShow(false);
-          if (value !== undefined) {
+          if (isControlled) {
             onChange?.(values?.false ?? false, e);
           }
         }}>
-        {curChildren && <View onClick={e => e?.stopPropagation()}>{curChildren}</View>}
+        {curChildren && <View className='c-overlay-center' onClick={e => e?.stopPropagation()}>{curChildren}</View>}
       </TOverlay>
       {triggerChildren}
     </>
