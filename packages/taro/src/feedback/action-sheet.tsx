@@ -2,51 +2,75 @@ import { ActionSheet as TActionSheet, Button, Skeleton } from '@antmjs/vantui';
 import { ActionSheetItem, ActionSheetProps as TActionSheetProps } from '@antmjs/vantui/types/action-sheet';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { ITouchEvent } from '@tarojs/components';
-import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions } from '@yimoko/store';
-import { useMemo, useState, isValidElement } from 'react';
+import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useChildren } from '@yimoko/store';
+import { useMemo, useState } from 'react';
 
 import { View } from '../base/view';
 
 import { handleClick } from '../tools/handle-click';
 
 export type ActionSheetProps = TActionSheetProps & IOptionsAPIProps<keyof ActionSheetItem | 'desc' | 'url' | 'click' | 'value'> & {
-  onChange?: (value: any, event: ITouchEvent & { detail: ActionSheetItem }) => void
+  value?: any;
+  values?: { true: any, false: any };
+  onChange?: (value: any, e?: ITouchEvent) => void;
   button?: ButtonProps
 };
 
 const defaultKeys = { name: 'name', subname: 'desc' };
 export const ActionSheet = (props: ActionSheetProps) => {
-  const { options, api, keys, splitter, valueType, onChange, onSelect, onCancel, button, children, ...args } = props;
+  const { value, values, options, api, keys, splitter, valueType, onChange, onSelect, onCancel, button, children, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [show, setShow] = useState(false);
 
+  const isControlled = value !== undefined;
+
+  const curValue = useMemo(() => {
+    if (!isControlled) {
+      return show;
+    }
+    if (values) {
+      return value === values.true;
+    }
+    return !!value;
+  }, [isControlled, show, value, values]);
+
+  const tempChildren = useChildren(children);
 
   const curChildren = useMemo(() => {
+    // 受控模式，不展示 trigger
+    if (isControlled) {
+      return null;
+    }
     const click = () => setShow(true);
     if (typeof children === 'string') {
       return <Button onClick={click} children={children} {...button} />;
     }
-    if (judgeIsEmpty(children) || !isValidElement(children)) {
+    if (judgeIsEmpty(tempChildren)) {
       return <Button onClick={click} children={args.title} {...button} />;
     }
-    return <View onClick={click}>{children}</View>;
-  }, [args.title, button, children]);
+    return <View onClick={click}>{tempChildren}</View>;
+  }, [args.title, button, children, isControlled, tempChildren]);
+
+  const close = (e?: ITouchEvent) => {
+    setShow(false);
+    onChange?.(values?.false ?? false, e);
+  };
 
   return (
     <Skeleton loading={loading}>
       <TActionSheet
         {...args}
-        show={show}
+        show={curValue}
         actions={data}
-        onClose={() => setShow(false)}
+        onClose={close}
         onCancel={() => {
           onCancel?.();
-          setShow(false);
+          close();
         }}
         onSelect={(e) => {
           const { detail } = e;
           handleClick(detail);
-          onChange?.(detail?.value ?? detail.name, e);
+          close(e);
           onSelect?.(e);
         }}
       >
