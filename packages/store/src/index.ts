@@ -22,6 +22,7 @@ export * from './hooks/use-deep-effect';
 export * from './hooks/use-deep-memo';
 export * from './hooks/use-is-out';
 export * from './hooks/use-options';
+export * from './hooks/use-schema-items';
 export * from './hooks/use-store-search';
 export * from './hooks/use-store';
 

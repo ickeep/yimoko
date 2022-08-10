@@ -2,10 +2,9 @@ import { Skeleton, Image, Grid as TGrid, GridItem } from '@antmjs/vantui';
 import { GridProps as TGridProps } from '@antmjs/vantui/types/grid';
 
 import { ImageProps } from '@antmjs/vantui/types/image';
-import { observer, RecursionField, useFieldSchema } from '@formily/react';
-import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, judgeIsEmpty } from '@yimoko/store';
+import { observer, RecursionField } from '@formily/react';
+import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, judgeIsEmpty, useSchemaItems } from '@yimoko/store';
 import classNames from 'classnames';
-import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 
@@ -16,13 +15,8 @@ export type GridProps = TGridProps & IOptionsOutAPIProps & {
 export const Grid = observer((props: GridProps) => {
   const { className, options, api, keys, splitter, image, ...args
   } = props;
-  const { items } = useFieldSchema();
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
-
-  const curItems = useMemo(() => {
-    if (!items) return [];
-    return Array.isArray(items) ? items : [items];
-  }, [items]);
+  const curItems = useSchemaItems();
 
   return (
     <Skeleton loading={loading}>

@@ -1,8 +1,8 @@
 import { Checkbox as TCheckbox, CheckboxGroup as TCheckboxGroup, Skeleton } from '@antmjs/vantui';
 import { CheckboxProps as TCheckboxProps, CheckboxGroupProps as TCheckboxGroupProps } from '@antmjs/vantui/types/checkbox';
-import { observer, RecursionField, useFieldSchema } from '@formily/react';
+import { observer, RecursionField } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
-import { IOptionsAPIProps, strToArr, useAPIOptions } from '@yimoko/store';
+import { IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
 export interface CheckboxProps extends Omit<TCheckboxProps, 'onChange' | 'value'> {
@@ -47,7 +47,6 @@ export type CheckboxGroupProps = Omit<TCheckboxGroupProps, 'onChange'> & IOption
 export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
   const { options, api, keys, splitter, value, valueType, onChange, children, ...args } = props;
 
-  const { items } = useFieldSchema() ?? {};
   const [data, loading] = useAPIOptions(options, api, keys, splitter);
 
   const curValue = useMemo(() => {
@@ -61,10 +60,7 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
     return value;
   }, [value, splitter]);
 
-  const curItems = useMemo(() => {
-    if (!items) return [];
-    return Array.isArray(items) ? items : [items];
-  }, [items]);
+  const curItems = useSchemaItems();
 
   return (
     <Skeleton loading={loading}>

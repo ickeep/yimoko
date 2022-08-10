@@ -1,8 +1,8 @@
 import { Skeleton, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
-import { observer, RecursionField, useFieldSchema } from '@formily/react';
+import { observer, RecursionField } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps } from '@tarojs/components';
-import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps } from '@yimoko/store';
+import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems } from '@yimoko/store';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 
@@ -22,18 +22,14 @@ export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
 };
 
 export const Swiper = observer((props: SwiperProps) => {
-  const { className, options, api, keys, splitter, value, children,
+  const {
+    className, options, api, keys, splitter, value, children,
     height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
-  const { items } = useFieldSchema();
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curHeight = useMemo(() => getCssSize(height), [height]);
   const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
-
-  const curItems = useMemo(() => {
-    if (!items) return [];
-    return Array.isArray(items) ? items : [items];
-  }, [items]);
+  const curItems = useSchemaItems();
 
   return (
     <Skeleton loading={loading}>
