@@ -22,15 +22,18 @@ import { Rate } from './in/rate';
 import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
+import { Grid } from './nav/grid';
+import { Pagination } from './nav/pagination';
 import { Circle } from './out/circle';
 import { CountDown } from './out/count-down';
 import { Divider } from './out/divider';
 import { Empty } from './out/empty';
-import { Grid } from './out/grid';
 import { NoticeBar } from './out/notice-bar';
 import { Progress } from './out/progress';
+import { Skeleton } from './out/skeleton';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
+import { Tag } from './out/tag';
 
 export const components: Record<string, any> = {
   // in
@@ -74,8 +77,13 @@ export const components: Record<string, any> = {
   Empty,
   NoticeBar,
   Progress,
-  Grid,
+  Skeleton,
   Swiper,
   SwiperItem,
   Table,
+  Tag,
+
+  // nav
+  Grid,
+  Pagination,
 };
