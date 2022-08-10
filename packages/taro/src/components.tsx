@@ -22,8 +22,13 @@ import { Rate } from './in/rate';
 import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
+import { Circle } from './out/circle';
+import { CountDown } from './out/count-down';
 import { Divider } from './out/divider';
+import { Empty } from './out/empty';
 import { Grid } from './out/grid';
+import { NoticeBar } from './out/notice-bar';
+import { Progress } from './out/progress';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 
@@ -63,7 +68,12 @@ export const components: Record<string, any> = {
   Switch,
 
   // out
+  Circle,
+  CountDown,
   Divider,
+  Empty,
+  NoticeBar,
+  Progress,
   Grid,
   Swiper,
   SwiperItem,

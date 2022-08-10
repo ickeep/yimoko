@@ -31,9 +31,15 @@ export * from './in/slider';
 export * from './in/stepper';
 export * from './in/switch';
 
+export * from './out/circle';
+export * from './out/count-down';
 export * from './out/match-media';
 export * from './out/divider';
+export * from './out/empty';
+export * from './out/notice-bar';
+export * from './out/progress';
 export * from './out/popover';
+export * from './out/table';
 
 export * from './schema/context';
 

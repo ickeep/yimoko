@@ -13,7 +13,7 @@ const IndexPage = observer(() => {
       api: {}, defaultValues: {
         v2: [
           {
-            name: '选项一',
+            name: '选2项一',
             desc: '描述',
             color: 'red',
           },
