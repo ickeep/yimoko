@@ -23,20 +23,10 @@ const IndexPage = observer(() => {
           },
         },
         v1: {
-          'x-component': 'Overlay',
+          'x-component': 'Dialog',
           'x-component-props': {
-            title: 'Overlay',
+            title: 'Dialog',
             message: 'message',
-            children: 'children',
-          },
-          properties: {
-            c: {
-              type: 'void',
-              'x-component': 'Text',
-              'x-component-props': {
-                children: '受控模式下的内容',
-              },
-            },
           },
         },
         checkbox: {
@@ -45,7 +35,9 @@ const IndexPage = observer(() => {
           properties: {
             v1: {
               'x-component': 'Checkbox',
-              'x-component-props': { children: '是否展示' },
+              'x-component-props': {
+                children: '是否展示',
+              },
             },
           },
         },
@@ -54,14 +46,25 @@ const IndexPage = observer(() => {
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '非受控',
+            children: '取消',
           },
         },
         v2: {
           type: 'void',
-          'x-component': 'Overlay',
+          'x-component': 'Dialog',
           'x-component-props': {
-            button: { children: '非受控' },
+            title: 'Dialog',
+            showCancelButton: true,
+          },
+          properties: {
+            b: {
+              type: 'void',
+              'x-component': 'Text',
+              'x-component-props': {
+                children: 'Text 自定义',
+                type: 'info',
+              },
+            },
           },
         },
         d3: {
@@ -69,31 +72,93 @@ const IndexPage = observer(() => {
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '嵌入内容',
+            children: '触发按钮属性',
           },
         },
         v3: {
           type: 'void',
-          'x-component': 'Overlay',
+          'x-component': 'Dialog',
           'x-component-props': {
             cancelText: '取消',
             message: 'message',
             button: {
-              children: '嵌入内容',
+              children: '弹出',
+              type: 'primary',
+            },
+          },
+        },
+        d4: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '弹窗内容',
+          },
+        },
+        v4: {
+          type: 'void',
+          'x-component': 'Dialog',
+          'x-component-props': {
+            button: {
+              children: '自定义弹窗内容',
               type: 'primary',
             },
           },
           properties: {
-            b: {
+            children: {
               type: 'void',
               'x-component': 'Text',
               'x-component-props': {
-                children: '嵌入内容',
-                type: 'info',
+                children: 'Text',
+                type: 'primary',
               },
             },
           },
         },
+        d5: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '触发内容',
+          },
+        },
+        v5: {
+          type: 'void',
+          'x-component': 'Dialog',
+          'x-component-props': {
+            message: 'message',
+          },
+          additionalProperties: {
+            type: 'void',
+            'x-component': 'Text',
+            'x-component-props': {
+              children: 'Text',
+              type: 'info',
+            },
+          },
+        },
+        d6: {
+          type: 'void',
+          'x-component': 'Divider',
+          'x-component-props': {
+            contentPosition: 'center',
+            children: '微信原生能力',
+          },
+        },
+        v6: {
+          type: 'void',
+          'x-component': 'Dialog',
+          'x-component-props': {
+            confirmButtonOpenType: 'share',
+            button: {
+              children: '确认分享',
+              type: 'warning',
+            },
+            message: 'message',
+          },
+        },
+
       },
     },
   };
@@ -101,7 +166,7 @@ const IndexPage = observer(() => {
   console.log(JSON.stringify(props));
 
   // @ts-ignore
-  return <Page><StorePage {...props} /></Page>;
+  return <Page><StorePage {...props} /></Page >;
 });
 
 export default IndexPage;

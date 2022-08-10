@@ -17,6 +17,7 @@ export * from './hoc/value-children';
 export * from './hooks/use-api-options';
 export * from './hooks/use-api-search-options';
 export * from './hooks/use-base-store';
+export * from './hooks/use-children';
 export * from './hooks/use-deep-effect';
 export * from './hooks/use-deep-memo';
 export * from './hooks/use-options';

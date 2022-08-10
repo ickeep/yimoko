@@ -3,8 +3,10 @@ import { ButtonProps } from '@antmjs/vantui/types/button';
 import { OverlayProps as TOverlayProps } from '@antmjs/vantui/types/overlay';
 import { useFieldSchema, RecursionField } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
+import { useChildren } from '@yimoko/store';
 import cls from 'classnames';
 import { useState, useMemo, CSSProperties } from 'react';
+
 
 import { View } from '../base/view';
 
@@ -35,7 +37,7 @@ export const Overlay = (props: OverlayProps) => {
   }, [isControlled, show, value, values]);
 
   const fieldSchema = useFieldSchema();
-  const { name, additionalProperties, properties } = fieldSchema ?? {};
+  const { name, additionalProperties } = fieldSchema ?? {};
 
   const triggerChildren = useMemo(() => {
     // 受控模式，不展示 trigger
@@ -58,15 +60,7 @@ export const Overlay = (props: OverlayProps) => {
     );
   }, [additionalProperties, button, isControlled, name, onChange, triggerStyle, values?.true]);
 
-  const curChildren = useMemo(() => {
-    if (!isControlled) {
-      return children;
-    }
-    if (properties) {
-      return <RecursionField schema={{ ...fieldSchema, 'x-component': undefined, 'x-decorator': undefined }} />;
-    }
-    return children;
-  }, [children, fieldSchema, isControlled, properties]);
+  const curChildren = useChildren(children);
 
   return (
     <>

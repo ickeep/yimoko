@@ -2,25 +2,47 @@ import { Dialog as TDialog, Button } from '@antmjs/vantui';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { DialogProps as TDialogProps } from '@antmjs/vantui/types/dialog';
 import { RecursionField, useFieldSchema } from '@formily/react';
-import { judgeIsEmpty } from '@yimoko/store';
+import { ITouchEvent } from '@tarojs/components';
+import { judgeIsEmpty, useChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { View } from '../base/view';
 
 export type DialogProps = TDialogProps & {
+  value?: any;
+  values?: { true: any, false: any };
+  onChange?: (value: any, e: ITouchEvent) => void;
   button?: ButtonProps
   triggerStyle?: React.CSSProperties
 };
 
 export const Dialog = (props: DialogProps) => {
-  const { onCancel, onConfirm, button, message, children, triggerStyle, ...args } = props;
+  const { value, values, onChange, onCancel, onConfirm, button, message, children, triggerStyle, ...args } = props;
   const [show, setShow] = useState(false);
+  const isControlled = value !== undefined;
 
-  const { name, additionalProperties } = useFieldSchema() ?? {};
+  const fieldSchema = useFieldSchema();
+  const { name, additionalProperties } = fieldSchema ?? {};
+
+  const curValue = useMemo(() => {
+    if (!isControlled) {
+      return show;
+    }
+    if (values) {
+      return value === values.true;
+    }
+    return !!value;
+  }, [isControlled, show, value, values]);
 
   const triggerChildren = useMemo(() => {
-    const click = () => setShow(true);
-
+    // 受控模式，不展示 trigger
+    if (isControlled) {
+      return null;
+    }
+    const click = (e: ITouchEvent) => {
+      setShow(true);
+      onChange?.(values?.true ?? true, e);
+    };
     if (!additionalProperties) {
       return <Button onClick={click} children={args.title} {...button} />;
     }
@@ -29,21 +51,23 @@ export const Dialog = (props: DialogProps) => {
         <RecursionField schema={additionalProperties} name={name} />
       </View>
     );
-  }, [additionalProperties, args.title, button, name, triggerStyle]);
+  }, [additionalProperties, args.title, button, isControlled, name, onChange, triggerStyle, values?.true]);
+
+  const curChildren = useChildren(children);
 
   const curMessage = useMemo(() => {
-    if (judgeIsEmpty(message) && judgeIsEmpty(children)) {
+    if (judgeIsEmpty(message) && judgeIsEmpty(curChildren)) {
       return undefined;
     }
-    return <>{message}{children}</>;
-  }, [message, children]);
+    return <>{message}{curChildren}</>;
+  }, [curChildren, message]);
 
   return (
     <>
       <TDialog
         {...args}
         message={curMessage}
-        show={show}
+        show={curValue}
         onClose={() => setShow(false)}
         onCancel={(e) => {
           setShow(false);
