@@ -25,6 +25,7 @@ import { Switch } from './in/switch';
 import { Divider } from './out/divider';
 import { Grid } from './out/grid';
 import { Swiper } from './out/swiper';
+import { Table } from './out/table';
 
 export const components: Record<string, any> = {
   // in
@@ -63,9 +64,8 @@ export const components: Record<string, any> = {
 
   // out
   Divider,
+  Grid,
   Swiper,
   SwiperItem,
-  Grid,
-
-
+  Table,
 };

@@ -9,7 +9,22 @@ const IndexPage = observer(() => {
   console.log('root loading', loading);
 
   const props: StorePageProps = {
-    store: { api: {}, defaultValues: { v1: false } },
+    store: {
+      api: {}, defaultValues: {
+        v2: [
+          {
+            name: '选项一',
+            desc: '描述',
+            color: 'red',
+          },
+          {
+            name: '选项二',
+            desc: '禁用',
+            color: 'blue',
+          },
+        ],
+      },
+    },
     options: {},
     schema: {
       type: 'object',
@@ -19,14 +34,26 @@ const IndexPage = observer(() => {
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '基本用法 受控',
+            children: '基本用法',
           },
         },
         v1: {
-          'x-component': 'ActionSheet',
+          type: 'void',
+          'x-component': 'Table',
+          items: [
+            { type: 'string', title: '描述', name: 'desc', 'x-component': 'Text', 'x-component-props': { type: 'info' } },
+            { type: 'string', title: '颜色', name: 'color', 'x-decorator-props': { sort: true } },
+            { type: 'string', title: '颜色', name: 'color', 'x-decorator-props': { sort: true } },
+            { type: 'string', title: '颜色', name: 'color', 'x-decorator-props': { sort: true } },
+          ],
           'x-component-props': {
             title: '选择',
-            options: [
+            rowKey: 'name',
+            scroll: { x: true },
+            columns: [
+              { dataIndex: 'name', title: '名称', fixed: 'left' },
+            ],
+            dataSource: [
               {
                 name: '选项一',
                 desc: '描述',
@@ -35,121 +62,32 @@ const IndexPage = observer(() => {
               {
                 name: '选项二',
                 desc: '禁用',
-                disabled: true,
-              },
-              {
-                name: '选项三',
-                desc: 'loading',
-                loading: true,
-              },
-              {
-                name: '选项四',
-                desc: '微信开放能力 - 分享',
-                openType: 'share',
+                color: 'blue',
               },
             ],
           },
         },
-        checkbox: {
-          type: 'void',
-          'x-component': 'View',
-          properties: {
-            v1: {
-              'x-component': 'Checkbox',
-              'x-component-props': {
-                children: '是否展示',
-              },
-            },
-          },
-        },
+
         d2: {
           type: 'void',
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '取消',
+            children: '受控',
           },
         },
         v2: {
-          type: 'void',
-          'x-component': 'ActionSheet',
+          type: 'array',
+          'x-component': 'Table',
+          items: [
+            { type: 'string', title: '描述', name: 'desc', 'x-component': 'Text', 'x-component-props': { type: 'info' } },
+            { type: 'string', title: '颜色', name: 'color' },
+          ],
           'x-component-props': {
-            cancelText: '取消',
-            button: {
-              children: '选择',
-            },
-            options: [
-              {
-                name: '选项一',
-              },
-              {
-                name: '选项二',
-              },
+            title: '选择',
+            columns: [
+              { dataIndex: 'name', title: '名称' },
             ],
-          },
-        },
-        d3: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: '按钮属性',
-          },
-        },
-        v3: {
-          type: 'void',
-          'x-component': 'ActionSheet',
-          'x-component-props': {
-            cancelText: '取消',
-            button: {
-              children: '选择',
-              type: 'primary',
-            },
-            options: [
-              {
-                name: '选项一',
-              },
-              {
-                name: '选项二',
-              },
-            ],
-          },
-        },
-        d4: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: 'children',
-          },
-        },
-        v4: {
-          type: 'void',
-          'x-component': 'ActionSheet',
-          'x-component-props': {
-            cancelText: '取消',
-            button: {
-              children: '选择',
-              type: 'primary',
-            },
-            options: [
-              {
-                name: '选项一',
-              },
-              {
-                name: '选项二',
-              },
-            ],
-          },
-          properties: {
-            children: {
-              type: 'void',
-              'x-component': 'Text',
-              'x-component-props': {
-                children: 'Text',
-                type: 'primary',
-              },
-            },
           },
         },
       },
