@@ -2,13 +2,11 @@ import { Overlay as TOverlay, Button } from '@antmjs/vantui';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { OverlayProps as TOverlayProps } from '@antmjs/vantui/types/overlay';
 import { useFieldSchema, RecursionField } from '@formily/react';
-import { ITouchEvent } from '@tarojs/components';
+import { ITouchEvent, View } from '@tarojs/components';
 import { useChildren } from '@yimoko/store';
 import cls from 'classnames';
 import { useState, useMemo, CSSProperties } from 'react';
 
-
-import { View } from '../base/view';
 
 export interface OverlayProps extends TOverlayProps {
   value?: any;

@@ -1,15 +1,24 @@
 import { CollapseItem, IndexAnchor } from '@antmjs/vantui';
-import { Block, SwiperItem } from '@tarojs/components';
+import {
+  Block, CoverView, KeyboardAccessory, MovableArea, MovableView, OfficialAccount, OpenData,
+  PageContainer, ScrollView, ShareElement, SwiperItem, View, VoipRoom,
+} from '@tarojs/components';
 
 import { Button } from './base/button';
+import { Camera } from './base/camera';
 import { Cell, CellGroup } from './base/cell';
+import { CoverImage } from './base/cover-image';
 import { Icon } from './base/icon';
 import { Image } from './base/image';
 import { Col, Row } from './base/layout';
+import { LivePlayer } from './base/live-player';
+import { LivePusher } from './base/live-pusher';
+import { Map } from './base/map';
 import { Page } from './base/page';
 import { Popup } from './base/popup';
+import { RichText } from './base/rich-text';
 import { Text } from './base/text';
-import { View } from './base/view';
+import { Video } from './base/video';
 import { ActionSheet } from './feedback/action-sheet';
 import { Dialog } from './feedback/dialog';
 import { Loading } from './feedback/loading';
@@ -18,14 +27,17 @@ import { Checkbox, CheckboxGroup } from './in/checkbox';
 import { Form } from './in/form';
 import { FormItem } from './in/form-item';
 import { Input } from './in/input';
+import { Label } from './in/label';
 import { Radio, RadioGroup } from './in/radio';
 import { Rate } from './in/rate';
 import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
+import { Textarea } from './in/textarea';
 import { Grid } from './nav/grid';
 import { IndexBar } from './nav/index-bar';
 import { NavBar } from './nav/nav-bar';
+import { Navigator } from './nav/navigator';
 import { Pagination } from './nav/pagination';
 import { Sidebar } from './nav/sidebar';
 import { Circle } from './out/circle';
@@ -33,35 +45,55 @@ import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
 import { Divider } from './out/divider';
 import { Empty } from './out/empty';
+import { MatchMedia } from './out/match-media';
 import { NoticeBar } from './out/notice-bar';
 import { Progress } from './out/progress';
+import { ResponseError } from './out/response-error';
 import { Skeleton } from './out/skeleton';
 import { Steps } from './out/steps';
 import { Sticky } from './out/sticky';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 import { Tag } from './out/tag';
+import { StorePage } from './store/page';
 
 export const components: Record<string, any> = {
+  // 无需适配
+  View,
+  ScrollView,
+  MovableArea,
+  MovableView,
+  CoverView,
+  ShareElement,
+  PageContainer,
+
   Block,
 
-  // in
-  Input,
-  Form,
-  FormItem,
+  KeyboardAccessory,
+
+  VoipRoom,
+
+  OfficialAccount,
+  OpenData,
 
   // base
   Button,
+  Camera,
   Cell,
   CellGroup,
+  CoverImage,
   Icon,
   Image,
   Row,
   Col,
+  LivePlayer,
+  LivePusher,
+  Map,
   Page,
   Popup,
+  RichText,
   Text,
-  View,
+  Video,
 
   // feedback
   ActionSheet,
@@ -72,12 +104,17 @@ export const components: Record<string, any> = {
   // in
   Checkbox,
   CheckboxGroup,
+  FormItem,
+  Form,
+  Input,
+  Label,
   Radio,
   RadioGroup,
   Rate,
   Slider,
   Stepper,
   Switch,
+  Textarea,
 
   // out
   Circle,
@@ -86,8 +123,10 @@ export const components: Record<string, any> = {
   CountDown,
   Divider,
   Empty,
+  MatchMedia,
   NoticeBar,
   Progress,
+  ResponseError,
   Skeleton,
   Steps,
   Sticky,
@@ -101,6 +140,10 @@ export const components: Record<string, any> = {
   IndexBar,
   IndexAnchor,
   NavBar,
-  Sidebar,
+  Navigator,
   Pagination,
+  Sidebar,
+
+  // store
+  StorePage,
 };

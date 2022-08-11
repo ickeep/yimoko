@@ -1,19 +1,8 @@
 import { isVoidField } from '@formily/core';
-import { connect, mapProps, observer } from '@formily/react';
+import { connect, mapProps } from '@formily/react';
 import { ViewProps } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import classNames from 'classnames';
-import { pickBy } from 'lodash-es';
-import { useEffect, useState, CSSProperties } from 'react';
 
-import { Icon } from '../base/icon';
-import { Text } from '../base/text';
-import { View } from '../base/view';
-import { downSize, getColorByStatus, IStatus, upSize } from '../props';
-import { SchemaItemInheritProps, useSchemaInherit } from '../schema/context';
-import { getCssSize } from '../tools/style';
-
-import { Label } from './label';
+import { IStatus } from '../props';
 
 export interface FormItemProps extends ViewProps {
   for?: string
@@ -26,7 +15,7 @@ export interface FormItemProps extends ViewProps {
 }
 
 // eslint-disable-next-line complexity
-export const FormBaseItem: React.FC<FormItemProps & SchemaItemInheritProps> = (props) => {
+export const FormBaseItem: React.FC<FormItemProps> = (props) => {
   console.log('FormBaseItem', props);
   return null;
 };

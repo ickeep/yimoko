@@ -1,13 +1,12 @@
 import { Skeleton, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
 import { observer, RecursionField } from '@formily/react';
-import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps } from '@tarojs/components';
+import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps, View } from '@tarojs/components';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems } from '@yimoko/store';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 
 import { Text } from '../base/text';
-import { View } from '../base/view';
 import { handleClick } from '../tools/handle-click';
 import { getCssSize } from '../tools/style';
 

@@ -1,7 +1,7 @@
 import { observer } from '@formily/react';
+import { View } from '@tarojs/components';
 import { IStoreResponse, judgeIsSuccess } from '@yimoko/store';
 
-import { View } from '../base/view';
 export interface ResponseErrorProps {
   loading?: boolean;
   response: IStoreResponse<any, any>;

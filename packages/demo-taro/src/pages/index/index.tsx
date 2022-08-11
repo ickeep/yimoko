@@ -19,7 +19,7 @@ const IndexPage = observer(() => {
           'x-component': 'Divider',
           'x-component-props': {
             contentPosition: 'center',
-            children: '基本用法',
+            children: '基本用法 111',
           },
         },
         v1: {

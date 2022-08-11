@@ -2,11 +2,9 @@ import { Dialog as TDialog, Button } from '@antmjs/vantui';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { DialogProps as TDialogProps } from '@antmjs/vantui/types/dialog';
 import { RecursionField, useFieldSchema } from '@formily/react';
-import { ITouchEvent } from '@tarojs/components';
+import { ITouchEvent, View } from '@tarojs/components';
 import { judgeIsEmpty, useChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
-
-import { View } from '../base/view';
 
 export type DialogProps = TDialogProps & {
   value?: any;

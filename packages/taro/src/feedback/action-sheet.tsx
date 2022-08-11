@@ -1,11 +1,9 @@
 import { ActionSheet as TActionSheet, Button, Skeleton } from '@antmjs/vantui';
 import { ActionSheetItem, ActionSheetProps as TActionSheetProps } from '@antmjs/vantui/types/action-sheet';
 import { ButtonProps } from '@antmjs/vantui/types/button';
-import { ITouchEvent } from '@tarojs/components';
+import { ITouchEvent, View } from '@tarojs/components';
 import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
-
-import { View } from '../base/view';
 
 import { handleClick } from '../tools/handle-click';
 

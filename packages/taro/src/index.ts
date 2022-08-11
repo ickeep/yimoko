@@ -3,17 +3,21 @@ export * from './adapter/http';
 export * from './adapter/route';
 export * from './adapter/storage';
 
-export * from './hooks/use-size';
-
 export * from './base/button';
+export * from './base/camera';
 export * from './base/cell';
+export * from './base/cover-image';
 export * from './base/icon';
 export * from './base/image';
 export * from './base/layout';
+export * from './base/live-player';
+export * from './base/live-pusher';
+export * from './base/map';
 export * from './base/page';
 export * from './base/popup';
+export * from './base/rich-text';
 export * from './base/text';
-export * from './base/view';
+export * from './base/video';
 
 export * from './feedback/action-sheet';
 export * from './feedback/dialog';
@@ -30,35 +34,41 @@ export * from './in/rate';
 export * from './in/slider';
 export * from './in/stepper';
 export * from './in/switch';
+export * from './in/textarea';
 
 export * from './nav/grid';
 export * from './nav/index-bar';
 export * from './nav/nav-bar';
+export * from './nav/navigator';
 export * from './nav/pagination';
 export * from './nav/sidebar';
+
+export * from './open/ad-custom';
+export * from './open/ad';
+export * from './open/web-view';
 
 export * from './out/circle';
 export * from './out/collapse';
 export * from './out/count-down';
-export * from './out/match-media';
 export * from './out/divider';
 export * from './out/empty';
+export * from './out/match-media';
 export * from './out/notice-bar';
 export * from './out/progress';
+export * from './out/response-error';
 export * from './out/skeleton';
 export * from './out/steps';
 export * from './out/sticky';
-export * from './out/popover';
+export * from './out/swiper';
 export * from './out/table';
 export * from './out/tag';
-
-export * from './schema/context';
 
 export * from './store/config';
 export * from './store/lang';
 export * from './store/page';
 export * from './store/search';
 
+export * from './tools/handle-click';
 export * from './tools/style';
 
 export * from './components';

@@ -1,14 +1,14 @@
 import { observer } from '@formily/react';
-import { Input as TInput, InputProps as TInputProps } from '@tarojs/components';
-export interface InputProps extends TInputProps {
+import { Textarea as TTextarea, TextareaProps as TTextareaProps } from '@tarojs/components';
+export interface TextareaProps extends TTextareaProps {
   onChange?: (value?: string) => void
 }
 
-export const Input = observer((props: InputProps) => {
+export const Textarea = observer((props: TextareaProps) => {
   const { onChange, onInput, ...args } = props;
 
   return (
-    <TInput
+    <TTextarea
       {...args}
       onInput={(e) => {
         onInput?.(e);
