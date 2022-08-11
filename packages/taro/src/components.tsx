@@ -1,5 +1,5 @@
-import { CollapseItem } from '@antmjs/vantui';
-import { SwiperItem } from '@tarojs/components';
+import { CollapseItem, IndexAnchor } from '@antmjs/vantui';
+import { Block, SwiperItem } from '@tarojs/components';
 
 import { Button } from './base/button';
 import { Cell, CellGroup } from './base/cell';
@@ -24,6 +24,7 @@ import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
 import { Grid } from './nav/grid';
+import { IndexBar } from './nav/index-bar';
 import { Pagination } from './nav/pagination';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
@@ -34,11 +35,14 @@ import { NoticeBar } from './out/notice-bar';
 import { Progress } from './out/progress';
 import { Skeleton } from './out/skeleton';
 import { Steps } from './out/steps';
+import { Sticky } from './out/sticky';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 import { Tag } from './out/tag';
 
 export const components: Record<string, any> = {
+  Block,
+
   // in
   Input,
   Form,
@@ -84,6 +88,7 @@ export const components: Record<string, any> = {
   Progress,
   Skeleton,
   Steps,
+  Sticky,
   Swiper,
   SwiperItem,
   Table,
@@ -92,4 +97,6 @@ export const components: Record<string, any> = {
   // nav
   Grid,
   Pagination,
+  IndexBar,
+  IndexAnchor,
 };

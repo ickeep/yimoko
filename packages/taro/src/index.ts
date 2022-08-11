@@ -33,6 +33,7 @@ export * from './in/switch';
 
 export * from './nav/grid';
 export * from './nav/pagination';
+export * from './nav/index-bar';
 
 export * from './out/circle';
 export * from './out/collapse';
@@ -44,6 +45,7 @@ export * from './out/notice-bar';
 export * from './out/progress';
 export * from './out/skeleton';
 export * from './out/steps';
+export * from './out/sticky';
 export * from './out/popover';
 export * from './out/table';
 export * from './out/tag';

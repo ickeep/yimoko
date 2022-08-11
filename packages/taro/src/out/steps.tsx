@@ -14,7 +14,6 @@ const defaultKeys = {
 
 export type StepsProps = Omit<TStepsProps, 'steps' | 'active'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
   value?: any
-  values?: any[]
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
 };
 
@@ -24,6 +23,7 @@ export const Steps = (props: StepsProps) => {
 
   const curValue = useMemo(() => {
     let index = 0;
+    // undefined 默认会显示第一个
     if (value === undefined) {
       return '';
     }
