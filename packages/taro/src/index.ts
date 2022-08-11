@@ -35,6 +35,7 @@ export * from './nav/grid';
 export * from './nav/pagination';
 
 export * from './out/circle';
+export * from './out/collapse';
 export * from './out/count-down';
 export * from './out/match-media';
 export * from './out/divider';

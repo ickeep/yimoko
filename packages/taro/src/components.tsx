@@ -1,3 +1,4 @@
+import { CollapseItem } from '@antmjs/vantui';
 import { SwiperItem } from '@tarojs/components';
 
 import { Button } from './base/button';
@@ -25,6 +26,7 @@ import { Switch } from './in/switch';
 import { Grid } from './nav/grid';
 import { Pagination } from './nav/pagination';
 import { Circle } from './out/circle';
+import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
 import { Divider } from './out/divider';
 import { Empty } from './out/empty';
@@ -72,6 +74,8 @@ export const components: Record<string, any> = {
 
   // out
   Circle,
+  Collapse,
+  CollapseItem,
   CountDown,
   Divider,
   Empty,

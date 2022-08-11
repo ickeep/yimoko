@@ -13,7 +13,12 @@ export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOp
   const optionsValues = Object.values(keys);
   return options?.map((item) => {
     const newItem: Record<string, string> = omit(item, optionsValues);
-    optionsKeys.forEach(key => newItem[key] = item[keys[key]]);
+    optionsKeys.forEach((key) => {
+      const val = item[keys[key]];
+      if (val !== undefined || newItem[key] !== undefined) {
+        newItem[key] = val;
+      }
+    });
     return newItem;
   }) ?? [];
 };
