@@ -35,6 +35,7 @@ export * from './nav/grid';
 export * from './nav/index-bar';
 export * from './nav/nav-bar';
 export * from './nav/pagination';
+export * from './nav/sidebar';
 
 export * from './out/circle';
 export * from './out/collapse';

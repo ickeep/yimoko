@@ -27,6 +27,7 @@ import { Grid } from './nav/grid';
 import { IndexBar } from './nav/index-bar';
 import { NavBar } from './nav/nav-bar';
 import { Pagination } from './nav/pagination';
+import { Sidebar } from './nav/sidebar';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
@@ -100,5 +101,6 @@ export const components: Record<string, any> = {
   IndexBar,
   IndexAnchor,
   NavBar,
+  Sidebar,
   Pagination,
 };
