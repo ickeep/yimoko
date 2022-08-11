@@ -12,7 +12,7 @@ export const route = {
   tab: (url: string) => adapter<TaroGeneral.CallbackResult, Error>(getIsTabURL(url) ? Taro.switchTab : Taro.navigateTo, { url }),
   reLaunch: (url: string) => adapter<TaroGeneral.CallbackResult, Error>(getIsTabURL(url) ? Taro.switchTab : Taro.reLaunch, { url }),
   redirect: (url: string) => adapter<TaroGeneral.CallbackResult, Error>(getIsTabURL(url) ? Taro.switchTab : Taro.redirectTo, { url }),
-  back: (delta: number) => adapter<TaroGeneral.CallbackResult, Error>(Taro.navigateBack, { delta }),
+  back: (delta?: number) => adapter<TaroGeneral.CallbackResult, Error>(Taro.navigateBack, { delta }),
 };
 
 export const navigate = (url: string, routeType: IRouteType) => {

@@ -25,6 +25,7 @@ import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
 import { Grid } from './nav/grid';
 import { IndexBar } from './nav/index-bar';
+import { NavBar } from './nav/nav-bar';
 import { Pagination } from './nav/pagination';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
@@ -96,7 +97,8 @@ export const components: Record<string, any> = {
 
   // nav
   Grid,
-  Pagination,
   IndexBar,
   IndexAnchor,
+  NavBar,
+  Pagination,
 };
