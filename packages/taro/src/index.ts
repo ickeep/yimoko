@@ -17,6 +17,7 @@ export * from './base/page';
 export * from './base/popup';
 export * from './base/rich-text';
 export * from './base/text';
+export * from './base/transition';
 export * from './base/video';
 
 export * from './feedback/action-sheet';

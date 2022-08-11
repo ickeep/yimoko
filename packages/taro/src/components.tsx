@@ -18,6 +18,7 @@ import { Page } from './base/page';
 import { Popup } from './base/popup';
 import { RichText } from './base/rich-text';
 import { Text } from './base/text';
+import { Transition } from './base/transition';
 import { Video } from './base/video';
 import { ActionSheet } from './feedback/action-sheet';
 import { Dialog } from './feedback/dialog';
@@ -93,6 +94,7 @@ export const components: Record<string, any> = {
   Popup,
   RichText,
   Text,
+  Transition,
   Video,
 
   // feedback
