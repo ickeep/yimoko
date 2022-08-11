@@ -1,5 +1,4 @@
 import { Collapse as TCollapse, Skeleton, CollapseItem } from '@antmjs/vantui';
-import { ButtonProps } from '@antmjs/vantui/types/button';
 import { CollapseItemProps, CollapseProps as TCollapseProps } from '@antmjs/vantui/types/collapse';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { RecursionField } from '@formily/react';
@@ -11,7 +10,6 @@ import { handleClick } from '../tools/handle-click';
 
 export type CollapseProps = TCollapseProps & IOptionsAPIProps<keyof CollapseItemProps | 'desc' | 'url' | 'click' | 'value'> & {
   onChange?: (value: any, e?: ITouchEvent) => void;
-  button?: ButtonProps
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
 };
 
@@ -21,7 +19,7 @@ const defaultKeys = {
 };
 
 export const Collapse = (props: CollapseProps) => {
-  const { value, options, api, keys, splitter, valueType, onChange, button, children, skeleton, accordion, ...args } = props;
+  const { value, options, api, keys, splitter, valueType, onChange, children, skeleton, accordion, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<CollapseProps['value']>();
   const curItems = useSchemaItems();

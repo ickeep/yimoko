@@ -43,6 +43,7 @@ export * from './out/empty';
 export * from './out/notice-bar';
 export * from './out/progress';
 export * from './out/skeleton';
+export * from './out/steps';
 export * from './out/popover';
 export * from './out/table';
 export * from './out/tag';

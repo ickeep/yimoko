@@ -33,6 +33,7 @@ import { Empty } from './out/empty';
 import { NoticeBar } from './out/notice-bar';
 import { Progress } from './out/progress';
 import { Skeleton } from './out/skeleton';
+import { Steps } from './out/steps';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 import { Tag } from './out/tag';
@@ -82,6 +83,7 @@ export const components: Record<string, any> = {
   NoticeBar,
   Progress,
   Skeleton,
+  Steps,
   Swiper,
   SwiperItem,
   Table,
