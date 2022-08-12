@@ -8,116 +8,87 @@ const IndexPage = observer(() => {
 
   console.log('root loading', loading);
 
-
   const props: StorePageProps = {
-    store: { api: {}, defaultValues: { v2: 0 } },
+    store: {
+      api: {},
+      isBindSearch: true,
+      defaultValues: {
+        c1: '',
+        c2: 0,
+        cg: [],
+        cg2: '',
+      },
+    },
     options: {},
     schema: {
       type: 'object',
       properties: {
-        d1: {
-          type: 'void',
-          'x-component': 'Divider',
+        c1: {
+          'x-component': 'Checkbox',
           'x-component-props': {
-            contentPosition: 'center',
-            children: '基本用法',
+            children: 'bool',
           },
         },
-        v1: {
-          type: 'void',
-          'x-component': 'Sidebar',
+        c2: {
+          'x-component': 'Checkbox',
+          'x-component-props': {
+            values: {
+              true: 1,
+              false: 0,
+            },
+            children: 'num',
+          },
+        },
+        cg: {
+          'x-component': 'CheckboxGroup',
+          'x-component-props': {
+            options: [
+              {
+                label: '一',
+                value: '1',
+              },
+              {
+                label: '二',
+                value: '2',
+              },
+            ],
+          },
+        },
+        cg2: {
+          'x-component': 'CheckboxGroup',
+          'x-component-props': {
+            direction: 'horizontal',
+            valueType: 'string',
+            options: [
+              {
+                label: '一',
+                value: '1',
+              },
+              {
+                label: '二',
+                value: '2',
+              },
+            ],
+          },
           items: [
             {
-              type: 'void',
-              'x-component': 'Text',
+              'x-component': 'Checkbox',
               'x-component-props': {
-                type: 'info',
-                children: '来看看',
+                children: '三',
+                name: '3',
               },
-            },
-            {
-              type: 'void',
-              'x-decorator': 'SidebarItem',
-              'x-decorator-props': {
-                name: '123',
-              },
-              'x-component': 'Text',
-              'x-component-props': {
-                type: 'info',
-                children: 'decorator',
-              },
-            },
-            {
-              type: 'void',
-              'x-component': 'SidebarItem',
-              'x-component-props': {
-                title: 'component',
+              properties: {
+                text: {
+                  type: 'void',
+                  'x-component': 'Text',
+                  'x-component-props': {
+                    children: '三',
+                    type: 'info',
+                  },
+                },
               },
             },
           ],
-          'x-component-props': {
-            options: [
-              {
-                title: '标签 1',
-                desc: ' info ',
-              },
-              {
-                title: '标签 2',
-                disabled: true,
-              },
-            ],
-          },
-        },
-        d2: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: '受控',
-          },
-        },
-        v2: {
-          'x-component': 'Sidebar',
-          'x-component-props': {
-            accordion: true,
-            options: [
-              {
-                title: '标签 1',
-              },
-              {
-                title: '标签 2',
-              },
-              {
-                title: '标签 3',
-              },
-            ],
-          },
-        },
-        c: {
-          type: 'void',
-          'x-component': 'View',
-          properties: {
-            v2: {
-              type: 'string',
-              'x-component': 'RadioGroup',
-              'x-component-props': {
-                options: [
-                  {
-                    label: '展开1',
-                    value: 0,
-                  },
-                  {
-                    label: '展开2',
-                    value: 1,
-                  },
-                  {
-                    label: '展开3',
-                    value: 2,
-                  },
-                ],
-              },
-            },
-          },
         },
       },
     },

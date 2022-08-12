@@ -1,8 +1,8 @@
 import { Checkbox as TCheckbox, CheckboxGroup as TCheckboxGroup, Skeleton } from '@antmjs/vantui';
 import { CheckboxProps as TCheckboxProps, CheckboxGroupProps as TCheckboxGroupProps } from '@antmjs/vantui/types/checkbox';
-import { observer, RecursionField } from '@formily/react';
+import { observer } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
-import { IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
+import { getItemPropsBySchema, IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
 export interface CheckboxProps extends Omit<TCheckboxProps, 'onChange' | 'value'> {
@@ -45,8 +45,7 @@ export type CheckboxGroupProps = Omit<TCheckboxGroupProps, 'onChange'> & IOption
 };
 
 export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
-  const { options, api, keys, splitter, value, valueType, onChange, children, ...args } = props;
-
+  const { options, api, keys, splitter, value, valueType, onChange, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, keys, splitter);
 
   const curValue = useMemo(() => {
@@ -62,6 +61,20 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
 
   const curItems = useSchemaItems();
 
+  const curChildren = useMemo(() => {
+    const dataChildren = data.map?.(({ label, value, ...itemArgs }, i) => (
+      <TCheckbox shape="square" key={`d-${i}`} name={value} {...itemArgs}>{label}</TCheckbox>
+    ));
+
+    const itemChildren = curItems.map?.((item, i) => {
+      const props = getItemPropsBySchema(item, 'Checkbox', i);
+      return <TCheckbox shape="square" key={`i-${i}`} {...props} />;
+    });
+
+    return [...dataChildren, ...itemChildren];
+  }, [curItems, data]);
+
+
   return (
     <Skeleton loading={loading}>
       <TCheckboxGroup
@@ -69,13 +82,7 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
         value={curValue}
         onChange={e => onChange?.(valueType === 'string' ? e.detail?.join(splitter) : [...e.detail], e)}
       >
-        {data.map?.(({ label, value, ...itemArgs }, i) => (
-          <TCheckbox shape="square" key={i} name={value} {...itemArgs}>{label}</TCheckbox>
-        ))}
-        {curItems.map?.((item, i) => (
-          <RecursionField schema={item} name={i} />
-        ))}
-        {children}
+        {curChildren}
       </TCheckboxGroup>
     </Skeleton>
   );
