@@ -12,6 +12,7 @@ export * from './context/root';
 export * from './context/schema-field';
 export * from './context/schema-components';
 
+export * from './hoc/item-schema';
 export * from './hoc/value-children';
 
 export * from './hooks/use-api-options';
@@ -39,6 +40,7 @@ export * from './store/theme';
 export * from './tools/api';
 export * from './tools/num';
 export * from './tools/options';
+export * from './tools/schema';
 export * from './tools/str';
 export * from './tools/tool';
 

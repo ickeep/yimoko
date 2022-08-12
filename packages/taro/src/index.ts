@@ -43,6 +43,7 @@ export * from './nav/nav-bar';
 export * from './nav/navigator';
 export * from './nav/pagination';
 export * from './nav/sidebar';
+export * from './nav/tab';
 
 export * from './open/ad-custom';
 export * from './open/ad';

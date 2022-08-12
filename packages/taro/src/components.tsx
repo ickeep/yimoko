@@ -41,6 +41,7 @@ import { NavBar } from './nav/nav-bar';
 import { Navigator } from './nav/navigator';
 import { Pagination } from './nav/pagination';
 import { Sidebar } from './nav/sidebar';
+import { Tab, Tabs } from './nav/tab';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
@@ -145,6 +146,8 @@ export const components: Record<string, any> = {
   Navigator,
   Pagination,
   Sidebar,
+  Tab,
+  Tabs,
 
   // store
   StorePage,
