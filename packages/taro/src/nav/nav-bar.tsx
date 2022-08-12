@@ -3,7 +3,6 @@ import { NavBarProps as TNavBarProps } from '@antmjs/vantui/types/nav-bar';
 
 import { route } from '../adapter/route';
 
-
 export const NavBar = (props: TNavBarProps) => {
   const { onClickLeft, ...args } = props;
 

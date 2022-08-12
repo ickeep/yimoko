@@ -25,45 +25,33 @@ const IndexPage = observer(() => {
         },
         v1: {
           type: 'void',
-          'x-component': 'Tabs',
+          'x-component': 'Sidebar',
           items: [
             {
               type: 'void',
               'x-component': 'Text',
-              'x-decorator-props': {
-                title: 'Item 1',
-              },
               'x-component-props': {
-                type: 'success',
-                children: 'Item 1 的内容 decorator 为空 component 为 Text',
+                type: 'info',
+                children: '来看看',
               },
             },
             {
               type: 'void',
-              'x-decorator': 'Tab',
+              'x-decorator': 'SidebarItem',
               'x-decorator-props': {
-                title: 'Item 2',
+                name: '123',
               },
               'x-component': 'Text',
               'x-component-props': {
                 type: 'info',
-                children: 'Item 2 的内容 decorator === Tab',
+                children: 'decorator',
               },
             },
             {
               type: 'void',
-              'x-component': 'Tab',
+              'x-component': 'SidebarItem',
               'x-component-props': {
-                title: 'Item 3',
-              },
-              properties: {
-                t: {
-                  'x-component': 'Text',
-                  'x-component-props': {
-                    type: 'warning',
-                    children: 'Item 3 的内容 component === Tab 通过 properties 渲染内容 ',
-                  },
-                },
+                title: 'component',
               },
             },
           ],
@@ -71,6 +59,7 @@ const IndexPage = observer(() => {
             options: [
               {
                 title: '标签 1',
+                desc: ' info ',
               },
               {
                 title: '标签 2',
@@ -88,24 +77,18 @@ const IndexPage = observer(() => {
           },
         },
         v2: {
-          'x-component': 'Tabs',
+          'x-component': 'Sidebar',
           'x-component-props': {
-
+            accordion: true,
             options: [
               {
                 title: '标签 1',
-                name: '1',
-                children: '标签 1 内容',
               },
               {
                 title: '标签 2',
-                name: '2',
-                children: '标签 2 内容',
               },
               {
                 title: '标签 3',
-                name: '3',
-                children: '标签 3 内容',
               },
             ],
           },
@@ -113,9 +96,6 @@ const IndexPage = observer(() => {
         c: {
           type: 'void',
           'x-component': 'View',
-          'x-component-props': {
-            style: { marginTop: 10 },
-          },
           properties: {
             v2: {
               type: 'string',
@@ -123,95 +103,20 @@ const IndexPage = observer(() => {
               'x-component-props': {
                 options: [
                   {
-                    label: '设置为 1',
-                    value: '1',
+                    label: '展开1',
+                    value: 0,
                   },
                   {
-                    label: '设置为 2',
-                    value: '2',
+                    label: '展开2',
+                    value: 1,
                   },
                   {
-                    label: '设置为 3',
-                    value: '3',
+                    label: '展开3',
+                    value: 2,
                   },
                 ],
               },
             },
-          },
-        },
-        d3: {
-          type: 'void',
-          'x-component': 'Divider',
-          'x-component-props': {
-            contentPosition: 'center',
-            children: '通过 schema 渲染 dataSource 数据',
-          },
-        },
-        v3: {
-          'x-component': 'Tabs',
-          'x-component-props': {
-            dataSource: {
-              object: {
-                text: 'text',
-                desc: 'desc',
-                btn: 'btn',
-              },
-              v2: {
-                text: 'text 2',
-                desc: 'desc 2',
-                btn: 'btn 2',
-              },
-            },
-            options: [
-              {
-                title: 'object',
-                name: 'object',
-                schema: {
-                  type: 'object',
-                  properties: {
-                    text: {
-                      'x-component': 'Text',
-                    },
-                    desc: {
-                      type: 'void',
-                      'x-component': 'View',
-                      properties: {
-                        desc: {
-                          'x-component': 'Text',
-                        },
-                      },
-                    },
-                    btn: { 'x-component': 'Button' },
-                  },
-                },
-              },
-              {
-                title: '标签 2',
-                name: 'v2',
-                schema: {
-                  type: 'object',
-                  properties: {
-                    text: {
-                      'x-component': 'Text',
-                    },
-                    desc: {
-                      type: 'void',
-                      'x-component': 'View',
-                      properties: {
-                        desc: {
-                          'x-component': 'Text',
-                        },
-                      },
-                    },
-                    btn: { 'x-component': 'Button' },
-                  },
-                },
-              },
-              {
-                title: '标签 3',
-                name: '3',
-              },
-            ],
           },
         },
       },
