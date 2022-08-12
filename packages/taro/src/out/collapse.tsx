@@ -1,9 +1,8 @@
 import { Collapse as TCollapse, Skeleton, CollapseItem } from '@antmjs/vantui';
 import { CollapseItemProps, CollapseProps as TCollapseProps } from '@antmjs/vantui/types/collapse';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
-import { RecursionField } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
-import { IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
+import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
@@ -39,31 +38,19 @@ export const Collapse = (props: CollapseProps) => {
     return accordion ? single() : multiple();
   }, [accordion, isControlled, val, value]);
 
-  const dataChildren = useMemo(
-    () => data?.map((item, i) => (
-      <CollapseItem key={`data-${i}`} name={`data-${i}`} {...item} onClick={() => handleClick(item)} />
-    )),
-    [data],
-  );
+  const curChildren = useMemo(() => {
+    const dataChildren = data?.map((item, i) => (
+      <CollapseItem key={`d-${i}`} name={`data-${i}`} onClick={() => handleClick(item)} {...item} />
+    ));
 
-  // eslint-disable-next-line complexity
-  const itemChildren = useMemo(() => curItems.map?.((item, i) => {
-    const { 'x-component': component, 'x-decorator': decorator, 'x-decorator-props': itemProps, ...args } = item;
-    if (component === 'CollapseItem') {
-      const cProps = args['x-component-props'];
-      return (
-        <CollapseItem key={`item-${i}`} name={`item-${i}`} {...cProps} >
-          {args.properties ? <RecursionField schema={item} name={i} onlyRenderProperties /> : cProps.children}
-        </CollapseItem>
-      );
-    }
+    const itemChildren = curItems.map?.((item, i) => {
+      const props = getItemPropsBySchema(item, 'CollapseItem', i);
+      return <CollapseItem key={`i-${i}`} onClick={() => handleClick(item, i)} {...props} />;
+    });
 
-    return (
-      <CollapseItem key={`item-${i}`} name={`item-${i}`} {...((!decorator || decorator === 'CollapseItem') ? itemProps : {})} >
-        <RecursionField schema={{ ...args, 'x-component': component }} name={i} />
-      </CollapseItem>
-    );
-  }), [curItems]);
+    return [...dataChildren, ...itemChildren];
+  }, [curItems, data]);
+
 
   return (
     <Skeleton {...skeleton} loading={loading}>
@@ -76,8 +63,7 @@ export const Collapse = (props: CollapseProps) => {
           !isControlled && setVal(e.detail);
         }}
       >
-        {dataChildren}
-        {itemChildren}
+        {curChildren}
       </TCollapse>
     </Skeleton>
   );
