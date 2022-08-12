@@ -2,6 +2,7 @@ import { Skeleton, Image, Grid as TGrid, GridItem } from '@antmjs/vantui';
 import { GridProps as TGridProps } from '@antmjs/vantui/types/grid';
 
 import { ImageProps } from '@antmjs/vantui/types/image';
+import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { observer } from '@formily/react';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, judgeIsEmpty, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import { useMemo } from 'react';
@@ -10,11 +11,11 @@ import { handleClick } from '../tools/handle-click';
 
 export type GridProps = TGridProps & IOptionsOutAPIProps & {
   image?: ImageProps
+  skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
 };
 
 export const Grid = observer((props: GridProps) => {
-  const { className, options, api, keys, splitter, image, ...args
-  } = props;
+  const { className, options, api, keys, splitter, image, skeleton, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curItems = useSchemaItems();
 
@@ -37,7 +38,7 @@ export const Grid = observer((props: GridProps) => {
   }, [curItems, data, image]);
 
   return (
-    <Skeleton loading={loading}>
+    <Skeleton {...skeleton} loading={loading}>
       {/* Grid 组件 childern 不支持 空 */}
       {!judgeIsEmpty(curChildren) && <TGrid {...args} >{curChildren}</TGrid>}
     </Skeleton>
