@@ -1,5 +1,6 @@
 import { Checkbox as TCheckbox, CheckboxGroup as TCheckboxGroup, Skeleton } from '@antmjs/vantui';
 import { CheckboxProps as TCheckboxProps, CheckboxGroupProps as TCheckboxGroupProps } from '@antmjs/vantui/types/checkbox';
+import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { observer } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
@@ -42,10 +43,11 @@ export const Checkbox = (props: CheckboxProps) => {
 
 export type CheckboxGroupProps = Omit<TCheckboxGroupProps, 'onChange'> & IOptionsAPIProps & {
   onChange?: (value: any, event: ITouchEvent) => void
+  skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
 };
 
 export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
-  const { options, api, keys, splitter, value, valueType, onChange, ...args } = props;
+  const { options, api, keys, splitter, value, valueType, onChange, skeleton, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, keys, splitter);
 
   const curValue = useMemo(() => {
@@ -76,7 +78,7 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
 
 
   return (
-    <Skeleton loading={loading}>
+    <Skeleton {...skeleton} loading={loading}>
       <TCheckboxGroup
         {...args}
         value={curValue}
