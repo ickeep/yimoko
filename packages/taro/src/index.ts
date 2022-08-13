@@ -50,6 +50,7 @@ export * from './open/ad-custom';
 export * from './open/ad';
 export * from './open/web-view';
 
+export * from './out/card';
 export * from './out/circle';
 export * from './out/collapse';
 export * from './out/count-down';

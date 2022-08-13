@@ -43,6 +43,7 @@ import { Pagination } from './nav/pagination';
 import { Sidebar } from './nav/sidebar';
 import { Tab, Tabs } from './nav/tab';
 import { Tabbar, TabbarItem } from './nav/tabbar';
+import { Card, Cardlist } from './out/card';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
@@ -121,6 +122,8 @@ export const components: Record<string, any> = {
   Textarea,
 
   // out
+  Card,
+  Cardlist,
   Circle,
   Collapse,
   CollapseItem,
