@@ -44,6 +44,7 @@ export * from './nav/navigator';
 export * from './nav/pagination';
 export * from './nav/sidebar';
 export * from './nav/tab';
+export * from './nav/tabbar';
 
 export * from './open/ad-custom';
 export * from './open/ad';

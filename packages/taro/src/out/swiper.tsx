@@ -1,8 +1,8 @@
 import { Skeleton, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
-import { observer, RecursionField } from '@formily/react';
+import { observer } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps, View } from '@tarojs/components';
-import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems } from '@yimoko/store';
+import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 
@@ -30,24 +30,29 @@ export const Swiper = observer((props: SwiperProps) => {
   const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
   const curItems = useSchemaItems();
 
+  const curChildren = useMemo(() => {
+    const dataChildren = data?.map?.((item, i) => (
+      <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)}>
+        <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
+        <View className='c-text' style={textStyle}>
+          {item.title && <Text style={titleStyle}>{item.title}</Text>}
+          {item.desc && <Text size="small" style={descStyle}>{item.desc}</Text>}
+        </View>
+      </SwiperItem>
+    ));
+
+    const itemChildren = curItems.map?.((item, i) => {
+      const props = getItemPropsBySchema(item, 'SwiperItem', i);
+      return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)} {...props} />;
+    });
+
+    return [...dataChildren, ...itemChildren];
+  }, [curHeight, curItemStyle, curItems, data, descStyle, image, textStyle, titleStyle]);
+
   return (
     <Skeleton loading={loading}>
       <TSwiper {...args} className={classNames('y-swiper', className)}>
-        {data?.map?.((item, i) => (
-          <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)}>
-            <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
-            <View className='c-text' style={textStyle}>
-              {item.title && <Text style={titleStyle}>{item.title}</Text>}
-              {item.desc && <Text size="small" style={descStyle}>{item.desc}</Text>}
-            </View>
-          </SwiperItem>
-        ))}
-        {curItems.map?.((item, i) => (
-          <SwiperItem key={`item-${i}`} style={curItemStyle}>
-            <RecursionField schema={item} name={i} />
-          </SwiperItem>
-        ))}
-        {children}
+        {curChildren}
       </TSwiper>
     </Skeleton>
   );

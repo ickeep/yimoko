@@ -11,90 +11,95 @@ const IndexPage = observer(() => {
   const props: StorePageProps = {
     store: {
       api: {},
-      isBindSearch: true,
       defaultValues: {
-        c1: '',
-        c2: 0,
-        cg: [],
-        cg2: '',
+        v2: 0,
       },
     },
     options: {},
     schema: {
       type: 'object',
       properties: {
-        c1: {
-          'x-component': 'Checkbox',
+        d2: {
+          type: 'void',
+          'x-component': 'Divider',
           'x-component-props': {
-            children: 'bool',
+            contentPosition: 'center',
+            children: '受控',
           },
         },
-        c2: {
-          'x-component': 'Checkbox',
-          'x-component-props': {
-            values: {
-              true: 1,
-              false: 0,
-            },
-            children: 'num',
-          },
-        },
-        cg: {
-          'x-component': 'CheckboxGroup',
+        v2: {
+          'x-component': 'Tabbar',
           'x-component-props': {
             options: [
               {
-                label: '一',
-                value: '1',
+                children: '标签 1',
+                name: '1',
+                icon: 'home-o',
+                dot: 2,
               },
               {
-                label: '二',
-                value: '2',
-              },
-            ],
-          },
-        },
-        cg2: {
-          'x-component': 'CheckboxGroup',
-          'x-component-props': {
-            direction: 'horizontal',
-            valueType: 'string',
-            options: [
-              {
-                label: '一',
-                value: '1',
+                children: '标签 2',
+                name: '2',
+                img: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/demo-taro/icon/discovery.png',
+                imgActive: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/demo-taro/icon/discovery-active.png',
               },
               {
-                label: '二',
-                value: '2',
+                children: '标签 3',
+                name: '3',
+                icon: 'like',
               },
             ],
           },
           items: [
             {
-              'x-component': 'Checkbox',
+              type: 'void',
+              'x-component': 'Text',
               'x-component-props': {
-                children: '三',
-                name: '3',
+                children: 'Item 1',
+                type: 'success',
               },
-              properties: {
-                text: {
-                  type: 'void',
-                  'x-component': 'Text',
-                  'x-component-props': {
-                    children: '三',
-                    type: 'info',
-                  },
-                },
+              'x-decorator-props': {
+                icon: 'contact',
               },
             },
           ],
+        },
+        c: {
+          type: 'void',
+          'x-component': 'View',
+          'x-component-props': {
+            style: {
+              marginTop: 10,
+            },
+          },
+          properties: {
+            v2: {
+              type: 'string',
+              'x-component': 'RadioGroup',
+              'x-component-props': {
+                options: [
+                  {
+                    label: '设置为 1',
+                    value: '1',
+                  },
+                  {
+                    label: '设置为 2',
+                    value: '2',
+                  },
+                  {
+                    label: '设置为 3',
+                    value: '3',
+                  },
+                ],
+              },
+            },
+          },
         },
       },
     },
   };
 
-  // console.log(JSON.stringify(props));
+  console.log(JSON.stringify(props));
 
   // @ts-ignore
   return <Page> <StorePage {...props} /></Page >;
