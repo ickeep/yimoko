@@ -24,6 +24,7 @@ export const Switch = (props: SwitchProps) => {
 
   return (
     <TSwitch
+      size='medium'
       {...args}
       checked={curValue}
       onChange={(e) => {

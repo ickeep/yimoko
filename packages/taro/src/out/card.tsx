@@ -1,5 +1,6 @@
 import { Skeleton, Card as TCard } from '@antmjs/vantui';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
+import { observer } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
@@ -27,7 +28,7 @@ export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof defaultKey
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
 };
 
-export const Cardlist = (props: CardlistProps) => {
+export const Cardlist = observer((props: CardlistProps) => {
   const { options, api, keys, splitter, skeleton, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
@@ -52,4 +53,4 @@ export const Cardlist = (props: CardlistProps) => {
       </View>
     </Skeleton>
   );
-};
+});

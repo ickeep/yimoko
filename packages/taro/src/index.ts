@@ -26,7 +26,7 @@ export * from './feedback/loading';
 export * from './feedback/overlay';
 
 export * from './in/checkbox';
-export * from './in/form-item';
+export * from './in/field';
 export * from './in/form';
 export * from './in/input';
 export * from './in/label';

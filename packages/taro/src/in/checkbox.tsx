@@ -76,10 +76,10 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
     return [...dataChildren, ...itemChildren];
   }, [curItems, data]);
 
-
   return (
     <Skeleton {...skeleton} loading={loading}>
       <TCheckboxGroup
+        direction="horizontal"
         {...args}
         value={curValue}
         onChange={e => onChange?.(valueType === 'string' ? e.detail?.join(splitter) : [...e.detail], e)}

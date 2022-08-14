@@ -25,8 +25,8 @@ import { Dialog } from './feedback/dialog';
 import { Loading } from './feedback/loading';
 import { Overlay } from './feedback/overlay';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
+import { Field } from './in/field';
 import { Form } from './in/form';
-import { FormItem } from './in/form-item';
 import { Input } from './in/input';
 import { Label } from './in/label';
 import { Radio, RadioGroup } from './in/radio';
@@ -109,7 +109,7 @@ export const components: Record<string, any> = {
   // in
   Checkbox,
   CheckboxGroup,
-  FormItem,
+  Field,
   Form,
   Input,
   Label,
