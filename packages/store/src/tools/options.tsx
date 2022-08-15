@@ -64,6 +64,6 @@ export const judgeValueInOptions = (value: any, options: IOptions<'value'>, keys
   return options?.some(item => item[key] === value);
 };
 
-export type IOptions<T extends string = 'label' | 'value'> = Record<T | string, any>[];
+export type IOptions<T extends string = 'label' | 'value'> = Array<Record<T | string, any>>;
 
 export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;

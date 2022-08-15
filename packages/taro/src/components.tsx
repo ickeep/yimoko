@@ -25,10 +25,12 @@ import { Dialog } from './feedback/dialog';
 import { Loading } from './feedback/loading';
 import { Overlay } from './feedback/overlay';
 import { Checkbox, CheckboxGroup } from './in/checkbox';
+// import { DatetimePicker } from './in/datetime-picker';
 import { Field } from './in/field';
 import { Form } from './in/form';
 import { Input } from './in/input';
 import { Label } from './in/label';
+import { Picker, PickerMulti } from './in/picker';
 import { Radio, RadioGroup } from './in/radio';
 import { Rate } from './in/rate';
 import { Slider } from './in/slider';
@@ -109,10 +111,13 @@ export const components: Record<string, any> = {
   // in
   Checkbox,
   CheckboxGroup,
+  // DatetimePicker,
   Field,
   Form,
   Input,
   Label,
+  Picker,
+  PickerMulti,
   Radio,
   RadioGroup,
   Rate,

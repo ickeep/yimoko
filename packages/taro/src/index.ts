@@ -26,10 +26,12 @@ export * from './feedback/loading';
 export * from './feedback/overlay';
 
 export * from './in/checkbox';
+// export * from './in/datetime-picker';
 export * from './in/field';
 export * from './in/form';
 export * from './in/input';
 export * from './in/label';
+export * from './in/picker';
 export * from './in/radio';
 export * from './in/rate';
 export * from './in/slider';
