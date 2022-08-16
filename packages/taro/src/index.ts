@@ -41,6 +41,7 @@ export * from './in/slider';
 export * from './in/stepper';
 export * from './in/switch';
 export * from './in/textarea';
+export * from './in/uploader';
 
 export * from './nav/dropdown-menu';
 export * from './nav/grid';

@@ -40,6 +40,7 @@ import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
 import { Textarea } from './in/textarea';
+import { Uploader } from './in/uploader';
 import { DropdownItem, DropdownMenu } from './nav/dropdown-menu';
 import { Grid } from './nav/grid';
 import { IndexBar } from './nav/index-bar';
@@ -131,6 +132,7 @@ export const components: Record<string, any> = {
   Stepper,
   Switch,
   Textarea,
+  Uploader,
 
   // out
   Card,
