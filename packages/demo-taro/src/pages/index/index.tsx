@@ -33,27 +33,11 @@ const IndexPage = observer(() => {
                 contentPosition: 'center',
               },
             },
-            Menu: {
-              'x-component': 'DropdownMenu',
-              items:
-                [
-                  {
-                    name: 'v1',
-                    'x-component': 'DropdownItem',
-                    'x-component-props': {
-                      title: 'api 数据',
-                      api: { url: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/demo-taro/api/options/single.json' },
-                    },
-                  },
-                  {
-                    name: 'v2',
-                    'x-component': 'DropdownItem',
-                    'x-component-props': {
-                      title: 'options 数据',
-                      options: [{ value: 'v1', label: 'v1' }, { value: 'v2', label: 'v2' }],
-                    },
-                  },
-                ],
+            v1: {
+              'x-component': 'Uploader',
+              'x-component-props': {
+                multiple: true,
+              },
             },
             d2: {
               type: 'void',
@@ -63,25 +47,8 @@ const IndexPage = observer(() => {
                 contentPosition: 'center',
               },
             },
-            Menu2: {
-              'x-component': 'DropdownMenu',
-              items:
-                [
-                  {
-                    'x-component': 'DropdownItem',
-                    'x-component-props': {
-                      title: 'api 数据',
-                      api: { url: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/demo-taro/api/options/single.json' },
-                    },
-                  },
-                  {
-                    'x-component': 'DropdownItem',
-                    'x-component-props': {
-                      title: 'options 数据',
-                      options: [{ value: 'v1', label: 'v1' }, { value: 'v2', label: 'v2' }],
-                    },
-                  },
-                ],
+            v2: {
+              'x-component': 'Uploader',
             },
           },
         },
