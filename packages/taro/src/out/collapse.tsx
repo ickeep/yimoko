@@ -40,7 +40,7 @@ export const Collapse = (props: CollapseProps) => {
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <CollapseItem key={`d-${i}`} name={`data-${i}`} onClick={() => handleClick(item)} {...item} />
+      <CollapseItem key={`d-${i}`} onClick={() => handleClick(item, i)} {...item} name={`data-${i}`} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {

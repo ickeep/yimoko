@@ -14,7 +14,17 @@ export type ActionSheetProps = TActionSheetProps & IOptionsAPIProps<keyof Action
   button?: ButtonProps
 };
 
-const defaultKeys = { name: 'name', subname: 'desc' };
+const defaultKeys = {
+  name: 'name',
+  subname: 'desc',
+  color: 'color',
+  loading: 'loading',
+  disabled: 'disabled',
+  url: 'url',
+  click: 'click',
+  value: 'value',
+};
+
 export const ActionSheet = (props: ActionSheetProps) => {
   const { value, values, options, api, keys, splitter, valueType, onChange, onSelect, onCancel, button, children, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);

@@ -29,7 +29,7 @@ export const Sidebar = (props: SidebarProps) => {
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);
 
   const curChildren = useMemo(() => {
-    const dataChildren = data?.map((item, i) => <SidebarItem key={`d-${i}`} onClick={() => handleClick(item)} {...item} />);
+    const dataChildren = data?.map((item, i) => <SidebarItem key={`d-${i}`} onClick={() => handleClick(item, i)} {...item} />);
 
     const itemChildren = curItems.map?.((item, i) => {
       const props = getItemPropsBySchema(item, 'SidebarItem', i);

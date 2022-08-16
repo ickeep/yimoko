@@ -35,7 +35,7 @@ export const Cardlist = observer((props: CardlistProps) => {
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item)} {...item} />
+      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item, i)} {...item} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {

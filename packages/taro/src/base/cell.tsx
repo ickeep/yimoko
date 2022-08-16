@@ -25,7 +25,7 @@ export const CellGroup = observer((props: CellGroupProps) => {
         {options?.map?.((item, i) => {
           const { desc, img, url, click, routeType, ...args } = item;
           return (
-            <TCell key={`data-${i}`} label={desc} {...args} onClick={() => handleClick(item, i)} >
+            <TCell key={`data-${i}`} onClick={() => handleClick(item, i)} label={desc} {...args}  >
               {img && <Image fit="cover" height="100%" width="100%" {...image} src={img} />}
             </TCell>
           );

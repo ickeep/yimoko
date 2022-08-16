@@ -61,13 +61,13 @@ export const Tabbar = (props: TabbarProps) => {
     () => {
       const dataChildren = data?.map((item, i) => {
         const name = item.name ?? `d-${i}`;
-        return <TabbarItem key={name} name={name}  {...item} onClick={() => handleClick(item)} />;
+        return <TabbarItem key={name} onClick={() => handleClick(item, i)} {...item} name={name} />;
       });
 
       const itemChildren = curItems.map?.((item, i) => {
         const props = getItemPropsBySchema(item, 'TabbarItem', i);
         const name = props?.name ?? `i-${i}`;
-        return <TabbarItem key={name} name={name} {...props} onClick={() => handleClick(props)} />;
+        return <TabbarItem key={name} name={name} onClick={() => handleClick(props, i)} {...props} />;
       });
       return [...dataChildren, ...itemChildren];
     },

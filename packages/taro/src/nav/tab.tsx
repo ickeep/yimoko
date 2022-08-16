@@ -41,8 +41,7 @@ export const Tabs = (props: TabsProps) => {
     () => {
       const dataChildren = data?.map((item, i) => {
         const name = item.name ?? `d-${i}`;
-
-        return <Tab key={name} name={name}  {...item} model={{ values: dataSource?.[name] }} onClick={() => handleClick(item)} />;
+        return <Tab key={name} onClick={() => handleClick(item, i)} {...item} name={name} model={{ values: dataSource?.[name] }} />;
       });
 
       const cLen = dataChildren.length;
@@ -51,7 +50,7 @@ export const Tabs = (props: TabsProps) => {
         const name = props?.name ?? `i-${cLen + i}`;
 
         return (
-          <Tab key={name} name={name} {...props} model={{ values: dataSource?.[name] }} onClick={() => handleClick(props)} />
+          <Tab key={name} name={name} onClick={() => handleClick(props, i)} {...props} model={{ values: dataSource?.[name] }} />
         );
       });
       return [...dataChildren, ...itemChildren];
