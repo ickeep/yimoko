@@ -40,6 +40,7 @@ import { Slider } from './in/slider';
 import { Stepper } from './in/stepper';
 import { Switch } from './in/switch';
 import { Textarea } from './in/textarea';
+import { DropdownItem, DropdownMenu } from './nav/dropdown-menu';
 import { Grid } from './nav/grid';
 import { IndexBar } from './nav/index-bar';
 import { NavBar } from './nav/nav-bar';
@@ -153,6 +154,8 @@ export const components: Record<string, any> = {
   Tag,
 
   // nav
+  DropdownMenu,
+  DropdownItem,
   Grid,
   IndexBar,
   IndexAnchor,

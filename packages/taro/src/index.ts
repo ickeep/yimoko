@@ -26,7 +26,6 @@ export * from './feedback/loading';
 export * from './feedback/overlay';
 
 export * from './in/checkbox';
-// export * from './in/datetime-picker';
 export * from './in/field';
 export * from './in/form';
 export * from './in/input';
@@ -43,6 +42,7 @@ export * from './in/stepper';
 export * from './in/switch';
 export * from './in/textarea';
 
+export * from './nav/dropdown-menu';
 export * from './nav/grid';
 export * from './nav/index-bar';
 export * from './nav/nav-bar';
