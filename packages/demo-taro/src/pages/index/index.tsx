@@ -15,6 +15,7 @@ const IndexPage = observer(() => {
         value: {
           v1: 'v3',
           v2: 'v3-c2',
+          v7: ['110000', '110100', '110101'],
         },
       },
     },
@@ -52,7 +53,7 @@ const IndexPage = observer(() => {
               'x-decorator-props': {
                 label: 'checkbox',
               },
-              'x-component': 'PickerMulti',
+              'x-component': 'PickerRegion',
               'x-component-props': {
                 clearable: true,
                 options: [

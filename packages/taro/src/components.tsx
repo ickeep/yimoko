@@ -30,7 +30,10 @@ import { Form } from './in/form';
 import { Input } from './in/input';
 import { Label } from './in/label';
 import { Picker } from './in/picker';
+import { PickerDate } from './in/picker-date';
 import { PickerMulti } from './in/picker-multi';
+import { PickerRegion } from './in/picker-region';
+import { PickerTime } from './in/picker-time';
 import { Radio, RadioGroup } from './in/radio';
 import { Rate } from './in/rate';
 import { Slider } from './in/slider';
@@ -116,7 +119,10 @@ export const components: Record<string, any> = {
   Input,
   Label,
   Picker,
+  PickerDate,
   PickerMulti,
+  PickerRegion,
+  PickerTime,
   Radio,
   RadioGroup,
   Rate,

@@ -7,7 +7,7 @@ import { judgeIsEmpty } from './tool';
 
 export const DF_KEYS: IKeys = { label: 'label', value: 'value' };
 
-export const arrToOptions = <T extends string = 'label' | 'value'>(options: IOptions<T> = [], keys?: IKeys<T>) => {
+export function arrToOptions<T extends string = 'label' | 'value'>(options: IOptions<T> = [], keys?: IKeys<T>): IOptions<T> {
   if (!keys) {
     return options;
   }
@@ -31,7 +31,7 @@ export const arrToOptions = <T extends string = 'label' | 'value'>(options: IOpt
         newItem[key] = val;
       }
     });
-    return newItem;
+    return newItem as IOption<T>;
   });
 };
 
@@ -41,8 +41,8 @@ export const strToOptions = <T extends string = 'label' | 'value'>(str = '', spl
 
   return arr.map((item) => {
     const option: Record<string, string> = {};
-    optionKeys.forEach(key => option[key] = item);
-    return option;
+    optionKeys.forEach((key: any) => option[key] = item);
+    return option as IOption<T>;
   });
 };
 
@@ -76,6 +76,10 @@ export const judgeValueInOptions = (value: any, options: IOptions<'value'>, keys
   return options?.some(item => item[key] === value);
 };
 
-export type IOptions<T extends string = 'label' | 'value'> = Array<Record<T | string, any>>;
+export type IOptions<T extends string = 'label' | 'value'> = Array<IOption<T>>;
+
+
+export type IOption<T extends string = 'label' | 'value'> = { [key in T]: any } & { [key: string]: any };
+
 
 export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;
