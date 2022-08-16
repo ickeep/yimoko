@@ -1,8 +1,9 @@
 import { Uploader as TUploader } from '@antmjs/vantui';
 import { UploaderProps as TUploaderProps } from '@antmjs/vantui/types/uploader';
 import { observer } from '@formily/react';
-import { strToArr } from '@yimoko/store';
-import { useEffect, useState } from 'react';
+import Taro from '@tarojs/taro';
+import { judgeIsEmpty, strToArr, useBaseStore } from '@yimoko/store';
+import { useCallback, useEffect } from 'react';
 
 export interface UploaderProps extends Omit<TUploaderProps, 'fileList'> {
   valueType?: 'string' | 'string[]' | 'array'
@@ -19,40 +20,70 @@ export interface IFile {
 
 export const Uploader = observer((props: UploaderProps) => {
   const { onChange, value, valueType, onDelete, splitter = ',', multiple, ...args } = props;
+  const { values: { fileList }, setValuesByField } = useBaseStore<{ fileList: IFile[] }>({ defaultValues: { fileList: [] }, api: {} });
 
-  const [fileList, setFileList] = useState<IFile[]>([]);
+  const setFileList = useCallback((fileList: IFile[]) => {
+    setValuesByField('fileList', fileList);
+  }, [setValuesByField]);
 
   // eslint-disable-next-line complexity
   useEffect(() => {
-    // todo 处理下载中的文件
+    let valueList: IFile[] = [];
     if (typeof value === 'string' && value) {
-      const list = multiple ? strToArr(value, splitter).map(item => ({ url: item })) : [{ url: value }];
-      setFileList(list);
+      valueList = multiple ? strToArr(value, splitter).map(item => ({ url: item })) : [{ url: value }];
     } else if (Array.isArray(value)) {
-      setFileList(value.map(item => (typeof item === 'string' ? { url: item } : item)));
+      valueList = value.map(item => (typeof item === 'string' ? { url: item } : item));
     }
-  }, [multiple, splitter, value]);
+    const newList = valueList.filter(item => !fileList.some(file => file.url === item.url));
+    if (!judgeIsEmpty(newList)) {
+      setFileList([...fileList, ...newList]);
+    }
+  }, [fileList, multiple, setFileList, splitter, value]);
 
   const getValue = (fileList: IFile[]) => {
+    const valueList = fileList.filter(({ status = 'done' }) => status === 'done');
     if (valueType === 'array') {
-      return fileList;
+      return valueList;
     }
-    const urlArr = fileList.map(item => item.url);
+    const urlArr = valueList.map(item => item.url);
     if (valueType === 'string[]') {
       return urlArr;
     }
     return urlArr.join(splitter);
   };
 
-
   return (
     <TUploader
       {...args}
-
       multiple={multiple}
       fileList={fileList}
-      onAfterRead={(file: any) => {
-        console.log(file);
+      onAfterRead={(e) => {
+        const { file } = e.detail;
+        const fiels = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
+        const newList = [...fileList, ...fiels];
+        setFileList(newList);
+
+        fiels.forEach((item) => {
+          Taro.uploadFile({
+            url: 'https://www.baidu.com/', filePath: item.url, name: 'file',
+            success: (res) => {
+              const file = newList.find(({ url }) => url === item.url);
+
+              if (file) {
+                file.status = 'done';
+                file.url = res.data;
+                setFileList(newList);
+              }
+            },
+            fail: () => {
+              const file = newList.find(({ url }) => url === item.url);
+              if (file) {
+                file.status = 'failed';
+                setFileList(newList);
+              }
+            },
+          });
+        });
       }}
       onDelete={(e) => {
         onDelete?.(e);
@@ -61,10 +92,6 @@ export const Uploader = observer((props: UploaderProps) => {
         setFileList(newList);
         onChange?.(getValue(newList));
       }}
-    // onC={(e) => {
-    //   onInput?.(e);
-    //   onChange?.(e.detail.value);
-    // }}
     />
   );
 });
