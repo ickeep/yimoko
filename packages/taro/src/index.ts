@@ -31,6 +31,7 @@ export * from './in/field';
 export * from './in/form';
 export * from './in/input';
 export * from './in/label';
+export * from './in/picker-multi';
 export * from './in/picker';
 export * from './in/radio';
 export * from './in/rate';

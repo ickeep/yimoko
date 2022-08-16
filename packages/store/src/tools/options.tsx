@@ -3,14 +3,26 @@ import { omit } from 'lodash-es';
 
 import { strToArr } from '../tools/str';
 
+import { judgeIsEmpty } from './tool';
+
 export const DF_KEYS: IKeys = { label: 'label', value: 'value' };
 
-export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOptions<T>, keys?: IKeys<T>) => {
+export const arrToOptions = <T extends string = 'label' | 'value'>(options: IOptions<T> = [], keys?: IKeys<T>) => {
   if (!keys) {
-    return options ?? [];
+    return options;
   }
-  const optionsKeys = Object.keys(keys) as T[];
-  const optionsValues = Object.values(keys);
+  const optionsKeys: string[] = [];
+  const optionsValues: any[] = [];
+  Object.entries(keys).forEach(([key, value]) => {
+    if (key !== value) {
+      optionsKeys.push(key);
+      optionsValues.push(value);
+    }
+  });
+  if (judgeIsEmpty(optionsKeys)) {
+    return options;
+  }
+
   return options?.map((item) => {
     const newItem: Record<string, string> = omit(item, optionsValues);
     optionsKeys.forEach((key) => {
@@ -20,7 +32,7 @@ export const arrToOptions = <T extends string = 'label' | 'value'>(options?: IOp
       }
     });
     return newItem;
-  }) ?? [];
+  });
 };
 
 export const strToOptions = <T extends string = 'label' | 'value'>(str = '', splitter = ',', keys?: IKeys<T>): IOptions<T> => {

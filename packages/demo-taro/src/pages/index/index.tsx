@@ -1,14 +1,14 @@
 
 import { observer } from '@formily/react';
 import { useRoot } from '@yimoko/store';
-import { Page, StorePage, StorePageProps } from '@yimoko/taro';
+import { Field, Page, StorePage, StorePageProps } from '@yimoko/taro';
 
 const IndexPage = observer(() => {
   const { loading } = useRoot();
 
   console.log('root loading', loading);
 
-  const props: StorePageProps = {
+  const props: StorePageProps<object, unknown> = {
     store: {
       api: {},
       defaultValues: {
@@ -25,42 +25,44 @@ const IndexPage = observer(() => {
         value: {
           type: 'object',
           properties: {
-            // v1: {
-            //   'x-component': 'Picker',
-            //   'x-component-props': {
-            //     options: [
-            //       { label: 't-v1', value: 'v1' },
-            //       { label: 't-v2', value: 'v2' },
-            //       { label: 't-v3', value: 'v3' },
-            //       { label: 't-v4', value: 'v4' },
-            //     ],
-            //   },
-            // },
+            v1: {
+              'x-component': 'Picker',
+              'x-component-props': {
+                clearable: true,
+                options: [
+                  { label: 't-v1', value: 'v1' },
+                  { label: 't-v2', value: 'v2' },
+                  { label: 't-v3', value: 'v3' },
+                  { label: 't-v4', value: 'v4' },
+                ],
+              },
+            },
             v2: {
               'x-component': 'PickerMulti',
               'x-component-props': {
+                clearable: true,
                 type: 'multiSelector',
+                api: {
+                  url: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/demo-taro/api/options/multi.json',
+                },
+              },
+            },
+            v7: {
+              'x-decorator': 'Field',
+              'x-decorator-props': {
+                label: 'checkbox',
+              },
+              'x-component': 'PickerMulti',
+              'x-component-props': {
+                clearable: true,
                 options: [
                   {
-                    label: 'v1', value: 'v1', child: [
-                      { label: 'v1-c1', value: 'v1-c1' },
-                      { label: 'v1-c2', value: 'v1-c2' },
-                      { label: 'v1-c3', value: 'v1-c3' }],
+                    value: '1',
+                    label: '1',
                   },
                   {
-                    label: 'v2', value: 'v2', child: [
-                      { label: 'v2-c1', value: 'v2-c1' },
-                      { label: 'v2-c2', value: 'v2-c2' },
-                      { label: 'v2-c3', value: 'v2-c3' },
-                      { label: 'v2-c4', value: 'v2-c4' },
-                    ],
-                  },
-                  {
-                    label: 'v3', value: 'v3', child: [
-                      { label: 'v3-c1', value: 'v3-c1' },
-                      { label: 'v3-c2', value: 'v3-c2' },
-                      { label: 'v3-c3', value: 'v3-c3' },
-                    ],
+                    value: '2',
+                    label: '2',
                   },
                 ],
               },
@@ -85,8 +87,12 @@ const IndexPage = observer(() => {
 
   // console.log(JSON.stringify(props));
 
-  // @ts-ignore
-  return <Page> <StorePage {...props} /></Page >;
+  return (
+    <Page>
+      <Field clearable placeholder='请输入'></Field>
+      <StorePage {...props} />
+    </Page>
+  );
 });
 
 export default IndexPage;
