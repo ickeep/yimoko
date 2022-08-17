@@ -12,69 +12,53 @@ const IndexPage = observer(() => {
     store: {
       api: {},
       defaultValues: {
-        value: {
-          v1: '',
-          v2: '',
-        },
+        phone: '',
+        code: '',
       },
     },
     options: {},
     schema: {
       type: 'object',
       properties: {
-        value: {
+        form: {
           type: 'object',
+          'x-component': 'Form',
           properties: {
-            d1: {
+            phone: {
+              type: 'string',
+              title: '手机号',
+              'x-component': 'Field',
+            },
+            code: {
+              type: 'string',
+              title: '验证码',
+              'x-component': 'Field',
+            },
+            btn: {
               type: 'void',
-              'x-component': 'Divider',
+              'x-component': 'Button',
               'x-component-props': {
-                children: '多张',
-                contentPosition: 'center',
-              },
-            },
-            v1: {
-              'x-component': 'Uploader',
-              'x-component-props': {
-                multiple: true,
-                valueType: 'string[]',
-                upload: {
-                  url: 'http://9.135.145.17:8103/upload',
-                },
-              },
-            },
-            d2: {
-              type: 'void',
-              'x-component': 'Divider',
-              'x-component-props': {
-                children: '单张',
-                contentPosition: 'center',
-              },
-            },
-            v2: {
-              'x-component': 'Uploader',
-              'x-component-props': {
-                upload: {
-                  url: 'http://9.135.145.17:8103/upload',
-                },
+                type: 'primary',
+                children: '提交',
+                formType: 'submit',
               },
             },
           },
         },
-        show: {
-          type: 'void',
-          'x-component': 'View',
-          'x-component-props': { style: { padding: 20 } },
-          properties: {
-            value: {
-              type: 'object',
-              properties: {
-                v1: { 'x-component': 'Text' },
-                v2: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
-              },
-            },
-          },
-        },
+        // show: {
+        //   type: 'void',
+        //   'x-component': 'View',
+        //   'x-component-props': { style: { padding: 20 } },
+        //   properties: {
+        //     value: {
+        //       type: 'object',
+        //       properties: {
+        //         v1: { 'x-component': 'Text' },
+        //         v2: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
+        //       },
+        //     },
+        //   },
+        // },
       },
     },
   };
