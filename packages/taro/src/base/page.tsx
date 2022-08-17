@@ -1,4 +1,4 @@
-import { Loading } from '@antmjs/vantui';
+import { ConfigProvider, Loading } from '@antmjs/vantui';
 import { LoadingProps } from '@antmjs/vantui/types/loading';
 import { observer } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
@@ -9,6 +9,7 @@ import { useEffect, useMemo } from 'react';
 import { hideNavigationBarLoading, setNavigationBarColor, setNavigationBarTitle, showNavigationBarLoading } from '../adapter/navigation-bar';
 
 import { ResponseError } from '../out/response-error';
+import { useConfig } from '../store/config';
 
 export interface PageProps extends ViewProps {
   store?: IStore
@@ -24,6 +25,7 @@ export const Page = observer(({ className, children, loading, store, navigationB
   const { response, loading: storeLoading } = store ?? {};
   const { title, color } = navigationBar ?? {};
   const curLoading = useMemo(() => rootLoading || !!storeLoading, [rootLoading, storeLoading]);
+  const { themeVars } = useConfig();
 
   useEffect(() => {
     if (curLoading) {
@@ -52,8 +54,11 @@ export const Page = observer(({ className, children, loading, store, navigationB
   }, [curLoading, response, children, loading]);
 
   return (
-    <View className={cls('y-page', className)} {...args} >
-      {curChildren}
-    </View>
+    // taro App 挂载 ConfigProvider 无效
+    <ConfigProvider themeVars={themeVars}>
+      <View className={cls('y-page', className)} {...args} >
+        {curChildren}
+      </View>
+    </ConfigProvider>
   );
 });

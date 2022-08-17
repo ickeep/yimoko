@@ -13,23 +13,21 @@ export type FieldProps = Omit<TFieldProps, 'onChange' | 'value'> & {
 // @ts-ignore
 export const Field: FC<FieldProps> = connect(
   TField,
+  // eslint-disable-next-line complexity
   mapProps((props: FieldProps, field) => {
-    const { onChange, required, renderInput, children, ...args } = props;
+    const { onChange, label, required, renderInput, children, ...args } = props;
     const curProps: TFieldProps = args;
 
     curProps.onChange = e => onChange?.(e.detail, e);
 
-    const runRenderInput = () => {
-      if (isVoidField(field) || (Array.isArray(field?.decorator) && field.decorator.includes('Field'))) {
-        curProps.renderInput = props.children;
-      }
-    };
-    runRenderInput();
+    if (isVoidField(field) || (Array.isArray(field?.decorator) && field.decorator.includes('Field'))) {
+      curProps.renderInput = props.children;
+    }
 
     if (isVoidField(field)) {
       return curProps;
     }
-
+    curProps.label = label ?? field.title;
     curProps.required = required ?? field?.required;
     curProps.errorMessage = args.errorMessage ?? field?.selfErrors?.join(',');
 

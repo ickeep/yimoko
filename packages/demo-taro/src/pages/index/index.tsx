@@ -1,4 +1,3 @@
-
 import { observer } from '@formily/react';
 import { useRoot } from '@yimoko/store';
 import { Page, StorePage, StorePageProps } from '@yimoko/taro';
@@ -10,7 +9,7 @@ const IndexPage = observer(() => {
 
   const props: StorePageProps<object, unknown> = {
     store: {
-      api: {},
+      api: { method: 'POST', url: '/api/test' },
       defaultValues: {
         phone: '',
         code: '',
@@ -20,27 +19,60 @@ const IndexPage = observer(() => {
     schema: {
       type: 'object',
       properties: {
+        title: {
+          type: 'void',
+          'x-component': 'Text',
+          'x-component-props': {
+            block: true,
+            bold: true,
+            size: 'large',
+            children: '登 录',
+            style: { padding: 16, textAlign: 'center' },
+          },
+        },
         form: {
-          type: 'object',
+          type: 'void',
           'x-component': 'Form',
           properties: {
             phone: {
               type: 'string',
               title: '手机号',
+              required: true,
               'x-component': 'Field',
+              'x-component-props': {
+                size: 'large',
+                type: 'number',
+                leftIcon: 'phone-o',
+              },
             },
             code: {
               type: 'string',
               title: '验证码',
+              required: true,
               'x-component': 'Field',
+              'x-component-props': {
+                size: 'large',
+                type: 'number',
+                leftIcon: 'shield-o',
+              },
             },
             btn: {
               type: 'void',
-              'x-component': 'Button',
+              'x-component': 'View',
               'x-component-props': {
-                type: 'primary',
-                children: '提交',
-                formType: 'submit',
+                style: { margin: 16 },
+              },
+              properties: {
+                submit: {
+                  type: 'void',
+                  'x-component': 'Button',
+                  'x-component-props': {
+                    block: true,
+                    type: 'primary',
+                    children: '登录',
+                    formType: 'submit',
+                  },
+                },
               },
             },
           },

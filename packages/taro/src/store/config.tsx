@@ -2,6 +2,7 @@ import { ConfigStore } from '@yimoko/store';
 import { useMemo } from 'react';
 
 const tabURL: string[] = [];
+const themeVars: Record<string, any> = {};
 // 因小程序包大小限制，将所有静态资源放至 CDN 上
 export const defaultConfig = {
   static: { img: '', icon: '' },
@@ -10,6 +11,7 @@ export const defaultConfig = {
   indexPage: '',
   pageCachePrefix: '',
   tabURL,
+  themeVars,
 };
 
 
