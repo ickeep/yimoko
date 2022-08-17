@@ -1,15 +1,19 @@
 import { Uploader as TUploader } from '@antmjs/vantui';
 import { UploaderProps as TUploaderProps } from '@antmjs/vantui/types/uploader';
 import { observer } from '@formily/react';
-import Taro from '@tarojs/taro';
-import { judgeIsEmpty, strToArr, useBaseStore } from '@yimoko/store';
-import { useCallback, useEffect } from 'react';
+import { IHTTPResponse, judgeIsEmpty, judgeIsSuccess, useBaseStore } from '@yimoko/store';
+import { useCallback, useEffect, useMemo } from 'react';
+
+import { uploadFile } from '../adapter/http';
+import { useConfig } from '../store/config';
 
 export interface UploaderProps extends Omit<TUploaderProps, 'fileList'> {
   valueType?: 'string' | 'string[]' | 'array'
   value?: string | string[] | Array<{ url: string } & Record<string, any>>
   onChange?: (value?: string | any[]) => void
   splitter?: string
+  upload?: Pick<Taro.uploadFile.Option, 'url' | 'fileName' | 'name' | 'header' | 'formData' | 'timeout'> |
+  ((filePath: string) => Promise<IHTTPResponse<string | ({ url: string } & Record<string, any>)>>)
 }
 
 export interface IFile {
@@ -19,18 +23,28 @@ export interface IFile {
 }
 
 export const Uploader = observer((props: UploaderProps) => {
-  const { onChange, value, valueType, onDelete, splitter = ',', multiple, ...args } = props;
-  const { values: { fileList }, setValuesByField } = useBaseStore<{ fileList: IFile[] }>({ defaultValues: { fileList: [] }, api: {} });
+  const { onChange, value, valueType = 'string', onDelete, maxCount, multiple, upload, ...args } = props;
+  const { values, setValuesByField } = useBaseStore<{ fileList: IFile[] }>({ defaultValues: { fileList: [] }, api: {} });
+  const { fileList } = values;
 
-  const setFileList = useCallback((fileList: IFile[]) => {
-    setValuesByField('fileList', fileList);
-  }, [setValuesByField]);
+  const { uploadAPI } = useConfig();
+
+  const setFileList = useCallback((fileList: IFile[]) => setValuesByField('fileList', fileList), [setValuesByField]);
+
+  const curMaxCount = useMemo(() => (valueType === 'string' ? 1 : maxCount), [maxCount, valueType]);
+
+  const curUpload = useCallback(async (filePath: string) => {
+    if (typeof upload === 'function') {
+      return upload(filePath);
+    }
+    return uploadFile({ url: uploadAPI, name: 'file', ...upload, filePath });
+  }, [upload, uploadAPI]);
 
   // eslint-disable-next-line complexity
   useEffect(() => {
     let valueList: IFile[] = [];
     if (typeof value === 'string' && value) {
-      valueList = multiple ? strToArr(value, splitter).map(item => ({ url: item })) : [{ url: value }];
+      valueList = [{ url: value }];
     } else if (Array.isArray(value)) {
       valueList = value.map(item => (typeof item === 'string' ? { url: item } : item));
     }
@@ -38,7 +52,7 @@ export const Uploader = observer((props: UploaderProps) => {
     if (!judgeIsEmpty(newList)) {
       setFileList([...fileList, ...newList]);
     }
-  }, [fileList, multiple, setFileList, splitter, value]);
+  }, [fileList, multiple, setFileList, value]);
 
   const getValue = (fileList: IFile[]) => {
     const valueList = fileList.filter(({ status = 'done' }) => status === 'done');
@@ -49,48 +63,51 @@ export const Uploader = observer((props: UploaderProps) => {
     if (valueType === 'string[]') {
       return urlArr;
     }
-    return urlArr.join(splitter);
+    return urlArr[0];
   };
 
   return (
     <TUploader
       {...args}
+      maxCount={curMaxCount}
       multiple={multiple}
       fileList={fileList}
       onAfterRead={(e) => {
         const { file } = e.detail;
         const fiels = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
-        const newList = [...fileList, ...fiels];
-        setFileList(newList);
-
+        setFileList([...fileList, ...fiels]);
         fiels.forEach((item) => {
-          Taro.uploadFile({
-            url: 'https://www.baidu.com/', filePath: item.url, name: 'file',
-            success: (res) => {
-              const file = newList.find(({ url }) => url === item.url);
-
-              if (file) {
+          // eslint-disable-next-line complexity
+          curUpload(item.url).then((res) => {
+            // 取最新值
+            const { fileList: curList } = values;
+            let file = curList.find(({ url }) => url === item.url);
+            if (file) {
+              if (judgeIsSuccess(res)) {
                 file.status = 'done';
-                file.url = res.data;
-                setFileList(newList);
-              }
-            },
-            fail: () => {
-              const file = newList.find(({ url }) => url === item.url);
-              if (file) {
+                if (typeof res.data) {
+                  file = res.data;
+                } else {
+                  file.url = res.data;
+                }
+              } else {
                 file.status = 'failed';
-                setFileList(newList);
               }
-            },
+            } else {
+              curList.push({ url: res.data, status: 'done' });
+            }
+            setFileList([...curList]);
+            judgeIsSuccess(res) && onChange?.(getValue(curList));
           });
         });
       }}
+
       onDelete={(e) => {
         onDelete?.(e);
-        const newList = [...fileList];
-        newList.splice(e.detail.index, 1);
-        setFileList(newList);
-        onChange?.(getValue(newList));
+        const { fileList: curList } = values;
+        curList.splice(e.detail.index, 1);
+        setFileList([...curList]);
+        onChange?.(getValue(curList));
       }}
     />
   );

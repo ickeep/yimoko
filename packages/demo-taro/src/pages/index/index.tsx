@@ -14,7 +14,7 @@ const IndexPage = observer(() => {
       defaultValues: {
         value: {
           v1: '',
-          v2: 'v1',
+          v2: '',
         },
       },
     },
@@ -37,6 +37,7 @@ const IndexPage = observer(() => {
               'x-component': 'Uploader',
               'x-component-props': {
                 multiple: true,
+                valueType: 'string[]',
               },
             },
             d2: {
@@ -54,12 +55,14 @@ const IndexPage = observer(() => {
         },
         show: {
           type: 'void',
+          'x-component': 'View',
+          'x-component-props': { style: { padding: 20 } },
           properties: {
             value: {
               type: 'object',
               properties: {
-                v1: { 'x-component': 'Text' },
-                v2: { 'x-component': 'Text', 'x-component-props': { type: 'info' } },
+                v1: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
+                v2: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
               },
             },
           },

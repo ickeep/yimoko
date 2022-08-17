@@ -8,6 +8,7 @@ export const defaultConfig = {
     icon: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/yimoko/0.1.0/icon/',
   },
   tabURL: [''],
+  uploadAPI: '',
 };
 
 type IConfig = typeof defaultConfig;

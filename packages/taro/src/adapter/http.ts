@@ -19,6 +19,23 @@ export const httpRequest: IHTTPRequest = async (config) => {
   }
 };
 
+export const uploadFile = async (option: Taro.uploadFile.Option) => {
+  try {
+    const response = await Taro.uploadFile(option);
+    return handleResponse(response);
+  } catch (e: any) {
+    const { response, ...args } = e;
+    if (!response) {
+      return handleResponse({
+        ...args,
+        statusCode: IHTTPCode.networkError,
+        errMsg: e?.errMsg ?? '网络出错',
+      });
+    }
+    return handleResponse(response);
+  }
+};
+
 export const httpGet: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'GET' });
 export const httpDelete: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'DELETE' });
 export const httpHead: IHTTPGet = (url, config) => httpRequest({ ...config, url, method: 'HEAD' });
@@ -222,7 +239,7 @@ interface ITaroResponse<T = any> {
   /** 开发者服务器返回的数据 */
   data: T
   /** 开发者服务器返回的 HTTP Response Header */
-  header: TaroGeneral.IAnyObject
+  header?: TaroGeneral.IAnyObject
   /** 开发者服务器返回的 HTTP 状态码 */
   statusCode: number
   /** 调用结果 */
