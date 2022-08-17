@@ -29,7 +29,7 @@ const IndexPage = observer(() => {
               type: 'void',
               'x-component': 'Divider',
               'x-component-props': {
-                children: '受控',
+                children: '多张',
                 contentPosition: 'center',
               },
             },
@@ -38,18 +38,26 @@ const IndexPage = observer(() => {
               'x-component-props': {
                 multiple: true,
                 valueType: 'string[]',
+                upload: {
+                  url: 'http://9.135.145.17:8103/upload',
+                },
               },
             },
             d2: {
               type: 'void',
               'x-component': 'Divider',
               'x-component-props': {
-                children: '非受控',
+                children: '单张',
                 contentPosition: 'center',
               },
             },
             v2: {
               'x-component': 'Uploader',
+              'x-component-props': {
+                upload: {
+                  url: 'http://9.135.145.17:8103/upload',
+                },
+              },
             },
           },
         },
@@ -61,7 +69,7 @@ const IndexPage = observer(() => {
             value: {
               type: 'object',
               properties: {
-                v1: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
+                v1: { 'x-component': 'Text' },
                 v2: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
               },
             },
@@ -71,7 +79,7 @@ const IndexPage = observer(() => {
     },
   };
 
-  console.log(JSON.stringify(props));
+  // console.log(JSON.stringify(props));
 
   return (
     <Page>

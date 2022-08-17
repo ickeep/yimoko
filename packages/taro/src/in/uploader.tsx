@@ -85,7 +85,7 @@ export const Uploader = observer((props: UploaderProps) => {
             if (file) {
               if (judgeIsSuccess(res)) {
                 file.status = 'done';
-                if (typeof res.data) {
+                if (typeof res.data === 'object') {
                   file = res.data;
                 } else {
                   file.url = res.data;

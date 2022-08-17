@@ -19,7 +19,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
-  api: IStoreAPI<V, R>;
+  api?: IStoreAPI<V, R>;
 
   dict: IStoreDict<V> = {};
   values: IV<V>;
@@ -161,7 +161,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
 export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues?: V,
-  api: IStoreAPI<V, R>,
+  api?: IStoreAPI<V, R>,
   keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
   fieldsConfig?: IFieldsConfig<V>;

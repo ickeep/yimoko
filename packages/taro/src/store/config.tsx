@@ -4,11 +4,14 @@ import { useMemo } from 'react';
 // 因小程序包大小限制，将所有静态资源放至 CDN 上
 export const defaultConfig = {
   static: {
-    img: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/yimoko/0.1.0/img/',
-    icon: 'https://static-ickeep-1251135819.cos.ap-guangzhou.myqcloud.com/yimoko/0.1.0/icon/',
+    img: '',
+    icon: '',
   },
-  tabURL: [''],
+  apiHost: '',
   uploadAPI: '',
+  indexPage: '',
+  pageCachePrefix: 'page-',
+  tabURL: [''],
 };
 
 type IConfig = typeof defaultConfig;

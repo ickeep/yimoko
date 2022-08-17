@@ -50,6 +50,7 @@ import { Pagination } from './nav/pagination';
 import { Sidebar } from './nav/sidebar';
 import { Tab, Tabs } from './nav/tab';
 import { Tabbar, TabbarItem } from './nav/tabbar';
+import { APIPage } from './out/api-page';
 import { Card, Cardlist } from './out/card';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
@@ -135,6 +136,7 @@ export const components: Record<string, any> = {
   Uploader,
 
   // out
+  APIPage,
   Card,
   Cardlist,
   Circle,
