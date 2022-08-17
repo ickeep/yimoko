@@ -1,18 +1,17 @@
 import { ConfigStore } from '@yimoko/store';
 import { useMemo } from 'react';
 
+const tabURL: string[] = [];
 // 因小程序包大小限制，将所有静态资源放至 CDN 上
 export const defaultConfig = {
-  static: {
-    img: '',
-    icon: '',
-  },
+  static: { img: '', icon: '' },
   apiHost: '',
   uploadAPI: '',
   indexPage: '',
-  pageCachePrefix: 'page-',
-  tabURL: [''],
+  pageCachePrefix: '',
+  tabURL,
 };
+
 
 type IConfig = typeof defaultConfig;
 type IKey = keyof IConfig;

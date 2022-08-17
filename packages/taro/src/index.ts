@@ -25,6 +25,8 @@ export * from './feedback/dialog';
 export * from './feedback/loading';
 export * from './feedback/overlay';
 
+export * from './hooks/use-app-config';
+
 export * from './in/checkbox';
 export * from './in/field';
 export * from './in/form';
