@@ -1,10 +1,24 @@
-import { useState, useMemo, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../data/api';
-import { IKeys, IOptions, dataToOptions } from '../data/options';
+import { runStoreAPI } from '../store/utils/api';
+import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../tools/api';
+import { IKeys, IOptions, dataToOptions } from '../tools/options';
 
 import { useDeepEffect } from './use-deep-effect';
+import { useDeepMemo } from './use-deep-memo';
+
+export interface IOptionsAPIProps<T extends string = 'label' | 'value'> {
+  splitter?: string
+  keys?: IKeys<T>
+  options?: IOptions<T>
+  api?: IOptionsAPI
+  valueType?: 'none' | 'string' | 'array'
+}
+
+export const defaultOutOptionsKeys = { title: 'title', desc: 'desc', img: 'img', icon: 'icon', url: 'url', click: 'click', routeType: 'routeType' };
+
+export type IOptionsOutAPIProps<T extends string = keyof typeof defaultOutOptionsKeys> = Omit<IOptionsAPIProps<T>, 'valueType'>;
 
 export type IOptionsAPI = IAPIRequestConfig | ((config?: IAPIRequestConfig) => Promise<IHTTPResponse>);
 
@@ -16,20 +30,15 @@ export const useAPIOptions = <T extends string = 'label' | 'value'>(
 
   const apiExecutor = useAPIExecutor();
 
-  const apiFn = useMemo(() => {
-    if (!api) {
-      return undefined;
-    }
-    return typeof api === 'function' ? api : () => apiExecutor(api);
-  }, [apiExecutor, api]);
+  const apiFn = useDeepMemo(() => (!api ? undefined : () => runStoreAPI(api, apiExecutor)), [apiExecutor, api]);
 
   useDeepEffect(() => {
     data && setOptions(dataToOptions(data, keys, splitter));
   }, [data, keys, splitter]);
 
   useDeepEffect(() => {
-    setLoading(true);
-    apiFn?.().then((res) => {
+    apiFn && setLoading(true);
+    apiFn?.()?.then((res) => {
       judgeIsSuccess(res) && setOptions(dataToOptions(res.data, keys, splitter));
       setLoading(false);
     });

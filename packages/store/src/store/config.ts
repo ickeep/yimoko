@@ -3,15 +3,31 @@ import { pick } from 'lodash-es';
 
 export type IConfig = Record<string, any>;
 
+type ILevel = 'info' | 'warn' | 'error';
+
+type IReport = (info: Record<string, any> | Error | unknown, level: ILevel) => void;
+
 export class ConfigStore<T extends object = IConfig> {
   config: T;
-  constructor(config: T) {
+  report?: IReport;
+
+  constructor(config: T, report?: IReport) {
     this.config = config;
+    this.report = report;
     define(this, {
       config: observable,
       setConfig: action,
     });
   }
+
+  logger = (info: Record<string, any> | Error | unknown, level: ILevel = 'info') => {
+    const { report } = this;
+    if (report) {
+      report(info, level);
+    } else {
+      console[level]?.(info);
+    }
+  };
 
   getConfigItem = (key: keyof T) => this.config[key];
 

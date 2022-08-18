@@ -6,18 +6,19 @@ import {
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { SchemaBox, RedirectValues, RedirectListData } from '@yimoko/store';
-import { Layout, Typography, Button } from 'antd';
+import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage } from '@yimoko/store';
+import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
 
 import { Select } from './in/select';
 import { Icon } from './out/icon';
+import { Link } from './out/link';
 import { TableDisplay } from './out/table';
-import { SchemaPage } from './schema/page';
+import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StoreTable } from './store/table';
 
 const { Header, Footer, Sider, Content } = Layout;
-const { Title, Text, Link, Paragraph } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 export const components: Record<string, any> = {
   Select,
@@ -27,6 +28,7 @@ export const components: Record<string, any> = {
 
   SchemaPage,
 
+  StoreForm,
   StorePage,
   StoreTable,
 
@@ -36,18 +38,31 @@ export const components: Record<string, any> = {
   SchemaBox,
 
   // antd 组件
+  Button: withValueChildren(Button),
+  Title: withValueChildren(Title),
+  Text: withValueChildren(Text),
+  Link: withValueChildren(Link),
+  Paragraph: withValueChildren(Paragraph),
+
+  Divider: withValueChildren(Divider),
+  Row,
+  Col: withValueChildren(Col),
   Layout,
-  Header,
-  Footer,
-  Sider,
-  Content,
+  Header: withValueChildren(Header),
+  Footer: withValueChildren(Footer),
+  Sider: withValueChildren(Sider),
+  Content: withValueChildren(Content),
 
-  Title,
-  Text,
-  Link,
-  Paragraph,
+  Affix,
+  // Breadcrumb todo 适配
+  // Dropdown todo 适配
+  // Menu todo 适配
+  // PageHeader todo 适配
+  Pagination,
+  // Steps todo 适配
 
-  Button,
+  // AutoComplete todo 适配
+
 
   // @formily/antd 插件
   Form,

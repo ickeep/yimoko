@@ -1,5 +1,5 @@
 import { observer } from '@formily/react';
-import { SchemaPage } from '@yimoko/web';
+import { SchemaPage } from '@yimoko/store';
 
 const normalSchema = {
   properties: {
@@ -60,5 +60,5 @@ const normalSchema = {
 };
 
 export const LayoutPage = observer(() => (
-  <SchemaPage style={{ height: '100%' }} schema={normalSchema} />
+  <SchemaPage schema={normalSchema} />
 ));

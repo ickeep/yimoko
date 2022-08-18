@@ -3,7 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"
-  ],
+, "../store/src/components/page.tsx"  ],
   "exclude": [
     "./src/__tests__/*",
     "./esm/*",

@@ -1,0 +1,27 @@
+@import url('@antmjs/vantui/lib/style/var.less');
+
+.y-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &--center {
+    align-items: center;
+  }
+
+  &--start {
+    align-items: start;
+  }
+
+  &--end {
+    align-items: end;
+  }
+
+  .c-overlay-center {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    .theme(background-color, '@background-color');
+    .theme(padding, '@padding-md');
+  }
+}

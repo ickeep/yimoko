@@ -1,25 +1,25 @@
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
-import { IAPIRequestConfig, IHTTPResponse } from '../data/api';
-
-import { IOptions } from '../data/options';
-
+import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
+import { IOptions } from '../tools/options';
 import { judgeIsEmpty } from '../tools/tool';
+
+import { runStoreAPI } from './utils/api';
 
 import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';
 
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
-  isFilterEmptyAtRun = true;
+  isFilterEmptyAtRun = false;
   isBindSearch = false;
   isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
-  fieldsConfig: IFieldsConfig = {};
+  fieldsConfig: IFieldsConfig<V> = Object({});
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
-  api: IStoreAPI<V, R>;
+  api?: IStoreAPI<V, R>;
 
   dict: IStoreDict<V> = {};
   values: IV<V>;
@@ -30,8 +30,14 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   constructor(config: IBaseStoreConfig<V, R>) {
     const {
-      defaultValues = Object({}), api, isFilterEmptyAtRun = true, isBindSearch = false, isRunNow = false,
-      dictConfig = [], fieldsConfig = {}, apiExecutor, defineConfig,
+      api,
+      isFilterEmptyAtRun = false,
+      defaultValues = Object({}),
+      isBindSearch = false,
+      isRunNow = false,
+      dictConfig = [],
+      fieldsConfig = Object({}),
+      apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -101,6 +107,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   };
 
   getURLSearch = () => {
+    // todo 兼容小程序 小程序不支持 URLSearchParams
     const searchParams = new URLSearchParams();
     Object.entries(this.values).forEach(([key, value]) => {
       const defaultValue = this.defaultValues[key];
@@ -128,20 +135,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const fetchID = this.lastFetchID;
     const { api } = this;
     const params = this.getAPIParams();
-    let response: Partial<IHTTPResponse<R, IV<V>>> | undefined;
-    if (typeof api === 'function') {
-      response = await api(params);
-    } else {
-      const getAPIConfig = () => {
-        const { method = 'GET' } = api;
-        if (['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase())) {
-          return { ...api, params };
-        }
-        return { ...api, data: params };
-      };
-      response = await this.apiExecutor?.(getAPIConfig());
-    }
-
+    const response = await runStoreAPI(api, this.apiExecutor, params);
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);
@@ -167,10 +161,10 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
 export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues?: V,
-  api: IStoreAPI<V, R>,
+  api?: IStoreAPI<V, R>,
   keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
-  fieldsConfig?: IFieldsConfig;
+  fieldsConfig?: IFieldsConfig<V>;
   isFilterEmptyAtRun?: boolean;
   isBindSearch?: boolean;
   isRunNow?: boolean,
@@ -186,9 +180,9 @@ type IV<V = IStoreValues> = V & Record<string, any>;
 
 export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?: any };
 
-export type IStoreResponse<R, V> = Partial<IHTTPResponse<R, IV<V>>>;
+export type IStoreResponse<R = any, V = any> = Partial<IHTTPResponse<R, IV<V>>>;
 
-export type IStoreAPI<V, R> = IAPIRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
+export type IStoreAPI<V = any, R = any> = IAPIRequestConfig<V> | ((params: V) => Promise<IStoreResponse<R, V>>);
 
 export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfigItem<V>>;
 
@@ -197,15 +191,18 @@ export type IDictConfigItem<V extends object = IStoreValues> = {
 } & ({
   type?: 'self'
   data?: IOptions | any,
-  api?: IStoreAPI<any, IOptions[] | any>
+  api?: IAPIRequestConfig | (() => Promise<IStoreResponse>)
 } | IDictConfigItemBy<V>);
 
-export interface IDictConfigItemBy<V extends object = IStoreValues> {
+export interface IDictConfigItemBy<V extends object = any> {
   field: IField<V>,
   type: 'by'
   byField: IField<V>,
   getData?: (value: any) => IOptions | any
   api?: IStoreAPI<any, IOptions[] | any>
+  paramKey?: string
+  isUpdateValue?: boolean
+  isEmptyGetData?: boolean
 }
 
 export type IField<P extends object = IStoreValues> = keyof P | string;

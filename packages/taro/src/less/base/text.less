@@ -1,0 +1,59 @@
+@import url('@antmjs/vantui/lib/style/var.less');
+
+.y-text {
+  .theme(color, '@text-color');
+  .theme(font-size, '@font-size-md');
+  .theme(line-height, '@line-height-md');
+
+  &--bold {
+    .theme(font-weight, '@font-weight-bold');
+  }
+
+  &--block {
+    display: block;
+  }
+
+  &--mini {
+    .theme(font-size, '@font-size-xs');
+    .theme(line-height, '@line-height-xs');
+  }
+
+  &--small {
+    .theme(font-size, '@font-size-sm');
+    .theme(line-height, '@line-height-sm');
+  }
+
+  &--normal {
+    .theme(font-size, '@font-size-md');
+    .theme(line-height, '@line-height-md');
+  }
+
+  &--large {
+    .theme(font-size, '@font-size-lg');
+    .theme(line-height, '@line-height-lg');
+  }
+
+  &--default {
+    .theme(color, '@text-color');
+  }
+
+  &--primary {
+    .theme(color, '@green');
+  }
+
+  &--info {
+    .theme(color, '@blue');
+  }
+
+  &--success {
+    .theme(color, '@green');
+  }
+
+  &--warning {
+    .theme(color, '@orange');
+  }
+
+  &--danger {
+    .theme(color, '@red');
+  }
+}

@@ -1,13 +1,19 @@
+import { IFormProps } from '@formily/core';
 import { observer, useExpressionScope } from '@formily/react';
+import { ReactNode } from 'react';
 
 import { ListStore } from '../store/list';
 
 import { RedirectValues } from './redirect-values';
 
-export const RedirectListData = observer(() => {
-  const values = useListData();
+export interface RedirectListDataProps extends Omit<IFormProps, 'values'> {
+  children: ReactNode;
+}
 
-  return <RedirectValues values={values} />;
+export const RedirectListData = observer((props: RedirectListDataProps) => {
+  const { children, ...args } = props;
+  const values = useListData();
+  return <RedirectValues {...args} values={values} />;
 });
 
 export const useListData = (store?: ListStore<any, any>) => {

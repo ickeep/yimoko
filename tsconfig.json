@@ -2,7 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "esnext",
     "noUnusedLocals": false,
     "preserveConstEnums": true,
     "skipLibCheck": true,
@@ -22,7 +22,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ]
   }
 }

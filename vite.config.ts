@@ -31,8 +31,6 @@ export default defineConfig({
         '@ant-design/icons',
         'antd',
         '@antmjs/vantui',
-        '@taroify/core',
-        '@taroify/icons',
         '@formily/core',
         '@formily/reactive',
         '@formily/react',
@@ -53,7 +51,7 @@ export default defineConfig({
           '@ant-design/icons': 'icons',
           moment: 'moment',
           axios: 'axios',
-          classnames: 'classnames',
+          classnames: 'classNames',
           'lodash-es': '_',
           '@formily/path': 'Formily.Path',
           '@formily/shared': 'Formily.Shared',
@@ -73,7 +71,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    react({ fastRefresh: process.env.NODE_ENV !== 'test' }),
+    react({ fastRefresh: process.env.NODE_ENV !== 'test', jsxRuntime: 'classic' }),
     dts({
       entryRoot: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/src`),
       outputDir: path.resolve(__dirname, `packages/${process.env.VITE_LIB}/types`),

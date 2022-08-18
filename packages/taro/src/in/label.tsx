@@ -1,14 +1,5 @@
-import { observer } from '@formily/react';
-import { Label as TLabel, LabelProps as TLabelProps } from '@tarojs/components';
-import classNames from 'classnames';
-import { ReactNode } from 'react';
-export interface LabelProps extends TLabelProps {
-  value?: ReactNode
-  children?: ReactNode,
-}
+import { Label as TLabel } from '@tarojs/components';
+import { withValueChildren } from '@yimoko/store';
 
-export const Label = observer((props: LabelProps) => {
-  const { value, children, className, ...args } = props;
+export const Label = withValueChildren(TLabel);
 
-  return <TLabel {...args} className={classNames('y-label', className)} >{value ?? children}</TLabel>;
-});

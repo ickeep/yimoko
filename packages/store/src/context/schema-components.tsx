@@ -9,5 +9,6 @@ export const SchemaComponentsConsumer = SchemaComponentsContext.Consumer;
 
 export const useSchemaComponents = <Components extends SchemaReactComponents = any>(components?: Components) => {
   const df = useContext(SchemaComponentsContext);
-  return { ...df, ...components };
+
+  return components ? { ...df, ...components } : df;
 };

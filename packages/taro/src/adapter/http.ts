@@ -1,9 +1,27 @@
 import Taro from '@tarojs/taro';
+import { getCodeByStatus, IHTTPCode } from '@yimoko/store';
 
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
   try {
-    const response = await Taro.request(config);
+    const response = await Taro.request({ url: '', ...config });
+    return handleResponse(response);
+  } catch (e: any) {
+    const { response, ...args } = e;
+    if (!response) {
+      return handleResponse({
+        ...args,
+        statusCode: IHTTPCode.networkError,
+        msg: '请求失败',
+      });
+    }
+    return handleResponse(response);
+  }
+};
+
+export const uploadFile = async (option: Taro.uploadFile.Option) => {
+  try {
+    const response = await Taro.uploadFile(option);
     return handleResponse(response);
   } catch (e: any) {
     const { response, ...args } = e;
@@ -26,33 +44,19 @@ export const httpOptions: IHTTPGet = (url, config) => httpRequest({ ...config, u
 export const httpPost: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'POST' });
 export const httpPut: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'PUT' });
 
-// 判断请求是否成功
-export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
-
-// 判断请求是否未授权
-export const judgeIsUnauthorized = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.unauthorized;
-
-// 判断请求是否被禁止，通常用于接口参数校验 或者 权限校验
-export const judgeIsForbidden = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.forbidden;
-
-// 判断请求是否网络出错
-export const judgeIsNetworkError = (Response?: IHTTPResponse) => Response?.code === IHTTPCode.networkError;
-
 // 处理请求返回的数据
+// eslint-disable-next-line complexity
 export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<T>): IHTTPResponse<T> => {
-  const { data, statusCode, errMsg } = response;
+  const { data, statusCode } = response;
   const resData = getResponseData(response);
   return {
     ...response,
     ...resData,
     code: resData?.code ?? getCodeByStatus(statusCode),
-    msg: resData?.msg ?? errMsg,
+    msg: resData?.msg,
     data: resData.data ?? data,
   };
 };
-
-// 根据 status 获取 code
-export const getCodeByStatus = (status: number) => ((status >= 200 && status < 300) ? IHTTPCode.success : status);
 
 // 获取 response data
 export const getResponseData = (response: ITaroResponse): Record<string, any> => {
@@ -60,16 +64,10 @@ export const getResponseData = (response: ITaroResponse): Record<string, any> =>
   return (typeof data?.code !== 'undefined' && (typeof data?.msg !== 'undefined' || typeof data?.data !== 'undefined')) ? data : response;
 };
 
-export enum IHTTPCode {
-  success = 0,
-  unauthorized = 401,
-  forbidden = 403,
-  networkError = 600,
-}
-
 export interface IHTTPResponse<T = any> extends Partial<ITaroResponse<T>> {
   code: IHTTPCode | number
   msg: string,
+  data: any,
   [key: string]: any
 }
 
@@ -79,17 +77,9 @@ export type IHTTPGet = <R = any, P = any>(url: string, config?: IHTTPConfig<P>) 
 
 export type IHTTPPost = <R = any, P = Record<string, any>> (url: string, data?: P, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
 
-export interface IPageData<T extends object = Record<string, any>> {
-  page: number,
-  pageSize: number,
-  total: number,
-  totalPages: number,
-  data: T[],
-}
-
 export interface IHTTPConfig<P = any> {
   /** 开发者服务器接口地址 */
-  url: string
+  url?: string
   /** 请求的参数 */
   data?: P
   /** 设置请求的 header，header 中不能设置 Referer。
@@ -250,7 +240,7 @@ interface ITaroResponse<T = any> {
   /** 开发者服务器返回的数据 */
   data: T
   /** 开发者服务器返回的 HTTP Response Header */
-  header: TaroGeneral.IAnyObject
+  header?: TaroGeneral.IAnyObject
   /** 开发者服务器返回的 HTTP 状态码 */
   statusCode: number
   /** 调用结果 */

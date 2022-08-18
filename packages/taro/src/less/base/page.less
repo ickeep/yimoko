@@ -1,0 +1,23 @@
+@import url('@antmjs/vantui/lib/style/var.less');
+
+page {
+  height: 100%;
+
+  >.van-config-provider {
+    height: 100%;
+  }
+}
+
+.y-page {
+  position: relative;
+  min-height: 100%;
+  box-sizing: border-box;
+  .theme(background-color, '@background-color');
+
+  .c-page-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

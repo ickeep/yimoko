@@ -1,5 +1,4 @@
 import { action, define, observable } from '@formily/reactive';
-import { createContext, useContext } from 'react';
 
 // 全局数据管理，结合 Hooks 和 React.useContext 便捷使用
 export class RootStore<
@@ -10,6 +9,8 @@ export class RootStore<
   user: U = Object({});
   menus?: M;
 
+  loading = false;
+
   // 用于存放自定义数据
   data: D = Object({});
 
@@ -18,11 +19,13 @@ export class RootStore<
       user: observable,
       menus: observable,
       data: observable,
+      loading: observable,
 
       setUser: action,
       setMenus: action,
       setData: action,
       setDataItem: action,
+      setLoading: action,
     });
 
     initVal && this.init(initVal);
@@ -38,6 +41,8 @@ export class RootStore<
 
   getDataItem = (name: keyof D) => this.data[name];
 
+  setLoading = (loading: boolean) => this.loading = loading;
+
   init = (value: IRootInitVal<U, M, D>) => {
     const { user, menus, data } = value;
     user && this.setUser(user);
@@ -45,24 +50,6 @@ export class RootStore<
     data && this.setData(data);
   };
 }
-
-export const RootContext = createContext(new RootStore());
-
-export const RootProvider = RootContext.Provider;
-
-export const RootConsumer = RootContext.Consumer;
-
-export const useRoot = () => useContext(RootContext);
-
-export const useUesr = () => useContext(RootContext).user;
-
-export const useMenus = () => useContext(RootContext).menus;
-
-export const useData = (name?: string) => {
-  const { data } = useContext(RootContext);
-  return typeof name === 'undefined' ? data : data[name];
-};
-
 export interface IRootInitVal<U, M, D> {
   user?: U,
   menus?: M,

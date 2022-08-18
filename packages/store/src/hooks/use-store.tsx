@@ -1,15 +1,23 @@
-import { BaseStore } from '@yimoko/store';
-import { useState } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IBaseStoreConfig, IStoreValues } from '../store/base';
+import { IStore, IStoreConfig, StoreMap } from '../store';
+import { IStoreValues, BaseStore } from '../store/base';
 
-export function useStore<V extends object = IStoreValues, R = IStoreValues>(config: IBaseStoreConfig<V, R>) {
-  const api = useAPIExecutor();
-  const [store] = useState<BaseStore<V, R>>(() => {
-    const cur = new BaseStore<V, R>({ apiExecutor: api, ...config });
-    return cur;
-  });
+import { useDeepMemo } from './use-deep-memo';
 
-  return store;
+export function useStore<V extends object = IStoreValues, R = IStoreValues>(store: IStore<V, R> | IStoreConfig<V, R>) {
+  const apiExecutor = useAPIExecutor();
+  const curStore = useDeepMemo(() => {
+    if (store instanceof BaseStore) {
+      if (!store.apiExecutor) {
+        // eslint-disable-next-line no-param-reassign
+        store.apiExecutor = apiExecutor;
+      }
+      return store;
+    }
+    const { type = 'base', ...args } = store;
+    return new StoreMap[type]({ apiExecutor, ...args });
+  }, [apiExecutor, store]);
+
+  return curStore;
 }

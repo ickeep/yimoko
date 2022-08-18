@@ -2,11 +2,13 @@ import { debounce } from 'lodash-es';
 import { useState, useRef, SetStateAction, Dispatch, useEffect, useMemo } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { IHTTPResponse, judgeIsSuccess } from '../data/api';
-import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../data/options';
+import { IStoreResponse } from '../store/base';
+import { runStoreAPI } from '../store/utils/api';
+import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
+import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../tools/options';
 
-import { IOptionsAPI } from './use-api-options';
+import { IOptionsAPI, IOptionsAPIProps } from './use-api-options';
 import { useDeepEffect } from './use-deep-effect';
 import { useDeepMemo } from './use-deep-memo';
 
@@ -16,11 +18,21 @@ export interface IOptionsAPISearchConfig<T extends string = 'label' | 'value'> {
   wait?: number
 }
 
+export interface IOptionsAPISearchProps<T extends string = 'label' | 'value'> extends IOptionsAPIProps<T> {
+  labelAPI?: IOptionsAPI | boolean,
+  apiType?: 'search' | 'data'
+  searchConfig?: IOptionsAPISearchConfig<T>
+}
+
 export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
-
-  input?: string, value?: any, data?: any, api?: IOptionsAPI, labelAPI?: IOptionsAPI | boolean,
-  searchConfig?: IOptionsAPISearchConfig, keys?: IKeys<T>, splitter?: string,
-
+  input?: string,
+  value?: any,
+  data?: any,
+  api?: IOptionsAPI,
+  labelAPI?: IOptionsAPI | boolean,
+  searchConfig?: IOptionsAPISearchConfig,
+  keys?: IKeys<T>,
+  splitter?: string,
 ): [IOptions<T>, boolean, Dispatch<SetStateAction<IOptions<T>>>] => {
   const [options, setOptions] = useState<IOptions<T>>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,44 +40,35 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
 
   const apiExecutor = useAPIExecutor();
 
-  const apiFn = useDeepMemo(() => (!api ? undefined : (values: string) => {
+  const apiFn = useDeepMemo(() => (!api ? undefined : (value: string) => {
     const getKey = () => searchConfig?.request?.label ?? keys?.label ?? 'name';
-    const params = { [getKey()]: values };
-    if (typeof api === 'function') {
-      return api(params);
-    }
-    return apiExecutor({ ...api, params, data: params });
+    const params = { [getKey()]: value };
+    return runStoreAPI(api, apiExecutor, params);
   }), [searchConfig, keys, api, apiExecutor]);
 
-  const apiFnForValue = useDeepMemo(() => (!labelAPI ? undefined : (values: string) => {
+  // eslint-disable-next-line complexity
+  const apiFnForValue = useDeepMemo(() => {
     const getKey = () => searchConfig?.request?.value ?? searchConfig?.keys?.value ?? keys?.value ?? 'id';
-    const params = { [getKey()]: values };
-
-    if (labelAPI === true) {
-      if (typeof api === 'function') {
-        return api(params);
-      }
-      return apiExecutor({ ...api, params, data: params });
+    if (labelAPI && typeof labelAPI !== 'boolean') {
+      return (value: string) => runStoreAPI(labelAPI, apiExecutor, { [getKey()]: value });
     }
-
-    if (typeof labelAPI === 'function') {
-      return labelAPI(params);
+    if (labelAPI === true && api) {
+      return (value: string) => runStoreAPI(api, apiExecutor, { [getKey()]: value });
     }
-
-    return apiExecutor({ ...labelAPI, params, data: params });
-  }), [searchConfig, apiExecutor, keys?.value, api]);
+    return undefined;
+  }, [searchConfig, apiExecutor, keys?.value, api]);
 
   // 时序、防抖 控制
-  const fetcher = useDeepMemo(() => (fn?: (value: any) => Promise<IHTTPResponse>) => {
+  const fetcher = useDeepMemo(() => (fn?: (value: any) => undefined | Promise<IStoreResponse>) => {
     if (typeof fn !== 'function') {
       return undefined;
     }
-    const loadOptions = (values: string) => {
+    const loadOptions = (value: string) => {
       fetchRef.current = changeNumInRange(fetchRef.current);
       const fetchId = fetchRef.current;
       setOptions([]);
       setLoading(true);
-      fn(values).then((res) => {
+      fn(value)?.then((res) => {
         if (fetchId === fetchRef.current) {
           setLoading(false);
           judgeIsSuccess(res) && setOptions(dataToOptions(res.data, searchConfig?.keys ?? keys, splitter));
@@ -74,7 +77,6 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
     };
     return debounce(loadOptions, searchConfig?.wait ?? 300);
   }, [keys, searchConfig, splitter]);
-
 
   const fetchOptions = useMemo(() => fetcher(apiFn), [apiFn, fetcher]);
 
