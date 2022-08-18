@@ -24,7 +24,7 @@ export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
 export const Swiper = observer((props: SwiperProps) => {
   const {
     className, options, api, keys, splitter, value, children, style,
-    height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
+    height = 600, itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curHeight = useMemo(() => getCssSize(height), [height]);
