@@ -10,10 +10,11 @@ import { Text } from '../base/text';
 import { handleClick } from '../tools/handle-click';
 import { getCssSize } from '../tools/style';
 
-export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
+export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   value?: any;
   height?: number;
   itemStyle?: React.CSSProperties
+  style?: React.CSSProperties
   image?: ImageProps
   textStyle?: React.CSSProperties
   titleStyle?: React.CSSProperties
@@ -22,12 +23,13 @@ export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
 
 export const Swiper = observer((props: SwiperProps) => {
   const {
-    className, options, api, keys, splitter, value, children,
+    className, options, api, keys, splitter, value, children, style,
     height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curHeight = useMemo(() => getCssSize(height), [height]);
   const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
+  const curStyle = useMemo(() => ({ height: curHeight, ...style }), [curHeight, style]);
   const curItems = useSchemaItems();
 
   const curChildren = useMemo(() => {
@@ -51,7 +53,7 @@ export const Swiper = observer((props: SwiperProps) => {
 
   return (
     <Skeleton loading={loading}>
-      <TSwiper {...args} className={classNames('y-swiper', className)}>
+      <TSwiper {...args} style={curStyle} className={classNames('y-swiper', className)}>
         {curChildren}
       </TSwiper>
     </Skeleton>
