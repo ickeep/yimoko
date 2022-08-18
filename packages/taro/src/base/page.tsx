@@ -6,8 +6,8 @@ import { IStore, judgeIsSuccess, useRoot } from '@yimoko/store';
 import cls from 'classnames';
 import { useEffect, useMemo } from 'react';
 
+import { setBackgroundColor, setBackgroundTextStyle } from '../adapter/background';
 import { hideNavigationBarLoading, setNavigationBarColor, setNavigationBarTitle, showNavigationBarLoading } from '../adapter/navigation-bar';
-
 import { ResponseError } from '../out/response-error';
 import { useConfig } from '../store/config';
 
@@ -18,12 +18,18 @@ export interface PageProps extends ViewProps {
     title?: string
     color?: Omit<Taro.setNavigationBarColor.Option, 'complete' | 'fail' | 'success'>
   }
+  background?: {
+    textStyle?: 'dark' | 'light',
+    color?: Omit<Taro.setBackgroundColor.Option, 'complete' | 'fail' | 'success'>
+  }
 }
 
-export const Page = observer(({ className, children, loading, store, navigationBar, ...args }: PageProps) => {
+export const Page = observer(({ className, children, loading, store, navigationBar = {}, background = {}, ...args }: PageProps) => {
   const { loading: rootLoading } = useRoot();
   const { response, loading: storeLoading } = store ?? {};
-  const { title, color } = navigationBar ?? {};
+  const { title, color: barColor } = navigationBar;
+  const { textStyle, color: bColor } = background;
+
   const curLoading = useMemo(() => rootLoading || !!storeLoading, [rootLoading, storeLoading]);
   const { themeVars } = useConfig();
 
@@ -40,8 +46,16 @@ export const Page = observer(({ className, children, loading, store, navigationB
   }, [title]);
 
   useEffect(() => {
-    color && setNavigationBarColor(color);
-  }, [color]);
+    barColor && setNavigationBarColor(barColor);
+  }, [barColor]);
+
+  useEffect(() => {
+    textStyle && setBackgroundTextStyle(textStyle);
+  }, [textStyle]);
+
+  useEffect(() => {
+    bColor && setBackgroundColor(bColor);
+  }, [bColor]);
 
   const curChildren = useMemo(() => {
     if (curLoading) {

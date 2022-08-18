@@ -1,4 +1,5 @@
 export * from './adapter/adapter';
+export * from './adapter/background';
 export * from './adapter/http';
 export * from './adapter/navigation-bar';
 export * from './adapter/route';
