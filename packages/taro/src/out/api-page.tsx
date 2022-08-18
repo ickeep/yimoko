@@ -1,5 +1,5 @@
 import { observer } from '@formily/react';
-import Taro from '@tarojs/taro';
+import { useRouter } from '@tarojs/taro';
 import { IStoreValues, IStore, IStoreConfig, useStore, judgeIsSuccess, useDeepMemo } from '@yimoko/store';
 import { isEqual } from 'lodash-es';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ export const APIPage = observer((props: APIPageProps) => {
   const { store, pagePath, isCache = true, paramKey = 'pagePath' } = props;
   const curStore = useStore(store ?? {});
   const { pageCachePrefix } = useConfig();
-  const { router } = Taro.getCurrentInstance();
+  const router = useRouter();
   const curPagePath = pagePath ?? router?.params?.[paramKey];
 
   useEffect(() => {

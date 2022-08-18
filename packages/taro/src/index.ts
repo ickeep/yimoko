@@ -4,6 +4,8 @@ export * from './adapter/http';
 export * from './adapter/navigation-bar';
 export * from './adapter/route';
 export * from './adapter/storage';
+export * from './adapter/system';
+export * from './adapter/toast';
 
 export * from './base/button';
 export * from './base/camera';

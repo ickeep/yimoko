@@ -12,7 +12,7 @@ export const httpRequest: IHTTPRequest = async (config) => {
       return handleResponse({
         ...args,
         statusCode: IHTTPCode.networkError,
-        errMsg: e?.errMsg ?? '网络出错',
+        msg: '请求失败',
       });
     }
     return handleResponse(response);
@@ -45,14 +45,15 @@ export const httpPost: IHTTPPost = (url, data, config) => httpRequest({ ...confi
 export const httpPut: IHTTPPost = (url, data, config) => httpRequest({ ...config, url, data, method: 'PUT' });
 
 // 处理请求返回的数据
+// eslint-disable-next-line complexity
 export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<T>): IHTTPResponse<T> => {
-  const { data, statusCode, errMsg } = response;
+  const { data, statusCode } = response;
   const resData = getResponseData(response);
   return {
     ...response,
     ...resData,
     code: resData?.code ?? getCodeByStatus(statusCode),
-    msg: resData?.msg ?? errMsg,
+    msg: resData?.msg,
     data: resData.data ?? data,
   };
 };

@@ -33,6 +33,9 @@ const IndexPage = observer(() => {
         form: {
           type: 'void',
           'x-component': 'Form',
+          'x-component-props': {
+            notifyOnFail: true,
+          },
           properties: {
             phone: {
               type: 'string',
