@@ -1,14 +1,14 @@
 {
   "name": "root",
-  "private": true,
   "version": "0.2.1",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build",
     "lint": "eslint ./packages --ext ts,tsx",
     "lint:fix": "eslint ./packages/*/src --ext ts,tsx --fix",
-    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build",
     "release": "lerna publish from-package --yes --no-verify-access"
   },
   "devDependencies": {

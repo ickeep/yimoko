@@ -189,6 +189,5 @@ export function withCovnProps<T extends Object = Record<string, any>>(C: React.C
 }
 
 export const covnPropsComponents: Record<string, any> = {};
-Object.entries(components).forEach(([key, value]) => {
-  covnPropsComponents[key] = withCovnProps(value);
-});
+
+Object.entries(components).forEach(([key, value]) => covnPropsComponents[key] = withCovnProps(value));
