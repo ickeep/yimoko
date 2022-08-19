@@ -17,9 +17,13 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm install --global lerna
+      - run: mkdir copy
+      - run: cp  *.lock copy/
       - run: lerna bootstrap
       - run: npm run build:npm
       - run: rm *.lock
+      - run: cp copy/*.lock ./
+      - run: rm -rf copy
       - run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
