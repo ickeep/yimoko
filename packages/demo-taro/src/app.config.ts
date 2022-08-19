@@ -6,6 +6,8 @@ export default defineAppConfig({
     'pages/components/detail',
     'pages/demo/index',
     'pages/demo/detail',
+    'pages/auto/index',
+    'pages/auto/custom',
   ],
   tabBar: {
     list: [

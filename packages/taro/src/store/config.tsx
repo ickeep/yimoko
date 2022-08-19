@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 
 const tabURL: string[] = [];
 const themeVars: Record<string, any> = {};
+const tabBars: Array<Omit<Taro.setTabBarItem.Option, 'complete' | 'fail' | 'success'>> = [];
+const tabBarStyle: Omit<Taro.setTabBarStyle.Option, 'complete' | 'fail' | 'success'> = {};
 // 因小程序包大小限制，将所有静态资源放至 CDN 上
 export const defaultConfig = {
   static: { img: '', icon: '' },
@@ -12,10 +14,11 @@ export const defaultConfig = {
   pageCachePrefix: '',
   tabURL,
   themeVars,
+  tabBars,
+  tabBarStyle,
 };
 
-
-type IConfig = typeof defaultConfig;
+export type IConfig = typeof defaultConfig;
 type IKey = keyof IConfig;
 
 export const configStore: ConfigStore<typeof defaultConfig> = new ConfigStore(defaultConfig);

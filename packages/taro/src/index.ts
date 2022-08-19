@@ -5,6 +5,7 @@ export * from './adapter/navigation-bar';
 export * from './adapter/route';
 export * from './adapter/storage';
 export * from './adapter/system';
+export * from './adapter/tabbar';
 export * from './adapter/toast';
 
 export * from './base/button';

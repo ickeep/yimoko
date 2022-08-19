@@ -33,9 +33,6 @@ export const DatetimePicker = observer((props: DatetimePickerProps) => {
     return day().valueOf();
   }, [timestamp, value, curFormat]);
 
-  console.log('curValue', curValue);
-
-
   return (
     <TDatetimePicker
       showToolbar={false}

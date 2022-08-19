@@ -1,13 +1,23 @@
 import Taro from '@tarojs/taro';
-import { useBaseStore, useRoot, judgeIsSuccess, IStoreAPI } from '@yimoko/store';
+import { useBaseStore, useRoot, judgeIsSuccess, IStoreAPI, judgeIsEmpty } from '@yimoko/store';
 import { isEqual } from 'lodash-es';
 import { useEffect } from 'react';
 
 import { route } from '../adapter/route';
 import { getStorage, setStorage } from '../adapter/storage';
-import { configStore } from '../store/config';
+import { setTabBarItem, setTabBarStyle } from '../adapter/tabbar';
+import { configStore, IConfig } from '../store/config';
 
-const { setConfig, config } = configStore;
+const { config } = configStore;
+
+const setConfig = (config: IConfig) => {
+  const { tabBars, tabBarStyle } = config;
+  !judgeIsEmpty(tabBarStyle) && setTabBarStyle(tabBarStyle);
+  !judgeIsEmpty(tabBars) && tabBars.forEach((item, i) => {
+    setTabBarItem({ ...item, index: i });
+  });
+  configStore.setConfig(config);
+};
 
 export const useAppConfig = (api: IStoreAPI, cackeKey = 'app-config') => {
   const store = useBaseStore({ api });
