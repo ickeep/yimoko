@@ -10,12 +10,13 @@ import { handleClick } from '../tools/handle-click';
 
 export type CellGroupProps = TCellGroupProps & IOptionsOutAPIProps & {
   image?: ImageProps
+  itemURLPrefix?: string
 };
 
 export const Cell = withValueChildren(TCell);
 
 export const CellGroup = observer((props: CellGroupProps) => {
-  const { className, options, api, keys, splitter, image, children, ...args } = props;
+  const { className, options, api, keys, splitter, image, children, itemURLPrefix, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curItems = useSchemaItems();
 
@@ -25,7 +26,7 @@ export const CellGroup = observer((props: CellGroupProps) => {
         {options?.map?.((item, i) => {
           const { desc, img, url, click, routeType, ...args } = item;
           return (
-            <TCell key={`data-${i}`} onClick={() => handleClick(item, i)} label={desc} {...args}  >
+            <TCell key={`data-${i}`} onClick={() => handleClick(item, itemURLPrefix, i)} label={desc} {...args}  >
               {img && <Image fit="cover" height="100%" width="100%" {...image} src={img} />}
             </TCell>
           );

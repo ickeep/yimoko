@@ -8,11 +8,10 @@ import React, { useMemo } from 'react';
 
 import { Text } from '../base/text';
 import { handleClick } from '../tools/handle-click';
-import { getCssSize } from '../tools/style';
 
 export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
   value?: any;
-  height?: number;
+  height?: number | string;
   itemStyle?: React.CSSProperties
   image?: ImageProps
   textStyle?: React.CSSProperties
@@ -23,17 +22,16 @@ export type SwiperProps = TSwiperProps & IOptionsOutAPIProps & {
 export const Swiper = observer((props: SwiperProps) => {
   const {
     className, options, api, keys, splitter, value, children,
-    height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
+    height = '160rpx', itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
-  const curHeight = useMemo(() => getCssSize(height), [height]);
-  const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
+  const curItemStyle = useMemo(() => ({ height, ...itemStyle }), [height, itemStyle]);
   const curItems = useSchemaItems();
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map?.((item, i) => (
       <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)}>
-        <Image width="100%" height={curHeight} fit="cover" {...image} src={item.img} />
+        <Image width="100%" height={height} fit="cover" {...image} src={item.img} />
         <View className='c-text' style={textStyle}>
           {item.title && <Text style={titleStyle}>{item.title}</Text>}
           {item.desc && <Text size="small" style={descStyle}>{item.desc}</Text>}
@@ -47,7 +45,7 @@ export const Swiper = observer((props: SwiperProps) => {
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curHeight, curItemStyle, curItems, data, descStyle, image, textStyle, titleStyle]);
+  }, [curItemStyle, curItems, data, descStyle, height, image, textStyle, titleStyle]);
 
   return (
     <Skeleton loading={loading}>

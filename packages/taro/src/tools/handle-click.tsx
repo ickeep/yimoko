@@ -7,7 +7,7 @@ interface IItem {
   [key: string]: any;
 }
 
-export const handleClick = (item: IItem, i?: number) => {
+export const handleClick = (item: IItem, itemURLPrefix?: string, i?: number) => {
   const { url, click, routeType = 'to' } = item;
   if (typeof click === 'function') {
     click(item, i);
