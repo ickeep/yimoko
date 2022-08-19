@@ -1,6 +1,6 @@
 import { Skeleton, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
-import { observer } from '@formily/react';
+import { observer, useExpressionScope } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps, View } from '@tarojs/components';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import classNames from 'classnames';
@@ -8,6 +8,7 @@ import React, { useMemo } from 'react';
 
 import { Text } from '../base/text';
 import { handleClick } from '../tools/handle-click';
+import { templateCovnForProps } from '../tools/template';
 
 export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   value?: any;
@@ -18,21 +19,23 @@ export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   textStyle?: React.CSSProperties
   titleStyle?: React.CSSProperties
   descStyle?: React.CSSProperties
+  itemURLPrefix?: string
 };
 
 export const Swiper = observer((props: SwiperProps) => {
   const {
-    className, options, api, keys, splitter, value, children,
-    height = 300, itemStyle, image, textStyle, titleStyle, descStyle, ...args
+    className, options, api, keys, splitter, value, children, style, itemURLPrefix,
+    height = '160rpx', itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
-  const curHeight = useMemo(() => getCssSize(height), [height]);
-  const curItemStyle = useMemo(() => ({ height: curHeight, ...itemStyle }), [curHeight, itemStyle]);
+  const curItemStyle = useMemo(() => ({ height, ...itemStyle }), [height, itemStyle]);
+  const curStyle = useMemo(() => ({ height, ...style }), [height, style]);
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map?.((item, i) => (
-      <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)}>
+      <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, itemURLPrefix, i)}>
         <Image width="100%" height={height} fit="cover" {...image} src={item.img} />
         <View className='c-text' style={textStyle}>
           {item.title && <Text style={titleStyle}>{item.title}</Text>}
@@ -42,12 +45,12 @@ export const Swiper = observer((props: SwiperProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = getItemPropsBySchema(item, 'SwiperItem', i);
-      return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick(item, i)} {...props} />;
+      const props = templateCovnForProps(getItemPropsBySchema(item, 'SwiperItem', i), scope);
+      return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItemStyle, curItems, data, descStyle, height, image, textStyle, titleStyle]);
+  }, [curItemStyle, curItems, data, descStyle, height, image, itemURLPrefix, scope, textStyle, titleStyle]);
 
   return (
     <Skeleton loading={loading}>

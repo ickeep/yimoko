@@ -87,6 +87,7 @@ export * from './store/page';
 export * from './store/search';
 
 export * from './tools/handle-click';
+export * from './tools/template';
 
 export * from './components';
 

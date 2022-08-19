@@ -1,15 +1,18 @@
 import { Collapse as TCollapse, Skeleton, CollapseItem } from '@antmjs/vantui';
 import { CollapseItemProps, CollapseProps as TCollapseProps } from '@antmjs/vantui/types/collapse';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
+import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
+import { templateCovnForProps } from '../tools/template';
 
 export type CollapseProps = TCollapseProps & IOptionsAPIProps<keyof CollapseItemProps | 'desc' | 'url' | 'click' | 'value'> & {
   onChange?: (value: any, e?: ITouchEvent) => void;
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
+  itemURLPrefix?: string
 };
 
 const defaultKeys = {
@@ -18,10 +21,11 @@ const defaultKeys = {
 };
 
 export const Collapse = (props: CollapseProps) => {
-  const { value, options, api, keys, splitter, valueType, onChange, children, skeleton, accordion, ...args } = props;
+  const { value, options, api, keys, splitter, valueType, onChange, children, skeleton, accordion, itemURLPrefix, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<CollapseProps['value']>();
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const isControlled = value !== undefined;
   const curValue = useMemo(() => {
@@ -40,16 +44,16 @@ export const Collapse = (props: CollapseProps) => {
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <CollapseItem key={`d-${i}`} onClick={() => handleClick(item, i)} {...item} name={`data-${i}`} />
+      <CollapseItem key={`d-${i}`} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} name={`data-${i}`} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = getItemPropsBySchema(item, 'CollapseItem', i);
-      return <CollapseItem key={`i-${i}`} onClick={() => handleClick(item, i)} {...props} />;
+      const props = templateCovnForProps(getItemPropsBySchema(item, 'CollapseItem', i), scope);
+      return <CollapseItem key={`i-${i}`} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data]);
+  }, [curItems, data, itemURLPrefix, scope]);
 
 
   return (

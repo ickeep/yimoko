@@ -1,5 +1,7 @@
 import { IRouteType, navigate } from '../adapter/route';
 
+import { template } from './template';
+
 interface IItem {
   click?: Function;
   url?: string;
@@ -7,13 +9,13 @@ interface IItem {
   [key: string]: any;
 }
 
-export const handleClick = (item: IItem, itemURLPrefix?: string, i?: number) => {
+export const handleClick = (item: IItem, itemURLPrefix = '', i?: number) => {
   const { url, click, routeType = 'to' } = item;
+
   if (typeof click === 'function') {
     click(item, i);
   }
   if (typeof url === 'string' && url) {
-    // const compiled = template(url);
-    navigate(url, routeType);
+    navigate(itemURLPrefix + template(url, { $i: i, ...item }), routeType);
   }
 };

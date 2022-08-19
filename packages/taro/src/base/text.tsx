@@ -28,5 +28,7 @@ export const Text = observer((props: TextProps) => {
     className,
   ), [block, bold, className, size, type]);
 
+  console.log('testxxx');
+
   return <TText {...args} className={curClassName}><RenderValue value={children ?? value} /></TText>;
 });

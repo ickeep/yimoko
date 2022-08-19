@@ -20,7 +20,14 @@
   ],
   "scripts": {
     "build": "VITE_LIB=taro vite build -c ../../vite.config.ts",
-    "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts"
+    "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts",
+    "test:unit": "react-scripts test --maxWorkers=1 --coverage --watchAll=false",
+    "test:watch": "react-scripts test --maxWorkers=1 --watchAll --coverage"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash"
+    }
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

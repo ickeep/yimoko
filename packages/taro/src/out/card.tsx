@@ -1,11 +1,12 @@
 import { Skeleton, Card as TCard } from '@antmjs/vantui';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
-import { observer } from '@formily/react';
+import { observer, useExpressionScope } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
+import { templateCovnForProps } from '../tools/template';
 
 export const Card = TCard;
 
@@ -26,25 +27,27 @@ const defaultKeys = {
 
 export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof defaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
+  itemURLPrefix?: string
 };
 
 export const Cardlist = observer((props: CardlistProps) => {
-  const { options, api, keys, splitter, skeleton, ...args } = props;
+  const { options, api, keys, splitter, skeleton, itemURLPrefix, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item, i)} {...item} />
+      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item, itemURLPrefix, i)} {...item} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = getItemPropsBySchema(item, 'Card', i);
-      return <TCard key={`i-${i}`} price="" onClick={() => handleClick(item, i)} {...props} />;
+      const props = templateCovnForProps(getItemPropsBySchema(item, 'Card', i), scope);
+      return <TCard key={`i-${i}`} price="" onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data]);
+  }, [curItems, data, itemURLPrefix, scope]);
 
   return (
     <Skeleton {...skeleton} loading={loading}>

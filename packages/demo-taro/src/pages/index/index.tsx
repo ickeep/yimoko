@@ -11,7 +11,7 @@ const IndexPage = observer(() => {
     store: {
       api: { method: 'POST', url: '/api/test' },
       defaultValues: {
-        phone: '',
+        phone: '12',
         code: '',
       },
     },
@@ -79,6 +79,55 @@ const IndexPage = observer(() => {
               },
             },
           },
+        },
+        grid: {
+          type: 'void',
+          'x-component': 'Grid',
+          'x-component-props': {
+            columnNum: 2,
+            itemURLPrefix: '/pages/',
+            options: [
+              {
+                id: '1',
+                icon: 'star-o',
+                title: '我的收藏',
+                url: 'collect/index?id=<%=id%>',
+
+              },
+              {
+                icon: 'scan',
+                title: '扫一扫',
+              },
+              {
+                icon: 'service-o',
+                title: '建议反馈',
+              },
+              {
+                icon: 'question-o',
+                title: '帮助中心',
+              },
+              {
+                img: ' ',
+                icon: 'question-o',
+                title: '帮助中心',
+              },
+            ],
+          },
+          items: [
+            {
+              type: 'void',
+              'x-decorator-props': {
+                click: '<%=curStore.runAPI%>',
+              },
+              'x-component': 'Image',
+              'x-component-props': {
+                x: 'x',
+                src: '<%=curStore.values.phone%>',
+                width: '100%',
+                height: '100%',
+              },
+            },
+          ],
         },
         // show: {
         //   type: 'void',

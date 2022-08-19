@@ -1,10 +1,12 @@
 import { Tabbar as TTabbar, TabbarItem as TTabbarItem, Image } from '@antmjs/vantui';
 import { ImageProps } from '@antmjs/vantui/types/image';
 import { TabbarProps as TTabbarProps, TabbarItemProps as TTabbarItemProps } from '@antmjs/vantui/types/tabbar';
+import { useExpressionScope } from '@formily/react';
 import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
+import { templateCovnForProps } from '../tools/template';
 
 export interface TabbarItemProps extends TTabbarItemProps {
   img?: string
@@ -47,13 +49,15 @@ const defaultKeys = {
 export type TabbarProps = Omit<TTabbarProps, 'active' | 'onChange'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
   value?: string | number,
   onChange?: (value: string | number) => void;
+  itemURLPrefix?: string
 };
 
 export const Tabbar = (props: TabbarProps) => {
-  const { value, options, api, keys, splitter, onChange, children, ...args } = props;
+  const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, ...args } = props;
   const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<TabbarProps['value']>();
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const isControlled = value !== undefined;
 
@@ -61,17 +65,17 @@ export const Tabbar = (props: TabbarProps) => {
     () => {
       const dataChildren = data?.map((item, i) => {
         const name = item.name ?? `d-${i}`;
-        return <TabbarItem key={name} onClick={() => handleClick(item, i)} {...item} name={name} />;
+        return <TabbarItem key={name} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} name={name} />;
       });
 
       const itemChildren = curItems.map?.((item, i) => {
-        const props = getItemPropsBySchema(item, 'TabbarItem', i);
+        const props = templateCovnForProps(getItemPropsBySchema(item, 'TabbarItem', i), scope);
         const name = props?.name ?? `i-${i}`;
-        return <TabbarItem key={name} name={name} onClick={() => handleClick(props, i)} {...props} />;
+        return <TabbarItem key={name} name={name} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
       });
       return [...dataChildren, ...itemChildren];
     },
-    [curItems, data],
+    [curItems, data, itemURLPrefix, scope],
   );
 
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);
