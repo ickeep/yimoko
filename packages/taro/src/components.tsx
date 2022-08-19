@@ -71,15 +71,6 @@ import { Tag } from './out/tag';
 import { StorePage } from './store/page';
 import { templateCovnForProps } from './tools/template';
 
-// hoc 转换组件 props 使其支持 模版
-export function withCovnProps<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
-  return observer((props: T) => {
-    const scope = useExpressionScope();
-    const cProps = templateCovnForProps(props, scope) as T;
-    return <C {...cProps} />;
-  });
-}
-
 
 export const components: Record<string, any> = {
   // 无需适配
@@ -187,6 +178,15 @@ export const components: Record<string, any> = {
   // store
   StorePage,
 };
+
+// hoc 转换组件 props 使其支持 模版
+export function withCovnProps<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
+  return observer((props: T) => {
+    const scope = useExpressionScope();
+    const cProps = templateCovnForProps(props, scope) as T;
+    return <C {...cProps} />;
+  });
+}
 
 export const covnPropsComponents: Record<string, any> = {};
 Object.entries(components).forEach(([key, value]) => {
