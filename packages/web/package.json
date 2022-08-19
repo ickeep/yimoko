@@ -52,7 +52,7 @@
     "@formily/shared": "^2.0.0",
     "@formily/validator": "^2.0.0",
     "@types/lodash-es": "^4.0.0",
-    "@yimoko/store": "^0.1.0",
+    "@yimoko/store": "*",
     "axios": "^0.22.0",
     "htmr": "^1.0.0",
     "lodash-es": "^4.0.0",

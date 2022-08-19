@@ -59,7 +59,7 @@
     "@tarojs/components": "^3.4 || ^3.5",
     "@tarojs/taro": "^3.4 || ^3.5",
     "@types/lodash-es": "^4.0.0",
-    "@yimoko/store": "^0.1.0",
+    "@yimoko/store": "*",
     "dayjs": "^1.0.0",
     "lodash-es": "^4.0.0",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
