@@ -13,7 +13,7 @@ export interface ResponseErrorProps {
   isReturnIndex?: boolean
   loading?: boolean;
   response: IStoreResponse<any, any>;
-  onAgain?: () => void;
+  onAgain?: () => (any | Promise<any>);
 }
 
 // eslint-disable-next-line complexity
