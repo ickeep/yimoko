@@ -11,7 +11,7 @@ const IndexPage = observer(() => {
     store: {
       api: { method: 'POST', url: '/api/test' },
       defaultValues: {
-        phone: '12',
+        phone: '122',
         code: '',
       },
     },
@@ -36,7 +36,7 @@ const IndexPage = observer(() => {
   // console.log(JSON.stringify(props));
 
   return (
-    <Page>
+    <Page style={{ height: '100%' }}>
       <StorePage {...props} />
     </Page>
   );

@@ -4,6 +4,7 @@ import { Skeleton } from '@antmjs/vantui';
 import { observer } from '@formily/react';
 import { JSONStringify, judgeIsSuccess, useStore } from '@yimoko/store';
 import { Card, covnPropsComponents, ResponseError, Sidebar } from '@yimoko/taro';
+import { useRef, useState } from 'react';
 
 export const Test = observer((props: any) => {
   const { value, children } = props;
@@ -19,26 +20,44 @@ export const Test = observer((props: any) => {
 const ProductsIndex = observer((props: any) => {
   const store = useStore<any, any[]>(props.store);
   const { loading, response, runAPI } = store;
+  const scrollRef = useRef();
 
-  console.log('xxx');
+  const [barValue, setBarValue] = useState(0);
+
+  if (loading) {
+    <Skeleton loading={loading} row={20} />;
+  }
+
+  if (!judgeIsSuccess(response)) {
+    return <ResponseError loading={loading} response={response} onAgain={() => {
+      runAPI();
+    }}
+    />;
+  }
 
   return (
-    <Skeleton loading={loading} row={20}>
-      <ResponseError loading={loading} response={response} onAgain={() => {
-        runAPI();
-      }}
+    <View className='y-products-index'>
+      <Sidebar className='c-sidebar' value={barValue} onChange={(v) => {
+        setBarValue(v);
+      }} options={response.data}
+      />
+      <ScrollView
+        scrollY
+        className='c-scroll-view'
+        ref={scrollRef}
+        refresherEnabled
+        refresherTriggered={loading}
+        onRefresherRefresh={() => {
+          runAPI();
+        }}
+        onScroll={() => {
+          console.log(scrollRef.current);
+        }}
       >
+        {response.data?.map(item => item.products?.map((p, i) => <Card price='' key={p?.id ?? i} {...p} />))}
+      </ScrollView>
+    </View>
 
-      </ResponseError>
-      {judgeIsSuccess(response) && (
-        <View>
-          <ScrollView scrollY>
-            {response.data?.map(item => item.products?.map((p, i) => <Card price='' key={p?.id ?? i} {...p} />))}
-          </ScrollView>
-          <Sidebar options={response.data} />
-        </View>
-      )}
-    </Skeleton>
   );
 });
 

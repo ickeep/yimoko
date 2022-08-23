@@ -2,7 +2,7 @@ import { Sidebar as TSidebar, SidebarItem } from '@antmjs/vantui';
 import { SidebarProps as TSidebarProps } from '@antmjs/vantui/types/sidebar';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
-import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
+import { getItemPropsBySchema, IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
@@ -23,10 +23,7 @@ export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOpti
   children?: ReactNode
 };
 
-
 export const Sidebar = (props: SidebarProps) => {
-  console.log('daxxxta', 'xxx');
-
   const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, ...args } = props;
   const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<SidebarProps['value']>();
@@ -50,6 +47,10 @@ export const Sidebar = (props: SidebarProps) => {
 
   const allChildren = useMemo(() => (children ? [...curChildren, children] : curChildren), [children, curChildren]);
 
+  // 如 allChildren 晚于 TSidebar 渲染 activeKey 值无效
+  if (judgeIsEmpty(allChildren)) {
+    return null;
+  }
 
   return (
     <TSidebar
@@ -65,5 +66,3 @@ export const Sidebar = (props: SidebarProps) => {
   );
 };
 
-
-console.log('Sidebar', Sidebar);
