@@ -2,8 +2,8 @@ import { ScrollView, View } from '@tarojs/components';
 
 import { Skeleton } from '@antmjs/vantui';
 import { observer } from '@formily/react';
-import { JSONStringify, useStore } from '@yimoko/store';
-import { covnPropsComponents, ResponseError, Sidebar } from '@yimoko/taro';
+import { JSONStringify, judgeIsSuccess, useStore } from '@yimoko/store';
+import { Card, covnPropsComponents, ResponseError, Sidebar } from '@yimoko/taro';
 
 export const Test = observer((props: any) => {
   const { value, children } = props;
@@ -17,13 +17,10 @@ export const Test = observer((props: any) => {
 });
 
 const ProductsIndex = observer((props: any) => {
-  console.log('products index', props);
-
-  const store = useStore(props.store);
-
+  const store = useStore<any, any[]>(props.store);
   const { loading, response, runAPI } = store;
 
-  console.log(response.data);
+  console.log('xxx');
 
   return (
     <Skeleton loading={loading} row={20}>
@@ -31,12 +28,16 @@ const ProductsIndex = observer((props: any) => {
         runAPI();
       }}
       >
+
+      </ResponseError>
+      {judgeIsSuccess(response) && (
         <View>
           <ScrollView scrollY>
-            <Sidebar options={response.data ?? []} />
+            {response.data?.map(item => item.products?.map((p, i) => <Card price='' key={p?.id ?? i} {...p} />))}
           </ScrollView>
+          <Sidebar options={response.data} />
         </View>
-      </ResponseError>
+      )}
     </Skeleton>
   );
 });

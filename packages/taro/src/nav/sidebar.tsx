@@ -3,7 +3,7 @@ import { SidebarProps as TSidebarProps } from '@antmjs/vantui/types/sidebar';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
-import { useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateCovnForProps } from '../tools/template';
@@ -16,13 +16,17 @@ const defaultKeys = {
   disabled: 'disabled',
 };
 
-export type SidebarProps = Omit<TSidebarProps, 'activeKey'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
+export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
   value?: number,
   onChange?: (value: any, e?: ITouchEvent) => void;
   itemURLPrefix?: string
+  children?: ReactNode
 };
 
+
 export const Sidebar = (props: SidebarProps) => {
+  console.log('daxxxta', 'xxx');
+
   const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, ...args } = props;
   const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<SidebarProps['value']>();
@@ -31,6 +35,7 @@ export const Sidebar = (props: SidebarProps) => {
 
   const isControlled = value !== undefined;
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);
+
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => <SidebarItem key={`d-${i}`} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} />);
@@ -43,6 +48,9 @@ export const Sidebar = (props: SidebarProps) => {
     return [...dataChildren, ...itemChildren];
   }, [curItems, data, itemURLPrefix, scope]);
 
+  const allChildren = useMemo(() => (children ? [...curChildren, children] : curChildren), [children, curChildren]);
+
+
   return (
     <TSidebar
       {...args}
@@ -52,7 +60,10 @@ export const Sidebar = (props: SidebarProps) => {
         !isControlled && setVal(e.detail);
       }}
     >
-      {curChildren}
+      {allChildren}
     </TSidebar>
   );
 };
+
+
+console.log('Sidebar', Sidebar);
