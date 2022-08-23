@@ -25,7 +25,7 @@ const IndexPage = observer(() => {
           'x-component-props': {
             store: {
               isRunNow: true,
-              api: { url: 'https://json.rsstu.com/yeya/product/list.json' },
+              api: { url: '/options/products-index.json' },
             },
           },
         },

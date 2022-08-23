@@ -1,5 +1,7 @@
 import { ScrollView, View } from '@tarojs/components';
 
+import Taro from '@tarojs/taro';
+
 import { Skeleton } from '@antmjs/vantui';
 import { observer } from '@formily/react';
 import { JSONStringify, judgeIsSuccess, useStore } from '@yimoko/store';
@@ -17,11 +19,11 @@ export const Test = observer((props: any) => {
   );
 });
 
-const ProductsIndex = observer((props: any) => {
+function ProductsIndex(props: any) {
   const store = useStore<any, any[]>(props.store);
+  const [id] = useState(() => `x-${Math.random()}`.replace('.', ''));
   const { loading, response, runAPI } = store;
   const scrollRef = useRef();
-
   const [barValue, setBarValue] = useState(0);
 
   if (loading) {
@@ -42,6 +44,7 @@ const ProductsIndex = observer((props: any) => {
       }} options={response.data}
       />
       <ScrollView
+        id={id}
         scrollY
         className='c-scroll-view'
         ref={scrollRef}
@@ -51,19 +54,31 @@ const ProductsIndex = observer((props: any) => {
           runAPI();
         }}
         onScroll={() => {
-          console.log(scrollRef.current);
+          if (scrollRef.current) {
+            const query = Taro.createSelectorQuery();
+            query.select(`#${id}`).boundingClientRect((res) => {
+              console.log(res);
+            })
+              .exec();
+            query
+              .selectAll(`#${id} .van-card`)
+              .boundingClientRect((res) => {
+                console.log(res);
+              })
+              .exec();
+          }
         }}
       >
-        {response.data?.map(item => item.products?.map((p, i) => <Card price='' key={p?.id ?? i} {...p} />))}
+        {response.data?.map(item => item.products?.map((p, i) => <Card id={`${item.id}-${p.id}`} price='' key={p?.id ?? i} {...p} />))}
       </ScrollView>
     </View>
 
   );
-});
+}
 
 export const componentsMap = {
   ...covnPropsComponents,
   Test,
-  ProductsIndex,
+  ProductsIndex: observer(ProductsIndex),
 };
 
