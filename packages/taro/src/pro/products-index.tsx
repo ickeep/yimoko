@@ -75,7 +75,7 @@ export const ProductsIndex = observer((props: ProductsIndexProps) => {
       {...propsForStore}
       onRefresherRefresh={(e) => {
         onRefresherRefresh?.(e);
-        curStore.runAPI();
+        store && runAPI();
       }}
       data={curData} />
   );
