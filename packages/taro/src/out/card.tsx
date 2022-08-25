@@ -10,7 +10,7 @@ import { templateCovnForProps } from '../tools/template';
 
 export const Card = TCard;
 
-const defaultKeys = {
+export const cardDefaultKeys = {
   tag: 'tag',
   num: 'num',
   desc: 'desc',
@@ -25,14 +25,14 @@ const defaultKeys = {
   currency: 'currency',
 };
 
-export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof defaultKeys> & {
+export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
 };
 
 export const Cardlist = observer((props: CardlistProps) => {
   const { options, api, keys, splitter, skeleton, itemURLPrefix, ...args } = props;
-  const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter) as [any[], boolean, Function];
+  const [data, loading] = useAPIOptions(options, api, { ...cardDefaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
   const scope = useExpressionScope();
 

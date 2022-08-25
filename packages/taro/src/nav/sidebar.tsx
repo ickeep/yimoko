@@ -8,7 +8,7 @@ import { ReactNode, useMemo, useState } from 'react';
 import { handleClick } from '../tools/handle-click';
 import { templateCovnForProps } from '../tools/template';
 
-const defaultKeys = {
+export const sidebarDefaultKeys = {
   dot: 'dot',
   badge: 'badge',
   info: 'info',
@@ -16,7 +16,7 @@ const defaultKeys = {
   disabled: 'disabled',
 };
 
-export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
+export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOptionsAPIProps<keyof typeof sidebarDefaultKeys> & {
   value?: number,
   onChange?: (value: any, e?: ITouchEvent) => void;
   itemURLPrefix?: string
@@ -25,7 +25,7 @@ export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOpti
 
 export const Sidebar = (props: SidebarProps) => {
   const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, ...args } = props;
-  const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
+  const [data] = useAPIOptions(options, api, { ...sidebarDefaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<SidebarProps['value']>();
   const curItems = useSchemaItems();
   const scope = useExpressionScope();
