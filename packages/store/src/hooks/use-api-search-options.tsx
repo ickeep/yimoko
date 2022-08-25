@@ -71,7 +71,8 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
       fn(value)?.then((res) => {
         if (fetchId === fetchRef.current) {
           setLoading(false);
-          judgeIsSuccess(res) && setOptions(dataToOptions(res.data, searchConfig?.keys ?? keys, splitter));
+          const curKeys = (searchConfig?.keys ?? keys) as IKeys<T>;
+          judgeIsSuccess(res) && setOptions(dataToOptions(res.data, curKeys, splitter));
         }
       });
     };
@@ -93,8 +94,9 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
   // 当值变化是，反向查找 options,
   useDeepEffect(() => {
     const ifFetch = () => !input && !loading && value && fetchOptionsForValue;
-
-    if (ifFetch() && !judgeValueInOptions(value, options, searchConfig?.keys ?? keys)) {
+    const curKeys = (searchConfig?.keys ?? keys) as IKeys<T>;
+    // @ts-ignore
+    if (ifFetch() && !judgeValueInOptions(value, options, curKeys)) {
       fetchOptionsForValue?.(value);
     }
   }, [fetchOptionsForValue, input, keys, loading, options, searchConfig?.keys, value]);

@@ -33,19 +33,26 @@ export const Sidebar = (props: SidebarProps) => {
   const isControlled = value !== undefined;
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);
 
+  const dataChildren = useMemo(() => data?.map((item, i) => (
+    <SidebarItem key={`d-${i}`} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} />
+  )), [data, itemURLPrefix]);
 
-  const curChildren = useMemo(() => {
-    const dataChildren = data?.map((item, i) => <SidebarItem key={`d-${i}`} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} />);
+  const itemChildren = useMemo(() => curItems.map?.((item, i) => {
+    const props = templateCovnForProps(getItemPropsBySchema(item, 'SidebarItem', i), scope);
+    return <SidebarItem key={`i-${i}`} onClick={() => handleClick(props, itemURLPrefix, i)} renderTitle={props.children} {...props} />;
+  }), [curItems, scope, itemURLPrefix]);
 
-    const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'SidebarItem', i), scope);
-      return <SidebarItem key={`i-${i}`} onClick={() => handleClick(props, itemURLPrefix, i)} renderTitle={props.children} {...props} />;
-    });
+  const allChildren = useMemo(() => {
+    const arr = [...dataChildren, ...itemChildren];
+    if (judgeIsEmpty(arr)) {
+      return children;
+    }
+    if (judgeIsEmpty(children)) {
+      return arr;
+    }
+    return Array.isArray(children) ? [...arr, ...children] : [...arr, children];
+  }, [children, dataChildren, itemChildren]);
 
-    return [...dataChildren, ...itemChildren];
-  }, [curItems, data, itemURLPrefix, scope]);
-
-  const allChildren = useMemo(() => (children ? [...curChildren, children] : curChildren), [children, curChildren]);
 
   // 如 allChildren 晚于 TSidebar 渲染 activeKey 值无效
   if (judgeIsEmpty(allChildren)) {

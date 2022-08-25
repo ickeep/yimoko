@@ -36,7 +36,7 @@ const IndexPage = observer(() => {
   // console.log(JSON.stringify(props));
 
   return (
-    <Page style={{ height: '100%' }}>
+    <Page style={{ height: '100%', paddingTop: 200 }}>
       <StorePage {...props} />
     </Page>
   );

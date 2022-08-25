@@ -3,7 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"
-  ],
+, "../taro/src/tools/debounce.ts"  ],
   "exclude": [
     "./src/__tests__/*",
     "./esm/*",

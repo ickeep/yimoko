@@ -3,7 +3,7 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"
-  ],
+, "src/tools/debounce.js"  ],
   "exclude": [
     "./src/__tests__/*",
     "./esm/*",

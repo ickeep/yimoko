@@ -68,6 +68,7 @@ import { Sticky } from './out/sticky';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 import { Tag } from './out/tag';
+import { ProductsIndex } from './pro/products-index';
 import { StorePage } from './store/page';
 import { templateCovnForProps } from './tools/template';
 
@@ -174,6 +175,9 @@ export const components: Record<string, any> = {
   Tab,
   Tabbar,
   TabbarItem,
+
+  // pro
+  ProductsIndex,
 
   // store
   StorePage,

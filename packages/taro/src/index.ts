@@ -1,5 +1,6 @@
 export * from './adapter/adapter';
 export * from './adapter/background';
+export * from './adapter/dom';
 export * from './adapter/http';
 export * from './adapter/navigation-bar';
 export * from './adapter/route';
@@ -82,12 +83,15 @@ export * from './out/swiper';
 export * from './out/table';
 export * from './out/tag';
 
+export * from './pro/products-index';
+
 export * from './store/config';
 export * from './store/lang';
 export * from './store/page';
 export * from './store/search';
 
 export * from './tools/handle-click';
+export * from './tools/debounce';
 export * from './tools/template';
 
 export * from './components';
