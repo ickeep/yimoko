@@ -13,6 +13,7 @@ export type ActionSheetProps = TActionSheetProps & IOptionsAPIProps<keyof Action
   onChange?: (value: any, e?: ITouchEvent) => void;
   button?: ButtonProps
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 const defaultKeys = {
@@ -27,7 +28,10 @@ const defaultKeys = {
 };
 
 export const ActionSheet = (props: ActionSheetProps) => {
-  const { value, values, options, api, keys, splitter, valueType, onChange, onSelect, onCancel, button, children, itemURLPrefix, ...args } = props;
+  const {
+    value, values, options, api, keys, splitter, valueType,
+    onChange, onSelect, onCancel, button, children, itemURLPrefix, itemDefault, ...args
+  } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [show, setShow] = useState(false);
 
@@ -78,7 +82,7 @@ export const ActionSheet = (props: ActionSheetProps) => {
         }}
         onSelect={(e) => {
           const { detail } = e;
-          handleClick(detail, itemURLPrefix);
+          handleClick({ ...itemDefault, ...detail }, itemURLPrefix);
           close(e);
           onSelect?.(e);
         }}

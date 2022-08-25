@@ -28,26 +28,27 @@ export const cardDefaultKeys = {
 export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 export const Cardlist = observer((props: CardlistProps) => {
-  const { options, api, keys, splitter, skeleton, itemURLPrefix, ...args } = props;
+  const { options, api, keys, splitter, skeleton, itemURLPrefix, itemDefault, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...cardDefaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
   const scope = useExpressionScope();
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item, itemURLPrefix, i)} {...item} />
+      <TCard key={`d-${i}`} price="" onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)} {...item} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
       const props = templateCovnForProps(getItemPropsBySchema(item, 'Card', i), scope);
-      return <TCard key={`i-${i}`} price="" onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
+      return <TCard key={`i-${i}`} price="" onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data, itemURLPrefix, scope]);
+  }, [curItems, data, itemDefault, itemURLPrefix, scope]);
 
   return (
     <Skeleton {...skeleton} loading={loading}>

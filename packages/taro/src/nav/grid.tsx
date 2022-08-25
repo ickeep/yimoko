@@ -14,10 +14,11 @@ export type GridProps = TGridProps & IOptionsOutAPIProps & {
   image?: ImageProps
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 export const Grid = observer((props: GridProps) => {
-  const { className, options, api, keys, splitter, image, skeleton, itemURLPrefix, ...args } = props;
+  const { className, options, api, keys, splitter, image, skeleton, itemURLPrefix, itemDefault, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
   const curItems = useSchemaItems();
   const scope = useExpressionScope();
@@ -26,7 +27,7 @@ export const Grid = observer((props: GridProps) => {
     const dataChildren = data?.map?.((item, i) => {
       const { title, desc, img, url, click, routeType, ...args } = item;
       return (
-        <GridItem key={`d-${i}`} text={title} onClick={() => handleClick(item, itemURLPrefix, i)} {...args}  >
+        <GridItem key={`d-${i}`} text={title} onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)} {...args}  >
           {img && <Image fit="cover" height="100%" width="100%" {...image} src={img} />}
         </GridItem>
       );
@@ -34,11 +35,11 @@ export const Grid = observer((props: GridProps) => {
 
     const itemChildren = curItems.map?.((item, i) => {
       const props = templateCovnForProps(getItemPropsBySchema(item, 'GridItem', i), scope);
-      return <GridItem key={`i-${i}`} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
+      return <GridItem key={`i-${i}`} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data, image, itemURLPrefix, scope]);
+  }, [curItems, data, image, itemDefault, itemURLPrefix, scope]);
 
   return (
     <Skeleton {...skeleton} loading={loading}>

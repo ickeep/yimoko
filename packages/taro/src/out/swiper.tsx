@@ -20,11 +20,12 @@ export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   titleStyle?: React.CSSProperties
   descStyle?: React.CSSProperties
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 export const Swiper = observer((props: SwiperProps) => {
   const {
-    className, options, api, keys, splitter, value, children, style, itemURLPrefix,
+    className, options, api, keys, splitter, value, children, style, itemURLPrefix, itemDefault,
     height = '160rpx', itemStyle, image, textStyle, titleStyle, descStyle, ...args
   } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultOutOptionsKeys, ...keys }, splitter);
@@ -35,7 +36,7 @@ export const Swiper = observer((props: SwiperProps) => {
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map?.((item, i) => (
-      <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick(item, itemURLPrefix, i)}>
+      <SwiperItem key={`data-${i}`} style={curItemStyle} onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)}>
         <Image width="100%" height={height} fit="cover" {...image} src={item.img} />
         <View className='c-text' style={textStyle}>
           {item.title && <Text style={titleStyle}>{item.title}</Text>}
@@ -46,11 +47,11 @@ export const Swiper = observer((props: SwiperProps) => {
 
     const itemChildren = curItems.map?.((item, i) => {
       const props = templateCovnForProps(getItemPropsBySchema(item, 'SwiperItem', i), scope);
-      return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
+      return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick({ ...itemDefault, props }, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItemStyle, curItems, data, descStyle, height, image, itemURLPrefix, scope, textStyle, titleStyle]);
+  }, [curItemStyle, curItems, data, descStyle, height, image, itemDefault, itemURLPrefix, scope, textStyle, titleStyle]);
 
   return (
     <Skeleton loading={loading}>

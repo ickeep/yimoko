@@ -11,6 +11,7 @@ import { sidebarDefaultKeys } from '../nav/sidebar';
 import { cardDefaultKeys } from '../out/card';
 import { ResponseError } from '../out/response-error';
 import { debounce } from '../tools/debounce';
+import { handleClick } from '../tools/handle-click';
 
 const defaultKeys = {
   ...sidebarDefaultKeys,
@@ -36,6 +37,8 @@ export interface ProductsIndexProps extends ScrollViewProps {
   }
   keys?: Partial<typeof defaultKeys>
   productsKeys?: Partial<typeof productsDefaultKeys>
+  itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 }
 
 export const ProductsIndex = observer((props: ProductsIndexProps) => {
@@ -96,7 +99,7 @@ const dfScrollConf = {
 };
 
 const ProductsIndexContent = observer((props: ProductsIndexContentProps) => {
-  const { data, locateSidebarDiffTop = 60, scrollConf, ...args } = props;
+  const { data, locateSidebarDiffTop = 60, scrollConf, itemURLPrefix, itemDefault, ...args } = props;
   const [id] = useState(() => `c-${Math.random()}`.replace('.', ''));
   const [scrollClient, setScrollClient] = useState<Partial<Taro.IntersectionObserver.IntersectionRectResult>>({});
   const [barValue, setBarValue] = useState(0);
@@ -108,9 +111,14 @@ const ProductsIndexContent = observer((props: ProductsIndexContentProps) => {
 
   const curCards = useMemo(
     () => data?.map(item => item.products?.map((p: Record<string, any>, i) => (
-      <Card key={p?.id ?? i} price="" {...p} id={getCardItemID(item.id, p.id)} />
+      <Card
+        key={p?.id ?? i}
+        price="" {...p}
+        id={getCardItemID(item.id, p.id)}
+        onClick={() => handleClick({ ...itemDefault, ...p }, itemURLPrefix, i)}
+      />
     ))),
-    [data, getCardItemID],
+    [data, getCardItemID, itemDefault, itemURLPrefix],
   );
 
   useEffect(() => {

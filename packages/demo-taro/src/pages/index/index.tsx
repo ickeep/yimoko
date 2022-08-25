@@ -23,6 +23,8 @@ const IndexPage = observer(() => {
           type: 'void',
           'x-component': 'ProductsIndex',
           'x-component-props': {
+            itemURLPrefix: '/pages/product/detail',
+            itemDefault: { url: '?id=<%=id%>' },
             store: {
               isRunNow: true,
               api: { url: '/options/products-index.json' },

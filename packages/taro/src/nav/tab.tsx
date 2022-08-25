@@ -30,10 +30,11 @@ export type TabsProps = Omit<TTabsProps, 'active' | 'onChange'> & IOptionsAPIPro
   dataSource?: Record<string, any>
   onChange?: (value: any, e?: ITouchEvent) => void;
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 export const Tabs = (props: TabsProps) => {
-  const { value, options, api, keys, splitter, onChange, children, dataSource, itemURLPrefix, ...args } = props;
+  const { value, options, api, keys, splitter, onChange, children, dataSource, itemURLPrefix, itemDefault, ...args } = props;
   const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<TabsProps['value']>();
   const curItems = useSchemaItems();
@@ -45,7 +46,10 @@ export const Tabs = (props: TabsProps) => {
     () => {
       const dataChildren = data?.map((item, i) => {
         const name = item.name ?? `d-${i}`;
-        return <Tab key={name} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} name={name} model={{ values: dataSource?.[name] }} />;
+        return <Tab key={name}
+          onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)} {...item}
+          name={name}
+          model={{ values: dataSource?.[name] }} />;
       });
 
       const cLen = dataChildren.length;
@@ -54,12 +58,17 @@ export const Tabs = (props: TabsProps) => {
         const name = props?.name ?? `i-${cLen + i}`;
 
         return (
-          <Tab key={name} name={name} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} model={{ values: dataSource?.[name] }} />
+          <Tab
+            key={name}
+            name={name}
+            onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)}
+            {...props}
+            model={{ values: dataSource?.[name] }} />
         );
       });
       return [...dataChildren, ...itemChildren];
     },
-    [curItems, data, dataSource, itemURLPrefix, scope],
+    [curItems, data, dataSource, itemDefault, itemURLPrefix, scope],
   );
 
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);

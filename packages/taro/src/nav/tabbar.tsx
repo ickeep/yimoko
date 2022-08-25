@@ -50,10 +50,11 @@ export type TabbarProps = Omit<TTabbarProps, 'active' | 'onChange'> & IOptionsAP
   value?: string | number,
   onChange?: (value: string | number) => void;
   itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 export const Tabbar = (props: TabbarProps) => {
-  const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, ...args } = props;
+  const { value, options, api, keys, splitter, onChange, children, itemURLPrefix, itemDefault, ...args } = props;
   const [data] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [val, setVal] = useState<TabbarProps['value']>();
   const curItems = useSchemaItems();
@@ -65,17 +66,17 @@ export const Tabbar = (props: TabbarProps) => {
     () => {
       const dataChildren = data?.map((item, i) => {
         const name = item.name ?? `d-${i}`;
-        return <TabbarItem key={name} onClick={() => handleClick(item, itemURLPrefix, i)} {...item} name={name} />;
+        return <TabbarItem key={name} onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)} {...item} name={name} />;
       });
 
       const itemChildren = curItems.map?.((item, i) => {
         const props = templateCovnForProps(getItemPropsBySchema(item, 'TabbarItem', i), scope);
         const name = props?.name ?? `i-${i}`;
-        return <TabbarItem key={name} name={name} onClick={() => handleClick(props, itemURLPrefix, i)} {...props} />;
+        return <TabbarItem key={name} name={name} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
       });
       return [...dataChildren, ...itemChildren];
     },
-    [curItems, data, itemURLPrefix, scope],
+    [curItems, data, itemDefault, itemURLPrefix, scope],
   );
 
   const curValue = useMemo(() => (!isControlled ? val : value) ?? 0, [isControlled, val, value]);
