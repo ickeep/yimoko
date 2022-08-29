@@ -6,7 +6,7 @@ import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema }
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export interface TabbarItemProps extends TTabbarItemProps {
   img?: string
@@ -70,7 +70,7 @@ export const Tabbar = (props: TabbarProps) => {
       });
 
       const itemChildren = curItems.map?.((item, i) => {
-        const props = templateCovnForProps(getItemPropsBySchema(item, 'TabbarItem', i), scope);
+        const props = templateConvertForProps(getItemPropsBySchema(item, 'TabbarItem', i), scope);
         const name = props?.name ?? `i-${i}`;
         return <TabbarItem key={name} name={name} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
       });

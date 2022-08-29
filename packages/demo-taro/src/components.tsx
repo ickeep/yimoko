@@ -1,6 +1,6 @@
 import { observer } from '@formily/react';
 import { JSONStringify } from '@yimoko/store';
-import { covnPropsComponents } from '@yimoko/taro';
+import { convertPropsComponents } from '@yimoko/taro';
 
 export const Test = observer((props: any) => {
   const { value, children } = props;
@@ -15,7 +15,7 @@ export const Test = observer((props: any) => {
 
 
 export const componentsMap = {
-  ...covnPropsComponents,
+  ...convertPropsComponents,
   Test,
 };
 

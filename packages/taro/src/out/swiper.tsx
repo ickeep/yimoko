@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 
 import { Text } from '../base/text';
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   value?: any;
@@ -46,7 +46,7 @@ export const Swiper = observer((props: SwiperProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'SwiperItem', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'SwiperItem', i), scope);
       return <SwiperItem key={`i-${i}`} style={curItemStyle} onClick={() => handleClick({ ...itemDefault, props }, itemURLPrefix, i)} {...props} />;
     });
 

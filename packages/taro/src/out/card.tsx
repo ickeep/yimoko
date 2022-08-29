@@ -6,7 +6,7 @@ import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems }
 import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export const Card = TCard;
 
@@ -25,13 +25,13 @@ export const cardDefaultKeys = {
   currency: 'currency',
 };
 
-export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
+export type CardListProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
   itemDefault?: Record<string, any>
 };
 
-export const Cardlist = observer((props: CardlistProps) => {
+export const CardList = observer((props: CardListProps) => {
   const { options, api, keys, splitter, skeleton, itemURLPrefix, itemDefault, ...args } = props;
   const [data, loading] = useAPIOptions(options, api, { ...cardDefaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
@@ -43,7 +43,7 @@ export const Cardlist = observer((props: CardlistProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'Card', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Card', i), scope);
       return <TCard key={`i-${i}`} price="" onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 

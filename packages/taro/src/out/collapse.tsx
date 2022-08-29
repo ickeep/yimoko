@@ -7,7 +7,7 @@ import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems }
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export type CollapseProps = TCollapseProps & IOptionsAPIProps<keyof CollapseItemProps | 'desc' | 'url' | 'click' | 'value'> & {
   onChange?: (value: any, e?: ITouchEvent) => void;
@@ -49,7 +49,7 @@ export const Collapse = (props: CollapseProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'CollapseItem', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'CollapseItem', i), scope);
       return <CollapseItem key={`i-${i}`} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 

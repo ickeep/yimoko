@@ -1,4 +1,4 @@
-import { isTemplate, template, templateCovnForProps } from './template';
+import { isTemplate, template, templateConvertForProps } from './template';
 
 describe('template', () => {
   test('isTemplate', () => {
@@ -25,8 +25,8 @@ describe('template', () => {
     expect(template('<%=user.err%> name:<%=user.xxx.xxx%>', () => '')).toBe(' name:');
   });
 
-  test('templateCovnForProps', () => {
-    expect(templateCovnForProps({ name: '<%= name %>' }, { name: 'keep' })).toEqual({ name: 'keep' });
-    expect(templateCovnForProps({})).toEqual({});
+  test('templateConvertForProps', () => {
+    expect(templateConvertForProps({ name: '<%= name %>' }, { name: 'keep' })).toEqual({ name: 'keep' });
+    expect(templateConvertForProps({})).toEqual({});
   });
 });

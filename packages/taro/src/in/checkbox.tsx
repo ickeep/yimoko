@@ -6,7 +6,7 @@ import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export interface CheckboxProps extends Omit<TCheckboxProps, 'onChange' | 'value'> {
   onChange?: (value: any, event: ITouchEvent) => void
@@ -72,7 +72,7 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'Checkbox', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Checkbox', i), scope);
       return <TCheckbox shape="square" key={`i-${i}`} {...props} />;
     });
 

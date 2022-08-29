@@ -19,15 +19,15 @@ const IndexPage = observer(() => {
     schema: {
       type: 'object',
       properties: {
-        productx: {
+        article: {
           type: 'void',
-          'x-component': 'ProductsIndex',
+          'x-component': 'StoreScrollView',
           'x-component-props': {
-            itemURLPrefix: '/pages/product/detail',
+            itemURLPrefix: '/pages/article/detail',
             itemDefault: { url: '?id=<%=id%>' },
             store: {
-              isRunNow: true,
-              api: { url: '/options/products-index.json' },
+              // isRunNow: true,
+              api: { url: '/options/article-list.json' },
             },
           },
         },
@@ -35,10 +35,10 @@ const IndexPage = observer(() => {
     },
   };
 
-  // console.log(JSON.stringify(props));
+  console.log(JSON.stringify(props));
 
   return (
-    <Page style={{ height: '100%', paddingTop: 200 }}>
+    <Page style={{ height: '100%', paddingTop: 0 }}>
       <StorePage {...props} />
     </Page>
   );

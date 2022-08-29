@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export type CellGroupProps = TCellGroupProps & IOptionsOutAPIProps & {
   image?: ImageProps
@@ -35,7 +35,7 @@ export const CellGroup = observer((props: CellGroupProps) => {
     });
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'Cell', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Cell', i), scope);
       return <TCell key={`i-${i}`} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 

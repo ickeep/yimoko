@@ -46,11 +46,11 @@ export const useStoreSearch = (store: IStore, search: string | Partial<Record<st
           !isEqual(val, values[key]) && (newValues[key] = val);
         });
       }
-      const isEmpaty = judgeIsEmpty(newValues);
-      !isEmpaty && setValues(newValues);
+      const isEmpty = judgeIsEmpty(newValues);
+      !isEmpty && setValues(newValues);
       // 列表页 search 参数变化，则重新请求数据
-      const heandleRun = () => {
-        if (store instanceof ListStore && getIsRun(isEmpaty)) {
+      const handleRun = () => {
+        if (store instanceof ListStore && getIsRun(isEmpty)) {
           if (form) {
             form.submit().then(() => runAPI());
           } else {
@@ -58,7 +58,7 @@ export const useStoreSearch = (store: IStore, search: string | Partial<Record<st
           }
         }
       };
-      heandleRun();
+      handleRun();
     }
   }, [form, getIsRun, search, store]);
 };

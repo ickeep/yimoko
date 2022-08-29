@@ -6,7 +6,7 @@ import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export const Radio = TRadio;
 
@@ -27,7 +27,7 @@ export const RadioGroup = observer((props: RadioGroupProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'Radio', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Radio', i), scope);
       return <TRadio key={`i-${i}`} {...props} />;
     });
 

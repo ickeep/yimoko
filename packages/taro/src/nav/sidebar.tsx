@@ -6,7 +6,7 @@ import { getItemPropsBySchema, IOptionsAPIProps, judgeIsEmpty, useAPIOptions, us
 import { ReactNode, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export const sidebarDefaultKeys = {
   dot: 'dot',
@@ -39,7 +39,7 @@ export const Sidebar = (props: SidebarProps) => {
   )), [data, itemDefault, itemURLPrefix]);
 
   const itemChildren = useMemo(() => curItems.map?.((item, i) => {
-    const props = templateCovnForProps(getItemPropsBySchema(item, 'SidebarItem', i), scope);
+    const props = templateConvertForProps(getItemPropsBySchema(item, 'SidebarItem', i), scope);
     return <SidebarItem
       key={`i-${i}`}
       onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)}

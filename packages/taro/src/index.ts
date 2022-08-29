@@ -88,6 +88,7 @@ export * from './pro/products-index';
 export * from './store/config';
 export * from './store/lang';
 export * from './store/page';
+export * from './store/scroll-view';
 export * from './store/search';
 
 export * from './tools/handle-click';

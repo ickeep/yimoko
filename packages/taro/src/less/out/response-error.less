@@ -3,6 +3,18 @@
 .y-err {
   .theme(padding, '@padding-lg');
 
+  .y-err-loading {
+    display: block;
+
+    .van-loading__spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 99;
+    }
+  }
+
   .y-err-img {
     display: block;
     margin: auto;
@@ -16,7 +28,7 @@
     .theme(padding, '@padding-md 0');
   }
 
-  .y-err-btns {
+  .y-err-buttons {
     display: flex;
     justify-content: space-between;
   }

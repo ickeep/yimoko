@@ -5,7 +5,7 @@ import { observer, useExpressionScope, useField, useForm } from '@formily/react'
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 const defaultKeys = {
   value: 'value',
@@ -48,7 +48,7 @@ export const DropdownMenu = observer((props: DropdownMenuProps & { values: Recor
   }, [field]);
 
   const curChildren = useMemo(() => curItems.map?.((item, i) => {
-    const props = templateCovnForProps(getItemPropsBySchema(item, 'DropdownItem', i), scope);
+    const props = templateConvertForProps(getItemPropsBySchema(item, 'DropdownItem', i), scope);
     const { name, type } = item;
     if (type !== 'void' && name && valueField) {
       const { value, path } = valueField;

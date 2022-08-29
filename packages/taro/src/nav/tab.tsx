@@ -6,7 +6,7 @@ import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema, 
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export const Tab = withItemSchema(TTab);
 
@@ -54,7 +54,7 @@ export const Tabs = (props: TabsProps) => {
 
       const cLen = dataChildren.length;
       const itemChildren = curItems.map?.((item, i) => {
-        const props = templateCovnForProps(getItemPropsBySchema(item, 'Tab', i), scope);
+        const props = templateConvertForProps(getItemPropsBySchema(item, 'Tab', i), scope);
         const name = props?.name ?? `i-${cLen + i}`;
 
         return (

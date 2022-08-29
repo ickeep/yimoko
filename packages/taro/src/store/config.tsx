@@ -31,6 +31,6 @@ export const useConfig = (keys?: IKey | Array<IKey>) => useMemo(
   [configStore.config],
 );
 
-export const useConfigItme = (key: IKey) => useMemo(() => configStore.getConfigItem(key), [key]);
+export const useConfigItem = (key: IKey) => useMemo(() => configStore.getConfigItem(key), [key]);
 
 export const getIsTabURL = (path: string) => configStore.config.tabURL.includes(path);

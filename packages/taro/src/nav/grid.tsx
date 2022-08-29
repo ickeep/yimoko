@@ -8,7 +8,7 @@ import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, judgeIsEmpty
 import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
-import { templateCovnForProps } from '../tools/template';
+import { templateConvertForProps } from '../tools/template';
 
 export type GridProps = TGridProps & IOptionsOutAPIProps & {
   image?: ImageProps
@@ -34,7 +34,7 @@ export const Grid = observer((props: GridProps) => {
     });
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = templateCovnForProps(getItemPropsBySchema(item, 'GridItem', i), scope);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'GridItem', i), scope);
       return <GridItem key={`i-${i}`} onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 
