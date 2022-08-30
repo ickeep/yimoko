@@ -13,10 +13,11 @@ export interface SchemaPageProps<T extends object = Record<string, any>> {
   components?: SchemaReactComponents;
   scope?: any;
   schema?: ISchema
+  children?: React.ReactNode
 }
 
 export function SchemaPage<T extends object = Record<string, any>>(props: SchemaPageProps<T>) {
-  const { model, options, components, scope, schema } = props;
+  const { model, options, components, scope, schema, children } = props;
   const curModel = useMemo(() => (model ? model : createForm(options)), [model, options]);
   const curComponents = useSchemaComponents(components);
   const SchemaField = useSchemaField(curComponents, scope);
@@ -35,6 +36,7 @@ export function SchemaPage<T extends object = Record<string, any>>(props: Schema
     <SchemaFieldProvider value={SchemaField}>
       <SchemaBox model={curModel} >
         <SchemaField schema={curSchema} />
+        {children}
       </SchemaBox>
     </SchemaFieldProvider>
   );

@@ -21,6 +21,7 @@
     "dev": "VITE_LIB=web VITE_WATCH=true  vite build -c ../../vite.config.ts"
   },
   "devDependencies": {
+    "@formily/antd": "^2.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.3.0",

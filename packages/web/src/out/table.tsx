@@ -11,7 +11,7 @@ export interface TableDisplayProps<T extends object = Record<string, any>> exten
 function TableDisplayBase<T extends object = Record<string, any>>(props: TableDisplayProps<T>) {
   const { value, columns, dataSource, ...args } = props;
   const schema = useFieldSchema();
-  const scope = useExpressionScope();
+  const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
   const curColumns = useMemo(() => (columns ? columns : getColumnsForSchema(schema, curStore)), [columns, curStore, schema]);
   const curDataSource = useMemo(() => {

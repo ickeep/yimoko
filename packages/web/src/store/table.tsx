@@ -20,7 +20,7 @@ export type StoreTableProps<T extends object = Record<string, any>> = Omit<Table
 
 function StoreTableBase<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
   const { store, isControlled = true, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
-  const scope = useExpressionScope();
+  const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
   const curUseStore = store ?? curStore as ListStore<any, any>;
 

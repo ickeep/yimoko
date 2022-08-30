@@ -54,7 +54,7 @@ export const Table = (props: TableProps) => {
 const RenderTable = (props: ITableProps) => {
   const { columns, ...args } = props;
   const curItems = useSchemaItems();
-  const scope = useExpressionScope();
+  const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
 
   const curColumns = useMemo(() => {
