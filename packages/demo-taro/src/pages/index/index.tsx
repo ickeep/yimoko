@@ -29,13 +29,20 @@ const IndexPage = observer(() => {
               // isRunNow: true,
               api: { url: '/options/article-list.json' },
             },
+
+          },
+          items: {
+            type: 'void',
+            properties: {
+              img: { type: 'string', 'x-component': 'Image', 'x-component-props': { mode: 'widthFix', style: { width: '100%' } } },
+            },
           },
         },
       },
     },
   };
 
-  console.log(JSON.stringify(props));
+  // console.log(JSON.stringify(props));
 
   return (
     <Page style={{ height: '100%', paddingTop: 0 }}>

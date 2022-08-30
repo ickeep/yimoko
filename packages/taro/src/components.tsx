@@ -70,7 +70,7 @@ import { Table } from './out/table';
 import { Tag } from './out/tag';
 import { ProductsIndex } from './pro/products-index';
 import { StorePage } from './store/page';
-import { StoreScrollView } from './store/scroll-view';
+import { RenderDataItems, StoreScrollView } from './store/scroll-view';
 import { templateConvertForProps } from './tools/template';
 
 
@@ -183,6 +183,8 @@ export const components: Record<string, any> = {
   // store
   StorePage,
   StoreScrollView,
+
+  RenderDataItems,
 };
 
 // hoc 转换组件 props 使其支持 模版
