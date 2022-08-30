@@ -1,7 +1,7 @@
 
 export type ISize = 'mini' | 'small' | 'normal' | 'large';
 
-export type Ilayout = 'vertical' | 'horizontal';
+export type ILayout = 'vertical' | 'horizontal';
 
 export type IStatus = 'info' | 'success' | 'error' | 'warning' | 'loading';
 

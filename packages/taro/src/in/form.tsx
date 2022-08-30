@@ -32,10 +32,10 @@ export const Form = observer((props: FormProps) => {
       form?.submit(() => {
         curStore?.runAPI().then((res) => {
           if (judgeIsSuccess(res)) {
-            successNnotify(notifyOnSuccess, res);
+            successNotify(notifyOnSuccess, res);
             runOnSuccess && runRule(runOnSuccess, curStore, scope);
           } else {
-            failNnotify(notifyOnFail, res);
+            failNotify(notifyOnFail, res);
             runOnFail && runRule(runOnFail, curStore, scope);
           }
         });
@@ -61,7 +61,7 @@ const runRule = (runConf: IRunRule | IRunFn, store: IStore, scope?: Record<strin
   return;
 };
 
-const successNnotify = (notifyOnSuccess?: true | string, res?: Partial<IHTTPResponse>) => {
+const successNotify = (notifyOnSuccess?: true | string, res?: Partial<IHTTPResponse>) => {
   if (!notifyOnSuccess || !res) {
     return null;
   }
@@ -70,7 +70,7 @@ const successNnotify = (notifyOnSuccess?: true | string, res?: Partial<IHTTPResp
   return showToast({ title, icon: 'success' });
 };
 
-const failNnotify = (notifyOnFail?: true | string, res?: Partial<IHTTPResponse>) => {
+const failNotify = (notifyOnFail?: true | string, res?: Partial<IHTTPResponse>) => {
   if (!notifyOnFail || !res) {
     return null;
   }

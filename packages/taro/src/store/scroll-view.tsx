@@ -52,7 +52,6 @@ export const StoreScrollView = observer((props: StoreScrollViewProps) => {
 const RenderItems = (props: { data: any[] }) => {
   const { data } = props;
   const isOut = useIsOut();
-  const curItems = useSchemaItems();
   const model = useMemo(() => (isOut ? createForm({ values: { data } }) : undefined), [data, isOut]);
   const SchemaField = useSchemaField();
   const fieldSchema = useFieldSchema();

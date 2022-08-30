@@ -21,7 +21,7 @@ export const IndexBar = (props: IndexBarProps) => {
 
   const curItems = useSchemaItems();
 
-  const curindexList = useMemo(() => {
+  const curIndexList = useMemo(() => {
     const arr: any[] = [];
     data.forEach(item => arr.push(item.index));
     indexList && arr.push(...indexList);
@@ -30,7 +30,7 @@ export const IndexBar = (props: IndexBarProps) => {
 
   return (
     <Skeleton {...skeleton} loading={loading} >
-      <TIndexBar sticky  {...args} indexList={curindexList}>
+      <TIndexBar sticky  {...args} indexList={curIndexList}>
         {data?.map((item, i) => <Block key={i}>
           <IndexAnchor index={item.index} />
           {item.child?.map?.((c: any, i: number) => (typeof c === 'string' ? <Cell key={i} title={c} /> : <Cell key={i} {...c} />))}

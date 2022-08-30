@@ -74,9 +74,9 @@ export const Uploader = observer((props: UploaderProps) => {
       fileList={fileList}
       onAfterRead={(e) => {
         const { file } = e.detail;
-        const fiels = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
-        setFileList([...fileList, ...fiels]);
-        fiels.forEach((item) => {
+        const files = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
+        setFileList([...fileList, ...files]);
+        files.forEach((item) => {
           // eslint-disable-next-line complexity
           curUpload(item.url).then((res) => {
             // 取最新值

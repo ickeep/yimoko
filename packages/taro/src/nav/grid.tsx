@@ -43,7 +43,7 @@ export const Grid = observer((props: GridProps) => {
 
   return (
     <Skeleton {...skeleton} loading={loading}>
-      {/* Grid 组件 childern 不支持 空 */}
+      {/* Grid 组件 children 不支持 空 */}
       {!judgeIsEmpty(curChildren) && <TGrid {...args} >{curChildren}</TGrid>}
     </Skeleton>
   );
