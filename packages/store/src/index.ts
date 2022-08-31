@@ -1,3 +1,4 @@
+export * from './components/data-items';
 export * from './components/redirect-list-data';
 export * from './components/redirect-values';
 export * from './components/render-value';

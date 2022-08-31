@@ -5,6 +5,8 @@ import {
   PageContainer, ScrollView, ShareElement, SwiperItem, View, VoipRoom,
 } from '@tarojs/components';
 
+import { DataItems } from '@yimoko/store';
+
 import { Button } from './base/button';
 import { Camera } from './base/camera';
 import { Cell, CellGroup } from './base/cell';
@@ -70,11 +72,14 @@ import { Table } from './out/table';
 import { Tag } from './out/tag';
 import { ProductsIndex } from './pro/products-index';
 import { StorePage } from './store/page';
-import { RenderDataItems, StoreScrollView } from './store/scroll-view';
+import { StoreScrollView } from './store/scroll-view';
 import { templateConvertForProps } from './tools/template';
 
 
 export const components: Record<string, any> = {
+  // store 组件
+  DataItems,
+
   // 无需适配
   View,
   ScrollView,
@@ -184,7 +189,6 @@ export const components: Record<string, any> = {
   StorePage,
   StoreScrollView,
 
-  RenderDataItems,
 };
 
 // hoc 转换组件 props 使其支持 模版
