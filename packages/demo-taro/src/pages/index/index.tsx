@@ -9,32 +9,38 @@ const IndexPage = observer(() => {
 
   const props: StorePageProps<object, unknown> = {
     store: {
-      api: { method: 'POST', url: '/api/test' },
-      defaultValues: {
-        phone: '122',
-        code: '',
-      },
+      type: 'list',
+      api: { url: '/options/article-list.json' },
+      defaultValues: {},
     },
     options: {},
     schema: {
       type: 'object',
       properties: {
+        // test: {
+        //   type: 'string',
+        //   'x-component': 'Test',
+        // },
         article: {
           type: 'void',
           'x-component': 'StoreScrollView',
           'x-component-props': {
             itemURLPrefix: '/pages/article/detail',
             itemDefault: { url: '?id=<%=id%>' },
-            store: {
-              // isRunNow: true,
-              api: { url: '/options/article-list.json' },
-            },
-
           },
+          // properties: {
+          //   xxx: {
+          //     type: 'void',
+          //     'x-component': 'CardList',
+          //     'x-component-props': {
+          //       options: '<%=curStore.listData%>',
+          //     },
+          //   },
+          // },
           items: {
             type: 'void',
             properties: {
-              img: { type: 'string', 'x-component': 'Image', 'x-component-props': { mode: 'widthFix', style: { width: '100%' } } },
+              img: { type: 'string', 'x-component': 'Image', 'x-component-props': { fit: 'cover', style: { width: '100%', height: '300rpx' } } },
             },
           },
         },

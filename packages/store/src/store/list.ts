@@ -1,7 +1,11 @@
 import { observable, action } from '@formily/reactive';
 import { Key } from 'react';
 
-import { BaseStore, IBaseStoreConfig, IStoreValues } from './base';
+import { judgeIsSuccess } from '../tools/api';
+import { judgeIsEmpty } from '../tools/tool';
+
+import { BaseStore, IBaseStoreConfig, IStoreResponse, IStoreValues } from './base';
+import { runStoreAPI } from './utils/api';
 
 export const defaultKeysConfig: Record<string, string> = {
   sortOrder: 'sortOrder',
@@ -15,6 +19,9 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   selectedRowKeys: Key[] = [];
   keysConfig: Record<string, string> = {};
   queryRoutingType: 'push' | 'replace' = 'push';
+
+  moreLoading = false;
+  moreResponse: IStoreResponse<R, V> = {};
 
   constructor(config: IListStoreConfig<V, R>) {
     const { keysConfig = {}, defaultValues, queryRoutingType, ...args } = config;
@@ -31,10 +38,17 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
       defineConfig: {
         selectedRowKeys: observable,
         queryRoutingType: observable,
+        moreLoading: observable,
+        moreResponse: observable,
 
         listData: computed,
+        isNoMore: computed,
 
         setSelectedRowKeys: action,
+        setMoreLoading: action,
+        setMoreResponse: action,
+        loadData: action,
+        loadMore: action,
       },
     });
     queryRoutingType && (this.queryRoutingType = queryRoutingType);
@@ -51,6 +65,53 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
       return data;
     }
     return Array.isArray(data?.data) ? data.data : [];
+  }
+
+  setMoreLoading = (loading: boolean) => this.moreLoading = loading;
+
+  setMoreResponse = (data: IStoreResponse<R, V>) => this.moreResponse = data;
+
+  loadData = (data: any[]) => {
+    if (!judgeIsEmpty(data) && Array.isArray(data)) {
+      const newResponse = { ...this.response } as any;
+      if (Array.isArray(newResponse.data)) {
+        newResponse.data = [...newResponse.data, ...data];
+      } else if (Array.isArray(newResponse.data?.data)) {
+        newResponse.data.data = [...newResponse.data.data, ...data];
+      }
+      this.setResponse(newResponse);
+    }
+  };
+
+  // 加载更多
+  loadMore = async () => {
+    if (!this.moreLoading && !this.isNoMore) {
+      this.setMoreLoading(true);
+      const { page } = this.keysConfig;
+      this.setValuesByField(page, this.values[page] + 1);
+      const { api } = this;
+      const params = this.getAPIParams();
+      const response = await runStoreAPI(api, this.apiExecutor, params);
+      this.setMoreLoading(false);
+      response && this.setMoreResponse(response);
+      if (judgeIsSuccess(response)) {
+        const data = response?.data.data;
+        this.loadData(data);
+      } else {
+        this.setValuesByField(page, this.values[page] - 1);
+      }
+      return response;
+    };
+  };
+
+  get isNoMore() {
+    const { total, page, pageSize } = this.keysConfig;
+    const data = this.response?.data as any;
+    if (!data) {
+      return true;
+    }
+    const totalNum = data[total] ?? 0;
+    return totalNum <= data[page] * data[pageSize];
   }
 }
 

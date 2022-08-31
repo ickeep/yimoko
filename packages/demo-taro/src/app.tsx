@@ -8,7 +8,7 @@ import { httpRequest, configStore, useAppConfig } from '@yimoko/taro';
 import './app.less';
 import { componentsMap } from './components';
 
-const SchemaField = createSchemaField({ components: componentsMap });
+const SchemaField = createSchemaField({ components: componentsMap, scope: { configStore } });
 
 // 请求处理
 // todo 登录拦截、重放逻辑

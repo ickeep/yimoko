@@ -23,11 +23,11 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
   const curScope = useMemo(() => ({ ...scope, curStore, rootStore, configStore }), [configStore, curStore, rootStore, scope]);
 
   return (
-    <SchemaBox model={model} >
+    <>
       <SchemaPage model={model} scope={curScope}  {...args} />
       <StoreDict store={curStore} />
       <StoreSearch store={curStore} />
-    </SchemaBox>
+    </>
   );
 }
 
