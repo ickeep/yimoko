@@ -23,5 +23,5 @@ export const useSchemaField = <Components extends SchemaReactComponents = any>(c
       return df;
     }
     return createSchemaField({ components: { ...dfComponents, ...components }, scope: { ...oldScope, ...scope } });
-  }, [dfComponents, oldScope, components, scope]);
+  }, [components, scope]);
 };
