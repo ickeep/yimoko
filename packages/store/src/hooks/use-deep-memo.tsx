@@ -7,9 +7,6 @@ export const useDeepMemo: typeof useMemo = (factory, deps) => {
   const ref = useRef<DependencyList>();
   const signalRef = useRef<number>(0);
 
-  console.log('deps', deps);
-
-
   if (deps === undefined || deps === null || !isEqual(deps, ref.current)) {
     ref.current = deps;
     signalRef.current = changeNumInRange(signalRef.current);
