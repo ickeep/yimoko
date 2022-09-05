@@ -19,72 +19,97 @@ const store = new ListStore<any, any>({
   // isBindSearch: false,
 });
 
-export const StorePageList = observer(() => (
-  <StorePage store={store} >
-    <StoreForm store={store}>
-      <Submit>查询</Submit>
-    </StoreForm>
-    <StorePageContent store={store} >
-      <StoreTable store={store} columns={[{ dataIndex: 'id', title: 'id' }]} />
-    </StorePageContent>
-  </StorePage>
-));
-
 // export const StorePageList = observer(() => (
-//   <StorePage
-//     store={store}
-//     options={{ validateFirst: true }}
-//     schema={{
-//       type: 'object',
-//       definitions: {},
-//       properties: {
-//         title: { type: 'void', 'x-component': 'Title', 'x-component-props': { children: '列表页' } },
-//         form: {
-//           type: 'void', 'x-component': 'StoreForm',
-//           'x-component-props': { fields: ['type', { field: 'name', title: 'xxx' }] },
-//           properties: {
-//             // type: { $ref: '#/definitions/type' },
-//             // name: { $ref: '#/definitions/name' },
-//             btns: {
-//               type: 'void', 'x-component': 'Space',
-//               properties: {
-//                 submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
-//                 reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
-//               },
-//             },
-//           },
-//         },
-//         content: {
-//           type: 'void',
-//           'x-component': 'StorePageContent',
-//           'x-component-props': {
-//           },
-//           properties: {
-//             table: {
-//               type: 'void',
-//               'x-component': 'StoreTable', 'x-decorator': 'RedirectListData', 'x-component-props': { rowSelection: { fixed: true } },
-//               properties: {
-//                 id: { 'x-component': 'Test', 'x-decorator-props': { sorter: true } },
-//                 name: {},
-//                 name2: {
-//                   $ref: '#/definitions/name',
-//                   type: 'void', 'x-component': 'Space',
-//                   'x-decorator-props': { sorter: true, filterMultiple: true },
-//                   properties: {
-//                     name: {
-//                       type: 'string', 'x-component': 'Link',
-//                       'x-component-props': { href: 'https://www.baidu.com', copyable: true },
-//                       // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
-//                     },
-//                   },
-//                 },
-//                 type: { 'x-decorator-props': { filterMultiple: false } },
-//               },
-//             },
-//           },
-//         },
-
-//       },
-//     }}
-//   />
+//   <StorePage store={store} >
+//     <StoreForm store={store}>
+//       <Submit>查询</Submit>
+//     </StoreForm>
+//     <StorePageContent store={store} >
+//       <StoreTable store={store} columns={[
+//         { dataIndex: 'id', title: 'id l', fixed: 'left' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id' },
+//         { dataIndex: 'id', title: 'id r', fixed: 'right' },
+//       ]} />
+//     </StorePageContent>
+//   </StorePage>
 // ));
+
+export const StorePageList = observer(() => (
+  <StorePage
+    store={store}
+    options={{ validateFirst: true }}
+    schema={{
+      type: 'object',
+      definitions: {},
+      properties: {
+        title: { type: 'void', 'x-component': 'Title', 'x-component-props': { children: '列表页' } },
+        form: {
+          type: 'void', 'x-component': 'StoreForm',
+          'x-component-props': { fields: ['type', { field: 'name', title: 'xxx' }] },
+          properties: {
+            // type: { $ref: '#/definitions/type' },
+            // name: { $ref: '#/definitions/name' },
+            btns: {
+              type: 'void', 'x-component': 'Space',
+              properties: {
+                submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
+                reset: { type: 'void', 'x-component': 'Reset', 'x-component-props': { children: '重置' } },
+              },
+            },
+          },
+        },
+        content: {
+          type: 'void',
+          'x-component': 'StorePageContent',
+          'x-component-props': {
+          },
+          properties: {
+            table: {
+              type: 'void',
+              'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
+              'x-component-props': { rowSelection: { fixed: true }, columns: ['name', { dataIndex: 'name' }] },
+              items: [{
+                type: 'string',
+                name: 'id',
+                title: 'ID',
+                'x-decorator-props': { sorter: true, width: 300 },
+              },
+              { name: 'name' },
+              {
+                $ref: '#/definitions/name',
+                type: 'void', 'x-component': 'Space',
+                'x-decorator-props': { sorter: true, filterMultiple: true, width: 600 },
+                properties: {
+                  name: {
+                    type: 'string', 'x-component': 'Link',
+                    'x-component-props': { href: 'https://www.baidu.com', copyable: true },
+                    // 'x-component-props': { children: '{{$record.name +"-"+ $index+$records[0].name}}' },
+                  },
+                },
+              },
+              { name: 'type', 'x-decorator-props': { filterMultiple: false } },
+              ],
+            },
+          },
+        },
+      },
+    }}
+  />
+));

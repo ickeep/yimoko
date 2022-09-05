@@ -117,7 +117,9 @@ const RenderMoreState = observer((props: Pick<StoreScrollViewProps, 'more'> & { 
         ? curMore.noMore
         : <>{moreLoading
           ? <Loading size='24px' >{curMore.loading}</Loading>
-          : <View onClick={loadMore}>
+          : <View onClick={() => {
+            loadMore();
+          }}>
             {!judgeIsEmpty(moreResponse) && !judgeIsSuccess(moreResponse) ? curMore.loadError : curMore.loadMore}
           </View>
         }</>

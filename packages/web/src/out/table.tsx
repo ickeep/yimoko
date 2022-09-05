@@ -1,48 +1,84 @@
-import { useFieldSchema, RecordScope, RecursionField, RecordsScope, observer, Schema, useExpressionScope } from '@formily/react';
-import { IStore } from '@yimoko/store';
+import { RecordScope, RecursionField, RecordsScope, observer, Schema, useExpressionScope } from '@formily/react';
+import { IStore, judgeIsEmpty, ListStore, useSchemaItems } from '@yimoko/store';
 import { Table, TableProps } from 'antd';
-import { ColumnType } from 'antd/lib/table';
+import { ColumnsType } from 'antd/lib/table';
 import { useMemo } from 'react';
 
-export interface TableDisplayProps<T extends object = Record<string, any>> extends TableProps<T> {
+
+export interface TableDisplayProps<T extends object = Record<string, any>> extends Omit<TableProps<T>, 'columns'> {
   value: TableProps<T>['dataSource'];
+  defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
+  columns?: ColumnsType<T> | string[]
+  store?: ListStore<any, T[]>
 }
 
-function TableDisplayBase<T extends object = Record<string, any>>(props: TableDisplayProps<T>) {
-  const { value, columns, dataSource, ...args } = props;
-  const schema = useFieldSchema();
+export const TableDisplay: <T extends object = Record<string, any>>(props: TableDisplayProps<T>) => React.ReactElement | null = observer((props) => {
+  const { defaultColumnsWidth, scroll, value, columns, dataSource, store, ...args } = props;
   const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
-  const curColumns = useMemo(() => (columns ? columns : getColumnsForSchema(schema, curStore)), [columns, curStore, schema]);
+  const curUseStore = store ?? curStore as ListStore<any, any>;
+  const curColumns = useTableColumns(columns, curUseStore);
   const curDataSource = useMemo(() => {
-    const val = dataSource ? dataSource : value;
+    const val = !judgeIsEmpty(dataSource) ? dataSource : value;
     return Array.isArray(val) ? val : [];
-  }, [dataSource, value]) as T[];
+  }, [dataSource, value]) as any[];
+
+  const curScroll = useTableScroll(scroll, curColumns, defaultColumnsWidth);
 
   return (
     <RecordsScope getRecords={() => curDataSource}>
-      <Table rowKey="id" size='small' {...args} columns={curColumns} dataSource={curDataSource} />
+      <Table rowKey="id" size='small' {...args} scroll={curScroll} columns={curColumns} dataSource={curDataSource} />
     </RecordsScope>
   );
+});
+
+type IColumns = ColumnsType<any>;
+
+export const getColumnsForSchema = (items: Schema[], store?: IStore) => {
+  const tmpColumns: IColumns = [];
+  items.forEach((item) => {
+    const { title, name, 'x-component': component, 'x-decorator': decorator, 'x-decorator-props': colProps, ...colSchema } = item;
+    const field = name;
+    const getTitle = () => title ?? store?.fieldsConfig?.[`${field}`]?.title ?? field;
+    const col: IColumns[number] = { title: getTitle(), dataIndex: field, ...colProps };
+
+    if (component) {
+      col.render = (v, r, i) => (
+        <RecordScope getRecord={() => r ?? {}} getIndex={() => i ?? 0}>
+          <RecursionField schema={{ ...colSchema, name, 'x-component': component }} name={`${i}.${field}`} />
+        </RecordScope>
+      );
+    }
+    tmpColumns.push(col);
+  });
+  return tmpColumns;
 };
 
-export const TableDisplay = observer(TableDisplayBase);
+export const useTableColumns = (columns?: ColumnsType<any> | string[], store?: IStore) => {
+  const curItems = useSchemaItems();
+  return useMemo(() => {
+    const tmpColumns: IColumns = [];
+    const getTitle = (field?: string, title?: string) => title ?? store?.fieldsConfig?.[`${field}`]?.title ?? field;
 
-export const getColumnsForSchema = (schema: Schema, store?: IStore) => Object.entries(schema?.properties ?? {}).map(([key, value]) => {
-  const { title, name, 'x-component': component, 'x-decorator': decorator, 'x-decorator-props': colProps, ...colSchema } = value;
-  const field = name ?? key;
+    columns?.forEach((item) => {
+      !judgeIsEmpty(item) && tmpColumns.push(typeof item === 'string'
+        ? { title: getTitle(item), dataIndex: item }
+        // @ts-ignore
+        : { title: getTitle(item.dataIndex, item.title), ...item });
+    });
 
-  const getTitle = () => title ?? store?.fieldsConfig?.[field]?.title ?? field;
+    return [...tmpColumns, ...getColumnsForSchema(curItems, store)];
+  }, [columns, curItems, store]);
+};
 
-  const col: ColumnType<any> = { title: getTitle(), dataIndex: field, ...colProps };
-
-  if (component) {
-    col.render = (v, r, i) => (
-      <RecordScope getRecord={() => r ?? {}} getIndex={() => i}>
-        <RecursionField schema={{ ...colSchema, name, 'x-component': component }} name={`${i}.${key}`} />
-      </RecordScope>
-    );
-    col.shouldCellUpdate = (record: Record<string, any>, prevRecord: Record<string, any>) => record !== prevRecord;
+export const useTableScroll = (scroll: TableProps<any>['scroll'], columns: TableProps<any>['columns'], defaultColumnsWidth = 120) => useMemo(() => {
+  if (scroll?.x) {
+    return scroll;
   }
-  return col;
-});
+  let width = 0;
+  columns?.forEach(col => width += (Number(col.width ?? defaultColumnsWidth)));
+  return {
+    ...scroll,
+    x: width,
+  };
+}, [columns, defaultColumnsWidth, scroll]);

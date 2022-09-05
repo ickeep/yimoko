@@ -1,32 +1,32 @@
-import { useExpressionScope, useFieldSchema, observer, RecordsScope } from '@formily/react';
+import { useExpressionScope, observer, RecordsScope } from '@formily/react';
 import { ListStore, getFieldSplitter, getFieldType, IPageData, useListData } from '@yimoko/store';
 import { Table, TableProps } from 'antd';
-import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import { ColumnType, TablePaginationConfig, ColumnsType } from 'antd/lib/table';
 import { TableCurrentDataSource, FilterValue, SorterResult } from 'antd/lib/table/interface';
 import { Key, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DF_PAGINATION } from '../config';
-import { getColumnsForSchema } from '../out/table';
+import { useTableColumns, useTableScroll } from '../out/table';
 
-export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange'> & (
+export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange' | 'ColumnsType'> & (
   { isControlled: false, store?: ListStore<any, T[]> } |
   { isControlled?: true, store?: ListStore<any, IPageData<T>> }
 ) & {
   onPage?: (pagination: TablePaginationConfig) => void | Promise<void>;
   onSort?: (pagination: SorterResult<T> | SorterResult<T>[]) => void | Promise<void>;
   onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
+  columns?: ColumnsType<T> | string[]
+  defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
 };
 
-function StoreTableBase<T extends object = Record<string, any>>(props: StoreTableProps<T>) {
-  const { store, isControlled = true, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
+export const StoreTable: <T extends object = Record<string, any>>(props: StoreTableProps<T>) => React.ReactElement | null = observer((props) => {
+  const { defaultColumnsWidth, isControlled = true, store, scroll, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
   const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
   const curUseStore = store ?? curStore as ListStore<any, any>;
-
-  const schema = useFieldSchema();
   const dataSource = useListData(store);
-  const curColumns = useMemo(() => (columns ? columns : getColumnsForSchema(schema, curUseStore)), [columns, curUseStore, schema]);
+  const curColumns = useTableColumns(columns, curUseStore);
   const location = useLocation();
   const nav = useNavigate();
   const {
@@ -65,11 +65,13 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     return null;
   }
 
-  const curUseColumns = curColumns.map((col) => {
+  const curUseColumns = useMemo(() => curColumns.map((col) => {
     const filterProps = getFilterProps(col, curUseStore, isControlled);
     const sortProps = getSortProps(col, curUseStore, isControlled);
     return { ...col, ...filterProps, ...sortProps };
-  });
+  }), [curColumns, curUseStore, isControlled]);
+
+  const curScroll = useTableScroll(scroll, curUseColumns, defaultColumnsWidth);
 
   const queryData = () => {
     runAPI();
@@ -81,7 +83,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     }
   };
 
-  const handlePagination = (pagination: TablePaginationConfig, extra: TableCurrentDataSource<T>) => {
+  const handlePagination = (pagination: TablePaginationConfig, extra: TableCurrentDataSource<any>) => {
     if (extra.action === 'paginate') {
       onPage?.(pagination);
       if (isControlled) {
@@ -92,7 +94,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     }
   };
 
-  const handleFilters = (filters: Record<string, FilterValue | null>, extra: TableCurrentDataSource<T>) => {
+  const handleFilters = (filters: Record<string, FilterValue | null>, extra: TableCurrentDataSource<any>) => {
     if (extra.action === 'filter') {
       onFilter?.(filters);
       if (isControlled) {
@@ -112,7 +114,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
     }
   };
 
-  const handleSorter = (sorter: SorterResult<T> | SorterResult<T>[], extra: TableCurrentDataSource<T>) => {
+  const handleSorter = (sorter: SorterResult<any> | SorterResult<any>[], extra: TableCurrentDataSource<any>) => {
     if (extra.action === 'sort') {
       onSort?.(sorter);
       if (isControlled) {
@@ -135,6 +137,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
         rowKey="id"
         size='small'
         {...args}
+        scroll={curScroll}
         loading={curUseStore.loading}
         columns={curUseColumns}
         dataSource={dataSource}
@@ -148,9 +151,7 @@ function StoreTableBase<T extends object = Record<string, any>>(props: StoreTabl
       />
     </RecordsScope>
   );
-}
-
-export const StoreTable = observer(StoreTableBase);
+});
 
 export const getFilterProps = (col: ColumnType<any>, store: ListStore<any, any>, isControlled?: boolean) => {
   const { dict } = store;
@@ -186,7 +187,6 @@ export const getSortProps = (col: ColumnType<any>, store: ListStore<any, any>, i
   }
   return {};
 };
-
 export interface ISortOrder {
   field: string,
   order: 'ascend' | 'descend' | false

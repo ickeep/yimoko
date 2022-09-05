@@ -1,7 +1,7 @@
 import { createForm, IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema, observer } from '@formily/react';
-import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaBox, SchemaPage, useStore, useRoot } from '@yimoko/store';
-import { useMemo } from 'react';
+import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaPage, useStore, useRoot } from '@yimoko/store';
+import { useMemo, ReactElement } from 'react';
 
 import { useConfig } from './config';
 import { StoreSearch } from './search';
@@ -14,7 +14,8 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
   schema?: ISchema
 }
 
-function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) {
+// eslint-disable-next-line max-len
+export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) => ReactElement | null = observer((props) => {
   const { store, options, scope, ...args } = props;
   const rootStore = useRoot();
   const configStore = useConfig();
@@ -29,6 +30,5 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
       <StoreSearch store={curStore} />
     </>
   );
-}
+});
 
-export const StorePage = observer(StorePageFn);
