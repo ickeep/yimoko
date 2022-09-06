@@ -3,7 +3,6 @@ import { isEqual } from 'lodash-es';
 import { useCallback, useEffect, useRef } from 'react';
 
 import { IStore } from '../store';
-import { ListStore } from '../store/list';
 import { getValueBySearchParam } from '../store/utils/field';
 import { judgeIsEmpty } from '../tools/tool';
 
@@ -50,7 +49,7 @@ export const useStoreSearch = (store: IStore, search: string | Partial<Record<st
       !isEmpty && setValues(newValues);
       // 列表页 search 参数变化，则重新请求数据
       const handleRun = () => {
-        if (store instanceof ListStore && getIsRun(isEmpty)) {
+        if (getIsRun(isEmpty)) {
           if (form) {
             form.submit().then(() => runAPI());
           } else {

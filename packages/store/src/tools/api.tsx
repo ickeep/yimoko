@@ -46,4 +46,5 @@ export interface IPageData<T extends object = Record<string, any>> {
   total: number,
   totalPages: number,
   data: T[],
+  [key: string]: any
 }
