@@ -26,7 +26,7 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
   const { curStore } = scope;
   const curUseStore = store ?? curStore as ListStore<any, any>;
   const dataSource = useListData(store);
-  const curColumns = useTableColumns(columns, curUseStore);
+  const curColumns = useTableColumns(columns, curUseStore, dataSource);
   const location = useLocation();
   const nav = useNavigate();
   const {

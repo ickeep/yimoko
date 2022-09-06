@@ -11,7 +11,7 @@ const store = new ListStore<any, any>({
   // type: 'list',
   dictConfig: [
     { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
-    { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
+    // { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
   ],
   defaultValues: { type: '', name: 'n1' },
   api: { url: '/api/page/list' },
@@ -84,7 +84,11 @@ export const StorePageList = observer(() => (
             table: {
               type: 'void',
               'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
-              'x-component-props': { rowSelection: { fixed: true }, columns: ['name', { dataIndex: 'name' }] },
+              'x-component-props': {
+                isControlled: false,
+                rowSelection: { fixed: true },
+                columns: ['name', { dataIndex: 'name', filterMultiple: true }],
+              },
               items: [{
                 type: 'string',
                 name: 'id',
