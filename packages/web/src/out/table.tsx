@@ -16,7 +16,7 @@ import { Icon, IconProps } from './icon';
 type IExpandableIcon = string | ReactNode | IconProps;
 
 export interface TableProps<T extends object = Record<string, any>> extends Omit<TTableProps<T>, 'columns' | 'expandable'> {
-  value: TTableProps<T>['dataSource'];
+  value?: TTableProps<T>['dataSource'];
   defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
   columns?: IColumns<T> | string[]
   store?: ListStore<any, T[]>

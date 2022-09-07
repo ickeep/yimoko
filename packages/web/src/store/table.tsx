@@ -10,7 +10,7 @@ import { DF_PAGINATION } from '../config';
 import { dataIndexToKey, IColumn, IColumnType, Table, TableProps, useColumnsForSchema } from '../out/table';
 
 export type StoreTableProps<T extends object = Record<string, any>> =
-  Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange' | 'ColumnsType'>
+  Omit<TableProps<T>, 'loading' | 'value' | 'dataSource' | 'onChange' | 'ColumnsType'>
   & (
     { isControlled: false, store?: ListStore<any, T[]> } |
     { isControlled?: true, store?: ListStore<any, IPageData<T>> }
@@ -139,6 +139,7 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
     <RecordsScope getRecords={() => dataSource}>
       <Table
         {...args}
+        store={curStore}
         isUserItems={false}
         loading={curStore.loading}
         columns={curColumns}
