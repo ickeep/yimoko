@@ -1,40 +1,39 @@
 import { useExpressionScope, observer, RecordsScope } from '@formily/react';
 import { ListStore, getFieldSplitter, getFieldType, IPageData, useListData } from '@yimoko/store';
-import { Table, TableProps } from 'antd';
-import { ColumnType, TablePaginationConfig, ColumnsType } from 'antd/lib/table';
+import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
 import { TableCurrentDataSource, FilterValue, SorterResult } from 'antd/lib/table/interface';
+import { get } from 'lodash-es';
 import { Key, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DF_PAGINATION } from '../config';
-import { useTableColumns, useTableScroll } from '../out/table';
+import { dataIndexToKey, IColumn, IColumnType, Table, TableProps, useColumnsForSchema } from '../out/table';
 
-export type StoreTableProps<T extends object = Record<string, any>> = Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange' | 'ColumnsType'> & (
-  { isControlled: false, store?: ListStore<any, T[]> } |
-  { isControlled?: true, store?: ListStore<any, IPageData<T>> }
-) & {
-  onPage?: (pagination: TablePaginationConfig) => void | Promise<void>;
-  onSort?: (pagination: SorterResult<T> | SorterResult<T>[]) => void | Promise<void>;
-  onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
-  columns?: ColumnsType<T> | string[]
-  defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
-};
+export type StoreTableProps<T extends object = Record<string, any>> =
+  Omit<TableProps<T>, 'loading' | 'dataSource' | 'onChange' | 'ColumnsType'>
+  & (
+    { isControlled: false, store?: ListStore<any, T[]> } |
+    { isControlled?: true, store?: ListStore<any, IPageData<T>> }
+  )
+  & {
+    onPage?: (pagination: TablePaginationConfig) => void | Promise<void>;
+    onSort?: (pagination: SorterResult<T> | SorterResult<T>[]) => void | Promise<void>;
+    onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
+  };
 
 export const StoreTable: <T extends object = Record<string, any>>(props: StoreTableProps<T>) => React.ReactElement | null = observer((props) => {
-  const { defaultColumnsWidth, isControlled = true, store, scroll, columns, pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
+  const { isControlled = true, store, columns = [], pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
   const scope = useExpressionScope() ?? {};
-  const { curStore } = scope;
-  const curUseStore = store ?? curStore as ListStore<any, any>;
+  const curStore = store ?? scope?.curStore as ListStore<any, any>;
   const dataSource = useListData(store);
-  const curColumns = useTableColumns(columns, curUseStore, dataSource);
   const location = useLocation();
   const nav = useNavigate();
   const {
     setValues, setValuesByField, runAPI, setSelectedRowKeys, getURLSearch,
-    selectedRowKeys, response: { data } = {},
-    isBindSearch, queryRoutingType,
-    keysConfig: { total, page, pageSize, sortOrder },
-  } = curUseStore;
+    selectedRowKeys, isBindSearch, queryRoutingType,
+    response: { data } = {},
+    keysConfig: { total, page, pageSize, sortOrder } = {},
+  } = curStore;
 
   const curRowSelection = useMemo(() => ((rowSelection && isControlled)
     ? {
@@ -61,18 +60,23 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
     return newPagination;
   }, [data, isControlled, page, pageSize, pagination, total]);
 
-  if (!curUseStore) {
+  const itemsColumns = useColumnsForSchema();
+  const curColumns = useMemo(() => {
+    const autoColumns = (item: IColumn<any> | string): IColumn<any> => {
+      const col = typeof item === 'string' ? { dataIndex: item } : item;
+      const filterProps = getFilterProps(col, curStore, isControlled);
+      const sortProps = getSortProps(col, curStore, isControlled);
+      if ('children' in col) {
+        col.children = col.children?.map?.(autoColumns);
+      }
+      return { ...col, ...filterProps, ...sortProps };
+    };
+    return [...columns, ...itemsColumns]?.map(autoColumns);
+  }, [columns, curStore, isControlled, itemsColumns]);
+
+  if (!curStore) {
     return null;
   }
-
-  const curUseColumns = useMemo(() => curColumns.map((col) => {
-    const filterProps = getFilterProps(col, curUseStore, isControlled);
-    const sortProps = getSortProps(col, curUseStore, isControlled);
-    return { ...col, ...filterProps, ...sortProps };
-  }), [curColumns, curUseStore, isControlled]);
-
-  const curScroll = useTableScroll(scroll, curUseColumns, defaultColumnsWidth);
-
   const queryData = () => {
     runAPI();
     setSelectedRowKeys();
@@ -102,8 +106,8 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
         Object.entries(filters).forEach(([key, value]) => {
           let val: any = value;
           if (value !== null) {
-            const type = getFieldType(key, curUseStore) ?? 'string';
-            const splitter = getFieldSplitter(key, curUseStore);
+            const type = getFieldType(key, curStore) ?? 'string';
+            const splitter = getFieldSplitter(key, curStore);
             type === 'string' && (val = value.join(splitter));
           }
           newValues[key] = val;
@@ -134,12 +138,10 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
   return (
     <RecordsScope getRecords={() => dataSource}>
       <Table
-        rowKey="id"
-        size='small'
         {...args}
-        scroll={curScroll}
-        loading={curUseStore.loading}
-        columns={curUseColumns}
+        isUserItems={false}
+        loading={curStore.loading}
+        columns={curColumns}
         dataSource={dataSource}
         rowSelection={curRowSelection}
         pagination={curPagination}
@@ -153,21 +155,19 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
   );
 });
 
-export const getFilterProps = (col: ColumnType<any>, store: ListStore<any, any>, isControlled?: boolean) => {
-  const { dict } = store;
+export const getFilterProps = (col: IColumnType<any>, store: ListStore<any, any>, isControlled?: boolean) => {
   const props: ColumnType<any> = {};
-  const { filterMultiple, filters, dataIndex } = col;
-  if (typeof filterMultiple !== 'undefined') {
-    const field = `${dataIndex}`;
-    props.filters = filters ?? (dict[field]?.map?.((item: Record<string, any>) => ({ text: item.label, value: item.value })));
-    isControlled && (props.filteredValue = getFilteredValue(field, store));
+  const { dataIndex } = col;
+  if (isControlled && col.autoFilter) {
+    const field = dataIndexToKey(dataIndex);
+    props.filteredValue = getFilteredValue(field, store);
   }
   return props;
 };
 
-export const getFilteredValue = (field: string, store: ListStore<any, any>) => {
+export const getFilteredValue = (field: string | number, store: ListStore<any, any>) => {
   const { values } = store;
-  const val = values[field];
+  const val = get(values, field);
   if (Array.isArray(val)) {
     return val;
   } if (typeof val === 'string' && val) {

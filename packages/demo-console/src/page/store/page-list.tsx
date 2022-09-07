@@ -1,7 +1,6 @@
-import { Submit } from '@formily/antd';
 import { observer } from '@formily/react';
 import { ListStore } from '@yimoko/store';
-import { StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
+import { StorePage } from '@yimoko/web';
 
 const store = new ListStore<any, any>({
   fieldsConfig: {
@@ -13,7 +12,7 @@ const store = new ListStore<any, any>({
     { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
     // { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
   ],
-  defaultValues: { type: '', name: 'n1' },
+  defaultValues: { type: '', name: '' },
   api: { url: '/api/page/list' },
   // isRunNow: false,
   // isBindSearch: false,
@@ -66,7 +65,7 @@ export const StorePageList = observer(() => (
           properties: {
             // type: { $ref: '#/definitions/type' },
             // name: { $ref: '#/definitions/name' },
-            btns: {
+            buttons: {
               type: 'void', 'x-component': 'Space',
               properties: {
                 submit: { type: 'void', 'x-component': 'Submit', 'x-component-props': { children: '查询' } },
@@ -85,21 +84,37 @@ export const StorePageList = observer(() => (
               type: 'void',
               'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
               'x-component-props': {
-                isControlled: false,
+                // isControlled: false,
                 rowSelection: { fixed: true },
-                columns: ['name', { dataIndex: 'name', filterMultiple: true }],
+                expandable: {
+                  isTitleControlsAll: true,
+                  icon: {
+                    expanded: { name: 'RightOutlined', style: { color: 'blue' } },
+                    // expanded: 'RightOutlined',
+                    collapsed: 'DownOutlined',
+                  },
+                  expandedRowRender: (record: any) => <div>{record.id}</div>,
+                },
+                columns: ['name', {
+                  title: '合并', children: [
+                    { dataIndex: 'name', sorter: true, autoFilter: true },
+                    { dataIndex: 'id', autoSorter: 'number', width: 300 },
+                  ],
+                }],
               },
               items: [{
                 type: 'string',
                 name: 'id',
                 title: 'ID',
-                'x-decorator-props': { sorter: true, width: 300 },
+                'x-decorator-props': { autoSorter: 'number', width: 300, autoFilter: true },
               },
               { name: 'name' },
               {
                 $ref: '#/definitions/name',
                 type: 'void', 'x-component': 'Space',
-                'x-decorator-props': { sorter: true, filterMultiple: true, width: 600 },
+                'x-decorator-props': {
+                  autoSorter: 'number', width: 600,
+                },
                 properties: {
                   name: {
                     type: 'string', 'x-component': 'Link',
@@ -108,7 +123,7 @@ export const StorePageList = observer(() => (
                   },
                 },
               },
-              { name: 'type', 'x-decorator-props': { filterMultiple: false } },
+              { name: 'type', 'x-decorator-props': { autoFilter: true } },
               ],
             },
           },

@@ -1,6 +1,6 @@
 {
   "name": "@yimoko/web",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": false,
   "exports": {
     ".": {
@@ -54,6 +54,7 @@
     "@formily/validator": "^2.0.0",
     "@types/lodash-es": "^4.0.0",
     "@yimoko/store": "*",
+    "antd": "~4.23.0",
     "axios": "^0.22.0",
     "htmr": "^1.0.0",
     "lodash-es": "^4.0.0",

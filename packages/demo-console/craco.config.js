@@ -28,18 +28,18 @@ const externals = {
 
 const cdn = {
   devCSS: [
-    // 'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.css',
-    // 'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.css.map',
+    // 'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.css',
+    // 'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.css.map',
 
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.min.css',
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.min.css.map',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.min.css',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.min.css.map',
 
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.11/dist/antd.css',
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.11/dist/antd.css.map',
   ],
   prodCSS: [
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.min.css',
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.variable.min.css.map',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.min.css',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.variable.min.css.map',
 
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.11/dist/antd.css',
     'https://cdn.jsdelivr.net/npm/@formily/antd@2.1.11/dist/antd.css.map',
@@ -65,8 +65,8 @@ const cdn = {
 
     'https://cdn.jsdelivr.net/npm/moment@2.29.3/locale/zh-cn.js',
 
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.js',
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.js.map',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.js',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.js.map',
 
     'https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.js',
     'https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.map',
@@ -122,8 +122,8 @@ const cdn = {
 
     'https://cdn.jsdelivr.net/npm/moment@2.29.3/locale/zh-cn.js',
 
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.min.js',
-    'https://cdn.jsdelivr.net/npm/antd@4.21.4/dist/antd.min.js.map',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.min.js',
+    'https://cdn.jsdelivr.net/npm/antd@4.23.0/dist/antd.min.js.map',
 
     'https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.min.js',
     'https://cdn.jsdelivr.net/npm/axios@0.27.2/dist/axios.min.map',

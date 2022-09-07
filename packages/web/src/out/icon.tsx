@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import htmr from 'htmr';
 import { useEffect, useMemo, useState } from 'react';
 
-export interface IconProps extends Partial<CustomIconComponentProps> {
+export interface IconProps extends Partial<Omit<CustomIconComponentProps, 'component'>> {
   name?: string
   value?: string
 }
@@ -41,5 +41,5 @@ export const Icon = (props: IconProps) => {
     return <TIcon component={component}  {...args} />;
   }
 
-  return <Spin spinning={loading} />;
+  return <Spin size='small' spinning={loading} />;
 };

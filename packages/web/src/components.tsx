@@ -13,7 +13,7 @@ import { Select } from './in/select';
 import { Icon } from './out/icon';
 import { Link } from './out/link';
 import { PageError } from './out/page-error';
-import { TableDisplay } from './out/table';
+import { Table } from './out/table';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StorePageContent } from './store/page-content';
@@ -28,7 +28,7 @@ export const components: Record<string, any> = {
   Icon,
   Link: withValueChildren(Link),
   PageError,
-  TableDisplay,
+  Table,
 
   SchemaPage,
 
