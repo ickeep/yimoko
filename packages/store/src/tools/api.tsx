@@ -14,6 +14,7 @@ export const getCodeByStatus = (status: number) => ((status >= 200 && status < 3
 
 export enum IHTTPCode {
   success = 0,
+  badRequest = 400,
   unauthorized = 401,
   forbidden = 403,
   networkError = 600,

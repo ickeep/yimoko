@@ -5,17 +5,26 @@ import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { IOptions } from '../tools/options';
 import { judgeIsEmpty } from '../tools/tool';
+import { ITransformRule, transformData } from '../tools/transform';
 
 import { runStoreAPI } from './utils/api';
-
 import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';
 
+import { IStore } from '.';
+
+type ITransformFn = (values: any, store?: IStore) => any;
+export interface IStoreTransform {
+  reqParams?: ITransformRule | ITransformRule[] | ITransformFn
+  resData?: ITransformRule | ITransformRule[] | ITransformFn
+}
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = false;
   isBindSearch = false;
   isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
   fieldsConfig: IFieldsConfig<V> = Object({});
+
+  transform: IStoreTransform = {};
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
@@ -37,10 +46,13 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       isRunNow = false,
       dictConfig = [],
       fieldsConfig = Object({}),
+      transform = {},
       apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
+
+    this.transform = transform;
 
     this.defaultValues = defaultValues;
     this.values = cloneDeep(defaultValues);
@@ -127,7 +139,10 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setResponse = (data: IStoreResponse<R, V>) => this.response = data;
 
-  getAPIParams = () => (this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values) as IV<V>;
+  getAPIParams = () => {
+    const params = this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values;
+    return handleTransform(params, this.transform.reqParams, this);
+  };
 
   runAPI = async () => {
     this.setLoading(true);
@@ -136,6 +151,9 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const { api } = this;
     const params = this.getAPIParams();
     const response = await runStoreAPI(api, this.apiExecutor, params);
+
+    response && (handleTransform(response.data, this.transform.resData, this));
+
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);
@@ -159,12 +177,23 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   };
 }
 
+const handleTransform = (values: any, transform: ITransformRule | ITransformRule[] | ITransformFn = [], store: IStore<any, any>) => {
+  if (typeof transform === 'function') {
+    return transform(values, store);
+  }
+  if (transform) {
+    return transformData(values, transform);
+  }
+  return values;
+};
+
 export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues?: V,
   api?: IStoreAPI<V, R>,
   keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
   fieldsConfig?: IFieldsConfig<V>;
+  transform?: IStoreTransform
   isFilterEmptyAtRun?: boolean;
   isBindSearch?: boolean;
   isRunNow?: boolean,
