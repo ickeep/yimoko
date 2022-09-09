@@ -2,14 +2,14 @@ import { ConfigProvider, Loading } from '@antmjs/vantui';
 import { LoadingProps } from '@antmjs/vantui/types/loading';
 import { observer } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
-import { IStore, judgeIsSuccess, useRoot } from '@yimoko/store';
+import { IStore, judgeIsSuccess, useConfig, useRoot } from '@yimoko/store';
 import cls from 'classnames';
 import { useEffect, useMemo } from 'react';
 
 import { setBackgroundColor, setBackgroundTextStyle } from '../adapter/background';
 import { hideNavigationBarLoading, setNavigationBarColor, setNavigationBarTitle, showNavigationBarLoading } from '../adapter/navigation-bar';
 import { ResponseError } from '../out/response-error';
-import { useConfig } from '../store/config';
+import { IConfig } from '../store/config';
 
 export interface PageProps extends ViewProps {
   store?: IStore
@@ -31,7 +31,7 @@ export const Page = observer(({ className, children, loading, store, navigationB
   const { textStyle, color: bColor } = background;
 
   const curLoading = useMemo(() => rootLoading || !!storeLoading, [rootLoading, storeLoading]);
-  const { themeVars } = useConfig();
+  const { themeVars } = useConfig<IConfig>();
 
   useEffect(() => {
     if (curLoading) {

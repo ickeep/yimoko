@@ -1,9 +1,10 @@
 import { createForm, IFormProps } from '@formily/core';
 import { SchemaReactComponents, ISchema, observer } from '@formily/react';
-import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaPage, useStore, useRoot } from '@yimoko/store';
+import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaPage, useStore, useRoot, useConfig } from '@yimoko/store';
 import { useMemo, ReactElement } from 'react';
 
-import { useConfig } from './config';
+import { IConfig } from './config';
+
 import { StoreSearch } from './search';
 
 export interface StorePageProps<V extends object = IStoreValues, R = IStoreValues> extends React.HTMLAttributes<HTMLDivElement> {
@@ -18,7 +19,7 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
 export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) => ReactElement | null = observer((props) => {
   const { store, options, scope, ...args } = props;
   const rootStore = useRoot();
-  const configStore = useConfig();
+  const configStore = useConfig<IConfig>();
   const curStore = useStore(store);
   const model = useMemo(() => createForm({ ...options, values: curStore.values, initialValues: curStore.defaultValues }), [curStore, options]);
   const curScope = useMemo(() => ({ ...scope, curStore, rootStore, configStore }), [configStore, curStore, rootStore, scope]);

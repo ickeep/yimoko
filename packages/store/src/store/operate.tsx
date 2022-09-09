@@ -1,10 +1,10 @@
 import { Form } from '@formily/core';
 
-import { INotifier } from '../context/notifier';
 import { IHTTPCode, IHTTPResponse, judgeIsSuccess } from '../tools/api';
 import { judgeIsEmpty } from '../tools/tool';
 
 import { BaseStore, IBaseStoreConfig, IStoreValues } from './base';
+import { INotifier } from './config';
 
 export const defaultRunAfter: IRunAfter = {
   notify: true,

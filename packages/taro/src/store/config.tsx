@@ -1,5 +1,6 @@
 import { ConfigStore } from '@yimoko/store';
-import { useMemo } from 'react';
+
+import { httpRequest } from '../adapter/http';
 
 const tabURL: string[] = [];
 const themeVars: Record<string, any> = {};
@@ -19,18 +20,12 @@ export const defaultConfig = {
 };
 
 export type IConfig = typeof defaultConfig;
-type IKey = keyof IConfig;
 
-export const configStore: ConfigStore<typeof defaultConfig> = new ConfigStore(defaultConfig);
 
+export const configStore: ConfigStore<typeof defaultConfig> = new ConfigStore(defaultConfig, {
+  notifier: () => '',
+  apiExecutor: httpRequest,
+});
 export const { logger } = configStore;
-
-export const useConfig = (keys?: IKey | Array<IKey>) => useMemo(
-  () => configStore.getConfig(keys),
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  [configStore.config],
-);
-
-export const useConfigItem = (key: IKey) => useMemo(() => configStore.getConfigItem(key), [key]);
 
 export const getIsTabURL = (path: string) => configStore.config.tabURL.includes(path);

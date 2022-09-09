@@ -1,3 +1,4 @@
+// 已弃用 待删除
 import { createContext, useContext } from 'react';
 
 import { IAPIRequestConfig, IHTTPCode, IHTTPResponse } from '../tools/api';

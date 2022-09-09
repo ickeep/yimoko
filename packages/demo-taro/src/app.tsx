@@ -2,7 +2,7 @@
 import Taro from '@tarojs/taro';
 
 import { createSchemaField, observer } from '@formily/react';
-import { APIExecutorProvider, SchemaComponentsProvider, SchemaFieldProvider } from '@yimoko/store';
+import { ConfigStoreProvider, SchemaComponentsProvider, SchemaFieldProvider } from '@yimoko/store';
 import { httpRequest, configStore, useAppConfig } from '@yimoko/taro';
 
 import './app.less';
@@ -30,13 +30,13 @@ const getConfig = () => httpRequest({
 function App({ children }) {
   useAppConfig(getConfig);
   return (
-    <APIExecutorProvider value={httpRequest}>
+    <ConfigStoreProvider value={configStore}>
       <SchemaComponentsProvider value={componentsMap}>
         <SchemaFieldProvider value={SchemaField}>
           {children}
         </SchemaFieldProvider>
       </SchemaComponentsProvider>
-    </APIExecutorProvider >
+    </ConfigStoreProvider>
   );
 }
 

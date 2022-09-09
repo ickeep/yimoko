@@ -1,13 +1,13 @@
 import { Image, Button, Loading } from '@antmjs/vantui';
 import { observer } from '@formily/react';
 import { View } from '@tarojs/components';
-import { IStoreResponse, judgeIsSuccess } from '@yimoko/store';
+import { IStoreResponse, judgeIsSuccess, useConfig } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { route } from '../adapter/route';
 
 import { Text } from '../base/text';
-import { useConfig } from '../store/config';
+import { IConfig } from '../store/config';
 
 export interface ResponseErrorProps {
   isReturnIndex?: boolean
@@ -21,7 +21,7 @@ export const ResponseError = observer((props: ResponseErrorProps) => {
   const { loading, response, onAgain, isReturnIndex = true } = props;
   const isSuccess = judgeIsSuccess(response);
 
-  const { static: { img }, indexPage } = useConfig();
+  const { static: { img }, indexPage } = useConfig<IConfig>();
   const { code, msg } = response;
 
   const isErr = useMemo(() => ((!loading || (loading && code))) && !isSuccess && code, [loading, isSuccess, code]);

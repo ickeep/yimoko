@@ -7,8 +7,6 @@ export * from './components/schema-page';
 export * from './components/schema-template';
 export * from './components/store-dict';
 
-export * from './context/api';
-export * from './context/notifier';
 export * from './context/root';
 export * from './context/schema-field';
 export * from './context/schema-components';

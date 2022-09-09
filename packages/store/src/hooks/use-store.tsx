@@ -2,9 +2,9 @@
 import { useForm, useExpressionScope } from '@formily/react';
 
 import { useAPIExecutor } from '../context/api';
-import { useNotifier } from '../context/notifier';
 import { IStore, IStoreConfig, StoreMap } from '../store';
 import { IStoreValues, BaseStore } from '../store/base';
+import { useNotifier } from '../store/config';
 import { OperateStore } from '../store/operate';
 
 import { useDeepMemo } from './use-deep-memo';

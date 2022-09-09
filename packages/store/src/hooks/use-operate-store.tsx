@@ -2,8 +2,8 @@ import { useExpressionScope, useForm } from '@formily/react';
 import { useState } from 'react';
 
 import { useAPIExecutor } from '../context/api';
-import { useNotifier } from '../context/notifier';
 import { IStoreValues } from '../store/base';
+import { useNotifier } from '../store/config';
 import { IOperateStoreConfig, OperateStore } from '../store/operate';
 
 export function useOperateStore<V extends object = IStoreValues, R = IStoreValues>(config: IOperateStoreConfig<V, R>) {

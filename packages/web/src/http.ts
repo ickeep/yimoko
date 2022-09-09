@@ -63,7 +63,7 @@ export const httpPatchForm: IHTTPPost = (url, data, config) => httpRequest(setCo
 //     return handleResponse({
 //       ...args,
 //       status: IHTTPCode.networkError,
-//       statusText: e?.mesaage ?? '网络出错',
+//       statusText: e?.message ?? '网络出错',
 //     });
 //   }
 //   return handleResponse(response);
