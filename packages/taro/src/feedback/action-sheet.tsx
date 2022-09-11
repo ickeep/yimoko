@@ -2,7 +2,7 @@ import { ActionSheet as TActionSheet, Button, Skeleton } from '@antmjs/vantui';
 import { ActionSheetItem, ActionSheetProps as TActionSheetProps } from '@antmjs/vantui/types/action-sheet';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { ITouchEvent, View } from '@tarojs/components';
-import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useChildren } from '@yimoko/store';
+import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useSchemaChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
@@ -47,7 +47,7 @@ export const ActionSheet = (props: ActionSheetProps) => {
     return !!value;
   }, [isControlled, show, value, values]);
 
-  const tempChildren = useChildren(children);
+  const tempChildren = useSchemaChildren(children);
 
   const curChildren = useMemo(() => {
     // 受控模式，不展示 trigger
