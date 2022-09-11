@@ -5,7 +5,7 @@ import { observer } from '@formily/reactive-react';
 import { ScrollView, ScrollViewProps, View } from '@tarojs/components';
 import {
   IListStoreConfig, judgeIsEmpty, judgeIsSuccess, ListStore, SchemaBox,
-  useAPIExecutor, useDeepMemo, useIsOut, useSchemaField,
+  useAPIExecutor, useDeepMemo, useSchemaItemsOut, useSchemaField,
 } from '@yimoko/store';
 import cls from 'classnames';
 import { useMemo } from 'react';
@@ -78,7 +78,7 @@ export const StoreScrollView = observer((props: StoreScrollViewProps) => {
 
 const RenderItems = (props: { data: any[] }) => {
   const { data } = props;
-  const isOut = useIsOut();
+  const isOut = useSchemaItemsOut();
   const model = useMemo(() => (isOut ? createForm({ values: { data } }) : undefined), [data, isOut]);
   const SchemaField = useSchemaField();
   const fieldSchema = useFieldSchema();

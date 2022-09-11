@@ -19,7 +19,7 @@ export * from './hooks/use-api-search-options';
 export * from './hooks/use-base-store';
 export * from './hooks/use-deep-effect';
 export * from './hooks/use-deep-memo';
-export * from './hooks/use-is-out';
+export * from './hooks/use-is-schema-items-out';
 export * from './hooks/use-list-store';
 export * from './hooks/use-operate-store';
 export * from './hooks/use-options';

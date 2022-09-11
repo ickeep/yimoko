@@ -2,7 +2,7 @@ import { Table as TTable } from '@antmjs/vantui';
 import { IColumns, ITableProps } from '@antmjs/vantui/types/table';
 import { createForm } from '@formily/core';
 import { RecordScope, RecursionField, useExpressionScope, useFieldSchema } from '@formily/react';
-import { useAPIOptions, IOptionsOutAPIProps, judgeIsEmpty, SchemaBox, useSchemaField, useIsOut, useSchemaItems } from '@yimoko/store';
+import { useAPIOptions, IOptionsOutAPIProps, judgeIsEmpty, SchemaBox, useSchemaField, useSchemaItemsOut, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
 export type TableProps = ITableProps & Omit<IOptionsOutAPIProps<string>, 'options'> & {
@@ -14,7 +14,7 @@ export const Table = (props: TableProps) => {
   const [data, loading] = useAPIOptions([], api, keys ?? {}, splitter);
   const SchemaField = useSchemaField();
   const fieldSchema = useFieldSchema();
-  const isOut = useIsOut();
+  const isOut = useSchemaItemsOut();
 
   const curData = useMemo(() => {
     const arr = [dataSource, value, data].find(item => !judgeIsEmpty(item)) ?? [];
