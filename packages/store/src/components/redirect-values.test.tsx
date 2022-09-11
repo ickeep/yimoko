@@ -16,6 +16,11 @@ describe('RedirectValues', () => {
   const SchemaField = createSchemaField({ components, scope: { curStore } });
   const model = createForm({ values: {} });
 
+  test('empty', () => {
+    render(<RedirectValues />);
+    expect(document.querySelector('body')?.textContent).toBe('');
+  });
+
   test('component', () => {
     render(<SchemaFieldProvider value={SchemaField}>
       <SchemaPage
