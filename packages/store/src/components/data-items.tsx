@@ -12,14 +12,17 @@ export interface DataItemsProps {
 export const DataItems = observer((props: DataItemsProps) => {
   const { value, data, name } = props;
   const curItems = useSchemaItems();
-  if (curItems.length < 1) {
+  const len = curItems.length;
+
+  if (len < 1) {
     return null;
   };
+
   return <>
     {(data ?? value)?.map((r, i) => {
-      const curItem = curItems[(curItems.length + i) % curItems.length] ?? curItems[0];
+      const curItem = curItems[(len + i) % len];
       return (
-        <RecordScope key={i} getRecord={() => r ?? {}} getIndex={() => i ?? 0}>
+        <RecordScope key={i} getRecord={() => r} getIndex={() => i}>
           <RecursionField schema={curItem} name={name ? `${name}.${i}` : i} onlyRenderProperties />
         </RecordScope>
       );
