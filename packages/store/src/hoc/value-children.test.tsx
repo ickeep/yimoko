@@ -16,7 +16,7 @@ describe('withValueChildren', () => {
     expect(screen.getByText('123')).toBeInTheDocument();
   });
 
-  test('val empth', () => {
+  test('val empty', () => {
     render(<Btn value="" />);
     expect(document.getElementsByTagName('body')[0].textContent).toBe('');
   });

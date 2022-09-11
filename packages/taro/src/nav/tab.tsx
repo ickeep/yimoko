@@ -2,13 +2,13 @@ import { Tabs as TTabs, Tab as TTab } from '@antmjs/vantui';
 import { TabsProps as TTabsProps } from '@antmjs/vantui/types/tab';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
-import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema, withItemSchema } from '@yimoko/store';
+import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema, withSchemaChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
 
-export const Tab = withItemSchema(TTab);
+export const Tab = withSchemaChildren(TTab);
 
 const defaultKeys = {
   dot: 'dot',

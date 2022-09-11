@@ -11,7 +11,7 @@ export * from './context/root';
 export * from './context/schema-field';
 export * from './context/schema-components';
 
-export * from './hoc/item-schema';
+export * from './hoc/schema-children';
 export * from './hoc/value-children';
 
 export * from './hooks/use-api-options';

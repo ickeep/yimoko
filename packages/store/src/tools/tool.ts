@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash-es';
-
-export const judgeIsEmpty = (value: any) => {
+// 判断值是否等于 {} | [] | '' | null | undefined  使用 is 可使后续使用不再提示 undefined null
+export const judgeIsEmpty = (value: any): value is (null | undefined) => {
   const type = typeof value;
   if (['boolean', 'number', 'bigint', 'function'].includes(type)) {
     return false;
