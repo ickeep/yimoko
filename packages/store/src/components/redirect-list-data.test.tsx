@@ -1,15 +1,20 @@
 import { createForm } from '@formily/core';
 import { createSchemaField, useForm } from '@formily/react';
 import '@testing-library/jest-dom';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, renderHook, screen } from '@testing-library/react';
 
 import { SchemaFieldProvider } from '../context/schema-field';
 
 import { ListStore } from '../store/list';
 import { JSONStringify } from '../tools/tool';
 
-import { RedirectListData } from './redirect-list-data';
+import { RedirectListData, useListData } from './redirect-list-data';
 import { SchemaPage } from './schema-page';
+
+describe('useListData', () => {
+  const { result } = renderHook(() => useListData());
+  expect(result.current).toBe(undefined);
+});
 
 describe('RedirectListData', () => {
   const components = {
