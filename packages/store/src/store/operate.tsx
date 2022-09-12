@@ -16,7 +16,8 @@ export class OperateStore<V extends object = IStoreValues, R = IStoreValues> ext
   notifier?: INotifier;
   scope: Record<string, any> = {};
   runBefore: IRunBefore = {};
-  runAfter: IRunAfter = {};
+  runAfter: IRunAfter = { ...defaultRunAfter };
+
   constructor(config: IOperateStoreConfig<V, R> = {}) {
     const { runBefore, runAfter, form, scope, notifier, ...args } = config;
     super({
@@ -26,15 +27,17 @@ export class OperateStore<V extends object = IStoreValues, R = IStoreValues> ext
     scope && (this.scope = scope);
     form && (this.form = form);
     notifier && (this.notifier = notifier);
-    this.runAfter = { ...defaultRunAfter, ...runAfter };
+    this.runAfter = { ...this.runAfter, ...runAfter };
+    this.runBefore = { ...this.runBefore, ...runBefore };
     const { runAPI } = this;
 
     this.runAPI = async () => {
       const { form, runBefore, runAfter } = this;
       if (runBefore.verify) {
-        const sub = await form?.submit();
-        if (!sub) {
-          const res = { code: IHTTPCode.badRequest, msg: '表单校验失败', data: {} };
+        try {
+          await form?.submit();
+        } catch (error) {
+          const res = { code: IHTTPCode.badRequest, msg: '表单校验失败', data: error };
           handleRunAfter(res, runAfter, this);
           return res;
         }
@@ -86,9 +89,9 @@ export interface IRunBefore {
 }
 
 export interface IRunAfter {
-  notify?: true | string
-  notifyOnFail?: true | string
-  notifyOnSuccess?: true | string
+  notify?: boolean | string
+  notifyOnFail?: boolean | string
+  notifyOnSuccess?: boolean | string
   run?: IRunFn
   runOnFail?: IRunFn
   runOnSuccess?: IRunFn
