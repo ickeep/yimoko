@@ -27,7 +27,6 @@ export const useStoreSearch = (store: IStore, search: string | Partial<Record<st
 
   useEffect(() => {
     const { fieldsConfig, isBindSearch, values, defaultValues, setValues, runAPI } = store;
-
     if (isBindSearch) {
       const newValues: Record<string, any> = {};
       if (typeof search === 'string') {
