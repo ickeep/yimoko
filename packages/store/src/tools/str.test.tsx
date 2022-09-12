@@ -1,4 +1,4 @@
-import { strToArr } from './str';
+import { judgeValidKey, strToArr } from './str';
 
 describe('str', () => {
   const testArr: any[] = [
@@ -19,5 +19,10 @@ describe('str', () => {
   });
   test('strToArr - splitter', () => {
     expect(strToArr('a|b,c', '|')).toEqual(['a', 'b,c']);
+  });
+
+  test('judgeValidKey', () => {
+    expect(judgeValidKey('a', { a: 1 })).toBeTruthy();
+    expect(judgeValidKey('a', { b: 1 })).toBeFalsy();
   });
 });
