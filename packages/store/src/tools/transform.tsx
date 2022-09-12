@@ -5,15 +5,14 @@ import { IKeys } from './options';
 import { judgeIsEmpty } from './tool';
 
 type ITransformType =
-  { type: 'swapKeys', keys: IKeys<string> } |
-  { type: 'omit', keys: string | string[] } |
-  { type: 'pick', keys: string | string[] } |
-  { type: 'filter', predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<string, any> };
+  { type: 'swap' | 'arrItemSwap', keys: IKeys<string> } |
+  { type: 'omit' | 'pick' | 'arrItemOmit' | 'arrItemPick', keys: string | string[] } |
+  { type: 'filter' | 'arrItemFilter', predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<string, any> };
 
 export type ITransformRule = ITransformType & { valueKey?: string | string[] };
 
 export const transformData = (values: any, rules: ITransformRule | ITransformRule[] = []) => {
-  if (judgeIsEmpty(rules)) {
+  if (judgeIsEmpty(rules) || judgeIsEmpty(values)) {
     return values;
   }
   let newValues = cloneDeep(values);
@@ -36,10 +35,15 @@ export const heddleTransform = (values: any, rule: ITransformType) => {
     return values;
   }
   const fnMap: Record<ITransformType['type'], (rule: any) => any> = {
-    swapKeys: rule => swapKeys(values, rule.keys),
+    swap: rule => swap(values, rule.keys),
     omit: rule => omit(values, rule.keys),
     pick: rule => pick(values, rule.keys),
+
     filter: rule => filter(values, rule.predicate, rule.equalKeys),
+    arrItemSwap: rule => values?.map?.((v: any) => swap(v, rule.keys)) ?? values,
+    arrItemOmit: rule => values?.map?.((v: any) => omit(v, rule.keys)) ?? values,
+    arrItemPick: rule => values?.map?.((v: any) => pick(v, rule.keys)) ?? values,
+    arrItemFilter: rule => values?.map?.((v: any) => filter(v, rule.predicate, rule.equalKeys)) ?? values,
   };
 
   return fnMap[rule.type]?.(rule) ?? values;
@@ -59,7 +63,7 @@ const filter = (value: any, predicate?: (v: any, i: number, arr: any[]) => boole
   return newValue;
 };
 
-const swapKeys = (values: any, keys: IKeys<string>) => {
+const swap = (values: any, keys: IKeys<string>) => {
   Object.entries(keys).forEach(([oldKey, newKey]) => {
     const temp = get(values, oldKey);
     set(values, oldKey, get(values, newKey));
