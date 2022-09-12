@@ -17,6 +17,12 @@ describe('OperateStore', () => {
     expect(store.scope).toEqual({});
     expect(store.runBefore).toEqual({});
     expect(store.runAfter.notify).toBeTruthy();
+
+    const form = createForm();
+    const scope = { a: 1 };
+    const store1 = new OperateStore({ form, scope });
+    expect(store1.form).toEqual(form);
+    expect(store1.scope).toEqual(scope);
   });
 
   test('runBefore', async () => {
@@ -69,5 +75,41 @@ describe('OperateStore', () => {
     res.msg = '';
     await store.runAPI();
     expect(notifier).toBeCalledWith('success', '成功了');
+
+    store.runAfter.notifyOnFail = true;
+    res.code = 1;
+    await store.runAPI();
+    expect(notifier).toBeCalledWith('error', '出错了');
+  });
+
+  test('runAfter', async () => {
+    const res = { code: 0, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const store = new OperateStore({ apiExecutor, api: { url: '' } });
+    expect(store.runAfter.run).toBeUndefined();
+    expect(store.runAfter.runOnFail).toBeUndefined();
+    expect(store.runAfter.runOnSuccess).toBeUndefined();
+
+    const run = jest.fn();
+    const runOnFail = jest.fn();
+    const runOnSuccess = jest.fn();
+    store.runAfter.run = run;
+    store.runAfter.runOnFail = runOnFail;
+    store.runAfter.runOnSuccess = runOnSuccess;
+
+    await store.runAPI();
+    expect(run).toBeCalled();
+    expect(runOnFail).not.toBeCalled();
+    expect(runOnSuccess).toBeCalled();
+    expect(run).toBeCalledWith(res, store);
+    expect(runOnSuccess).toBeCalledWith(res, store);
+
+    res.code = 1;
+    await store.runAPI();
+    expect(run).toBeCalledTimes(2);
+    expect(runOnFail).toBeCalled();
+    expect(runOnSuccess).toBeCalledTimes(1);
+    expect(runOnFail).toBeCalledWith(res, store);
+    expect(run).toBeCalledWith(res, store);
   });
 });
