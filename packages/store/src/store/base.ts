@@ -152,7 +152,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const params = this.getAPIParams();
     const response = await runStoreAPI(api, this.apiExecutor, params);
 
-    response && (handleTransform(response.data, this.transform.resData, this));
+    response && (response.data = handleTransform(response.data, this.transform.resData, this));
 
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
@@ -181,10 +181,7 @@ const handleTransform = (values: any, transform: ITransformRule | ITransformRule
   if (typeof transform === 'function') {
     return transform(values, store);
   }
-  if (transform) {
-    return transformData(values, transform);
-  }
-  return values;
+  return transformData(values, transform);
 };
 
 export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
