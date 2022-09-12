@@ -37,7 +37,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   private lastFetchID = 0;
 
-  constructor(config: IBaseStoreConfig<V, R>) {
+  constructor(config: IBaseStoreConfig<V, R> = {}) {
     const {
       api,
       isFilterEmptyAtRun = false,

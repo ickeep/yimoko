@@ -17,7 +17,7 @@ export class OperateStore<V extends object = IStoreValues, R = IStoreValues> ext
   scope: Record<string, any> = {};
   runBefore: IRunBefore = {};
   runAfter: IRunAfter = {};
-  constructor(config: IOperateStoreConfig<V, R>) {
+  constructor(config: IOperateStoreConfig<V, R> = {}) {
     const { runBefore, runAfter, form, scope, notifier, ...args } = config;
     super({
       isFilterEmptyAtRun: false,

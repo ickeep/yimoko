@@ -23,7 +23,7 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   moreLoading = false;
   moreResponse: IStoreResponse<R, V> = {};
 
-  constructor(config: IListStoreConfig<V, R>) {
+  constructor(config: IListStoreConfig<V, R> = {}) {
     const { keysConfig = {}, defaultValues, queryRoutingType, ...args } = config;
     const curKeysConfig = { ...defaultKeysConfig, ...keysConfig };
     const { sortOrder, page, pageSize } = curKeysConfig;
