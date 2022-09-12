@@ -53,4 +53,38 @@ describe('ListStore', () => {
       expect(store.listData).toEqual(result);
     });
   });
+
+  test('loadData', () => {
+    const store = new ListStore({});
+    const data = [{ a: 'a' }];
+    store.loadData(data);
+    expect(store.response.data).toBeUndefined();
+    expect(store.listData).toEqual([]);
+    store.setResponse({ code: 0, data });
+    expect(store.listData).toEqual(data);
+    expect(store.response.data).toEqual(data);
+    store.loadData(data);
+    expect(store.listData).toEqual([{ a: 'a' }, { a: 'a' }]);
+    expect(store.response.data).toEqual([{ a: 'a' }, { a: 'a' }]);
+
+    store.setResponse({ code: 0, data: { data } });
+    expect(store.listData).toEqual(data);
+    expect(store.response.data).toEqual({ data });
+    store.loadData(data);
+    expect(store.listData).toEqual([{ a: 'a' }, { a: 'a' }]);
+    expect(store.response.data).toEqual({ data: [{ a: 'a' }, { a: 'a' }] });
+
+    // @ts-ignore
+    store.loadData({ a: 'a' });
+    expect(store.listData).toEqual([{ a: 'a' }, { a: 'a' }]);
+
+    // @ts-ignore
+    store.loadData({});
+    expect(store.listData).toEqual([{ a: 'a' }, { a: 'a' }]);
+  });
+
+  test('loadMore', () => {
+    const store = new ListStore({});
+    expect(store.moreLoading).toBeFalsy();
+  });
 });

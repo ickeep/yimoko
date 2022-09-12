@@ -4,7 +4,7 @@ import { Key } from 'react';
 import { judgeIsSuccess } from '../tools/api';
 import { judgeIsEmpty } from '../tools/tool';
 
-import { BaseStore, IBaseStoreConfig, IStoreResponse, IStoreValues } from './base';
+import { BaseStore, transformStoreData, IBaseStoreConfig, IStoreResponse, IStoreValues } from './base';
 import { runStoreAPI } from './utils/api';
 
 export const defaultKeysConfig: Record<string, string> = {
@@ -93,7 +93,10 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
       const params = this.getAPIParams();
       const response = await runStoreAPI(api, this.apiExecutor, params);
       this.setMoreLoading(false);
-      response && this.setMoreResponse(response);
+      if (response) {
+        response.data = transformStoreData(response.data, this.transform.resData, this);
+        this.setMoreResponse(response);
+      }
       if (judgeIsSuccess(response)) {
         const data = response?.data.data;
         this.loadData(data);

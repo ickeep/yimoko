@@ -141,7 +141,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   getAPIParams = () => {
     const params = this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values;
-    return handleTransform(params, this.transform.reqParams, this);
+    return transformStoreData(params, this.transform.reqParams, this);
   };
 
   runAPI = async () => {
@@ -152,7 +152,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const params = this.getAPIParams();
     const response = await runStoreAPI(api, this.apiExecutor, params);
 
-    response && (response.data = handleTransform(response.data, this.transform.resData, this));
+    response && (response.data = transformStoreData(response.data, this.transform.resData, this));
 
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
@@ -177,7 +177,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   };
 }
 
-const handleTransform = (values: any, transform: ITransformRule | ITransformRule[] | ITransformFn = [], store: IStore<any, any>) => {
+export const transformStoreData = (values: any, transform: ITransformRule | ITransformRule[] | ITransformFn = [], store: IStore<any, any>) => {
   if (typeof transform === 'function') {
     return transform(values, store);
   }
