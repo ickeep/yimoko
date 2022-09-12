@@ -108,12 +108,13 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   };
 
   get isNoMore() {
-    const { total, page, pageSize } = this.keysConfig;
-    const data = this.response?.data as any;
+    const { keysConfig, response, moreResponse, listData } = this;
+    const { total, page, pageSize } = keysConfig;
+    const data = moreResponse?.data ?? response?.data as any;
     if (!data) {
       return true;
     }
-    const totalNum = data[total] ?? 0;
+    const totalNum = data[total] ?? listData.length;
     return totalNum <= data[page] * data[pageSize];
   }
 }
