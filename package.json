@@ -1,14 +1,14 @@
 {
   "name": "root",
+  "version": "0.3.1",
   "private": true,
-  "version": "0.1.6",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build",
     "lint": "eslint ./packages --ext ts,tsx",
     "lint:fix": "eslint ./packages/*/src --ext ts,tsx --fix",
-    "build:npm": "VITE_LIB=store vite build && VITE_LIB=taro vite build && VITE_LIB=web vite build",
     "release": "lerna publish from-package --yes --no-verify-access"
   },
   "devDependencies": {
@@ -19,6 +19,7 @@
     "eslint-config-tencent": "^1.0.4",
     "eslint-plugin-react-hooks": "^4.6.0",
     "lerna": "^5.3.0",
+    "prettier": "^2.7.1",
     "typescript": "^4.7.4",
     "vite": "^3.0.4",
     "vite-plugin-dts": "^1.4.1"

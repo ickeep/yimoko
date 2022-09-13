@@ -1,10 +1,12 @@
 export * from './adapter/adapter';
 export * from './adapter/background';
+export * from './adapter/dom';
 export * from './adapter/http';
 export * from './adapter/navigation-bar';
 export * from './adapter/route';
 export * from './adapter/storage';
 export * from './adapter/system';
+export * from './adapter/tabbar';
 export * from './adapter/toast';
 
 export * from './base/button';
@@ -81,13 +83,17 @@ export * from './out/swiper';
 export * from './out/table';
 export * from './out/tag';
 
+export * from './pro/products-index';
+
 export * from './store/config';
 export * from './store/lang';
 export * from './store/page';
+export * from './store/scroll-view';
 export * from './store/search';
 
 export * from './tools/handle-click';
-export * from './tools/style';
+export * from './tools/debounce';
+export * from './tools/template';
 
 export * from './components';
 

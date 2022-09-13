@@ -24,7 +24,7 @@ export const RedirectValues = observer((props: IFormProps) => {
   const type = typeof values;
 
   const curSchema = useMemo(() => {
-    const { properties, 'x-decorator': decorator, ...args } = schema?.toJSON();
+    const { properties, 'x-decorator': decorator, ...args } = schema?.toJSON() ?? {};
     const isDecorator = decorator?.indexOf('Redirect') === 0;
     const propertiesSchema = isDecorator ? { values: { ...args, type, properties } } : { values: { type, properties } };
     return { type: 'object', properties: propertiesSchema };

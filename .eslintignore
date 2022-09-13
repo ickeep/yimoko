@@ -4,3 +4,6 @@ index.html
 dist
 .eslintrc.js
 types
+
+node_modules
+**/node_modules/**

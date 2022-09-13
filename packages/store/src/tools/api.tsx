@@ -1,10 +1,13 @@
 // 判断请求是否成功
 export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
 
+// 判断请求是否错误 接口参数校验失败 或者 业务逻辑错误
+export const judgeIsBadRequest = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.badRequest;
+
 // 判断请求是否未授权
 export const judgeIsUnauthorized = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.unauthorized;
 
-// 判断请求是否被禁止，通常用于接口参数校验 或者 权限校验
+// 判断请求是否被禁止，通常用于权限校验
 export const judgeIsForbidden = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.forbidden;
 
 // 判断请求是否网络出错
@@ -14,6 +17,7 @@ export const getCodeByStatus = (status: number) => ((status >= 200 && status < 3
 
 export enum IHTTPCode {
   success = 0,
+  badRequest = 400,
   unauthorized = 401,
   forbidden = 403,
   networkError = 600,
@@ -46,4 +50,5 @@ export interface IPageData<T extends object = Record<string, any>> {
   total: number,
   totalPages: number,
   data: T[],
+  [key: string]: any
 }

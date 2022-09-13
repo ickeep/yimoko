@@ -3,7 +3,7 @@ import { useMemo, ReactNode } from 'react';
 
 import { judgeIsEmpty } from '../tools/tool';
 
-export const useChildren = (children?: ReactNode) => {
+export const useSchemaChildren = (children?: ReactNode) => {
   const fieldSchema = useFieldSchema();
   const { properties } = fieldSchema ?? {};
   return useMemo(() => {

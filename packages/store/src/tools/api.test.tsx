@@ -7,6 +7,12 @@ describe('api', () => {
     expect(judgeIsSuccess({})).toBeFalsy();
   });
 
+  test('judgeIsBadRequest', () => {
+    expect(judgeIsUnauthorized({ code: 401 })).toBeTruthy();
+    expect(judgeIsUnauthorized({ code: 402 })).toBeFalsy();
+    expect(judgeIsUnauthorized({})).toBeFalsy();
+  });
+
   test('judgeIsUnauthorized', () => {
     expect(judgeIsUnauthorized({ code: 401 })).toBeTruthy();
     expect(judgeIsUnauthorized({ code: 0 })).toBeFalsy();

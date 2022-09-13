@@ -18,10 +18,16 @@ describe('arrToOptions', () => {
   test('keys', () => {
     const options = [{ label1: '1', value1: '1', x: 'x1' }, { label1: '2', value1: '2', x: 'x2' }];
     const keys = { label: 'label1', value: 'value1' };
-    expect(arrToOptions(options, keys)).toEqual([
+    expect(arrToOptions<'label1' | 'value1' | 'x'>(options, keys)).toEqual([
       { label: '1', value: '1', x: 'x1' },
       { label: '2', value: '2', x: 'x2' },
     ]);
+  });
+
+  test('value undefined', () => {
+    const options = [{ b: '1' }, { a: '2' }, { c: 'c' }];
+    // @ts-ignore
+    expect(arrToOptions(options, { a: 'b' })).toEqual([{ a: '1' }, { a: undefined }, { c: 'c' }]);
   });
 });
 

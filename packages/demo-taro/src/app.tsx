@@ -2,13 +2,13 @@
 import Taro from '@tarojs/taro';
 
 import { createSchemaField, observer } from '@formily/react';
-import { APIExecutorProvider, SchemaComponentsProvider, SchemaFieldProvider } from '@yimoko/store';
+import { ConfigStoreProvider, SchemaComponentsProvider, SchemaFieldProvider } from '@yimoko/store';
 import { httpRequest, configStore, useAppConfig } from '@yimoko/taro';
 
 import './app.less';
 import { componentsMap } from './components';
 
-const SchemaField = createSchemaField({ components: componentsMap });
+const SchemaField = createSchemaField({ components: componentsMap, scope: { configStore } });
 
 // 请求处理
 // todo 登录拦截、重放逻辑
@@ -30,13 +30,13 @@ const getConfig = () => httpRequest({
 function App({ children }) {
   useAppConfig(getConfig);
   return (
-    <APIExecutorProvider value={httpRequest}>
+    <ConfigStoreProvider value={configStore}>
       <SchemaComponentsProvider value={componentsMap}>
         <SchemaFieldProvider value={SchemaField}>
           {children}
         </SchemaFieldProvider>
       </SchemaComponentsProvider>
-    </APIExecutorProvider >
+    </ConfigStoreProvider>
   );
 }
 

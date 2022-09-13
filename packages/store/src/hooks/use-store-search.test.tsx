@@ -2,11 +2,8 @@ import { createForm } from '@formily/core';
 import { act, render, renderHook } from '@testing-library/react';
 
 import { SchemaBox } from '../components/schema-box';
-
 import { IStore } from '../store';
-
 import { BaseStore } from '../store/base';
-
 import { ListStore } from '../store/list';
 
 import { useStoreSearch } from './use-store-search';
@@ -32,6 +29,11 @@ describe('useStoreSearch', () => {
     baseStore.isBindSearch = true;
     renderHook((search: string) => useStoreSearch(baseStore, search), { initialProps: '?a=a' });
     expect(baseStore.values.a).toBe('a');
+
+    renderHook((search: Record<string, any>) => useStoreSearch(baseStore, search), { initialProps: { a: '1', b: null, c: undefined } });
+    expect(baseStore.values.a).toBe('1');
+    expect(baseStore.values.b).toBe(null);
+    expect(baseStore.values.c).toBe(undefined);
   });
 
   test('isRunNow', () => {
@@ -75,7 +77,22 @@ describe('useStoreSearch', () => {
     expect(apiExecutor.mock.calls.length).toBe(1);
   });
 
-  test('listStore isEmpaty', () => {
+  test('listStore default not empty', () => {
+    const apiExecutor = jest.fn(() => Promise.resolve({ code: 0, msg: '', data: {} }));
+    const listStore = new ListStore({ defaultValues: { a: 'a', empty: '' }, isRunNow: false, api: {}, apiExecutor });
+    const { rerender } = renderHook((search: string) => useStoreSearch(listStore, search), { initialProps: '' });
+    expect(listStore.values.a).toEqual('a');
+    expect(apiExecutor).not.toBeCalled();
+    rerender('?a=');
+    expect(apiExecutor).toBeCalledWith({ params: { page: 1, pageSize: 20 } });
+    expect(listStore.values.a).toEqual('');
+    expect(apiExecutor.mock.calls.length).toBe(1);
+    rerender('');
+    expect(apiExecutor).toBeCalledWith({ params: { a: 'a', page: 1, pageSize: 20 } });
+    expect(apiExecutor.mock.calls.length).toBe(2);
+  });
+
+  test('listStore isEmpty', () => {
     const apiExecutor = jest.fn(() => Promise.resolve({ code: 0, msg: '', data: {} }));
     const listStore = new ListStore({ defaultValues: { a: '' }, isRunNow: false, api: {}, apiExecutor });
     expect(apiExecutor).not.toBeCalled();

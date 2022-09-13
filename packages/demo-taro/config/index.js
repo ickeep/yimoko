@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 // eslint-disable-next-line import/no-commonjs
-// const path = require('path');
+const path = require('path');
 
 const config = {
   alias: {
@@ -8,10 +8,13 @@ const config = {
     // '@tarojs/taro': path.resolve(__dirname, '../../..', 'node_modules/@tarojs/taro'),
     // '@tarojs/components': path.resolve(__dirname, '../../..', 'node_modules/@tarojs/components'),
     // '@antmjs/vantui': path.resolve(__dirname, '../../..', 'node_modules/@antmjs/vantui'),
-    // '@formily/core': path.resolve(__dirname, '../../..', 'node_modules/@formily/core'),
-    // '@formily/react': path.resolve(__dirname, '../../..', 'node_modules/@formily/react'),
-    // '@formily/reactive': path.resolve(__dirname, '../../..', 'node_modules/@formily/reactive'),
-    // '@formily/reactive-react': path.resolve(__dirname, '../../..', 'node_modules/@formily/reactive-react'),
+    '@formily/core': path.resolve(__dirname, '../../..', 'node_modules/@formily/core'),
+    '@formily/path': path.resolve(__dirname, '../../..', 'node_modules/@formily/path'),
+    '@formily/react': path.resolve(__dirname, '../../..', 'node_modules/@formily/react'),
+    '@formily/reactive': path.resolve(__dirname, '../../..', 'node_modules/@formily/reactive'),
+    '@formily/reactive-react': path.resolve(__dirname, '../../..', 'node_modules/@formily/reactive-react'),
+    '@formily/shared': path.resolve(__dirname, '../../..', 'node_modules/@formily/shared'),
+    '@formily/validator': path.resolve(__dirname, '../../..', 'node_modules/@formily/validator'),
   },
   projectName: 'demo-taro',
   date: '2022-8-2',

@@ -1,8 +1,11 @@
 import { CollapseItem, IndexAnchor } from '@antmjs/vantui';
+import { observer, useExpressionScope } from '@formily/react';
 import {
   Block, CoverView, KeyboardAccessory, MovableArea, MovableView, OfficialAccount, OpenData,
   PageContainer, ScrollView, ShareElement, SwiperItem, View, VoipRoom,
 } from '@tarojs/components';
+
+import { DataItems } from '@yimoko/store';
 
 import { Button } from './base/button';
 import { Camera } from './base/camera';
@@ -51,7 +54,7 @@ import { Sidebar } from './nav/sidebar';
 import { Tab, Tabs } from './nav/tab';
 import { Tabbar, TabbarItem } from './nav/tabbar';
 import { APIPage } from './out/api-page';
-import { Card, Cardlist } from './out/card';
+import { Card, CardList } from './out/card';
 import { Circle } from './out/circle';
 import { Collapse } from './out/collapse';
 import { CountDown } from './out/count-down';
@@ -67,9 +70,16 @@ import { Sticky } from './out/sticky';
 import { Swiper } from './out/swiper';
 import { Table } from './out/table';
 import { Tag } from './out/tag';
+import { ProductsIndex } from './pro/products-index';
 import { StorePage } from './store/page';
+import { StoreScrollView } from './store/scroll-view';
+import { templateConvertForProps } from './tools/template';
+
 
 export const components: Record<string, any> = {
+  // store 组件
+  DataItems,
+
   // 无需适配
   View,
   ScrollView,
@@ -138,7 +148,7 @@ export const components: Record<string, any> = {
   // out
   APIPage,
   Card,
-  Cardlist,
+  CardList,
   Circle,
   Collapse,
   CollapseItem,
@@ -172,6 +182,24 @@ export const components: Record<string, any> = {
   Tabbar,
   TabbarItem,
 
+  // pro
+  ProductsIndex,
+
   // store
   StorePage,
+  StoreScrollView,
+
 };
+
+// hoc 转换组件 props 使其支持 模版
+export function withConvertProps<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
+  return observer((props: T) => {
+    const scope = useExpressionScope();
+    const cProps = templateConvertForProps(props, scope) as T;
+    return <C {...cProps} />;
+  });
+}
+
+export const convertPropsComponents: Record<string, any> = {};
+
+Object.entries(components).forEach(([key, value]) => convertPropsComponents[key] = withConvertProps(value));

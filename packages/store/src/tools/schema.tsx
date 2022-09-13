@@ -11,7 +11,9 @@ export function getItemPropsBySchema(schema: Schema, componentName: string, sche
     'x-component-props': componentProps,
     'x-decorator': decorator,
     'x-decorator-props': decoratorProps,
-    ...args } = schema;
+    ...args
+  } = schema;
+
   if (component === componentName) {
     if (judgeIsEmpty(schema.properties)) {
       return componentProps;
@@ -21,11 +23,13 @@ export function getItemPropsBySchema(schema: Schema, componentName: string, sche
       children: <RecursionField schema={{ ...args, type: 'void' }} onlyRenderProperties name={schemaKey} />,
     };
   }
+
   if (!decorator || decorator === componentName) {
     return {
       ...decoratorProps,
       children: <RecursionField name={schemaKey} schema={{ ...args, 'x-component': component, 'x-component-props': componentProps }} />,
     };
   }
+
   return { children: <RecursionField schema={schema} name={schemaKey} /> };
 };

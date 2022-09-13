@@ -1,11 +1,11 @@
 import { Uploader as TUploader } from '@antmjs/vantui';
 import { UploaderProps as TUploaderProps } from '@antmjs/vantui/types/uploader';
 import { observer } from '@formily/react';
-import { IHTTPResponse, judgeIsEmpty, judgeIsSuccess, useBaseStore } from '@yimoko/store';
+import { IHTTPResponse, judgeIsEmpty, judgeIsSuccess, useBaseStore, useConfig } from '@yimoko/store';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { uploadFile } from '../adapter/http';
-import { useConfig } from '../store/config';
+import { IConfig } from '../store/config';
 
 export interface UploaderProps extends Omit<TUploaderProps, 'fileList'> {
   valueType?: 'string' | 'string[]' | 'array'
@@ -27,7 +27,7 @@ export const Uploader = observer((props: UploaderProps) => {
   const { values, setValuesByField } = useBaseStore<{ fileList: IFile[] }>({ defaultValues: { fileList: [] }, api: {} });
   const { fileList } = values;
 
-  const { uploadAPI } = useConfig();
+  const { uploadAPI } = useConfig<IConfig>();
 
   const setFileList = useCallback((fileList: IFile[]) => setValuesByField('fileList', fileList), [setValuesByField]);
 
@@ -74,9 +74,9 @@ export const Uploader = observer((props: UploaderProps) => {
       fileList={fileList}
       onAfterRead={(e) => {
         const { file } = e.detail;
-        const fiels = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
-        setFileList([...fileList, ...fiels]);
-        fiels.forEach((item) => {
+        const files = (Array.isArray(file) ? file : [file]).map(item => ({ ...item, status: 'uploading' }));
+        setFileList([...fileList, ...files]);
+        files.forEach((item) => {
           // eslint-disable-next-line complexity
           curUpload(item.url).then((res) => {
             // 取最新值

@@ -9,99 +9,68 @@ const IndexPage = observer(() => {
 
   const props: StorePageProps<object, unknown> = {
     store: {
-      api: { method: 'POST', url: '/api/test' },
-      defaultValues: {
-        phone: '',
-        code: '',
-      },
+      type: 'list',
+      api: { url: '/options/article-list.json' },
+      defaultValues: {},
     },
     options: {},
     schema: {
       type: 'object',
       properties: {
-        title: {
+        // test: {
+        //   type: 'string',
+        //   'x-component': 'Test',
+        // },
+        article: {
           type: 'void',
-          'x-component': 'Text',
+          'x-component': 'StoreScrollView',
           'x-component-props': {
-            block: true,
-            bold: true,
-            size: 'large',
-            children: '登 录',
-            style: { padding: 16, textAlign: 'center' },
+            itemURLPrefix: '/pages/article/detail',
+            itemDefault: { url: '?id=<%=id%>' },
           },
-        },
-        form: {
-          type: 'void',
-          'x-component': 'Form',
-          'x-component-props': {
-            notifyOnFail: true,
-          },
-          properties: {
-            phone: {
-              type: 'string',
-              title: '手机号',
-              required: true,
-              'x-component': 'Field',
-              'x-component-props': {
-                size: 'large',
-                type: 'number',
-                leftIcon: 'phone-o',
-              },
-            },
-            code: {
-              type: 'string',
-              title: '验证码',
-              required: true,
-              'x-component': 'Field',
-              'x-component-props': {
-                size: 'large',
-                type: 'number',
-                leftIcon: 'shield-o',
-              },
-            },
-            btn: {
-              type: 'void',
-              'x-component': 'View',
-              'x-component-props': {
-                style: { margin: 16 },
-              },
-              properties: {
-                submit: {
-                  type: 'void',
-                  'x-component': 'Button',
-                  'x-component-props': {
-                    block: true,
-                    type: 'primary',
-                    children: '登录',
-                    formType: 'submit',
+          // properties: {
+          //   xxx: {
+          //     type: 'void',
+          //     'x-component': 'CardList',
+          //     'x-component-props': {
+          //       options: '<%=curStore.listData%>',
+          //     },
+          //   },
+          // },
+          items: {
+            type: 'void',
+            properties: {
+              view: {
+                type: 'void',
+                'x-component': 'View',
+                'x-component-props': {
+                  style: { margin: '20rpx', backgroundColor: '#fff' },
+                },
+                properties: {
+                  title: {
+                    type: 'string',
+                    'x-component': 'Text',
+                    'x-component-props': {
+                      size: 'large',
+                      block: true,
+                      style: { padding: '20rpx' },
+                    },
                   },
+                  img: { type: 'string', 'x-component': 'Image', 'x-component-props': { fit: 'cover', style: { width: '100%', height: '300rpx' } } },
+                  desc: { type: 'string', 'x-component': 'Text', 'x-component-props': { size: 'small', block: true, style: { padding: '20rpx' } } },
                 },
               },
             },
           },
         },
-        // show: {
-        //   type: 'void',
-        //   'x-component': 'View',
-        //   'x-component-props': { style: { padding: 20 } },
-        //   properties: {
-        //     value: {
-        //       type: 'object',
-        //       properties: {
-        //         v1: { 'x-component': 'Text' },
-        //         v2: { 'x-component': 'Image', 'x-component-props': { width: 100, height: 100 } },
-        //       },
-        //     },
-        //   },
-        // },
       },
     },
   };
 
-  // console.log(JSON.stringify(props));
+  console.log(JSON.stringify(props));
 
   return (
-    <Page>
+    <Page style={{ height: '100%', paddingTop: 0 }}>
       <StorePage {...props} />
     </Page>
   );

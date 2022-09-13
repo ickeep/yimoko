@@ -17,7 +17,7 @@ export const RedirectListData = observer((props: RedirectListDataProps) => {
 });
 
 export const useListData = (store?: ListStore<any, any>) => {
-  const scope = useExpressionScope();
+  const scope = useExpressionScope() ?? {};
   const { curStore = {} } = scope;
   const { listData } = store ?? curStore;
   return listData;

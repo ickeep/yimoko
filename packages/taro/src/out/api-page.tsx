@@ -1,12 +1,12 @@
 import { observer } from '@formily/react';
 import { useRouter } from '@tarojs/taro';
-import { IStoreValues, IStore, IStoreConfig, useStore, judgeIsSuccess, useDeepMemo } from '@yimoko/store';
+import { IStoreValues, IStore, IStoreConfig, useStore, judgeIsSuccess, useDeepMemo, useConfig } from '@yimoko/store';
 import { isEqual } from 'lodash-es';
 import { useEffect } from 'react';
 
 import { getStorage, setStorage } from '../adapter/storage';
 import { Page } from '../base/page';
-import { useConfig } from '../store/config';
+import { IConfig } from '../store/config';
 import { StorePage } from '../store/page';
 
 export interface APIPageProps<V extends object = IStoreValues> {
@@ -19,7 +19,7 @@ export interface APIPageProps<V extends object = IStoreValues> {
 export const APIPage = observer((props: APIPageProps) => {
   const { store, pagePath, isCache = true, paramKey = 'pagePath' } = props;
   const curStore = useStore(store ?? {});
-  const { pageCachePrefix } = useConfig();
+  const { pageCachePrefix } = useConfig<IConfig>();
   const router = useRouter();
   const curPagePath = pagePath ?? router?.params?.[paramKey];
 

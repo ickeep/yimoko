@@ -1,6 +1,6 @@
 {
   "name": "@yimoko/taro",
-  "version": "0.1.6",
+  "version": "0.3.1",
   "private": false,
   "license": "MIT",
   "exports": {
@@ -15,13 +15,22 @@
   "files": [
     "dist",
     "types",
+    "src/less",
     "README.md"
   ],
   "scripts": {
     "build": "VITE_LIB=taro vite build -c ../../vite.config.ts",
-    "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts"
+    "dev": "VITE_LIB=taro VITE_WATCH=true vite build -c ../../vite.config.ts",
+    "test:unit": "react-scripts test --maxWorkers=1 --coverage --watchAll=false",
+    "test:watch": "react-scripts test --maxWorkers=1 --watchAll --coverage"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash"
+    }
   },
   "devDependencies": {
+    "@antmjs/vantui": "^1.9.21",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.3.0",
@@ -40,20 +49,19 @@
     "react-scripts": "5.0.1",
     "typescript": "^4.7.4",
     "vite": "^3.0.4",
-    "vite-plugin-dts": "^1.4.1",
-    "@antmjs/vantui": "^1.9.21"
+    "vite-plugin-dts": "^1.4.1"
   },
   "peerDependencies": {
-    "@antmjs/vantui": "^1.9.21",
-    "@formily/react": "^2.1.11",
-    "@formily/reactive": "^2.1.11",
-    "@formily/reactive-react": "^2.1.11",
-    "@tarojs/components": "3.4.9",
-    "@tarojs/taro": "3.4.9",
-    "@types/lodash-es": "^4.17.6",
-    "@yimoko/store": "^0.1.0",
-    "dayjs": "^1.11.5",
-    "lodash-es": "^4.17.21",
+    "@antmjs/vantui": "^1.9.0",
+    "@formily/react": "^2.0.0",
+    "@formily/reactive": "^2.0.0",
+    "@formily/reactive-react": "^2.0.0",
+    "@tarojs/components": "^3.4 || ^3.5",
+    "@tarojs/taro": "^3.4 || ^3.5",
+    "@types/lodash-es": "^4.0.0",
+    "@yimoko/store": "*",
+    "dayjs": "^1.0.0",
+    "lodash-es": "^4.0.0",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },

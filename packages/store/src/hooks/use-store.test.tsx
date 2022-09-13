@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react';
 
 import { BaseStore } from '../store/base';
 import { ListStore } from '../store/list';
+import { OperateStore } from '../store/operate';
 
 import { useStore } from './use-store';
 
@@ -33,6 +34,17 @@ describe('useStore', () => {
     expect(store.api).toEqual({});
     expect(store instanceof ListStore).toBeTruthy();
     expect(store.apiExecutor).toBeDefined();
+  });
+
+  test('operate', () => {
+    const { result: { current: store } } = renderHook(() => useStore({ api: {}, type: 'operate' }));
+    expect(store.api).toEqual({});
+    expect(store instanceof OperateStore).toBeTruthy();
+    expect(store.apiExecutor).toBeDefined();
+
+    const operateStore = new OperateStore();
+    const { result: { current: store2 } } = renderHook(() => useStore(operateStore));
+    expect(store2).toEqual(operateStore);
   });
 
   test('apiExecutor', () => {

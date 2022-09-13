@@ -1,5 +1,6 @@
 // 选项(如下拉选择组件)数据处理
 import { omit } from 'lodash-es';
+import { Key } from 'react';
 
 import { strToArr } from '../tools/str';
 
@@ -76,10 +77,10 @@ export const judgeValueInOptions = (value: any, options: IOptions<'value'>, keys
   return options?.some(item => item[key] === value);
 };
 
-export type IOptions<T extends string = 'label' | 'value'> = Array<IOption<T>>;
+export type IOptions<T extends Key = 'label' | 'value'> = Array<IOption<T>>;
 
 
-export type IOption<T extends string = 'label' | 'value'> = { [key in T]: any } & { [key: string]: any };
+export type IOption<T extends Key = 'label' | 'value'> = { [key in T]: any } & { [key: string]: any };
 
 
-export type IKeys<T extends string = 'label' | 'value'> = Record<T | string, string>;
+export type IKeys<T extends Key = 'label' | 'value'> = { [key in T | string]: string };

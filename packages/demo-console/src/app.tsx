@@ -1,7 +1,7 @@
 import { createSchemaField } from '@formily/react';
-import { APIExecutorProvider, ConfigProvider, SchemaFieldProvider, SchemaComponentsProvider } from '@yimoko/store';
-import { http, httpRequest } from '@yimoko/web';
-import { ConfigProvider as AntdConfigProvider } from 'antd';
+import { ConfigStoreProvider, SchemaFieldProvider, SchemaComponentsProvider } from '@yimoko/store';
+import { http, configStore } from '@yimoko/web';
+import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -13,17 +13,15 @@ const SchemaField = createSchemaField({ components: componentsMap });
 http.defaults.baseURL = 'http://localhost:3721';
 
 export const App = () => (
-  <AntdConfigProvider locale={zhCN}>
-    <ConfigProvider value={{ static: { icon: '/api/svg/', img: '' } }}>
-      <APIExecutorProvider value={httpRequest}>
-        <SchemaComponentsProvider value={componentsMap}>
-          <SchemaFieldProvider value={SchemaField}>
-            <BrowserRouter>
-              <Routes />
-            </BrowserRouter>
-          </SchemaFieldProvider>
-        </SchemaComponentsProvider>
-      </APIExecutorProvider>
-    </ConfigProvider >
-  </AntdConfigProvider>
+  <ConfigProvider locale={zhCN}>
+    <ConfigStoreProvider value={configStore}>
+      <SchemaComponentsProvider value={componentsMap}>
+        <SchemaFieldProvider value={SchemaField}>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </SchemaFieldProvider>
+      </SchemaComponentsProvider>
+    </ConfigStoreProvider>
+  </ConfigProvider>
 );

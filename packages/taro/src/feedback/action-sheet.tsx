@@ -2,7 +2,7 @@ import { ActionSheet as TActionSheet, Button, Skeleton } from '@antmjs/vantui';
 import { ActionSheetItem, ActionSheetProps as TActionSheetProps } from '@antmjs/vantui/types/action-sheet';
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { ITouchEvent, View } from '@tarojs/components';
-import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useChildren } from '@yimoko/store';
+import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useSchemaChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
@@ -12,6 +12,8 @@ export type ActionSheetProps = TActionSheetProps & IOptionsAPIProps<keyof Action
   values?: { true: any, false: any };
   onChange?: (value: any, e?: ITouchEvent) => void;
   button?: ButtonProps
+  itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
 const defaultKeys = {
@@ -26,7 +28,10 @@ const defaultKeys = {
 };
 
 export const ActionSheet = (props: ActionSheetProps) => {
-  const { value, values, options, api, keys, splitter, valueType, onChange, onSelect, onCancel, button, children, ...args } = props;
+  const {
+    value, values, options, api, keys, splitter, valueType,
+    onChange, onSelect, onCancel, button, children, itemURLPrefix, itemDefault, ...args
+  } = props;
   const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter);
   const [show, setShow] = useState(false);
 
@@ -42,7 +47,7 @@ export const ActionSheet = (props: ActionSheetProps) => {
     return !!value;
   }, [isControlled, show, value, values]);
 
-  const tempChildren = useChildren(children);
+  const tempChildren = useSchemaChildren(children);
 
   const curChildren = useMemo(() => {
     // 受控模式，不展示 trigger
@@ -77,7 +82,7 @@ export const ActionSheet = (props: ActionSheetProps) => {
         }}
         onSelect={(e) => {
           const { detail } = e;
-          handleClick(detail);
+          handleClick({ ...itemDefault, ...detail }, itemURLPrefix);
           close(e);
           onSelect?.(e);
         }}

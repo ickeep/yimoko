@@ -5,7 +5,7 @@ describe('BaseStore', () => {
   const store = new BaseStore({ defaultValues, api: { url: '' } });
 
   test('df', () => {
-    const dfStore = new BaseStore({ api: {} });
+    const dfStore = new BaseStore();
     expect(dfStore.isFilterEmptyAtRun).toBeFalsy();
     expect(dfStore.isBindSearch).toBeFalsy();
     expect(dfStore.isRunNow).toBeFalsy();
@@ -91,6 +91,20 @@ describe('BaseStore', () => {
     store.fieldsConfig = { id: { type: 'number' } };
     store.setValuesBySearch('?name=name&xxx=xxx&id=2');
     expect(store.values).toEqual({ id: 2, name: 'name', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name1', id: '3' });
+    expect(store.values).toEqual({ id: 3, name: 'name1', type: 't1' });
+
+    store.setValuesBySearch({ id: 4 });
+    expect(store.values).toEqual({ id: 4, name: '', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name2' }, 'part');
+    expect(store.values).toEqual({ id: 4, name: 'name2', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name2' });
+    expect(store.values).toEqual({ id: 1, name: 'name2', type: 't1' });
+
+    store.setValuesBySearch('?name=name&xxx=xxx&id=2');
   });
 
   test('getURLSearch', () => {
@@ -159,6 +173,34 @@ describe('BaseStore', () => {
     jest.advanceTimersByTime(100);
     await jest.runAllTimers();
     expect(hasApiExecutorStore.response.data).toBe(100);
+  });
+
+  test('transform reqParams', () => {
+    const reqParamsFn = jest.fn((p: any) => ({ ...p, name: 'n1' }));
+    const defaultValues = { id: 1, name: 'name', type: 't1' };
+    const baseStore = new BaseStore({ defaultValues });
+    expect(baseStore.transform).toEqual({});
+    expect(baseStore.getAPIParams()).toEqual(defaultValues);
+    baseStore.transform.reqParams = reqParamsFn;
+    expect(baseStore.getAPIParams()).toEqual({ id: 1, type: 't1', name: 'n1' });
+    expect(reqParamsFn).toBeCalledTimes(1);
+    expect(reqParamsFn).toBeCalledWith(defaultValues, baseStore);
+    baseStore.transform.reqParams = { type: 'omit', keys: ['id', 'name'] };
+    expect(baseStore.getAPIParams()).toEqual({ type: 't1' });
+  });
+
+  test('transform resData', async () => {
+    const resDataFn = jest.fn((p: any) => ({ ...p, name: 'n1' }));
+    const res = { id: 1, name: 'name', type: 't1' };
+    const api = async () => ({ msg: '', code: 0, data: res });;
+    const baseStore = new BaseStore({ api });
+    expect(baseStore.transform).toEqual({});
+    baseStore.transform.resData = resDataFn;
+    expect((await baseStore.runAPI())?.data).toEqual({ ...res, name: 'n1' });
+    expect(resDataFn).toBeCalledTimes(1);
+    expect(resDataFn).toBeCalledWith(res, baseStore);
+    baseStore.transform.resData = { type: 'omit', keys: ['id', 'name'] };
+    expect((await baseStore.runAPI())?.data).toEqual({ type: 't1' });
   });
 });
 

@@ -12,7 +12,7 @@ const defaultGrid: IFormGridProps = {
 
 export const StoreForm = observer((props: StoreFormProps) => {
   const { fields, store, children, onAutoSubmit, grid = {}, ...args } = props;
-  const scope = useExpressionScope();
+  const scope = useExpressionScope() ?? {};
   const { curStore } = scope;
   const curUseStore = store ?? curStore as IStore;
   const location = useLocation();

@@ -5,7 +5,9 @@ import { Spin } from 'antd';
 import htmr from 'htmr';
 import { useEffect, useMemo, useState } from 'react';
 
-export interface IconProps extends Partial<CustomIconComponentProps> {
+import { IConfig } from '../store/config';
+
+export interface IconProps extends Partial<Omit<CustomIconComponentProps, 'component'>> {
   name?: string
   value?: string
 }
@@ -17,7 +19,7 @@ export const Icon = (props: IconProps) => {
   const { name, value, ...args } = props;
   const http = useAPIExecutor();
   const [loading, setLoading] = useState(false);
-  const { static: { icon } } = useConfig();
+  const { static: { icon } } = useConfig<IConfig>();
 
   const file = name ?? value ?? '';
   const src = useMemo(() => (file.includes('://') ? file : `${icon + file}.svg`), [file, icon]);
@@ -41,5 +43,5 @@ export const Icon = (props: IconProps) => {
     return <TIcon component={component}  {...args} />;
   }
 
-  return <Spin spinning={loading} />;
+  return <Spin size='small' spinning={loading} />;
 };

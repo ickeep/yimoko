@@ -1,15 +1,16 @@
 import { Skeleton, Card as TCard } from '@antmjs/vantui';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
-import { observer } from '@formily/react';
+import { observer, useExpressionScope } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
+import { templateConvertForProps } from '../tools/template';
 
 export const Card = TCard;
 
-const defaultKeys = {
+export const cardDefaultKeys = {
   tag: 'tag',
   num: 'num',
   desc: 'desc',
@@ -24,27 +25,30 @@ const defaultKeys = {
   currency: 'currency',
 };
 
-export type CardlistProps = ViewProps & IOptionsAPIProps<keyof typeof defaultKeys> & {
+export type CardListProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
+  itemURLPrefix?: string
+  itemDefault?: Record<string, any>
 };
 
-export const Cardlist = observer((props: CardlistProps) => {
-  const { options, api, keys, splitter, skeleton, ...args } = props;
-  const [data, loading] = useAPIOptions(options, api, { ...defaultKeys, ...keys }, splitter) as [any[], boolean, Function];
+export const CardList = observer((props: CardListProps) => {
+  const { options, api, keys, splitter, skeleton, itemURLPrefix, itemDefault, ...args } = props;
+  const [data, loading] = useAPIOptions(options, api, { ...cardDefaultKeys, ...keys }, splitter) as [any[], boolean, Function];
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const curChildren = useMemo(() => {
     const dataChildren = data?.map((item, i) => (
-      <TCard key={`d-${i}`} price="" onClick={() => handleClick(item, i)} {...item} />
+      <TCard key={`d-${i}`} price="" onClick={() => handleClick({ ...itemDefault, ...item }, itemURLPrefix, i)} {...item} />
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = getItemPropsBySchema(item, 'Card', i);
-      return <TCard key={`i-${i}`} price="" onClick={() => handleClick(item, i)} {...props} />;
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Card', i), scope);
+      return <TCard key={`i-${i}`} price="" onClick={() => handleClick({ ...itemDefault, ...props }, itemURLPrefix, i)} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data]);
+  }, [curItems, data, itemDefault, itemURLPrefix, scope]);
 
   return (
     <Skeleton {...skeleton} loading={loading}>

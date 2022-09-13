@@ -3,7 +3,7 @@ import { ButtonProps } from '@antmjs/vantui/types/button';
 import { OverlayProps as TOverlayProps } from '@antmjs/vantui/types/overlay';
 import { useFieldSchema, RecursionField } from '@formily/react';
 import { ITouchEvent, View } from '@tarojs/components';
-import { useChildren } from '@yimoko/store';
+import { useSchemaChildren } from '@yimoko/store';
 import cls from 'classnames';
 import { useState, useMemo, CSSProperties } from 'react';
 
@@ -58,7 +58,7 @@ export const Overlay = (props: OverlayProps) => {
     );
   }, [additionalProperties, button, isControlled, name, onChange, triggerStyle, values?.true]);
 
-  const curChildren = useChildren(children);
+  const curChildren = useSchemaChildren(children);
 
   return (
     <>

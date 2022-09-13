@@ -3,7 +3,7 @@ import { ButtonProps } from '@antmjs/vantui/types/button';
 import { DialogProps as TDialogProps } from '@antmjs/vantui/types/dialog';
 import { RecursionField, useFieldSchema } from '@formily/react';
 import { ITouchEvent, View } from '@tarojs/components';
-import { judgeIsEmpty, useChildren } from '@yimoko/store';
+import { judgeIsEmpty, useSchemaChildren } from '@yimoko/store';
 import { useMemo, useState } from 'react';
 
 export type DialogProps = TDialogProps & {
@@ -51,7 +51,7 @@ export const Dialog = (props: DialogProps) => {
     );
   }, [additionalProperties, args.title, button, isControlled, name, onChange, triggerStyle, values?.true]);
 
-  const curChildren = useChildren(children);
+  const curChildren = useSchemaChildren(children);
 
   const curMessage = useMemo(() => {
     if (judgeIsEmpty(message) && judgeIsEmpty(curChildren)) {

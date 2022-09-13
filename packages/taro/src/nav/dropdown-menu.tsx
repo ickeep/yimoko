@@ -1,9 +1,11 @@
 import { DropdownItem as TDropdownItem, DropdownMenu as TDropdownMenu } from '@antmjs/vantui';
 import { DropdownItemProps as TDropdownItemProps, DropdownMenuProps } from '@antmjs/vantui/types/dropdown-menu';
 import { GeneralField, isVoidField } from '@formily/core';
-import { observer, useField, useForm } from '@formily/react';
+import { observer, useExpressionScope, useField, useForm } from '@formily/react';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
+
+import { templateConvertForProps } from '../tools/template';
 
 const defaultKeys = {
   value: 'value',
@@ -28,7 +30,7 @@ export const DropdownItem = observer((props: DropdownItemProps) => {
 
 export const DropdownMenu = observer((props: DropdownMenuProps & { values: Record<string, any> }) => {
   const curItems = useSchemaItems();
-
+  const scope = useExpressionScope();
   const form = useForm();
   const field = useField();
 
@@ -46,7 +48,7 @@ export const DropdownMenu = observer((props: DropdownMenuProps & { values: Recor
   }, [field]);
 
   const curChildren = useMemo(() => curItems.map?.((item, i) => {
-    const props = getItemPropsBySchema(item, 'DropdownItem', i);
+    const props = templateConvertForProps(getItemPropsBySchema(item, 'DropdownItem', i), scope);
     const { name, type } = item;
     if (type !== 'void' && name && valueField) {
       const { value, path } = valueField;
@@ -56,7 +58,7 @@ export const DropdownMenu = observer((props: DropdownMenuProps & { values: Recor
       };
     }
     return <DropdownItem key={`i-${i}`} {...props} />;
-  }), [curItems, form, valueField]);
+  }), [curItems, form, scope, valueField]);
 
   return (<TDropdownMenu {...props} >{curChildren}</TDropdownMenu>);
 });

@@ -5,17 +5,26 @@ import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { IOptions } from '../tools/options';
 import { judgeIsEmpty } from '../tools/tool';
+import { ITransformRule, transformData } from '../tools/transform';
 
 import { runStoreAPI } from './utils/api';
-
 import { getSearchParamByValue, getValueBySearchParam, IFieldsConfig } from './utils/field';
 
+import { IStore } from '.';
+
+type ITransformFn = (values: any, store?: IStore) => any;
+export interface IStoreTransform {
+  reqParams?: ITransformRule | ITransformRule[] | ITransformFn
+  resData?: ITransformRule | ITransformRule[] | ITransformFn
+}
 export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   isFilterEmptyAtRun = false;
   isBindSearch = false;
   isRunNow = false;
   dictConfig: IStoreDictConfig<V> = [];
   fieldsConfig: IFieldsConfig<V> = Object({});
+
+  transform: IStoreTransform = {};
 
   defaultValues: IV<V>;
   apiExecutor?: IHTTPRequest<R, V>;
@@ -28,7 +37,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   private lastFetchID = 0;
 
-  constructor(config: IBaseStoreConfig<V, R>) {
+  constructor(config: IBaseStoreConfig<V, R> = {}) {
     const {
       api,
       isFilterEmptyAtRun = false,
@@ -37,10 +46,13 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
       isRunNow = false,
       dictConfig = [],
       fieldsConfig = Object({}),
+      transform = {},
       apiExecutor, defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
+
+    this.transform = transform;
 
     this.defaultValues = defaultValues;
     this.values = cloneDeep(defaultValues);
@@ -96,13 +108,22 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
 
-  setValuesBySearch = (search: string) => {
-    const newValues = {};
-    const searchParams = new URLSearchParams(search);
-    Object.keys(this.values).forEach((key) => {
-      // @ts-ignore
-      searchParams.has(key) && (newValues[key] = getValueBySearchParam(searchParams.get(key), this.fieldsConfig[key]));
-    });
+  // type all undefined 则填默认值  "" 则填空字符串
+  setValuesBySearch = (search: string | Partial<Record<string, any>>, type: 'all' | 'part' = 'all') => {
+    let newValues: any = {};
+    if (typeof search === 'string') {
+      const searchParams = new URLSearchParams(search);
+      Object.keys(this.values).forEach((key) => {
+        const strValue = searchParams.get(key);
+        strValue !== null && (newValues[key] = getValueBySearchParam(strValue, this.fieldsConfig[key]));
+      });
+    }
+    if (typeof search === 'object') {
+      Object.entries(search).forEach(([key, value]) => newValues[key] = getValueBySearchParam(value, this.fieldsConfig[key]));
+    }
+
+    type === 'all' && (newValues = { ...this.getDefaultValues(), ...newValues });
+
     this.setValues(newValues);
   };
 
@@ -127,7 +148,10 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setResponse = (data: IStoreResponse<R, V>) => this.response = data;
 
-  getAPIParams = () => (this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values) as IV<V>;
+  getAPIParams = () => {
+    const params = this.isFilterEmptyAtRun ? pickBy(this.values, value => (!judgeIsEmpty(value))) : this.values;
+    return transformStoreData(params, this.transform.reqParams, this);
+  };
 
   runAPI = async () => {
     this.setLoading(true);
@@ -136,6 +160,9 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     const { api } = this;
     const params = this.getAPIParams();
     const response = await runStoreAPI(api, this.apiExecutor, params);
+
+    response && (response.data = transformStoreData(response.data, this.transform.resData, this));
+
     if (response && fetchID === this.lastFetchID) {
       this.setResponse(response);
       this.setLoading(false);
@@ -153,11 +180,18 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     return this.runAPI();
   };
 
-  runAPIDataBySearch = async (search: string) => {
+  runAPIDataBySearch = async (search: string | Partial<Record<string, any>>) => {
     this.setValuesBySearch(search);
     return this.runAPI();
   };
 }
+
+export const transformStoreData = (values: any, transform: ITransformRule | ITransformRule[] | ITransformFn = [], store: IStore<any, any>) => {
+  if (typeof transform === 'function') {
+    return transform(values, store);
+  }
+  return transformData(values, transform);
+};
 
 export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
   defaultValues?: V,
@@ -165,6 +199,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> 
   keysConfig?: Record<string, string>,
   dictConfig?: IStoreDictConfig<V>
   fieldsConfig?: IFieldsConfig<V>;
+  transform?: IStoreTransform
   isFilterEmptyAtRun?: boolean;
   isBindSearch?: boolean;
   isRunNow?: boolean,

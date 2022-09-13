@@ -1,10 +1,12 @@
 import { Checkbox as TCheckbox, CheckboxGroup as TCheckboxGroup, Skeleton } from '@antmjs/vantui';
 import { CheckboxProps as TCheckboxProps, CheckboxGroupProps as TCheckboxGroupProps } from '@antmjs/vantui/types/checkbox';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
-import { observer } from '@formily/react';
+import { observer, useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, strToArr, useAPIOptions, useSchemaItems } from '@yimoko/store';
 import { useMemo } from 'react';
+
+import { templateConvertForProps } from '../tools/template';
 
 export interface CheckboxProps extends Omit<TCheckboxProps, 'onChange' | 'value'> {
   onChange?: (value: any, event: ITouchEvent) => void
@@ -62,6 +64,7 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
   }, [value, splitter]);
 
   const curItems = useSchemaItems();
+  const scope = useExpressionScope();
 
   const curChildren = useMemo(() => {
     const dataChildren = data.map?.(({ label, value, ...itemArgs }, i) => (
@@ -69,12 +72,12 @@ export const CheckboxGroup = observer((props: CheckboxGroupProps) => {
     ));
 
     const itemChildren = curItems.map?.((item, i) => {
-      const props = getItemPropsBySchema(item, 'Checkbox', i);
+      const props = templateConvertForProps(getItemPropsBySchema(item, 'Checkbox', i), scope);
       return <TCheckbox shape="square" key={`i-${i}`} {...props} />;
     });
 
     return [...dataChildren, ...itemChildren];
-  }, [curItems, data]);
+  }, [curItems, data, scope]);
 
   return (
     <Skeleton {...skeleton} loading={loading}>

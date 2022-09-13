@@ -6,14 +6,14 @@ import { SchemaBox } from '../components/schema-box';
 import { useSchemaField } from '../context/schema-field';
 import { judgeIsEmpty } from '../tools/tool';
 
-export type WithItemSchemaProps<T extends Object = Record<string, any>, F extends Object = any> = Omit<T, 'children'> & {
+export type WithSchemaChildrenProps<T extends Object = Record<string, any>, F extends Object = any> = Omit<T, 'children'> & {
   schema?: ISchema
   model?: IFormProps<F>
 };
 
 // 适配子项(例如 Tabs 的 Tab) 让其支持 schema 渲染
-export function withItemSchema<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
-  return (props: WithItemSchemaProps<T>) => {
+export function withSchemaChildren<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
+  return (props: WithSchemaChildrenProps<T>) => {
     const { model, schema, ...args } = props;
     const cProps = args as T;
 
@@ -27,7 +27,7 @@ export function withItemSchema<T extends Object = Record<string, any>>(C: React.
     return (
       <C {...cProps}>
         <SchemaBox model={curModel}>
-          <SchemaField schema={{ type: 'object', properties: { data: schema ?? {} } }} />
+          <SchemaField schema={{ type: 'object', properties: { data: schema } }} />
         </SchemaBox>
       </C>);
   };

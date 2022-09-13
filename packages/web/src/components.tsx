@@ -12,9 +12,11 @@ import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from
 import { Select } from './in/select';
 import { Icon } from './out/icon';
 import { Link } from './out/link';
-import { TableDisplay } from './out/table';
+import { PageError } from './out/page-error';
+import { Table } from './out/table';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
+import { StorePageContent } from './store/page-content';
 import { StoreTable } from './store/table';
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -24,11 +26,14 @@ export const components: Record<string, any> = {
   Select,
 
   Icon,
-  TableDisplay,
+  Link: withValueChildren(Link),
+  PageError,
+  Table,
 
   SchemaPage,
 
   StoreForm,
+  StorePageContent,
   StorePage,
   StoreTable,
 
@@ -41,7 +46,6 @@ export const components: Record<string, any> = {
   Button: withValueChildren(Button),
   Title: withValueChildren(Title),
   Text: withValueChildren(Text),
-  Link: withValueChildren(Link),
   Paragraph: withValueChildren(Paragraph),
 
   Divider: withValueChildren(Divider),
