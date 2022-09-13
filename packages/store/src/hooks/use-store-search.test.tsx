@@ -33,7 +33,7 @@ describe('useStoreSearch', () => {
     renderHook((search: Record<string, any>) => useStoreSearch(baseStore, search), { initialProps: { a: '1', b: null, c: undefined } });
     expect(baseStore.values.a).toBe('1');
     expect(baseStore.values.b).toBe(null);
-    expect(baseStore.values.c).toBe('');
+    expect(baseStore.values.c).toBe(undefined);
   });
 
   test('isRunNow', () => {

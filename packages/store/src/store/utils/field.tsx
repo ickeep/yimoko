@@ -7,7 +7,7 @@ import { BaseStore, IField } from '../base';
 
 export const getSearchParamByValue = (value: any) => (typeof value === 'object' ? JSONStringify(value) : value?.toString?.() ?? '');
 
-export const getValueBySearchParam = (searchParam: string, schema: ISchema = {}, dfValue: any = '') => {
+export const getValueBySearchParam = (searchParam?: string, schema: ISchema = {}, dfValue: any = '') => {
   const { type = Array.isArray(dfValue) ? 'array' : typeof dfValue } = schema;
   const typeFnMap: Record<string, Function> = {
     number: (value: string) => Number(value),

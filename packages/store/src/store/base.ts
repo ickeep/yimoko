@@ -108,13 +108,21 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
 
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
 
-  setValuesBySearch = (search: string) => {
-    const newValues = {};
-    const searchParams = new URLSearchParams(search);
-    Object.keys(this.values).forEach((key) => {
-      // @ts-ignore
-      searchParams.has(key) && (newValues[key] = getValueBySearchParam(searchParams.get(key), this.fieldsConfig[key]));
-    });
+  // type all undefined 则填默认值  "" 则填空字符串
+  setValuesBySearch = (search: string | Partial<Record<string, string>>, type: 'all' | 'part' = 'all') => {
+    let newValues: any = {};
+    if (typeof search === 'string') {
+      const searchParams = new URLSearchParams(search);
+      Object.keys(this.values).forEach((key) => {
+        const strValue = searchParams.get(key);
+        strValue !== null && (newValues[key] = getValueBySearchParam(strValue, this.fieldsConfig[key]));
+      });
+    } else if (typeof search === 'object') {
+      Object.entries(search).forEach(([key, value]) => newValues[key] = getValueBySearchParam(value, this.fieldsConfig[key]));
+    }
+
+    type === 'all' && (newValues = { ...this.getDefaultValues(), ...newValues });
+
     this.setValues(newValues);
   };
 
@@ -171,7 +179,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     return this.runAPI();
   };
 
-  runAPIDataBySearch = async (search: string) => {
+  runAPIDataBySearch = async (search: string | Partial<Record<string, string>>) => {
     this.setValuesBySearch(search);
     return this.runAPI();
   };
