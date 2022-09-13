@@ -77,6 +77,21 @@ describe('useStoreSearch', () => {
     expect(apiExecutor.mock.calls.length).toBe(1);
   });
 
+  test('listStore default not empty', () => {
+    const apiExecutor = jest.fn(() => Promise.resolve({ code: 0, msg: '', data: {} }));
+    const listStore = new ListStore({ defaultValues: { a: 'a', empty: '' }, isRunNow: false, api: {}, apiExecutor });
+    const { rerender } = renderHook((search: string) => useStoreSearch(listStore, search), { initialProps: '' });
+    expect(listStore.values.a).toEqual('a');
+    expect(apiExecutor).not.toBeCalled();
+    rerender('?a=');
+    expect(apiExecutor).toBeCalledWith({ params: { page: 1, pageSize: 20 } });
+    expect(listStore.values.a).toEqual('');
+    expect(apiExecutor.mock.calls.length).toBe(1);
+    rerender('');
+    expect(apiExecutor).toBeCalledWith({ params: { a: 'a', page: 1, pageSize: 20 } });
+    expect(apiExecutor.mock.calls.length).toBe(2);
+  });
+
   test('listStore isEmpty', () => {
     const apiExecutor = jest.fn(() => Promise.resolve({ code: 0, msg: '', data: {} }));
     const listStore = new ListStore({ defaultValues: { a: '' }, isRunNow: false, api: {}, apiExecutor });

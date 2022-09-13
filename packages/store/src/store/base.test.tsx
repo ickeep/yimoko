@@ -91,6 +91,20 @@ describe('BaseStore', () => {
     store.fieldsConfig = { id: { type: 'number' } };
     store.setValuesBySearch('?name=name&xxx=xxx&id=2');
     expect(store.values).toEqual({ id: 2, name: 'name', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name1', id: '3' });
+    expect(store.values).toEqual({ id: 3, name: 'name1', type: 't1' });
+
+    store.setValuesBySearch({ id: 4 });
+    expect(store.values).toEqual({ id: 4, name: '', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name2' }, 'part');
+    expect(store.values).toEqual({ id: 4, name: 'name2', type: 't1' });
+
+    store.setValuesBySearch({ name: 'name2' });
+    expect(store.values).toEqual({ id: 1, name: 'name2', type: 't1' });
+
+    store.setValuesBySearch('?name=name&xxx=xxx&id=2');
   });
 
   test('getURLSearch', () => {

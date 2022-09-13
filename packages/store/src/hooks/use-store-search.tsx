@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { IStore } from '../store';
 
-export const useStoreSearch = (store: IStore, search: string | Partial<Record<string, string>>) => {
+export const useStoreSearch = (store: IStore, search: string | Partial<Record<string, any>>) => {
   const form = useForm();
   const isNotFirst = useRef(false);
   const { isRunNow } = store;

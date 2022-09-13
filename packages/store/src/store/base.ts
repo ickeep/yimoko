@@ -109,7 +109,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
 
   // type all undefined 则填默认值  "" 则填空字符串
-  setValuesBySearch = (search: string | Partial<Record<string, string>>, type: 'all' | 'part' = 'all') => {
+  setValuesBySearch = (search: string | Partial<Record<string, any>>, type: 'all' | 'part' = 'all') => {
     let newValues: any = {};
     if (typeof search === 'string') {
       const searchParams = new URLSearchParams(search);
@@ -117,7 +117,8 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
         const strValue = searchParams.get(key);
         strValue !== null && (newValues[key] = getValueBySearchParam(strValue, this.fieldsConfig[key]));
       });
-    } else if (typeof search === 'object') {
+    }
+    if (typeof search === 'object') {
       Object.entries(search).forEach(([key, value]) => newValues[key] = getValueBySearchParam(value, this.fieldsConfig[key]));
     }
 
@@ -179,7 +180,7 @@ export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
     return this.runAPI();
   };
 
-  runAPIDataBySearch = async (search: string | Partial<Record<string, string>>) => {
+  runAPIDataBySearch = async (search: string | Partial<Record<string, any>>) => {
     this.setValuesBySearch(search);
     return this.runAPI();
   };
