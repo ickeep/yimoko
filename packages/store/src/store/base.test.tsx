@@ -5,7 +5,7 @@ describe('BaseStore', () => {
   const store = new BaseStore({ defaultValues, api: { url: '' } });
 
   test('df', () => {
-    const dfStore = new BaseStore({ api: {} });
+    const dfStore = new BaseStore();
     expect(dfStore.isFilterEmptyAtRun).toBeFalsy();
     expect(dfStore.isBindSearch).toBeFalsy();
     expect(dfStore.isRunNow).toBeFalsy();

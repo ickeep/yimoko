@@ -3,7 +3,7 @@ import { defaultKeysConfig, ListStore } from './list';
 
 describe('ListStore', () => {
   test('df', () => {
-    const store = new ListStore({ api: {} });
+    const store = new ListStore();
     expect(store.isFilterEmptyAtRun).toBeTruthy();
     expect(store.isBindSearch).toBeTruthy();
     expect(store.isRunNow).toBeTruthy();
