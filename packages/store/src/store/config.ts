@@ -44,7 +44,6 @@ export class ConfigStore<T extends object = any> {
     });
   }
 
-
   logger = (info: Record<string, any> | Error | unknown, level: ILevel = 'info') => {
     const { report } = this;
     if (report) {
