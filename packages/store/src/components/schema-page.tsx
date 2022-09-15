@@ -1,5 +1,5 @@
 import { IFormProps, createForm, Form } from '@formily/core';
-import { ISchema, SchemaReactComponents } from '@formily/react';
+import { ExpressionScope, ISchema, SchemaReactComponents } from '@formily/react';
 import { useMemo } from 'react';
 
 import { useSchemaComponents } from '../context/schema-components';
@@ -36,7 +36,9 @@ export function SchemaPage<T extends object = Record<string, any>>(props: Schema
     <SchemaFieldProvider value={SchemaField}>
       <SchemaBox model={curModel} >
         <SchemaField schema={curSchema} />
-        {children}
+        <ExpressionScope value={scope}>
+          {children}
+        </ExpressionScope>
       </SchemaBox>
     </SchemaFieldProvider>
   );
