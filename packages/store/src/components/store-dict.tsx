@@ -2,9 +2,9 @@ import { observer } from '@formily/react';
 import { reaction } from '@formily/reactive';
 import { useEffect } from 'react';
 
-import { useAPIExecutor } from '../context/api';
 import { IStore } from '../store';
 import { IDictConfigItemBy } from '../store/base';
+import { useAPIExecutor } from '../store/config';
 import { runStoreAPI } from '../store/utils/api';
 import { getFieldIsMultiple, getFieldKeys, getFieldSplitter } from '../store/utils/field';
 import { judgeIsSuccess } from '../tools/api';
@@ -27,7 +27,7 @@ export const StoreDict = observer((props: { store: IStore }) => {
         const { data, api } = conf;
         store.setDictByField(field, data);
         if (api) {
-          runStoreAPI(api, apiExecutor)?.then?.(res => judgeIsSuccess(res) && store.setDictByField(field, res.data));
+          runStoreAPI(api, apiExecutor)?.then?.((res: any) => judgeIsSuccess(res) && store.setDictByField(field, res.data));
         }
       }
     });
@@ -60,7 +60,7 @@ export const StoreDict = observer((props: { store: IStore }) => {
               lastDisposerMap[byField] = changeNumInRange(lastDisposerMap[byField]);
               const last = lastDisposerMap[byField];
               const params = { [paramKey]: newVal };
-              runStoreAPI(api, apiExecutor, params)?.then((res) => {
+              runStoreAPI(api, apiExecutor, params)?.then((res: any) => {
                 if (last === lastDisposerMap[byField] && judgeIsSuccess(res)) {
                   store.setDictByField(field, res.data);
                   updateValueByDict(conf, res.data, store);

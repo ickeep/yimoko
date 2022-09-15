@@ -1,9 +1,11 @@
 import { Form, IFormItemProps, FormProps, IFormGridProps, FormGrid } from '@formily/antd';
-import { useExpressionScope, useFieldSchema, RecursionField } from '@formily/react';
+import { useExpressionScope, useFieldSchema, RecursionField, useForm } from '@formily/react';
 import { observer } from '@formily/reactive-react';
-import { IStore, ListStore } from '@yimoko/store';
+import { IStore, ListStore, SchemaPage } from '@yimoko/store';
 import { ReactNode, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { StorePage } from './page';
 
 const defaultGrid: IFormGridProps = {
   maxWidth: 380,
@@ -45,6 +47,8 @@ export const StoreForm = observer((props: StoreFormProps) => {
 const StoreFormFields = observer((props: StoreFormFieldsProps) => {
   const { fields = [] } = props;
   const schema = useFieldSchema();
+  const scope = useExpressionScope() ?? {};
+  const { curStore } = scope;
 
   if (!(fields?.length > 0)) {
     return null;
@@ -61,7 +65,13 @@ const StoreFormFields = observer((props: StoreFormFieldsProps) => {
     }
   });
 
-  return <RecursionField schema={{ ...schema, 'x-component': undefined, 'x-decorator': undefined, properties }} />;
+  if (schema) {
+    return <RecursionField schema={{ ...schema, 'x-component': undefined, 'x-decorator': undefined, properties }} />;
+  }
+
+  // todo 优化
+
+  return <StorePage store={curStore} schema={{ type: 'object', definitions: {}, properties }} />;
 });
 
 export interface StoreFormFieldsProps {

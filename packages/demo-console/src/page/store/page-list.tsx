@@ -21,7 +21,7 @@ const store = new ListStore<any, any>({
 
 export const StorePageList = observer(() => (
   <StorePage store={store} >
-    <StoreForm store={store}>
+    <StoreForm store={store} fields={['name']}>
       <Submit>查询</Submit>
     </StoreForm>
     <StorePageContent store={store} >

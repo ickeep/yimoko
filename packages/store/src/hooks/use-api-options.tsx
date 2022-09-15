@@ -1,6 +1,7 @@
 import { useState, Dispatch, SetStateAction } from 'react';
 
-import { useAPIExecutor } from '../context/api';
+import { useAPIExecutor } from '../store/config';
+
 import { runStoreAPI } from '../store/utils/api';
 import { IAPIRequestConfig, IHTTPResponse, judgeIsSuccess } from '../tools/api';
 import { IKeys, IOptions, dataToOptions } from '../tools/options';
@@ -38,7 +39,7 @@ export const useAPIOptions = <T extends string = 'label' | 'value'>(
 
   useDeepEffect(() => {
     apiFn && setLoading(true);
-    apiFn?.()?.then((res) => {
+    apiFn?.()?.then((res: any) => {
       judgeIsSuccess(res) && setOptions(dataToOptions(res.data, keys, splitter));
       setLoading(false);
     });

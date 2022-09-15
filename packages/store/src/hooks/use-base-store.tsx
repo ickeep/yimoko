@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useAPIExecutor } from '../context/api';
 import { BaseStore, IBaseStoreConfig, IStoreValues } from '../store/base';
+import { useAPIExecutor } from '../store/config';
 
 export function useBaseStore<V extends object = IStoreValues, R = IStoreValues>(config: IBaseStoreConfig<V, R>) {
   const apiExecutor = useAPIExecutor();

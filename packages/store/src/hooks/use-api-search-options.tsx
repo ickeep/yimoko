@@ -1,8 +1,8 @@
 import { debounce } from 'lodash-es';
 import { useState, useRef, SetStateAction, Dispatch, useEffect, useMemo } from 'react';
 
-import { useAPIExecutor } from '../context/api';
 import { IStoreResponse } from '../store/base';
+import { useAPIExecutor } from '../store/config';
 import { runStoreAPI } from '../store/utils/api';
 import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';

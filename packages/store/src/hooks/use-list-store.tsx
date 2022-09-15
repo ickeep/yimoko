@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useAPIExecutor } from '../context/api';
 import { IStoreValues } from '../store/base';
+import { useAPIExecutor } from '../store/config';
 import { IListStoreConfig, ListStore } from '../store/list';
 
 export function useListStore<V extends object = IStoreValues, R = IStoreValues>(config: IListStoreConfig<V, R>) {
