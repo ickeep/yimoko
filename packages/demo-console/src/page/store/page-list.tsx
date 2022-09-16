@@ -1,57 +1,59 @@
 import { Submit } from '@formily/antd';
 import { observer } from '@formily/react';
-import { ListStore } from '@yimoko/store';
+import { useListStore } from '@yimoko/store';
 import { StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
 import { Space } from 'antd';
 
-const store = new ListStore<any, any>({
-  fieldsConfig: {
-    type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem' },
-    name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
-  },
-  // type: 'list',
-  dictConfig: [
-    { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
-    // { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
-  ],
-  defaultValues: { type: '', name: '' },
-  api: { url: '/api/page/list' },
-  // isRunNow: false,
-  // isBindSearch: false,
-});
 
-export const StorePageList = observer(() => (
-  <StorePage store={store} >
-    <StoreForm fields={['name']}>
-      <Space>
-        <Submit>查询</Submit>
-      </Space>
-    </StoreForm>
-    <StorePageContent >
-      <StoreTable
-        isControlled={false}
-        store={store}
-        expandable={{
-          isTitleControlsAll: true,
-          expandedRowRender: record => <p style={{ margin: 0 }}>{record.name}</p>,
-          icon: {
-            expanded: { name: 'RightOutlined', style: { color: 'blue' } },
-            collapsed: 'DownOutlined',
-          },
-        }}
-        columns={[
-          { dataIndex: 'id', autoSorter: 'number', fixed: 'left' },
-          { dataIndex: 'name', autoFilter: true },
-          { dataIndex: 'type', autoFilter: true },
-          { dataIndex: 'date', title: 'date', autoSorter: 'date' },
-          { dataIndex: 'time', title: 'time', autoSorter: 'time' },
-          { dataIndex: 'percentage', title: 'percentage', autoSorter: 'percentage' },
-          { dataIndex: 'zh', title: 'zh', autoSorter: 'string', sorterParams: 'zh' },
-          { dataIndex: 'length', title: 'length', autoSorter: 'length' },
-        ]} />
-    </StorePageContent>
-  </StorePage>
-));
+export const StorePageList = observer(() => {
+  const store = useListStore({
+    fieldsConfig: {
+      type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130 } },
+      name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
+    },
+    // type: 'list',
+    dictConfig: [
+      { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
+      // { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
+    ],
+    defaultValues: { type: '', name: '123' },
+    api: { url: '/api/page/list' },
+    // isRunNow: false,
+    // isBindSearch: false,
+  });
+  return (
+    <StorePage store={store} >
+      <StoreForm fields={['name']}>
+        <Space>
+          <Submit>查询</Submit>
+        </Space>
+      </StoreForm>
+      <StorePageContent >
+        <StoreTable
+          isControlled={false}
+          store={store}
+          expandable={{
+            isTitleControlsAll: true,
+            expandedRowRender: record => <p style={{ margin: 0 }}>{record.name}</p>,
+            icon: {
+              expanded: { name: 'RightOutlined', style: { color: 'blue' } },
+              collapsed: 'DownOutlined',
+            },
+          }}
+          columns={[
+            { dataIndex: 'id', autoSorter: 'number', fixed: 'left' },
+            { dataIndex: 'name', autoFilter: true },
+            { dataIndex: 'type', autoFilter: true },
+            { dataIndex: 'date', title: 'date', autoSorter: 'date' },
+            { dataIndex: 'time', title: 'time', autoSorter: 'time' },
+            { dataIndex: 'percentage', title: 'percentage', autoSorter: 'percentage' },
+            { dataIndex: 'zh', title: 'zh', autoSorter: 'string', sorterParams: 'zh' },
+            { dataIndex: 'length', title: 'length', autoSorter: 'length' },
+          ]} />
+      </StorePageContent>
+    </StorePage>
+  );
+});
 
 // export const StorePageList = observer(() => (
 //   <StorePage

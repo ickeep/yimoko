@@ -12,7 +12,9 @@ export const SchemaBox = (props: SchemaBoxProps) => {
 
   if (model) {
     return (
-      <FormProvider form={model}><RecordScope getRecord={() => model.values}>{children}</RecordScope></FormProvider>
+      <FormProvider form={model}>
+        <RecordScope getRecord={() => model.values}>{children}</RecordScope>
+      </FormProvider>
     );
   };
 

@@ -5,7 +5,7 @@ import { IStoreValues } from '../store/base';
 import { useAPIExecutor, useNotifier } from '../store/config';
 import { IOperateStoreConfig, OperateStore } from '../store/operate';
 
-export function useOperateStore<V extends object = IStoreValues, R = IStoreValues>(config: IOperateStoreConfig<V, R>) {
+export function useOperateStore<V extends object = IStoreValues, R extends object = any>(config: IOperateStoreConfig<V, R>) {
   const apiExecutor = useAPIExecutor();
   const form = useForm();
   const scope = useExpressionScope();

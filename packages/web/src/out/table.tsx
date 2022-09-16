@@ -30,12 +30,12 @@ export interface TableProps<T extends object = Record<string, any>> extends Omit
   };
 }
 
-
 export const Table: <T extends object = Record<string, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
   const { defaultColumnsWidth, scroll, value, columns, dataSource, store, isUserItems = true, expandable, rowKey = 'id', ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
   const { listData } = curStore ?? {};
+
   const curDataSource = useMemo(() => {
     const val = !judgeIsEmpty(dataSource) ? dataSource : (value ?? listData);
     return Array.isArray(val) ? val : [];
@@ -138,13 +138,37 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   data?: T[],
   isUserItems = false,
 ) => {
-  const itemsColumns = useColumnsForSchema();
-  const mixColumns = useMemo(() => (isUserItems ? [...columns, ...itemsColumns] : columns), [columns, isUserItems, itemsColumns]);
+  const itemsColumns = useColumnsForSchema() as IColumns<T>;
+  const mixColumns = useMemo(() => {
+    const arr = isUserItems ? [...columns, ...itemsColumns] : columns;
+    // eslint-disable-next-line complexity
+    const handleItem = (item: IColumn<T> | string) => {
+      if (typeof item === 'string') {
+        if (store?.fieldsConfig?.[item]?.column) {
+          return { ...store?.fieldsConfig?.[item]?.column, dataIndex: item };
+        }
+        return item;
+      }
+      if (typeof item === 'object') {
+        if ('dataIndex' in item) {
+          const { dataIndex } = item;
+          if (dataIndex) {
+            return { ...store?.fieldsConfig?.[dataIndexToKey(dataIndex)]?.column, ...item };
+          }
+        }
+        if ('children' in item) {
+          item.children?.map(handleItem);
+        }
+      }
+      return item;
+    };
+    return arr.map(handleItem);
+  }, [columns, isUserItems, itemsColumns, store?.fieldsConfig]);
 
   const filterConfigs = useMemo(() => {
     const arr: IAutoFilterConfig[] = [];
     // eslint-disable-next-line complexity
-    const handle = (column: IColumn<any> | string) => {
+    const handle = (column: IColumn<T> | string) => {
       if (typeof column === 'object') {
         if ('dataIndex' in column) {
           const { dataIndex = '', autoFilter, isFilterContains, filterSplitter } = column;
@@ -203,7 +227,7 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   }, [data, filterConfigs]);
 
   return useMemo(() => {
-    const getAutoColumn = (column: IColumn<any> | string): IColumn<any> => {
+    const getAutoColumn = (column: IColumn<T> | string): IColumn<T> => {
       const col = typeof column === 'string' ? { dataIndex: column } : column;
       if ('dataIndex' in col) {
         col.title = getTitle(dataIndexToKey(col.dataIndex), store, col.title);

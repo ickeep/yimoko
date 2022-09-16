@@ -1,6 +1,8 @@
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
+import { Key } from 'react';
+
 import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { IOptions } from '../tools/options';
@@ -17,7 +19,7 @@ export interface IStoreTransform {
   reqParams?: ITransformRule | ITransformRule[] | ITransformFn
   resData?: ITransformRule | ITransformRule[] | ITransformFn
 }
-export class BaseStore<V extends object = IStoreValues, R = IStoreValues> {
+export class BaseStore<V extends object = IStoreValues, R extends object = any> {
   isFilterEmptyAtRun = false;
   isBindSearch = false;
   isRunNow = false;
@@ -193,7 +195,7 @@ export const transformStoreData = (values: any, transform: ITransformRule | ITra
   return transformData(values, transform);
 };
 
-export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> = {
+export type IBaseStoreConfig<V extends object = IStoreValues, R extends object = any> = {
   defaultValues?: V,
   api?: IStoreAPI<V, R>,
   keysConfig?: Record<string, string>,
@@ -208,7 +210,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R = IStoreValues> 
 };
 
 export interface IStoreValues extends Object {
-  [key: string]: any
+  [key: Key]: any
 }
 
 type IV<V = IStoreValues> = V & Record<string, any>;

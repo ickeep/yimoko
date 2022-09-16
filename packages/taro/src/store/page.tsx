@@ -7,7 +7,7 @@ import { IConfig } from './config';
 
 import { StoreSearch } from './search';
 
-export interface StorePageProps<V extends object = IStoreValues, R = IStoreValues> extends React.HTMLAttributes<HTMLDivElement> {
+export interface StorePageProps<V extends object = IStoreValues, R extends object = any> extends React.HTMLAttributes<HTMLDivElement> {
   store: IStore<V, R> | IStoreConfig<V, R>;
   options?: Omit<IFormProps<any>, 'values' | 'initialValues'>,
   components?: SchemaReactComponents;
@@ -16,7 +16,7 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
 }
 
 // eslint-disable-next-line max-len
-export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) => ReactElement | null = observer((props) => {
+export const StorePage: <V extends object = IStoreValues, R extends object = any>(props: StorePageProps<V, R>) => ReactElement | null = observer((props) => {
   const { store, options, scope, ...args } = props;
   const rootStore = useRoot();
   const configStore = useConfig<IConfig>();

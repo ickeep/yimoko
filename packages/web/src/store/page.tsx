@@ -4,10 +4,9 @@ import { IStore, IStoreConfig, IStoreValues, StoreDict, SchemaPage, useStore, us
 import { useMemo } from 'react';
 
 import { IConfig } from './config';
-
 import { StoreSearch } from './search';
 
-export interface StorePageProps<V extends object = IStoreValues, R = IStoreValues> extends React.HTMLAttributes<HTMLDivElement> {
+export interface StorePageProps<V extends object = IStoreValues, R extends object = any> extends React.HTMLAttributes<HTMLDivElement> {
   store: IStore<V, R> | IStoreConfig<V, R>;
   options?: Omit<IFormProps<any>, 'values' | 'initialValues'>,
   components?: SchemaReactComponents;
@@ -15,7 +14,7 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
   schema?: ISchema
 }
 
-export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) => React.ReactElement | null = observer((props) => {
+export const StorePage: <V extends object = IStoreValues, R extends object = any>(props: StorePageProps<V, R>) => React.ReactElement | null = observer((props) => {
   const { store, options, scope, ...args } = props;
   const rootStore = useRoot();
   const configStore = useConfig<IConfig>();
@@ -25,7 +24,7 @@ export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(prop
 
   return (
     <>
-      <SchemaPage model={model} scope={curScope}  {...args} />
+      <SchemaPage model={model} scope={curScope} {...args} />
       <StoreDict store={curStore} />
       <StoreSearch store={curStore} />
     </>

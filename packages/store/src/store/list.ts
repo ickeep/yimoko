@@ -15,7 +15,7 @@ export const defaultKeysConfig: Record<string, string> = {
 };
 
 const { computed } = observable;
-export class ListStore<V extends object = IStoreValues, R = IStoreValues> extends BaseStore<V, R> {
+export class ListStore<V extends object = IStoreValues, R extends object = any> extends BaseStore<V, R> {
   selectedRowKeys: Key[] = [];
   keysConfig: Record<string, string> = {};
   queryRoutingType: 'push' | 'replace' = 'push';
@@ -119,7 +119,7 @@ export class ListStore<V extends object = IStoreValues, R = IStoreValues> extend
   }
 }
 
-export interface IListStoreConfig<V extends object = IStoreValues, R = IStoreValues> extends IBaseStoreConfig<V, R> {
+export interface IListStoreConfig<V extends object = IStoreValues, R extends object = any> extends IBaseStoreConfig<V, R> {
   queryRoutingType?: 'push' | 'replace';
   keysConfig?: Record<string, string>,
 };

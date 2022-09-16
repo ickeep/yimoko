@@ -11,7 +11,7 @@ export const defaultRunAfter: IRunAfter = {
 };
 
 // 操作 store, 请求 API 默认不过滤空值，默认请求结果后，对其进行通知
-export class OperateStore<V extends object = IStoreValues, R = IStoreValues> extends BaseStore<V, R> {
+export class OperateStore<V extends object = IStoreValues, R extends object = any> extends BaseStore<V, R> {
   form?: Form<V>;
   notifier?: INotifier;
   scope: Record<string, any> = {};
@@ -74,7 +74,7 @@ const handleRunAfterNotify = (res: Partial<IHTTPResponse>, runAfter: IRunAfter, 
   }
 };
 
-export interface IOperateStoreConfig<V extends object = IStoreValues, R = IStoreValues> extends IBaseStoreConfig<V, R> {
+export interface IOperateStoreConfig<V extends object = IStoreValues, R extends object = any> extends IBaseStoreConfig<V, R> {
   notifier?: INotifier;
   form?: Form<V>
   scope?: Record<string, any>;

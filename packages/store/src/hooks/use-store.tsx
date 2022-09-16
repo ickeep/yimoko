@@ -8,7 +8,7 @@ import { OperateStore } from '../store/operate';
 
 import { useDeepMemo } from './use-deep-memo';
 
-export function useStore<V extends object = IStoreValues, R = IStoreValues>(store: IStore<V, R> | IStoreConfig<V, R>) {
+export function useStore<V extends object = IStoreValues, R extends object = any>(store: IStore<V, R> | IStoreConfig<V, R>) {
   const apiExecutor = useAPIExecutor();
   const form = useForm();
   const scope = useExpressionScope();

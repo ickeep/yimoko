@@ -1,9 +1,8 @@
-import { Form, IFormItemProps, FormProps, IFormGridProps, FormGrid } from '@formily/antd';
+import { Form, FormProps, IFormGridProps, FormGrid } from '@formily/antd';
 import { useExpressionScope, useFieldSchema, RecursionField, observer } from '@formily/react';
 import { IStore, ListStore, useSchemaField } from '@yimoko/store';
 import { ReactNode, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 
 const defaultGrid: IFormGridProps = {
   maxWidth: 380,
@@ -59,8 +58,8 @@ const StoreFormFields = observer((props: StoreFormFieldsProps) => {
     if (typeof field === 'string') {
       properties[field] = { $ref: `#/definitions/${field}` };
     } else {
-      const { field: f, itemProps, ...args } = field;
-      properties[f] = { $ref: `#/definitions/${f}`, ...args, 'x-decorator-props': itemProps };
+      const { field: f, ...args } = field;
+      properties[f] = { $ref: `#/definitions/${f}`, ...args };
     }
   });
 
@@ -78,7 +77,6 @@ export interface StoreFormFieldsProps {
 
 export interface IStoreFormField {
   field: string,
-  'itemProps'?: React.PropsWithChildren<IFormItemProps>
   [key: string]: any
 }
 
