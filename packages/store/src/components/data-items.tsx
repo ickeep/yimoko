@@ -1,5 +1,4 @@
-import { RecordScope, RecursionField } from '@formily/react';
-import { observer } from '@formily/reactive-react';
+import { RecordScope, RecursionField, observer } from '@formily/react';
 
 import { useSchemaItems } from '../hooks/use-schema-items';
 

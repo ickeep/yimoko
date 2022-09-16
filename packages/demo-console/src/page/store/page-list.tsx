@@ -2,6 +2,7 @@ import { Submit } from '@formily/antd';
 import { observer } from '@formily/react';
 import { ListStore } from '@yimoko/store';
 import { StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
+import { Space } from 'antd';
 
 const store = new ListStore<any, any>({
   fieldsConfig: {
@@ -21,10 +22,12 @@ const store = new ListStore<any, any>({
 
 export const StorePageList = observer(() => (
   <StorePage store={store} >
-    <StoreForm store={store} fields={['name']}>
-      <Submit>查询</Submit>
+    <StoreForm fields={['name']}>
+      <Space>
+        <Submit>查询</Submit>
+      </Space>
     </StoreForm>
-    <StorePageContent store={store} >
+    <StorePageContent >
       <StoreTable
         isControlled={false}
         store={store}

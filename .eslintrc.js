@@ -18,7 +18,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn', // 检查 effect 的依赖
     'no-unused-vars': 'warn',
     complexity: ['error', 5],
-    'max-len': ['error', { code: 150 }],
+    'max-len': ['error', { code: 180 }],
     'import/order': [
       'error',
       {

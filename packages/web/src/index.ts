@@ -1,5 +1,6 @@
 export * from './in/select';
 
+export * from './out/drawer';
 export * from './out/icon';
 export * from './out/link';
 export * from './out/page-error';

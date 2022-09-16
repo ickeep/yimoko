@@ -15,7 +15,7 @@ export interface StorePageProps<V extends object = IStoreValues, R = IStoreValue
   schema?: ISchema
 }
 
-function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) {
+export const StorePage: <V extends object = IStoreValues, R = IStoreValues>(props: StorePageProps<V, R>) => React.ReactElement | null = observer((props) => {
   const { store, options, scope, ...args } = props;
   const rootStore = useRoot();
   const configStore = useConfig<IConfig>();
@@ -30,6 +30,5 @@ function StorePageFn<V extends object = IStoreValues, R = IStoreValues>(props: S
       <StoreSearch store={curStore} />
     </>
   );
-}
+});
 
-export const StorePage = observer(StorePageFn);

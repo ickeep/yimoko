@@ -10,6 +10,7 @@ import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaP
 import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
 
 import { Select } from './in/select';
+import { Drawer } from './out/drawer';
 import { Icon } from './out/icon';
 import { Link } from './out/link';
 import { PageError } from './out/page-error';
@@ -25,6 +26,7 @@ const { Title, Text, Paragraph } = Typography;
 export const components: Record<string, any> = {
   Select,
 
+  Drawer,
   Icon,
   Link: withValueChildren(Link),
   PageError,

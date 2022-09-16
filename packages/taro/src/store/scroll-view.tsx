@@ -1,7 +1,6 @@
 import { Loading } from '@antmjs/vantui';
 import { createForm } from '@formily/core';
-import { useExpressionScope, useFieldSchema } from '@formily/react';
-import { observer } from '@formily/reactive-react';
+import { useExpressionScope, useFieldSchema, observer } from '@formily/react';
 import { ScrollView, ScrollViewProps, View } from '@tarojs/components';
 import {
   IListStoreConfig, judgeIsEmpty, judgeIsSuccess, ListStore, SchemaBox,

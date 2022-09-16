@@ -1,5 +1,5 @@
 import { observer } from '@formily/react';
-import { Button, ButtonProps, Drawer, DrawerProps } from 'antd';
+import { Button, ButtonProps, Drawer as ADrawer, DrawerProps as ADrawerProps } from 'antd';
 import { Key, ReactElement, FC, Component, useState, useMemo, cloneElement, isValidElement, useCallback } from 'react';
 import { isValidElementType } from 'react-is';
 
@@ -14,7 +14,7 @@ interface IContentProps {
   [key: Key]: any
 }
 
-export interface DrawerBoxProps extends Omit<DrawerProps, 'open' | 'children'> {
+export interface DrawerProps extends Omit<ADrawerProps, 'children'> {
   trigger?: ButtonProps | ReactElement<ITriggerProps> | FC<ITriggerProps> | Component<ITriggerProps>
   content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
   children?: ReactElement<IContentProps>
@@ -22,12 +22,14 @@ export interface DrawerBoxProps extends Omit<DrawerProps, 'open' | 'children'> {
   onClose?: () => void | Promise<void>,
 }
 
-export const DrawerBox = observer((props: DrawerBoxProps) => {
-  const { trigger, content, onOpen, onClose, children, ...args } = props;
+export const Drawer = observer((props: DrawerProps) => {
+  const { trigger, content, onOpen, onClose, children, open, ...args } = props;
   const { title } = args;
   const [isOpen, setOpen] = useState<boolean>();
 
-  const open = useCallback(() => {
+  const curOpen = useMemo(() => open ?? isOpen, [isOpen, open]);
+
+  const openUp = useCallback(() => {
     onOpen?.();
     setOpen(true);
   }, [onOpen]);
@@ -39,19 +41,19 @@ export const DrawerBox = observer((props: DrawerBoxProps) => {
 
   const curTrigger = useMemo(() => {
     if (isValidElement(trigger)) {
-      return cloneElement(trigger, { onClick: open });
+      return cloneElement(trigger, { onClick: openUp });
     }
     if (isValidElementType(trigger)) {
       const C: any = trigger;
-      return <C onClick={open} onOpen={open} />;
+      return <C onClick={openUp} onOpen={openUp} />;
     }
     return <Button children={title} {...trigger} onClick={(e) => {
-      open();
+      openUp();
       if (trigger && 'onClick' in trigger) {
         trigger.onClick?.(e);
       }
     }} />;
-  }, [open, title, trigger]);
+  }, [openUp, title, trigger]);
 
   const curChildren = useMemo(() => {
     if (isValidElement(children)) {
@@ -67,5 +69,5 @@ export const DrawerBox = observer((props: DrawerBoxProps) => {
     return null;
   }, [children, close, content]);
 
-  return <>{curTrigger} {isOpen !== undefined && <Drawer {...args} open={isOpen} onClose={close}>{curChildren}</Drawer>}</>;
+  return <>{curTrigger} {curOpen !== undefined && <ADrawer {...args} open={curOpen} onClose={close}>{curChildren}</ADrawer>}</>;
 });
