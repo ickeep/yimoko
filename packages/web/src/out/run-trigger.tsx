@@ -37,16 +37,17 @@ export const RunTrigger = observer((props: RunTriggerProps) => {
 
 // eslint-disable-next-line complexity
 export const trigStoreRun = async (store?: IStore, boxStore?: BoxStore, closeBox: boolean | 'success' | 'fail' = 'success') => {
-  const { onClose } = boxStore ?? {};
+  const { close } = boxStore ?? {};
+
   if (store) {
     const res = await store.runAPI();
     if (closeBox === true) {
-      onClose?.();
+      close?.();
     }
     if (judgeIsSuccess(res)) {
-      closeBox === 'success' && onClose?.();
+      closeBox === 'success' && close?.();
     } else {
-      closeBox === 'fail' && onClose?.();
+      closeBox === 'fail' && close?.();
     }
   }
 };

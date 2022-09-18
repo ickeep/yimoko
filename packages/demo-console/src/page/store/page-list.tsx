@@ -1,7 +1,7 @@
 import { Submit } from '@formily/antd';
 import { observer } from '@formily/react';
 import { useListStore, useOperateStore } from '@yimoko/store';
-import { Drawer, StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
+import { Drawer, Icon, StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
 import { Space } from 'antd';
 
 
@@ -22,7 +22,8 @@ export const StorePageList = observer(() => {
     // isBindSearch: false,
   });
   return (
-    <Drawer title="xxxx" footer={true} isBindStore={true}>
+    // @ts-ignore
+    <Drawer title="xxxx" trigger={< Icon name="CaretRightOutlined" />} footer={true} isBindStore={true} >
       <StorePage store={store} >
         <StoreForm fields={['name']}>
           <Space>
@@ -53,7 +54,7 @@ export const StorePageList = observer(() => {
           ]} />
       </StorePageContent> */}
       </StorePage>
-    </Drawer>
+    </Drawer >
   );
 });
 

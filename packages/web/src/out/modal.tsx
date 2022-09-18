@@ -4,7 +4,7 @@ import { Modal as AModal, ModalProps as AModalProps } from 'antd';
 import { Key, ReactElement, FC, Component, useMemo } from 'react';
 
 import { trigStoreRun } from './run-trigger';
-import { ITriggerRender, Trigger } from './trigger';
+import { ITriggerRender, Trigger, TriggerProps } from './trigger';
 
 interface IContentProps {
   isBoxContent?: boolean
@@ -14,6 +14,7 @@ interface IContentProps {
 
 export interface ModalProps extends Omit<AModalProps, 'children' | 'footer'> {
   trigger?: ITriggerRender
+  trigEvent?: TriggerProps['trigEvent']
   content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
   children?: ReactElement<IContentProps>
   onOpen?: () => void | Promise<void>,
@@ -24,7 +25,7 @@ export interface ModalProps extends Omit<AModalProps, 'children' | 'footer'> {
 }
 
 export const Modal = observer((props: ModalProps) => {
-  const { trigger, onOpen, onClose, open, ...args } = props;
+  const { trigger, trigEvent, onOpen, onClose, open, ...args } = props;
   const { title } = args;
 
   const boxStore = useBoxStore({ isOpen: open, onClose, onOpen });
@@ -32,7 +33,7 @@ export const Modal = observer((props: ModalProps) => {
 
   return (
     <BoxContentProvider value={boxStore}>
-      <Trigger children={title} render={trigger} onTrig={openUp} />
+      <Trigger children={title} render={trigger} trigEvent={trigEvent} onTrig={openUp} />
       {isOpen !== undefined && <ModalRender {...args} open={isOpen} />}
     </BoxContentProvider>
   );

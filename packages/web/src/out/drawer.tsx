@@ -6,7 +6,7 @@ import { Key, ReactElement, FC, Component, useMemo, ReactNode } from 'react';
 import { CancelTrigger } from './cancel-trigger';
 import { OkTrigger } from './ok-trigger';
 import { RunTrigger } from './run-trigger';
-import { ITriggerRender, Trigger } from './trigger';
+import { ITriggerRender, Trigger, TriggerProps } from './trigger';
 
 interface IContentProps {
   isBoxContent?: boolean
@@ -16,6 +16,7 @@ interface IContentProps {
 
 export interface DrawerProps extends Omit<ADrawerProps, 'children' | 'footer'> {
   trigger?: ITriggerRender
+  trigEvent?: TriggerProps['trigEvent']
   content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
   children?: ReactElement<IContentProps>
   onOpen?: () => void | Promise<void>,
@@ -29,7 +30,7 @@ export interface DrawerProps extends Omit<ADrawerProps, 'children' | 'footer'> {
 }
 
 export const Drawer = observer((props: DrawerProps) => {
-  const { trigger, onOpen, onClose, open, ...args } = props;
+  const { trigger, trigEvent, onOpen, onClose, open, ...args } = props;
   const { title } = args;
 
   const boxStore = useBoxStore({ isOpen: open, onClose, onOpen });
@@ -37,7 +38,7 @@ export const Drawer = observer((props: DrawerProps) => {
 
   return (
     <BoxContentProvider value={boxStore}>
-      <Trigger children={title} render={trigger} onTrig={openUp} />
+      <Trigger children={title} render={trigger} trigEvent={trigEvent} onTrig={openUp} />
       {isOpen !== undefined && (
         <DrawerRender {...args} open={isOpen} onClose={close} />
       )}

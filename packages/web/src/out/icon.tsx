@@ -3,14 +3,14 @@ import type { CustomIconComponentProps } from '@ant-design/icons/lib/components/
 import { judgeIsSuccess, useAPIExecutor, useConfig } from '@yimoko/store';
 import { Spin } from 'antd';
 import htmr from 'htmr';
-import { useEffect, useMemo, useState } from 'react';
+import { HTMLAttributes, useEffect, useMemo, useState } from 'react';
 
 import { IConfig } from '../store/config';
 
-export interface IconProps extends Partial<Omit<CustomIconComponentProps, 'component'>> {
+export type IconProps = Partial<Omit<CustomIconComponentProps, 'component'>> & Omit<HTMLAttributes<HTMLSpanElement>, 'children'> & {
   name?: string
   value?: string
-}
+};
 
 const fetchMap: Record<string, Promise<string | null>> = {};
 const { icons = {} } = globalThis as any;
