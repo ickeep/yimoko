@@ -1,5 +1,5 @@
 import { observer } from '@formily/react';
-import { useBox } from '@yimoko/store';
+import { useBoxContent } from '@yimoko/store';
 import { ButtonProps } from 'antd';
 
 import { ITriggerRender, Trigger, TriggerProps } from './trigger';
@@ -12,7 +12,7 @@ export interface CancelTriggerProps extends ButtonProps {
 
 export const CancelTrigger = observer((props: CancelTriggerProps) => {
   const { closeBox = true, onCancel, ...args } = props;
-  const { onClose } = useBox();
+  const { onClose } = useBoxContent();
 
   return (
     <Trigger

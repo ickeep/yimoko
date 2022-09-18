@@ -1,16 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { action, define, observable } from '@formily/reactive';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { observer } from '@formily/reactive-react';
+import { cloneElement, Component, createContext, FC, isValidElement, Key, ReactElement, useContext, useEffect, useState } from 'react';
+import { isValidElementType } from 'react-is';
 
 import { useCurStore } from '../hooks/use-cur-store';
 import { useDeepEffect } from '../hooks/use-deep-effect';
 
 import { IStore } from '.';
 
-
 // 管理弹出内容的状态 使用 store 管理 可以减少消费者的渲染
 export class BoxStore {
-  isOpen = false;
+  isOpen?: boolean;
   onOpen?: () => void | Promise<void>;
   onClose?: () => void | Promise<void>;
   contentStore?: IStore;
@@ -59,7 +60,7 @@ export const useBoxStore = (config: Partial<Pick<BoxStore, 'isOpen' | 'onOpen' |
 };
 
 export const useBoxBindContentStore = (store: IStore, isBind?: boolean) => {
-  const boxStore = useBox();
+  const boxStore = useBoxContent();
   const contentStore = useCurStore(store);
 
   useEffect(() => {
@@ -76,5 +77,31 @@ const BoxContent = createContext<BoxStore>(defaultStore);
 export const BoxContentProvider = BoxContent.Provider;
 export const BoxContentConsumer = BoxContent.Consumer;
 
-export const useBox = () => useContext(BoxContent);
+export const useBoxContent = () => useContext(BoxContent);
 
+
+interface IContentProps {
+  isBoxContent?: boolean
+  onClose: () => void | Promise<void>,
+  [key: Key]: any
+}
+export interface BoxContentRenderProps {
+  content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
+  children?: ReactElement<IContentProps>
+}
+
+export const BoxContentRender = observer((props: BoxContentRenderProps) => {
+  const { close } = useBoxContent();
+  const { content, children } = props;
+  if (isValidElement(children)) {
+    return cloneElement(children, { onClose: close, isBoxContent: true });
+  }
+  if (isValidElement(content)) {
+    return cloneElement(content, { onClose: close, isBoxContent: true });
+  }
+  if (isValidElementType(content)) {
+    const C: any = content;
+    return <C onClose={close} isBoxContent />;
+  }
+  return null;
+});

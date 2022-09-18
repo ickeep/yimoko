@@ -1,7 +1,4 @@
-import { Form } from '@formily/core';
-import { Key } from 'react';
-
-import { IHTTPCode, IHTTPResponse, judgeIsSuccess } from '../tools/api';
+import { IHTTPResponse, judgeIsSuccess } from '../tools/api';
 import { judgeIsEmpty } from '../tools/tool';
 
 import { BaseStore, IBaseStoreConfig, IStoreValues } from './base';
@@ -14,20 +11,18 @@ export const defaultRunAfter: IRunAfter = {
 
 // 操作 store, 请求 API 默认不过滤空值，默认请求结果后，对其进行通知
 export class OperateStore<V extends object = IStoreValues, R extends object = any> extends BaseStore<V, R> {
-  form?: Form<V>;
   notifier?: INotifier;
-  scope: Record<Key, any> = {};
-  runBefore: IRunBefore = {};
+
+  runBefore: IRunBefore = { verify: true };
   runAfter: IRunAfter = { ...defaultRunAfter };
 
   constructor(config: IOperateStoreConfig<V, R> = {}) {
-    const { runBefore, runAfter, form, scope, notifier, ...args } = config;
+    const { runBefore, runAfter, notifier, ...args } = config;
     super({
       isFilterEmptyAtRun: false,
       ...args,
     });
-    scope && (this.scope = scope);
-    form && (this.form = form);
+
     notifier && (this.notifier = notifier);
     this.runAfter = { ...this.runAfter, ...runAfter };
     this.runBefore = { ...this.runBefore, ...runBefore };
@@ -40,9 +35,7 @@ export class OperateStore<V extends object = IStoreValues, R extends object = an
         try {
           await form?.submit();
         } catch (error) {
-          const res = { code: IHTTPCode.badRequest, msg: '表单校验失败', data: error };
-          handleRunAfter(res, runAfter, this);
-          return res;
+          return undefined;
         }
       }
       const res = await runAPI();
@@ -92,7 +85,6 @@ const handleRunAfterNotify = (res: Partial<IHTTPResponse>, runAfter: IRunAfter, 
 
 export interface IOperateStoreConfig<V extends object = IStoreValues, R extends object = any> extends IBaseStoreConfig<V, R> {
   notifier?: INotifier;
-  form?: Form<V>
   scope?: Record<string, any>;
   runBefore?: IRunBefore;
   runAfter?: IRunAfter

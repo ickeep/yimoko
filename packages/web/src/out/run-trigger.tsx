@@ -1,57 +1,26 @@
-import { Form } from '@formily/core';
 import { observer } from '@formily/react';
-import { IStore, judgeIsEmpty, judgeIsSuccess, useBox, useCurForm, useCurStore } from '@yimoko/store';
+import { BoxStore, IStore, judgeIsEmpty, judgeIsSuccess, useBoxContent, useCurForm, useCurStore } from '@yimoko/store';
 import { ButtonProps } from 'antd';
 
 import { ITriggerRender, Trigger } from './trigger';
 
-export interface RunTriggerProps extends Omit<ButtonProps, 'form'> {
+export interface RunTriggerProps extends ButtonProps {
   trigger?: ITriggerRender
   store?: IStore
   closeBox?: boolean | 'success' | 'fail'
-  isValidationForm?: boolean
-  form?: Form
   isBoxContent?: boolean
-  htmlForm?: string
 }
 
 export const RunTrigger = observer((props: RunTriggerProps) => {
-  const { store, closeBox, isValidationForm = true, isBoxContent, form, htmlForm, ...args } = props;
-  const curForm = useCurForm(form);
-  const boxStore = useBox();
-  const { onClose, contentStore } = boxStore;
-
+  const { store, closeBox, isBoxContent, ...args } = props;
+  const boxStore = useBoxContent();
+  const { contentStore } = boxStore;
   const useStore = useCurStore(store);
-
-  console.log('RunTrigger contentStore', contentStore);
-
   const curStore = isBoxContent ? contentStore : useStore;
+  const curForm = useCurForm(undefined, curStore);
 
-  // eslint-disable-next-line complexity
-  const run = async () => {
-    if (curStore) {
-      const res = await curStore.runAPI();
-      if (closeBox === true) {
-        onClose?.();
-      }
-      if (judgeIsSuccess(res)) {
-        closeBox === 'success' && onClose?.();
-      } else {
-        closeBox === 'fail' && onClose?.();
-      }
-    }
-  };
-
-  const click: ButtonProps['onClick'] = () => {
-    if (isValidationForm) {
-      if (curForm) {
-        curForm.submit(() => run());
-      } else {
-        run();
-      }
-    } else {
-      run();
-    }
+  const click = () => {
+    trigStoreRun(curStore, boxStore, closeBox);
   };
 
   return (
@@ -61,8 +30,23 @@ export const RunTrigger = observer((props: RunTriggerProps) => {
       children="确定"
       type='primary'
       {...args}
-      form={htmlForm}
       onTrig={click}
     />
   );
 });
+
+// eslint-disable-next-line complexity
+export const trigStoreRun = async (store?: IStore, boxStore?: BoxStore, closeBox: boolean | 'success' | 'fail' = 'success') => {
+  const { onClose } = boxStore ?? {};
+  if (store) {
+    const res = await store.runAPI();
+    if (closeBox === true) {
+      onClose?.();
+    }
+    if (judgeIsSuccess(res)) {
+      closeBox === 'success' && onClose?.();
+    } else {
+      closeBox === 'fail' && onClose?.();
+    }
+  }
+};

@@ -6,7 +6,7 @@ import { Space } from 'antd';
 
 
 export const StorePageList = observer(() => {
-  const store = useListStore({
+  const store = useOperateStore({
     fieldsConfig: {
       type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130 } },
       name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
@@ -16,7 +16,7 @@ export const StorePageList = observer(() => {
       { field: 'type', data: [{ value: 't1', label: '类型1' }, { value: 't2', label: '类型2' }] },
       // { field: 'name', data: [{ value: 'n1', label: '名字1' }, { value: 'n2', label: '名字2' }] },
     ],
-    defaultValues: { type: '', name: '123' },
+    defaultValues: { type: '', name: '' },
     api: { url: '/api/page/list' },
     // isRunNow: false,
     // isBindSearch: false,

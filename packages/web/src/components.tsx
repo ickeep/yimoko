@@ -7,14 +7,18 @@ import {
 } from '@formily/antd';
 
 import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage } from '@yimoko/store';
-import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
+import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination, Modal } from 'antd';
 
 import { Select } from './in/select';
+import { CancelTrigger } from './out/cancel-trigger';
 import { Drawer } from './out/drawer';
 import { Icon } from './out/icon';
 import { Link } from './out/link';
+import { OkTrigger } from './out/ok-trigger';
 import { PageError } from './out/page-error';
+import { RunTrigger } from './out/run-trigger';
 import { Table } from './out/table';
+import { Trigger } from './out/trigger';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StorePageContent } from './store/page-content';
@@ -26,11 +30,16 @@ const { Title, Text, Paragraph } = Typography;
 export const components: Record<string, any> = {
   Select,
 
+  CancelTrigger,
   Drawer,
   Icon,
   Link: withValueChildren(Link),
+  Modal,
+  OkTrigger,
   PageError,
+  RunTrigger,
   Table,
+  Trigger,
 
   SchemaPage,
 

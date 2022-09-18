@@ -1,3 +1,4 @@
+import { Form } from '@formily/core';
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
@@ -37,6 +38,8 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
   response: IStoreResponse<R, V> = {};
   loading = false;
 
+  form?: Form<IV<V>>;
+
   private lastFetchID = 0;
 
   constructor(config: IBaseStoreConfig<V, R> = {}) {
@@ -49,7 +52,9 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
       dictConfig = [],
       fieldsConfig = Object({}),
       transform = {},
-      apiExecutor, defineConfig,
+      apiExecutor,
+      form,
+      defineConfig,
     } = config;
     this.dictConfig = dictConfig;
     this.fieldsConfig = fieldsConfig;
@@ -63,6 +68,9 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
     this.isRunNow = isRunNow;
     this.isFilterEmptyAtRun = isFilterEmptyAtRun;
     this.isBindSearch = isBindSearch;
+
+    this.form = form;
+
     apiExecutor && (this.apiExecutor = apiExecutor);
 
     define(this, {
@@ -207,6 +215,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R extends object =
   isRunNow?: boolean,
   apiExecutor?: IHTTPRequest;
   defineConfig?: Record<string, any>;
+  form?: Form<IV<V>>;
 };
 
 export interface IStoreValues extends Object {

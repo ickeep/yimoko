@@ -1,6 +1,6 @@
 import { IFormProps, createForm, Form } from '@formily/core';
 import { ExpressionScope, ISchema, SchemaReactComponents } from '@formily/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useSchemaComponents } from '../context/schema-components';
 import { SchemaFieldProvider, useSchemaField } from '../context/schema-field';
@@ -22,7 +22,8 @@ export function SchemaPage<T extends object = Record<string, any>>(props: Schema
   const curComponents = useSchemaComponents(components);
   const SchemaField = useSchemaField(curComponents, scope);
 
-  const fieldsConfig = scope?.curStore?.fieldsConfig;
+  const { curStore } = scope ?? {};
+  const fieldsConfig = curStore?.fieldsConfig;
 
   const curSchema = useMemo(() => {
     const { definitions = {}, ...args } = schema ?? {};
@@ -31,6 +32,10 @@ export function SchemaPage<T extends object = Record<string, any>>(props: Schema
     }
     return { definitions, ...args };
   }, [fieldsConfig, schema]);
+
+  useEffect(() => {
+    curStore && (curStore.form = curModel);
+  }, [curModel, curStore]);
 
   return (
     <SchemaFieldProvider value={SchemaField}>

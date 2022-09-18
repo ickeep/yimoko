@@ -1,7 +1,9 @@
 import { Form } from '@formily/core';
 import { useForm } from '@formily/react';
 
-export const useCurForm = <T extends object = any>(form?: Form<T>) => {
+import { IStore } from '../store';
+
+export const useCurForm = <T extends object = any>(form?: Form<T>, store?: IStore) => {
   const curForm = useForm<T>() as Form<T> | undefined;
-  return form ?? curForm;
+  return form ?? store?.form ?? curForm;
 };

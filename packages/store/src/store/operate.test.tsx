@@ -1,7 +1,5 @@
 import { createForm } from '@formily/core';
 
-import { IHTTPCode } from '../tools/api';
-
 import { IHTTPRequest } from './base';
 
 import { OperateStore } from './operate';
@@ -14,15 +12,12 @@ describe('OperateStore', () => {
     expect(store.isRunNow).toBeFalsy();
     expect(store.form).toBeUndefined();
     expect(store.notifier).toBeUndefined();
-    expect(store.scope).toEqual({});
-    expect(store.runBefore).toEqual({});
+    expect(store.runBefore).toEqual({ verify: true });
     expect(store.runAfter.notify).toBeTruthy();
 
     const form = createForm();
-    const scope = { a: 1 };
-    const store1 = new OperateStore({ form, scope });
+    const store1 = new OperateStore({ form });
     expect(store1.form).toEqual(form);
-    expect(store1.scope).toEqual(scope);
   });
 
   test('runBefore', async () => {
@@ -38,7 +33,7 @@ describe('OperateStore', () => {
     store.form = form;
 
     const res2 = await store.runAPI();
-    expect(res2?.code).toEqual(IHTTPCode.badRequest);
+    expect(res2?.code).toBeUndefined();
 
     store.setValuesByField('name', '123');
     const res3 = await store.runAPI();

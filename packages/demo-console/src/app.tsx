@@ -10,6 +10,8 @@ import { Routes } from './routes';
 
 const SchemaField = createSchemaField({ components: componentsMap });
 
+// configStore.notifier = modalNotifier;
+
 http.defaults.baseURL = 'http://localhost:3721';
 
 export const App = () => (
