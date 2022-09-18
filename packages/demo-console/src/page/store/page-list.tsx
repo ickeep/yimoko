@@ -1,7 +1,7 @@
 import { Submit } from '@formily/antd';
 import { observer } from '@formily/react';
-import { useListStore } from '@yimoko/store';
-import { StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
+import { useListStore, useOperateStore } from '@yimoko/store';
+import { Drawer, StoreForm, StorePage, StorePageContent, StoreTable } from '@yimoko/web';
 import { Space } from 'antd';
 
 
@@ -22,13 +22,14 @@ export const StorePageList = observer(() => {
     // isBindSearch: false,
   });
   return (
-    <StorePage store={store} >
-      <StoreForm fields={['name']}>
-        <Space>
-          <Submit>查询</Submit>
-        </Space>
-      </StoreForm>
-      <StorePageContent >
+    <Drawer title="xxxx" footer={true} isBindStore={true}>
+      <StorePage store={store} >
+        <StoreForm fields={['name']}>
+          <Space>
+            <Submit>查询</Submit>
+          </Space>
+        </StoreForm>
+        {/* <StorePageContent >
         <StoreTable
           isControlled={false}
           store={store}
@@ -50,8 +51,9 @@ export const StorePageList = observer(() => {
             { dataIndex: 'zh', title: 'zh', autoSorter: 'string', sorterParams: 'zh' },
             { dataIndex: 'length', title: 'length', autoSorter: 'length' },
           ]} />
-      </StorePageContent>
-    </StorePage>
+      </StorePageContent> */}
+      </StorePage>
+    </Drawer>
   );
 });
 

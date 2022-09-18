@@ -1,66 +1,78 @@
 import { observer } from '@formily/react';
-import { Button, ButtonProps, Drawer as ADrawer, DrawerProps as ADrawerProps } from 'antd';
-import { Key, ReactElement, FC, Component, useState, useMemo, cloneElement, isValidElement, useCallback } from 'react';
+import { BoxContentProvider, IStore, useBox, useBoxStore } from '@yimoko/store';
+import { Drawer as ADrawer, DrawerProps as ADrawerProps, Row, Space } from 'antd';
+import { Key, ReactElement, FC, Component, useMemo, cloneElement, isValidElement, ReactNode } from 'react';
 import { isValidElementType } from 'react-is';
 
-interface ITriggerProps {
-  onClick?: () => void | Promise<void>,
-  onOpen?: () => void | Promise<void>,
-  [key: Key]: any
-}
+import { CancelTrigger } from './cancel-trigger';
+import { OkTrigger } from './ok-trigger';
+import { RunTrigger } from './run-trigger';
+
+import { ITriggerRender, Trigger } from './trigger';
 
 interface IContentProps {
+  isBoxContent?: boolean
   onClose: () => void | Promise<void>,
   [key: Key]: any
 }
 
-export interface DrawerProps extends Omit<ADrawerProps, 'children'> {
-  trigger?: ButtonProps | ReactElement<ITriggerProps> | FC<ITriggerProps> | Component<ITriggerProps>
+export interface DrawerProps extends Omit<ADrawerProps, 'children' | 'footer'> {
+  trigger?: ITriggerRender
   content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
   children?: ReactElement<IContentProps>
   onOpen?: () => void | Promise<void>,
   onClose?: () => void | Promise<void>,
+  isBindStore?: boolean
+  store?: IStore
+  footer?: ReactNode | true
 }
 
 export const Drawer = observer((props: DrawerProps) => {
-  const { trigger, content, onOpen, onClose, children, open, ...args } = props;
+  const { trigger, onOpen, onClose, open, ...args } = props;
   const { title } = args;
-  const [isOpen, setOpen] = useState<boolean>();
 
-  const curOpen = useMemo(() => open ?? isOpen, [isOpen, open]);
+  const boxStore = useBoxStore({ isOpen: open, onClose, onOpen });
+  const { isOpen, openUp } = boxStore;
 
-  const openUp = useCallback(() => {
-    onOpen?.();
-    setOpen(true);
-  }, [onOpen]);
+  return (
+    <BoxContentProvider value={boxStore}>
+      <Trigger children={title} render={trigger} onTrig={openUp} />
+      <DrawerContent {...args} open={isOpen} />
+    </BoxContentProvider>
+  );
+});
 
-  const close = useCallback(() => {
-    onClose?.();
-    setOpen(false);
-  }, [onClose]);
 
-  const curTrigger = useMemo(() => {
-    if (isValidElement(trigger)) {
-      return cloneElement(trigger, { onClick: openUp });
+const DrawerContent = observer((props: DrawerProps) => {
+  const { trigger, content, onOpen, onClose, children, open, isBindStore, store, footer, ...args } = props;
+  const { isOpen, close } = useBox();
+
+  if (open === undefined) {
+    return null;
+  }
+
+  const isBind = useMemo(() => isBindStore ?? !!store, [isBindStore, store]);
+
+  const curFooter = useMemo(() => {
+    if (footer === true) {
+      return (
+        <Row justify="end">
+          <Space>
+            <CancelTrigger onCancel={close} />
+            {isBind ? <RunTrigger isBoxContent store={store} /> : <OkTrigger onOk={close} />}
+          </Space>
+        </Row>
+      );
     }
-    if (isValidElementType(trigger)) {
-      const C: any = trigger;
-      return <C onClick={openUp} onOpen={openUp} />;
-    }
-    return <Button children={title} {...trigger} onClick={(e) => {
-      openUp();
-      if (trigger && 'onClick' in trigger) {
-        trigger.onClick?.(e);
-      }
-    }} />;
-  }, [openUp, title, trigger]);
+    return footer;
+  }, [close, footer, isBind, store]);
 
   const curChildren = useMemo(() => {
     if (isValidElement(children)) {
-      return cloneElement(children, { onClose: close });
+      return cloneElement(children, { onClose: close, isBoxContent: true });
     }
     if (isValidElement(content)) {
-      return cloneElement(content, { onClose: close });
+      return cloneElement(content, { onClose: close, isBoxContent: true });
     }
     if (isValidElementType(content)) {
       const C: any = content;
@@ -69,5 +81,9 @@ export const Drawer = observer((props: DrawerProps) => {
     return null;
   }, [children, close, content]);
 
-  return <>{curTrigger} {curOpen !== undefined && <ADrawer {...args} open={curOpen} onClose={close}>{curChildren}</ADrawer>}</>;
+  return (
+    <ADrawer {...args} footer={curFooter} open={isOpen} onClose={close}>
+      {curChildren}
+    </ADrawer>
+  );
 });
