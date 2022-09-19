@@ -36,5 +36,5 @@ export const Trigger = (props: TriggerProps) => {
     return <C {...args} {...eventProps} />;
   }
 
-  return <Button  {...render}   {...args}  {...eventProps} />;
+  return <Button {...args}  {...render} {...eventProps} />;
 };
