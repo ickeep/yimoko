@@ -1,3 +1,4 @@
+import { useField } from '@formily/react';
 import { useState, Dispatch, SetStateAction } from 'react';
 
 import { useAPIExecutor } from '../store/config';
@@ -28,14 +29,15 @@ export const useAPIOptions = <T extends string = 'label' | 'value'>(
 ): [IOptions<T>, boolean, Dispatch<SetStateAction<IOptions<T>>>] => {
   const [options, setOptions] = useState<IOptions<T>>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { dataSource } = useField() as any ?? {};
+  const curData = data ?? dataSource;
 
   const apiExecutor = useAPIExecutor();
-
   const apiFn = useDeepMemo(() => (!api ? undefined : () => runStoreAPI(api, apiExecutor)), [apiExecutor, api]);
 
   useDeepEffect(() => {
-    data && setOptions(dataToOptions(data, keys, splitter));
-  }, [data, keys, splitter]);
+    curData && setOptions(dataToOptions(curData, keys, splitter));
+  }, [curData, keys, splitter]);
 
   useDeepEffect(() => {
     apiFn && setLoading(true);

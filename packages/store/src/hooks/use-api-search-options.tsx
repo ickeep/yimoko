@@ -1,3 +1,4 @@
+import { useField } from '@formily/react';
 import { debounce } from 'lodash-es';
 import { useState, useRef, SetStateAction, Dispatch, useEffect, useMemo } from 'react';
 
@@ -36,6 +37,8 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
 ): [IOptions<T>, boolean, Dispatch<SetStateAction<IOptions<T>>>] => {
   const [options, setOptions] = useState<IOptions<T>>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { dataSource } = useField() as any ?? {};
+  const curData = data ?? dataSource;
   const fetchRef = useRef(0);
 
   const apiExecutor = useAPIExecutor();
@@ -84,8 +87,8 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
   const fetchOptionsForValue = useMemo(() => fetcher(apiFnForValue), [apiFnForValue, fetcher]);
 
   useDeepEffect(() => {
-    data && setOptions(dataToOptions(data, keys, splitter));
-  }, [data, keys, splitter]);
+    curData && setOptions(dataToOptions(curData, keys, splitter));
+  }, [curData, keys, splitter]);
 
   useEffect(() => {
     input && fetchOptions?.(input);

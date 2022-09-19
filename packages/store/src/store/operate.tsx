@@ -4,6 +4,8 @@ import { judgeIsEmpty } from '../tools/tool';
 import { BaseStore, IBaseStoreConfig, IStoreValues } from './base';
 import { INotifier } from './config';
 
+import { IStore } from '.';
+
 export const defaultRunAfter: IRunAfter = {
   notify: true,
   resetValues: 'success',
@@ -104,4 +106,18 @@ export interface IRunAfter {
   run?: IRunFn
   runOnFail?: IRunFn
   runOnSuccess?: IRunFn
+}
+
+export enum IOperateFromType {
+  add = 'add',
+  edit = 'edit',
+}
+export interface IOperateFromProps<V extends object = any, R = any> {
+  defaultValues: IStore<V, R>['defaultValues']
+  api?: IStore<V, R>['api']
+  type?: IOperateFromType;
+  isBoxContent?: boolean;
+  onSuccess?: (...rest: any) => any
+  onFail?: (...rest: any) => any
+  onClose?: (...rest: any) => any
 }

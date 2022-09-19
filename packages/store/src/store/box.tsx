@@ -86,22 +86,24 @@ interface IContentProps {
   [key: Key]: any
 }
 export interface BoxContentRenderProps {
+  isBind?: boolean,
   content?: ReactElement<IContentProps> | FC<IContentProps> | Component<IContentProps>
   children?: ReactElement<IContentProps>
 }
 
 export const BoxContentRender = observer((props: BoxContentRenderProps) => {
+  const { content, isBind = true, children } = props;
   const { close } = useBoxContent();
-  const { content, children } = props;
+  const bindProps = isBind ? { onClose: close, isBoxContent: true } : {};
   if (isValidElement(children)) {
-    return cloneElement(children, { onClose: close, isBoxContent: true });
+    return cloneElement(children, bindProps);
   }
   if (isValidElement(content)) {
-    return cloneElement(content, { onClose: close, isBoxContent: true });
+    return cloneElement(content, bindProps);
   }
   if (isValidElementType(content)) {
     const C: any = content;
-    return <C onClose={close} isBoxContent />;
+    return <C {...bindProps} />;
   }
   return null;
 });

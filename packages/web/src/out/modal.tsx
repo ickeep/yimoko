@@ -20,6 +20,7 @@ export interface ModalProps extends Omit<AModalProps, 'children' | 'footer'> {
   onOpen?: () => void | Promise<void>,
   onClose?: () => void | Promise<void>,
   isBindStore?: boolean
+  isBindContent?: boolean
   store?: IStore
   closeBox?: boolean | 'success' | 'fail'
 }
@@ -40,7 +41,7 @@ export const Modal = observer((props: ModalProps) => {
 });
 
 const ModalRender = observer((props: Omit<ModalProps, 'trigger' | 'onOpen' | 'onClose'>) => {
-  const { content, children, isBindStore, store, onOk, onCancel, okButtonProps, closeBox = 'success', ...args } = props;
+  const { content, children, isBindStore, store, onOk, onCancel, okButtonProps, closeBox = 'success', isBindContent, ...args } = props;
   const boxStore = useBoxContent();
   const { close, contentStore } = boxStore;
 
@@ -70,7 +71,7 @@ const ModalRender = observer((props: Omit<ModalProps, 'trigger' | 'onOpen' | 'on
       onOk={ok}
       onCancel={cancel}
     >
-      <BoxContentRender content={content}>{children}</BoxContentRender>
+      <BoxContentRender isBind={isBindContent} content={content}>{children}</BoxContentRender>
     </AModal>
   );
 });

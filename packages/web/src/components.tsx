@@ -1,15 +1,16 @@
 import {
   Form, FormLayout, FormItem, FormGrid, FormButtonGroup, Space,
   Submit, Reset, Cascader, Checkbox, DatePicker, Input, NumberPicker,
-  Password, Radio, Switch, TimePicker, Transfer, TreeSelect, Upload,
+  Password, Radio, Switch, TimePicker, TreeSelect, Upload,
   ArrayCards, ArrayItems, ArrayTable, ArrayTabs, Editable, FormCollapse,
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage } from '@yimoko/store';
+import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage, SchemaTemplate } from '@yimoko/store';
 import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination, Modal } from 'antd';
 
 import { Select } from './in/select';
+import { Transfer } from './in/transfer';
 import { CancelTrigger } from './out/cancel-trigger';
 import { Drawer } from './out/drawer';
 import { Icon } from './out/icon';
@@ -28,7 +29,9 @@ const { Header, Footer, Sider, Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 export const components: Record<string, any> = {
+  // in 组件 自定义，对其增强了 api options 的支持
   Select,
+  Transfer,
 
   CancelTrigger,
   Drawer,
@@ -52,6 +55,7 @@ export const components: Record<string, any> = {
   RedirectListData,
   RedirectValues,
   SchemaBox,
+  SchemaTemplate,
 
   // antd 组件
   Button: withValueChildren(Button),
@@ -90,12 +94,10 @@ export const components: Record<string, any> = {
   Reset,
   Input,
   Password,
-  // Select, // 自定义，对其增强了 api options 的支持
   TreeSelect,
   DatePicker,
   TimePicker,
   NumberPicker,
-  Transfer,
   Cascader,
   Radio,
   Checkbox,

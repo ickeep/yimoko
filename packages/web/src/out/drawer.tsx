@@ -22,6 +22,7 @@ export interface DrawerProps extends Omit<ADrawerProps, 'children' | 'footer'> {
   onOpen?: () => void | Promise<void>,
   onClose?: () => void | Promise<void>,
   isBindStore?: boolean
+  isBindContent?: boolean
   store?: IStore
   footer?: ReactNode | true
   okButtonProps?: ButtonProps
@@ -47,7 +48,7 @@ export const Drawer = observer((props: DrawerProps) => {
 });
 
 const DrawerRender = observer((props: Omit<DrawerProps, 'trigger' | 'onOpen'>) => {
-  const { content, children, isBindStore, store, footer, okButtonProps, cancelButtonProps, footerRowProps, ...args } = props;
+  const { content, children, isBindStore, store, footer, okButtonProps, cancelButtonProps, footerRowProps, isBindContent, ...args } = props;
   const boxStore = useBoxContent();
   const { close } = boxStore;
 
@@ -71,7 +72,7 @@ const DrawerRender = observer((props: Omit<DrawerProps, 'trigger' | 'onOpen'>) =
 
   return (
     <ADrawer {...args} footer={curFooter} onClose={close}>
-      <BoxContentRender content={content}>{children}</BoxContentRender>
+      <BoxContentRender isBind={isBindContent} content={content}>{children}</BoxContentRender>
     </ADrawer>
   );
 });
