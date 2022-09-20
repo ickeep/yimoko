@@ -28,7 +28,7 @@ export const Trigger = (props: TriggerProps) => {
   };
 
   if (isValidElement(render)) {
-    return cloneElement(render, { ...args, ...eventProps });
+    return cloneElement(render, { ...eventProps });
   }
 
   if (isValidElementType(render)) {

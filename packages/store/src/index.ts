@@ -38,6 +38,7 @@ export * from './store/config';
 export * from './store/index';
 export * from './store/lang';
 export * from './store/list';
+export * from './store/operate';
 export * from './store/root';
 export * from './store/theme';
 

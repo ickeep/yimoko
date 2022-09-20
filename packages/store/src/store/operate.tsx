@@ -115,7 +115,7 @@ export enum IOperateFromType {
 export interface IOperateFromProps<V extends object = any, R = any> {
   defaultValues: IStore<V, R>['defaultValues']
   api?: IStore<V, R>['api']
-  type?: IOperateFromType;
+  type?: IOperateFromType | string;
   isBoxContent?: boolean;
   onSuccess?: (...rest: any) => any
   onFail?: (...rest: any) => any

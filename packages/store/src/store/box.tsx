@@ -107,3 +107,13 @@ export const BoxContentRender = observer((props: BoxContentRenderProps) => {
   }
   return null;
 });
+
+
+export interface BoxComponentProps<D extends object = any, T = any> {
+  data?: D
+  trigger?: T
+  onSuccess?: (...rest: any) => any
+  onFail?: (...rest: any) => any
+  onClose?: (...rest: any) => any
+  onOpen?: (...rest: any) => any
+}
