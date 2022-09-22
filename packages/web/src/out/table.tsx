@@ -1,6 +1,6 @@
 import { RecordScope, RecursionField, RecordsScope, observer, useExpressionScope } from '@formily/react';
 import { dataToOptions, IKeys, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
-import { Table as TTable, TableProps as TTableProps } from 'antd';
+import { Table as TTable, TableProps as TTableProps, Tooltip, TooltipProps } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { ColumnFilterItem } from 'antd/lib/table/interface';
 import { get } from 'lodash-es';
@@ -21,6 +21,7 @@ export interface TableProps<T extends object = Record<string, any>> extends Omit
   columns?: Array<string | IColumn<T>>
   store?: ListStore<any, T[]>
   isUserItems?: boolean;
+  tipIcon?: string | IconProps
   expandable?: TTableProps<T>['expandable'] & {
     isTitleControlsAll?: boolean;
     icon?: {
@@ -31,7 +32,7 @@ export interface TableProps<T extends object = Record<string, any>> extends Omit
 }
 
 export const Table: <T extends object = Record<string, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
-  const { defaultColumnsWidth, scroll, value, columns, dataSource, store, isUserItems = true, expandable, rowKey = 'id', ...args } = props;
+  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isUserItems = true, expandable, rowKey = 'id', ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
   const { listData } = curStore ?? {};
@@ -41,7 +42,7 @@ export const Table: <T extends object = Record<string, any>>(props: TableProps<T
     return Array.isArray(val) ? val : [];
   }, [listData, dataSource, value]) as any[];
 
-  const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isUserItems);
+  const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isUserItems, tipIcon);
   const curScroll = useTableScroll(scroll, curColumns, defaultColumnsWidth);
 
   const curExpandable = useExpandable(expandable, listData, rowKey);
@@ -53,8 +54,19 @@ export const Table: <T extends object = Record<string, any>>(props: TableProps<T
   );
 });
 
-// eslint-disable-next-line max-len
-const getTitle = (field?: string | number, store?: IStore, title?: any): string => title ?? store?.fieldsConfig?.[`${field}`]?.title ?? `${field ?? ''}`;
+// eslint-disable-next-line complexity
+const getTitle = (field: string | number = '', column: IColumn<any> = {}, store?: IStore, icon: string | IconProps = 'QuestionCircleOutlined'): ReactNode => {
+  const { title, tip } = column;
+  const curTitle = title ?? store?.fieldsConfig?.[`${field}`]?.title ?? field;
+  if (judgeIsEmpty(tip)) {
+    return curTitle;
+  }
+  const iconProps = typeof icon === 'string' ? { name: icon } : icon;
+  return <>{curTitle} {typeof tip === 'string'
+    ? <Tooltip title={tip}><Icon {...iconProps} /></Tooltip>
+    : <Tooltip {...tip}><Icon {...iconProps} /></Tooltip>}
+  </>;
+};
 
 export const useColumnsForSchema = () => {
   const items = useSchemaItems();
@@ -137,6 +149,7 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   store?: IStore,
   data?: T[],
   isUserItems = false,
+  tipIcon?: string | IconProps,
 ) => {
   const itemsColumns = useColumnsForSchema() as IColumns<T>;
   const mixColumns = useMemo(() => {
@@ -229,8 +242,9 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   return useMemo(() => {
     const getAutoColumn = (column: string | IColumn<T>): IColumn<T> => {
       const col = typeof column === 'string' ? { dataIndex: column } : column as IColumn<T>;
+
       if ('dataIndex' in col) {
-        col.title = getTitle(dataIndexToKey(col.dataIndex), store, col.title);
+        col.title = getTitle(dataIndexToKey(col.dataIndex), col, store, tipIcon);
         const { isFilterContains, autoFilter, autoSorter, filterKeys, ...args } = col;
         return { ...args, ...getAutoFilterProps(col, filtersMap, store), sorter: getAutoSorter(col) };
       }
@@ -240,7 +254,7 @@ export const useTableColumns = <T extends object = Record<string, any>>(
       return col;
     };
     return mixColumns.map(getAutoColumn);
-  }, [filtersMap, mixColumns, store]);
+  }, [filtersMap, mixColumns, store, tipIcon]);
 };
 
 export const useTableScroll = (scroll: TTableProps<any>['scroll'], columns: TTableProps<any>['columns'], defaultColumnsWidth = 120) => useMemo(() => {
@@ -355,7 +369,7 @@ export interface IColumnGroupType<T extends object = Record<string, any>> extend
   children: IColumns<T>;
 }
 
-export type IColumn<T extends object = Record<string, any>> = IColumnType<T> | IColumnGroupType<T>;
+export type IColumn<T extends object = Record<string, any>> = (IColumnType<T> | IColumnGroupType<T>) & { tip?: string | TooltipProps };
 
 export type IColumns<T extends object = Record<string, any>> = IColumn<T>[];
 

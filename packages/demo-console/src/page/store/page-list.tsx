@@ -30,6 +30,7 @@ export const StorePageList = observer(() => {
       </StoreForm>
       <StorePageContent >
         <StoreTable
+          tipIcon={{ name: 'QuestionOutlined', style: { color: 'red' } }}
           isControlled={false}
           store={store}
           expandable={{
@@ -41,8 +42,8 @@ export const StorePageList = observer(() => {
             },
           }}
           columns={[
-            { dataIndex: 'id', autoSorter: 'number', fixed: 'left' },
-            { dataIndex: 'name' },
+            { dataIndex: 'id', autoSorter: 'number', fixed: 'left', tip: 'tip xxx' },
+            { dataIndex: 'name', tip: { title: 'xxxx', color: 'red' } },
             { dataIndex: 'type' },
             { dataIndex: 'date', title: 'date', autoSorter: 'date' },
             { dataIndex: 'time', title: 'time', autoSorter: 'time' },
