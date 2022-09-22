@@ -18,7 +18,7 @@ type IExpandableIcon = string | ReactNode | IconProps;
 export interface TableProps<T extends object = Record<string, any>> extends Omit<TTableProps<T>, 'columns' | 'expandable'> {
   value?: TTableProps<T>['dataSource'];
   defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
-  columns?: IColumns<T> | string[]
+  columns?: Array<string | IColumn<T>>
   store?: ListStore<any, T[]>
   isUserItems?: boolean;
   expandable?: TTableProps<T>['expandable'] & {
@@ -133,7 +133,7 @@ const getAutoSorter = (column: IColumnType<any>) => {
 };
 
 export const useTableColumns = <T extends object = Record<string, any>>(
-  columns: IColumns<T> | string[] = [],
+  columns: Array<string | IColumn<T>> = [],
   store?: IStore,
   data?: T[],
   isUserItems = false,
@@ -142,7 +142,7 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   const mixColumns = useMemo(() => {
     const arr = isUserItems ? [...columns, ...itemsColumns] : columns;
     // eslint-disable-next-line complexity
-    const handleItem = (item: IColumn<T> | string) => {
+    const handleItem = (item: string | IColumn<T>) => {
       if (typeof item === 'string') {
         if (store?.fieldsConfig?.[item]?.column) {
           return { ...store?.fieldsConfig?.[item]?.column, dataIndex: item };
@@ -227,8 +227,8 @@ export const useTableColumns = <T extends object = Record<string, any>>(
   }, [data, filterConfigs]);
 
   return useMemo(() => {
-    const getAutoColumn = (column: IColumn<T> | string): IColumn<T> => {
-      const col = typeof column === 'string' ? { dataIndex: column } : column;
+    const getAutoColumn = (column: string | IColumn<T>): IColumn<T> => {
+      const col = typeof column === 'string' ? { dataIndex: column } : column as IColumn<T>;
       if ('dataIndex' in col) {
         col.title = getTitle(dataIndexToKey(col.dataIndex), store, col.title);
         const { isFilterContains, autoFilter, autoSorter, filterKeys, ...args } = col;

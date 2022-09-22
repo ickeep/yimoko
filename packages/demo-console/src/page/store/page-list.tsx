@@ -6,10 +6,10 @@ import { Space } from 'antd';
 
 
 export const StorePageList = observer(() => {
-  const store = useOperateStore({
+  const store = useListStore({
     fieldsConfig: {
-      type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130 } },
-      name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true },
+      type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130, autoFilter: true } },
+      name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true, column: { autoFilter: true } },
     },
     // type: 'list',
     dictConfig: [
@@ -22,14 +22,13 @@ export const StorePageList = observer(() => {
     // isBindSearch: false,
   });
   return (
-    <Modal closeBox={false} isBindStore title="新增" trigger={{ children: 'xxx' }} >
-      <StorePage store={store} >
-        <StoreForm fields={['name']}>
-          <Space>
-            <Submit>查询</Submit>
-          </Space>
-        </StoreForm>
-        {/* <StorePageContent >
+    <StorePage store={store} >
+      <StoreForm fields={['name']}>
+        <Space>
+          <Submit>查询</Submit>
+        </Space>
+      </StoreForm>
+      <StorePageContent >
         <StoreTable
           isControlled={false}
           store={store}
@@ -43,17 +42,16 @@ export const StorePageList = observer(() => {
           }}
           columns={[
             { dataIndex: 'id', autoSorter: 'number', fixed: 'left' },
-            { dataIndex: 'name', autoFilter: true },
-            { dataIndex: 'type', autoFilter: true },
+            { dataIndex: 'name' },
+            { dataIndex: 'type' },
             { dataIndex: 'date', title: 'date', autoSorter: 'date' },
             { dataIndex: 'time', title: 'time', autoSorter: 'time' },
             { dataIndex: 'percentage', title: 'percentage', autoSorter: 'percentage' },
             { dataIndex: 'zh', title: 'zh', autoSorter: 'string', sorterParams: 'zh' },
             { dataIndex: 'length', title: 'length', autoSorter: 'length' },
           ]} />
-      </StorePageContent> */}
-      </StorePage>
-    </Modal>
+      </StorePageContent>
+    </StorePage>
   );
 });
 

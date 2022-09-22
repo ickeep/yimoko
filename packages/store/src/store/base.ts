@@ -125,11 +125,11 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
       const searchParams = new URLSearchParams(search);
       Object.keys(this.values).forEach((key) => {
         const strValue = searchParams.get(key);
-        strValue !== null && (newValues[key] = getValueBySearchParam(strValue, this.fieldsConfig[key]));
+        strValue !== null && (newValues[key] = getValueBySearchParam(strValue, this.fieldsConfig[key], this.defaultValues[key]));
       });
     }
     if (typeof search === 'object') {
-      Object.entries(search).forEach(([key, value]) => newValues[key] = getValueBySearchParam(value, this.fieldsConfig[key]));
+      Object.entries(search).forEach(([key, value]) => newValues[key] = getValueBySearchParam(value, this.fieldsConfig[key], this.defaultValues[key]));
     }
 
     type === 'all' && (newValues = { ...this.getDefaultValues(), ...newValues });
