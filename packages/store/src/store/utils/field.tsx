@@ -1,4 +1,5 @@
 import { ISchema } from '@formily/react';
+import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { ColumnType } from 'antd/lib/table';
 import { Key } from 'react';
 
@@ -60,7 +61,8 @@ export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => 
 
 export type IFieldsConfig<P extends object = Record<Key, any>> = Record<keyof P | string, (ISchema<any> & {
   // 用于配置表格列的属性
-  column?: ColumnType<P> | Record<Key, any>
+  column?: ColumnType<P> & Record<Key, any>
+  desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema }
 })>;
 
 export type IGetFields<P extends object = Record<Key, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];

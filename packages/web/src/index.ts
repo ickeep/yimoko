@@ -12,8 +12,9 @@ export * from './out/run-trigger';
 export * from './out/table';
 export * from './out/trigger';
 
-export * from './store/form';
+export * from './store/desc';
 export * from './store/config';
+export * from './store/form';
 export * from './store/page-content';
 export * from './store/page';
 export * from './store/search';

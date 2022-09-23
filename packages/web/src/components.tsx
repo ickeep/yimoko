@@ -21,6 +21,7 @@ import { PageError } from './out/page-error';
 import { RunTrigger } from './out/run-trigger';
 import { Table } from './out/table';
 import { Trigger } from './out/trigger';
+import { StoreDesc } from './store/desc';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
 import { StorePageContent } from './store/page-content';
@@ -47,6 +48,7 @@ export const components: Record<Key, any> = {
 
   SchemaPage,
 
+  StoreDesc,
   StoreForm,
   StorePageContent,
   StorePage,
