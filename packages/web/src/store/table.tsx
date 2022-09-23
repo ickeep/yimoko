@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DF_PAGINATION } from '../config';
 import { dataIndexToKey, IColumn, IColumnType, Table, TableProps, useColumnsForSchema } from '../out/table';
 
-export type StoreTableProps<T extends object = Record<string, any>> =
+export type StoreTableProps<T extends object = Record<Key, any>> =
   Omit<TableProps<T>, 'loading' | 'value' | 'dataSource' | 'onChange' | 'ColumnsType'>
   & (
     { isControlled: false, store?: ListStore<any, T[]> } |
@@ -21,7 +21,7 @@ export type StoreTableProps<T extends object = Record<string, any>> =
     onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
   };
 
-export const StoreTable: <T extends object = Record<string, any>>(props: StoreTableProps<T>) => React.ReactElement | null = observer((props) => {
+export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTableProps<T>) => React.ReactElement | null = observer((props) => {
   const { isControlled = true, store, columns = [], pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope?.curStore as ListStore<any, any>;
@@ -102,7 +102,7 @@ export const StoreTable: <T extends object = Record<string, any>>(props: StoreTa
     if (extra.action === 'filter') {
       onFilter?.(filters);
       if (isControlled) {
-        const newValues: Record<string, any> = { [page]: 1 };
+        const newValues: Record<Key, any> = { [page]: 1 };
         Object.entries(filters).forEach(([key, value]) => {
           let val: any = value;
           if (value !== null) {

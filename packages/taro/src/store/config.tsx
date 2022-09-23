@@ -1,9 +1,10 @@
 import { ConfigStore } from '@yimoko/store';
+import { Key } from 'react';
 
 import { httpRequest } from '../adapter/http';
 
 const tabURL: string[] = [];
-const themeVars: Record<string, any> = {};
+const themeVars: Record<Key, any> = {};
 const tabBars: Array<Omit<Taro.setTabBarItem.Option, 'complete' | 'fail' | 'success'>> = [];
 const tabBarStyle: Omit<Taro.setTabBarStyle.Option, 'complete' | 'fail' | 'success'> = {};
 // 因小程序包大小限制，将所有静态资源放至 CDN 上

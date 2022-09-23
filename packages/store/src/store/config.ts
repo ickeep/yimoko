@@ -1,15 +1,15 @@
 import { define, observable, action } from '@formily/reactive';
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, Key, ReactNode, useContext } from 'react';
 
 import { IAPIRequestConfig, IHTTPCode, IHTTPResponse } from '../tools/api';
 
 type ILevel = 'info' | 'warn' | 'error';
 
-type IReport = (info: Record<string, any> | Error | unknown, level: ILevel) => void;
+type IReport = (info: Record<Key, any> | Error | unknown, level: ILevel) => void;
 
 type INotifierType = 'success' | 'error' | 'info' | 'warning' | 'loading' | 'warn' | 'open' | 'close' | 'destroy' | 'confirm' | string;
 
-export type INotifier = (type: INotifierType, msg: string | ReactNode, options?: Record<string, any>) => void;
+export type INotifier = (type: INotifierType, msg: string | ReactNode, options?: Record<Key, any>) => void;
 
 export type IAPIExecutor = <T extends object = IAPIRequestConfig> (config: T) => Promise<IHTTPResponse>;
 
@@ -44,7 +44,7 @@ export class ConfigStore<T extends object = any> {
     });
   }
 
-  logger = (info: Record<string, any> | Error | unknown, level: ILevel = 'info') => {
+  logger = (info: Record<Key, any> | Error | unknown, level: ILevel = 'info') => {
     const { report } = this;
     if (report) {
       report(info, level);

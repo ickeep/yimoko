@@ -1,3 +1,5 @@
+import { Key } from 'react';
+
 import { JSONParse, JSONStringify, judgeIsEmpty } from './tool';
 
 describe('judgeIsEmpty', () => {
@@ -47,7 +49,7 @@ describe('JSONStringify', () => {
   });
 
   test('JSONStringify err', () => {
-    const obj: Record<string, any> = { key: 'key' };
+    const obj: Record<Key, any> = { key: 'key' };
     obj.o = obj;
     const deviantArr = [null, undefined, true, false, 1, () => '', '', 'str', obj];
     deviantArr.forEach((val: any) => expect(JSONStringify(val)).toEqual(''));

@@ -1,5 +1,6 @@
 import { getCodeByStatus, IHTTPCode, IHTTPResponse } from '@yimoko/store';
 import axios, { AxiosRequestConfig, AxiosRequestTransformer, AxiosResponse } from 'axios';
+import { Key } from 'react';
 
 // 根据 Content-Type 自动转换数据 form-data，
 export const autoTransformDataType: AxiosRequestTransformer = (data, headers) => {
@@ -71,7 +72,7 @@ export const httpPatchForm: IHTTPPost = (url, data, config) => httpRequest(setCo
 
 
 // 处理请求返回的数据
-export const handleResponse = <T = Record<string, any>>(response: AxiosResponse<T>): IHTTPResponse<T> => {
+export const handleResponse = <T = Record<Key, any>>(response: AxiosResponse<T>): IHTTPResponse<T> => {
   const { data, status, statusText } = response;
   const resData = getResponseData(response);
   return {
@@ -84,7 +85,7 @@ export const handleResponse = <T = Record<string, any>>(response: AxiosResponse<
 
 
 // 获取 response data
-export const getResponseData = (response: AxiosResponse): Record<string, any> => {
+export const getResponseData = (response: AxiosResponse): Record<Key, any> => {
   const { data } = response;
   return (typeof data?.code !== 'undefined' && (typeof data?.msg !== 'undefined' || typeof data?.data !== 'undefined')) ? data : response;
 };
@@ -93,4 +94,4 @@ export type IHTTPRequest = <R = any, P = any>(config: AxiosRequestConfig<P>) => 
 
 export type IHTTPGet = <R = any, P = any>(url: string, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
 
-export type IHTTPPost = <R = any, P = Record<string, any>> (url: string, data?: P, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;
+export type IHTTPPost = <R = any, P = Record<Key, any>> (url: string, data?: P, config?: AxiosRequestConfig<P>) => Promise<IHTTPResponse<R, P>>;

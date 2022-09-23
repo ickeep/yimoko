@@ -1,11 +1,11 @@
-import { isValidElement } from 'react';
+import { isValidElement, Key } from 'react';
 import { isValidElementType } from 'react-is';
 
 import { JSONStringify, judgeIsEmpty } from '../tools/tool';
 
 export interface RenderValueProps {
   value?: any
-  props?: Record<string, any>
+  props?: Record<Key, any>
 }
 
 // eslint-disable-next-line complexity
@@ -25,7 +25,7 @@ export const RenderValue = (props: RenderValueProps) => {
     return <C {...cProps} />;
   }
 
-  const typeFnMap: Record<string, any> = {
+  const typeFnMap: Record<Key, any> = {
     boolean: () => String(value),
     number: () => String(value),
     bigint: () => String(value),

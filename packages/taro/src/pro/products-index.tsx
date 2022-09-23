@@ -4,7 +4,7 @@ import { observer } from '@formily/react';
 import { ScrollView, ScrollViewProps, View } from '@tarojs/components';
 import Taro, { NodesRef } from '@tarojs/taro';
 import { useStore, judgeIsSuccess, judgeIsEmpty, IStore, IStoreConfig, dataToOptions, IOptions } from '@yimoko/store';
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, Key } from 'react';
 
 import { getNode, getScroll, getRect, getAllRect } from '../adapter/dom';
 import { sidebarDefaultKeys } from '../nav/sidebar';
@@ -38,7 +38,7 @@ export interface ProductsIndexProps extends ScrollViewProps {
   keys?: Partial<typeof defaultKeys>
   productsKeys?: Partial<typeof productsDefaultKeys>
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 }
 
 export const ProductsIndex = observer((props: ProductsIndexProps) => {
@@ -110,7 +110,7 @@ const ProductsIndexContent = observer((props: ProductsIndexContentProps) => {
   const getCardItemID = useCallback((barItemID: string, itemID: string) => `${id}-${barItemID}-${itemID}`, [id]);
 
   const curCards = useMemo(
-    () => data?.map(item => item.products?.map((p: Record<string, any>, i) => (
+    () => data?.map(item => item.products?.map((p: Record<Key, any>, i) => (
       <Card
         key={p?.id ?? i}
         price="" {...p}
@@ -158,7 +158,7 @@ const ProductsIndexContent = observer((props: ProductsIndexContentProps) => {
     getRect(`#${getSiderBarItemID(barID)}`).then(rect => rect && adjustSidebar(rect));
   };
 
-  const toProducts = (sItem: Record<string, any>) => {
+  const toProducts = (sItem: Record<Key, any>) => {
     const pItem = sItem?.products?.[0];
     if (pItem) {
       const cID = getCardItemID(sItem.id, pItem.id);

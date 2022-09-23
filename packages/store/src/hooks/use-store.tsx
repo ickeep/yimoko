@@ -1,4 +1,6 @@
 
+import { Key } from 'react';
+
 import { IStore, IStoreConfig, StoreMap } from '../store';
 import { IStoreValues, BaseStore } from '../store/base';
 import { useAPIExecutor, useNotifier } from '../store/config';
@@ -26,4 +28,4 @@ export function useStore<V extends object = IStoreValues, R extends object = any
 }
 
 // eslint-disable-next-line no-param-reassign
-const setValue = (obj: Record<string, any>, key: string, value: any) => (!obj[key] && value) && (obj[key] = value);
+const setValue = (obj: Record<Key, any>, key: string, value: any) => (!obj[key] && value) && (obj[key] = value);

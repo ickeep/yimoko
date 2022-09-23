@@ -6,7 +6,7 @@ import { ColumnFilterItem } from 'antd/lib/table/interface';
 import { get } from 'lodash-es';
 import moment from 'moment';
 import { DataIndex, RenderExpandIconProps } from 'rc-table/lib/interface';
-import { cloneElement, isValidElement, ReactNode, useMemo, useState } from 'react';
+import { cloneElement, isValidElement, Key, ReactNode, useMemo, useState } from 'react';
 
 import { Icon, IconProps } from './icon';
 
@@ -15,7 +15,7 @@ import { Icon, IconProps } from './icon';
 
 type IExpandableIcon = string | ReactNode | IconProps;
 
-export interface TableProps<T extends object = Record<string, any>> extends Omit<TTableProps<T>, 'columns' | 'expandable'> {
+export interface TableProps<T extends object = Record<Key, any>> extends Omit<TTableProps<T>, 'columns' | 'expandable'> {
   value?: TTableProps<T>['dataSource'];
   defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
   columns?: Array<string | IColumn<T>>
@@ -31,7 +31,7 @@ export interface TableProps<T extends object = Record<string, any>> extends Omit
   };
 }
 
-export const Table: <T extends object = Record<string, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
+export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
   const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isUserItems = true, expandable, rowKey = 'id', ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
@@ -144,7 +144,7 @@ const getAutoSorter = (column: IColumnType<any>) => {
   };
 };
 
-export const useTableColumns = <T extends object = Record<string, any>>(
+export const useTableColumns = <T extends object = Record<Key, any>>(
   columns: Array<string | IColumn<T>> = [],
   store?: IStore,
   data?: T[],
@@ -354,7 +354,7 @@ const useExpandable = (
 };
 
 
-export type IColumnType<T extends object = Record<string, any>> = ColumnType<T> & {
+export type IColumnType<T extends object = Record<Key, any>> = ColumnType<T> & {
   autoFilter?: boolean;
   isFilterContains?: boolean,
   filterSplitter?: string
@@ -365,12 +365,12 @@ export type IColumnType<T extends object = Record<string, any>> = ColumnType<T> 
   autoSorter?: 'number' | 'string' | 'percentage' | 'date' | 'time' | 'length';
   sorterParams?: 'zh' | any;
 };
-export interface IColumnGroupType<T extends object = Record<string, any>> extends Omit<ColumnType<T>, 'dataIndex'> {
+export interface IColumnGroupType<T extends object = Record<Key, any>> extends Omit<ColumnType<T>, 'dataIndex'> {
   children: IColumns<T>;
 }
 
-export type IColumn<T extends object = Record<string, any>> = (IColumnType<T> | IColumnGroupType<T>) & { tip?: string | TooltipProps };
+export type IColumn<T extends object = Record<Key, any>> = (IColumnType<T> | IColumnGroupType<T>) & { tip?: string | TooltipProps };
 
-export type IColumns<T extends object = Record<string, any>> = IColumn<T>[];
+export type IColumns<T extends object = Record<Key, any>> = IColumn<T>[];
 
 export type IAutoFilterConfig = Pick<IColumnType, 'isFilterContains' | 'filterSplitter' | 'autoFilter'> & { 'dataIndex': DataIndex };

@@ -3,7 +3,7 @@ import { TabsProps as TTabsProps } from '@antmjs/vantui/types/tab';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema, withSchemaChildren } from '@yimoko/store';
-import { useMemo, useState } from 'react';
+import { Key, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -27,10 +27,10 @@ const defaultKeys = {
 export type TabsProps = Omit<TTabsProps, 'active' | 'onChange'> & IOptionsAPIProps<keyof typeof defaultKeys> & {
   value?: any,
   // 为 tab 渲染数据来源 key 对应 tab value
-  dataSource?: Record<string, any>
+  dataSource?: Record<Key, any>
   onChange?: (value: any, e?: ITouchEvent) => void;
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const Tabs = (props: TabsProps) => {

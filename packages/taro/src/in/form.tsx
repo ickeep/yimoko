@@ -1,6 +1,7 @@
 import { observer, useExpressionScope, useForm } from '@formily/react';
 import { Form as TForm, FormProps as TFormProps } from '@tarojs/components';
 import { IHTTPResponse, IStore, judgeIsSuccess } from '@yimoko/store';
+import { Key } from 'react';
 
 import { IRouteType, route } from '../adapter/route';
 import { showToast } from '../adapter/toast';
@@ -10,7 +11,7 @@ export interface IRunRule {
   url?: string | number,
 }
 
-export type IRunFn = (store: IStore, scope?: Record<string, any>) => void;
+export type IRunFn = (store: IStore, scope?: Record<Key, any>) => void;
 
 export interface FormProps extends TFormProps {
   notifyOnFail?: true | string
@@ -53,7 +54,7 @@ const runRoute = (runConf: IRunRule) => {
 };
 
 // 目前暂时只支持路由跳转，后续可以支持其他操作
-const runRule = (runConf: IRunRule | IRunFn, store: IStore, scope?: Record<string, any>) => {
+const runRule = (runConf: IRunRule | IRunFn, store: IStore, scope?: Record<Key, any>) => {
   if (typeof runConf === 'function') {
     return runConf(store, scope);
   }

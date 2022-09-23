@@ -1,6 +1,8 @@
+import { Key } from 'react';
+
 import { logger } from '../store/config';
 
-export function adapter<R, ER = null, T = Record<string, any>>(fn: Function, params?: T, errorHandle?: 'return'): Promise<R | ER> {
+export function adapter<R, ER = null, T = Record<Key, any>>(fn: Function, params?: T, errorHandle?: 'return'): Promise<R | ER> {
   return new Promise<R>((resolve) => {
     const err = (res: R | ER) => {
       const returnVal = (errorHandle === 'return' ? res : null) as R;

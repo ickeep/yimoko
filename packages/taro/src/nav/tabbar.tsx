@@ -3,7 +3,7 @@ import { ImageProps } from '@antmjs/vantui/types/image';
 import { TabbarProps as TTabbarProps, TabbarItemProps as TTabbarItemProps } from '@antmjs/vantui/types/tabbar';
 import { useExpressionScope } from '@formily/react';
 import { IOptionsAPIProps, useAPIOptions, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
-import { useMemo, useState } from 'react';
+import { Key, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -50,7 +50,7 @@ export type TabbarProps = Omit<TTabbarProps, 'active' | 'onChange'> & IOptionsAP
   value?: string | number,
   onChange?: (value: string | number) => void;
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const Tabbar = (props: TabbarProps) => {

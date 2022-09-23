@@ -3,7 +3,7 @@ import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { observer, useExpressionScope } from '@formily/react';
 import { View, ViewProps } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -28,7 +28,7 @@ export const cardDefaultKeys = {
 export type CardListProps = ViewProps & IOptionsAPIProps<keyof typeof cardDefaultKeys> & {
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const CardList = observer((props: CardListProps) => {

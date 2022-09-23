@@ -1,7 +1,7 @@
 import { BaseEventOrig, Picker as TPicker, PickerMultiSelectorProps } from '@tarojs/components';
 
 import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions } from '@yimoko/store';
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 
 import { TextProps } from '../base/text';
 
@@ -34,7 +34,7 @@ export const PickerMulti = (props: PickerMultiProps) => {
     const indexes: any[] = [];
     const labelArr: any[] = [];
     // eslint-disable-next-line complexity
-    const getFindIndex = (colsData: Record<string, any>[], level = 0) => colsData.findIndex((item, i) => {
+    const getFindIndex = (colsData: Record<Key, any>[], level = 0) => colsData.findIndex((item, i) => {
       const { child } = item;
       if (!judgeIsEmpty(child)) {
         const index = getFindIndex(child, level + 1);

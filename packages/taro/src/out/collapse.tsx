@@ -4,7 +4,7 @@ import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
-import { useMemo, useState } from 'react';
+import { Key, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -13,7 +13,7 @@ export type CollapseProps = TCollapseProps & IOptionsAPIProps<keyof CollapseItem
   onChange?: (value: any, e?: ITouchEvent) => void;
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 const defaultKeys = {

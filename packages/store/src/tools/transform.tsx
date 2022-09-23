@@ -1,5 +1,6 @@
 // 根据规则 转换数据
 import { cloneDeep, get, omit, pick, set } from 'lodash-es';
+import { Key } from 'react';
 
 import { IKeys } from './options';
 import { judgeIsEmpty } from './tool';
@@ -7,7 +8,7 @@ import { judgeIsEmpty } from './tool';
 type ITransformType =
   { type: 'swap' | 'arrItemSwap', keys: IKeys<string> } |
   { type: 'omit' | 'pick' | 'arrItemOmit' | 'arrItemPick', keys: string | string[] } |
-  { type: 'filter' | 'arrItemFilter', predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<string, any> };
+  { type: 'filter' | 'arrItemFilter', predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<Key, any> };
 
 export type ITransformRule = ITransformType & { valueKey?: string | string[] };
 
@@ -49,7 +50,7 @@ export const heddleTransform = (values: any, rule: ITransformType) => {
   return fnMap[rule.type]?.(rule) ?? values;
 };
 
-const filter = (value: any, predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<string, any>) => {
+const filter = (value: any, predicate?: (v: any, i: number, arr: any[]) => boolean, equalKeys?: Record<Key, any>) => {
   if (!Array.isArray(value)) {
     return value;
   }

@@ -4,7 +4,7 @@ import { observer, useExpressionScope } from '@formily/react';
 import { Swiper as TSwiper, SwiperItem, SwiperProps as TSwiperProps, View } from '@tarojs/components';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import React, { Key, useMemo } from 'react';
 
 import { Text } from '../base/text';
 import { handleClick } from '../tools/handle-click';
@@ -20,7 +20,7 @@ export type SwiperProps = Omit<TSwiperProps, 'style'> & IOptionsOutAPIProps & {
   titleStyle?: React.CSSProperties
   descStyle?: React.CSSProperties
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const Swiper = observer((props: SwiperProps) => {

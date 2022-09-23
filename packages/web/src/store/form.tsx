@@ -1,7 +1,7 @@
 import { Form, FormProps, IFormGridProps, FormGrid } from '@formily/antd';
-import { useExpressionScope, useFieldSchema, RecursionField, observer } from '@formily/react';
+import { useExpressionScope, useFieldSchema, RecursionField, observer, ISchema } from '@formily/react';
 import { IStore, ListStore, useSchemaField } from '@yimoko/store';
-import { ReactNode, useMemo } from 'react';
+import { Key, ReactNode, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const defaultGrid: IFormGridProps = {
@@ -52,7 +52,7 @@ const StoreFormFields = observer((props: StoreFormFieldsProps) => {
     return null;
   }
 
-  const properties: Record<string, any> = {};
+  const properties: Record<Key, any> = {};
 
   fields.forEach((field) => {
     if (typeof field === 'string') {
@@ -75,7 +75,7 @@ export interface StoreFormFieldsProps {
   store?: IStore
 }
 
-export interface IStoreFormField {
+export interface IStoreFormField extends ISchema {
   field: string,
   [key: string]: any
 }

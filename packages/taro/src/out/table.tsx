@@ -3,10 +3,10 @@ import { IColumns, ITableProps } from '@antmjs/vantui/types/table';
 import { createForm } from '@formily/core';
 import { RecordScope, RecursionField, useExpressionScope, useFieldSchema } from '@formily/react';
 import { useAPIOptions, IOptionsOutAPIProps, judgeIsEmpty, SchemaBox, useSchemaField, useSchemaItemsOut, useSchemaItems } from '@yimoko/store';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 
 export type TableProps = ITableProps & Omit<IOptionsOutAPIProps<string>, 'options'> & {
-  value?: Record<string, any>[];
+  value?: Record<Key, any>[];
 };
 
 export const Table = (props: TableProps) => {

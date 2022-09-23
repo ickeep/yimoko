@@ -47,7 +47,7 @@ export const strToOptions = <T extends string = 'label' | 'value'>(str = '', spl
   });
 };
 
-export const objToOptions = <T extends string = 'label' | 'value'>(obj: Record<string, any> = {}, keys?: IKeys<T>): IOptions<T> => {
+export const objToOptions = <T extends string = 'label' | 'value'>(obj: Record<Key, any> = {}, keys?: IKeys<T>): IOptions<T> => {
   const options = !obj ? [] : Object.entries(obj).map(([key, value]) => {
     if (value && typeof value === 'object') {
       return { value: key, ...value };

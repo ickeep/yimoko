@@ -1,11 +1,11 @@
 import { RecursionField, Schema } from '@formily/react';
-import React from 'react';
+import React, { Key } from 'react';
 
 import { judgeIsEmpty } from './tool';
 
 // 用于在有子项项目，例如 menu 之类，获取 schema item 子项配置
 // eslint-disable-next-line complexity
-export function getItemPropsBySchema(schema: Schema, componentName: string, schemaKey: string | number): Record<string, any> {
+export function getItemPropsBySchema(schema: Schema, componentName: string, schemaKey: string | number): Record<Key, any> {
   const {
     'x-component': component,
     'x-component-props': componentProps,

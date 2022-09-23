@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro';
 import { getCodeByStatus, IHTTPCode } from '@yimoko/store';
+import { Key } from 'react';
 
 // 将 response 处理为统一的 { code, data, message } 格式
 export const httpRequest: IHTTPRequest = async (config) => {
@@ -46,7 +47,7 @@ export const httpPut: IHTTPPost = (url, data, config) => httpRequest({ ...config
 
 // 处理请求返回的数据
 // eslint-disable-next-line complexity
-export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<T>): IHTTPResponse<T> => {
+export const handleResponse = <T = Record<Key, any>>(response: ITaroResponse<T>): IHTTPResponse<T> => {
   const { data, statusCode } = response;
   const resData = getResponseData(response);
   return {
@@ -59,7 +60,7 @@ export const handleResponse = <T = Record<string, any>>(response: ITaroResponse<
 };
 
 // 获取 response data
-export const getResponseData = (response: ITaroResponse): Record<string, any> => {
+export const getResponseData = (response: ITaroResponse): Record<Key, any> => {
   const { data } = response;
   return (typeof data?.code !== 'undefined' && (typeof data?.msg !== 'undefined' || typeof data?.data !== 'undefined')) ? data : response;
 };
@@ -75,7 +76,7 @@ export type IHTTPRequest = <R = any, P = any>(config: IHTTPConfig<P>) => Promise
 
 export type IHTTPGet = <R = any, P = any>(url: string, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
 
-export type IHTTPPost = <R = any, P = Record<string, any>> (url: string, data?: P, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
+export type IHTTPPost = <R = any, P = Record<Key, any>> (url: string, data?: P, config?: IHTTPConfig<P>) => Promise<IHTTPResponse<R>>;
 
 export interface IHTTPConfig<P = any> {
   /** 开发者服务器接口地址 */

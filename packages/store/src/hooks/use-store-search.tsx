@@ -1,10 +1,10 @@
 import { useForm } from '@formily/react';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { useCallback, useEffect, useRef } from 'react';
+import { Key, useCallback, useEffect, useRef } from 'react';
 
 import { IStore } from '../store';
 
-export const useStoreSearch = (store: IStore, search: string | Partial<Record<string, any>>) => {
+export const useStoreSearch = (store: IStore, search: string | Partial<Record<Key, any>>) => {
   const form = useForm();
   const isNotFirst = useRef(false);
   const { isRunNow } = store;

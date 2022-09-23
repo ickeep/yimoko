@@ -1,3 +1,5 @@
+import { Key } from 'react';
+
 // 判断请求是否成功
 export const judgeIsSuccess = (Response?: Partial<IHTTPResponse>) => Response?.code === IHTTPCode.success;
 
@@ -30,7 +32,7 @@ export interface IHTTPResponse<R = any, P = any> {
   config?: IAPIRequestConfig<P>
   status?: number;
   statusText?: string;
-  headers?: Record<string, any>;
+  headers?: Record<Key, any>;
   [key: string]: any
 }
 
@@ -44,7 +46,7 @@ export type IAPIRequestConfig<V = any> = {
 
 export type IMethod = 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH' | 'PURGE' | 'LINK' | 'UNLINK' | string;
 
-export interface IPageData<T extends object = Record<string, any>> {
+export interface IPageData<T extends object = Record<Key, any>> {
   page: number,
   pageSize: number,
   total: number,

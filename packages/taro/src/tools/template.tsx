@@ -1,12 +1,13 @@
 import { judgeIsEmpty } from '@yimoko/store';
 import { get } from 'lodash-es';
+import { Key } from 'react';
 
 // 小程序限制了 eval 和 new Function 的使用，所以简单实现 template 转换
 
 export const isTemplate = (value: any) => typeof value === 'string' && /<%=\s*[^<%=>]+\s*%>/.test(value);
 
 // 简易的模版转化
-export const template = (text = '', params: Record<string, any> = {}) => {
+export const template = (text = '', params: Record<Key, any> = {}) => {
   if (typeof text !== 'string') {
     return text;
   }
@@ -22,7 +23,7 @@ export const template = (text = '', params: Record<string, any> = {}) => {
 };
 
 // 简易模版字符串取值，实现简易低代码
-export const templateConvertForProps = (props: Record<string, any>, obj: Record<string, any> = {}) => {
+export const templateConvertForProps = (props: Record<Key, any>, obj: Record<Key, any> = {}) => {
   if (judgeIsEmpty(props)) {
     return props;
   }

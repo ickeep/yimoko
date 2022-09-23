@@ -119,7 +119,7 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
   setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
 
   // type all undefined 则填默认值  "" 则填空字符串
-  setValuesBySearch = (search: string | Partial<Record<string, any>>, type: 'all' | 'part' = 'all') => {
+  setValuesBySearch = (search: string | Partial<Record<Key, any>>, type: 'all' | 'part' = 'all') => {
     let newValues: any = {};
     if (typeof search === 'string') {
       const searchParams = new URLSearchParams(search);
@@ -190,7 +190,7 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
     return this.runAPI();
   };
 
-  runAPIDataBySearch = async (search: string | Partial<Record<string, any>>) => {
+  runAPIDataBySearch = async (search: string | Partial<Record<Key, any>>) => {
     this.setValuesBySearch(search);
     return this.runAPI();
   };
@@ -214,7 +214,7 @@ export type IBaseStoreConfig<V extends object = IStoreValues, R extends object =
   isBindSearch?: boolean;
   isRunNow?: boolean,
   apiExecutor?: IHTTPRequest;
-  defineConfig?: Record<string, any>;
+  defineConfig?: Record<Key, any>;
   form?: Form<IV<V>>;
 };
 
@@ -222,7 +222,7 @@ export interface IStoreValues extends Object {
   [key: Key]: any
 }
 
-type IV<V = IStoreValues> = V & Record<string, any>;
+type IV<V = IStoreValues> = V & Record<Key, any>;
 
 export type IStoreDict<V extends object = IStoreValues> = { [key in IField<V>]?: any };
 

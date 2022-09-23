@@ -6,6 +6,7 @@ import {
 } from '@tarojs/components';
 
 import { DataItems } from '@yimoko/store';
+import { Key } from 'react';
 
 import { Button } from './base/button';
 import { Camera } from './base/camera';
@@ -76,7 +77,7 @@ import { StoreScrollView } from './store/scroll-view';
 import { templateConvertForProps } from './tools/template';
 
 
-export const components: Record<string, any> = {
+export const components: Record<Key, any> = {
   // store 组件
   DataItems,
 
@@ -192,7 +193,7 @@ export const components: Record<string, any> = {
 };
 
 // hoc 转换组件 props 使其支持 模版
-export function withConvertProps<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
+export function withConvertProps<T extends Object = Record<Key, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
   return observer((props: T) => {
     const scope = useExpressionScope();
     const cProps = templateConvertForProps(props, scope) as T;
@@ -200,6 +201,6 @@ export function withConvertProps<T extends Object = Record<string, any>>(C: Reac
   });
 }
 
-export const convertPropsComponents: Record<string, any> = {};
+export const convertPropsComponents: Record<Key, any> = {};
 
 Object.entries(components).forEach(([key, value]) => convertPropsComponents[key] = withConvertProps(value));

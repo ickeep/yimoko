@@ -5,7 +5,7 @@ import { ImageProps } from '@antmjs/vantui/types/image';
 import { SkeletonProps } from '@antmjs/vantui/types/skeleton';
 import { observer, useExpressionScope } from '@formily/react';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, judgeIsEmpty, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -14,7 +14,7 @@ export type GridProps = TGridProps & IOptionsOutAPIProps & {
   image?: ImageProps
   skeleton?: Omit<SkeletonProps, 'loading' | 'children'>
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const Grid = observer((props: GridProps) => {

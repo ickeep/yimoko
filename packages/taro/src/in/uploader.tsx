@@ -2,18 +2,18 @@ import { Uploader as TUploader } from '@antmjs/vantui';
 import { UploaderProps as TUploaderProps } from '@antmjs/vantui/types/uploader';
 import { observer } from '@formily/react';
 import { IHTTPResponse, judgeIsEmpty, judgeIsSuccess, useBaseStore, useConfig } from '@yimoko/store';
-import { useCallback, useEffect, useMemo } from 'react';
+import { Key, useCallback, useEffect, useMemo } from 'react';
 
 import { uploadFile } from '../adapter/http';
 import { IConfig } from '../store/config';
 
 export interface UploaderProps extends Omit<TUploaderProps, 'fileList'> {
   valueType?: 'string' | 'string[]' | 'array'
-  value?: string | string[] | Array<{ url: string } & Record<string, any>>
+  value?: string | string[] | Array<{ url: string } & Record<Key, any>>
   onChange?: (value?: string | any[]) => void
   splitter?: string
   upload?: Pick<Taro.uploadFile.Option, 'url' | 'fileName' | 'name' | 'header' | 'formData' | 'timeout'> |
-  ((filePath: string) => Promise<IHTTPResponse<string | ({ url: string } & Record<string, any>)>>)
+  ((filePath: string) => Promise<IHTTPResponse<string | ({ url: string } & Record<Key, any>)>>)
 }
 
 export interface IFile {

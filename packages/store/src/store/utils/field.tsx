@@ -58,11 +58,11 @@ export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => 
   return { ...DF_KEYS, ...fieldsConfig?.[field]?.['x-component-props']?.keys };
 };
 
-export type IFieldsConfig<P extends object = Record<string, any>> = Record<keyof P | string, (ISchema<any> & {
+export type IFieldsConfig<P extends object = Record<Key, any>> = Record<keyof P | string, (ISchema<any> & {
   // 用于配置表格列的属性
   column?: ColumnType<P> | Record<Key, any>
 })>;
 
-export type IGetFields<P extends object = Record<string, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];
+export type IGetFields<P extends object = Record<Key, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];
 
-export type IFieldNames<P extends object = Record<string, any>> = ((ISchema & { name: string }) | keyof P | string)[];
+export type IFieldNames<P extends object = Record<Key, any>> = ((ISchema & { name: string }) | keyof P | string)[];

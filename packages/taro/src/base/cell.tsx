@@ -5,7 +5,7 @@ import { ImageProps } from '@antmjs/vantui/types/image';
 import { observer, useExpressionScope } from '@formily/react';
 import { useAPIOptions, defaultOutOptionsKeys, IOptionsOutAPIProps, withValueChildren, useSchemaItems, getItemPropsBySchema } from '@yimoko/store';
 import classNames from 'classnames';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -13,7 +13,7 @@ import { templateConvertForProps } from '../tools/template';
 export type CellGroupProps = TCellGroupProps & IOptionsOutAPIProps & {
   image?: ImageProps
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 export const Cell = withValueChildren(TCell);

@@ -1,13 +1,13 @@
 import { IFormProps, createForm, Form } from '@formily/core';
 import { ExpressionScope, ISchema, SchemaReactComponents } from '@formily/react';
-import { useEffect, useMemo } from 'react';
+import { Key, useEffect, useMemo } from 'react';
 
 import { useSchemaComponents } from '../context/schema-components';
 import { SchemaFieldProvider, useSchemaField } from '../context/schema-field';
 
 import { SchemaBox } from './schema-box';
 
-export interface SchemaPageProps<T extends object = Record<string, any>> {
+export interface SchemaPageProps<T extends object = Record<Key, any>> {
   model?: Form<T>
   options?: IFormProps<T>,
   components?: SchemaReactComponents;
@@ -16,7 +16,7 @@ export interface SchemaPageProps<T extends object = Record<string, any>> {
   children?: React.ReactNode
 }
 
-export function SchemaPage<T extends object = Record<string, any>>(props: SchemaPageProps<T>) {
+export function SchemaPage<T extends object = Record<Key, any>>(props: SchemaPageProps<T>) {
   const { model, options, components, scope, schema, children } = props;
   const curModel = useMemo(() => (model ? model : createForm(options)), [model, options]);
   const curComponents = useSchemaComponents(components);

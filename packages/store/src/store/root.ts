@@ -1,11 +1,12 @@
 import { action, define, observable } from '@formily/reactive';
+import { Key } from 'react';
 
 // 全局数据管理，结合 Hooks 和 React.useContext 便捷使用
 export class RootStore<
-  U extends object = Record<string, any>,
-  M extends Array<Record<string, any>> = Array<Record<string, any>>,
-  D extends object = Record<string, any>
-  > {
+  U extends object = Record<Key, any>,
+  M extends Array<Record<Key, any>> = Array<Record<Key, any>>,
+  D extends object = Record<Key, any>
+> {
   user: U = Object({});
   menus?: M;
 

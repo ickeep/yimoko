@@ -1,5 +1,6 @@
 import { createForm } from '@formily/core';
 import { act, render, renderHook } from '@testing-library/react';
+import { Key } from 'react';
 
 import { SchemaBox } from '../components/schema-box';
 import { IStore } from '../store';
@@ -30,7 +31,7 @@ describe('useStoreSearch', () => {
     renderHook((search: string) => useStoreSearch(baseStore, search), { initialProps: '?a=a' });
     expect(baseStore.values.a).toBe('a');
 
-    renderHook((search: Record<string, any>) => useStoreSearch(baseStore, search), { initialProps: { a: '1', b: null, c: undefined } });
+    renderHook((search: Record<Key, any>) => useStoreSearch(baseStore, search), { initialProps: { a: '1', b: null, c: undefined } });
     expect(baseStore.values.a).toBe('1');
     expect(baseStore.values.b).toBe(null);
     expect(baseStore.values.c).toBe(undefined);

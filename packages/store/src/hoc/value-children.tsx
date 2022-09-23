@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { Key, useMemo } from 'react';
 
 import { RenderValue } from '../components/render-value';
 import { judgeIsEmpty } from '../tools/tool';
 
-export type WithValueChildrenProps<T extends Object = Record<string, any>> = Omit<T, 'children'> & {
+export type WithValueChildrenProps<T extends Object = Record<Key, any>> = Omit<T, 'children'> & {
   children?: React.ReactNode;
   value?: any;
 };
 
-export function withValueChildren<T extends Object = Record<string, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
+export function withValueChildren<T extends Object = Record<Key, any>>(C: React.ComponentClass<T> | React.FunctionComponent<T>) {
   return (props: WithValueChildrenProps<T>) => {
     const { value, children, ...args } = props;
     const curChildren = useMemo(() => {

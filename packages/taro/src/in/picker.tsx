@@ -3,7 +3,7 @@ import { BaseEventOrig, Picker as TPicker, PickerSelectorProps, TextProps, View 
 
 import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions } from '@yimoko/store';
 import cls from 'classnames';
-import { ReactNode, useMemo } from 'react';
+import { Key, ReactNode, useMemo } from 'react';
 
 import { Text } from '../base/text';
 
@@ -53,7 +53,7 @@ export interface PickerWpBaseProps {
   clearable?: boolean
   children: ReactNode
 }
-export function PickerWp<T extends object = Record<string, any>>(props: T & PickerWpBaseProps) {
+export function PickerWp<T extends object = Record<Key, any>>(props: T & PickerWpBaseProps) {
   const { value, onChange, clearable, children } = props;
 
   if (clearable && !judgeIsEmpty(value)) {

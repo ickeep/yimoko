@@ -1,3 +1,5 @@
+import { Key } from 'react';
+
 import { IHTTPResponse, judgeIsSuccess } from '../tools/api';
 import { judgeIsEmpty } from '../tools/tool';
 
@@ -87,7 +89,7 @@ const handleRunAfterNotify = (res: Partial<IHTTPResponse>, runAfter: IRunAfter, 
 
 export interface IOperateStoreConfig<V extends object = IStoreValues, R extends object = any> extends IBaseStoreConfig<V, R> {
   notifier?: INotifier;
-  scope?: Record<string, any>;
+  scope?: Record<Key, any>;
   runBefore?: IRunBefore;
   runAfter?: IRunAfter
 };

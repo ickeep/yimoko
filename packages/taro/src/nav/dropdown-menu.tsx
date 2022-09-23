@@ -3,7 +3,7 @@ import { DropdownItemProps as TDropdownItemProps, DropdownMenuProps } from '@ant
 import { GeneralField, isVoidField } from '@formily/core';
 import { observer, useExpressionScope, useField, useForm } from '@formily/react';
 import { getItemPropsBySchema, IOptionsAPIProps, useAPIOptions, useSchemaItems } from '@yimoko/store';
-import { useMemo } from 'react';
+import { Key, useMemo } from 'react';
 
 import { templateConvertForProps } from '../tools/template';
 
@@ -28,7 +28,7 @@ export const DropdownItem = observer((props: DropdownItemProps) => {
   return <TDropdownItem options={data} {...args} />;
 });
 
-export const DropdownMenu = observer((props: DropdownMenuProps & { values: Record<string, any> }) => {
+export const DropdownMenu = observer((props: DropdownMenuProps & { values: Record<Key, any> }) => {
   const curItems = useSchemaItems();
   const scope = useExpressionScope();
   const form = useForm();

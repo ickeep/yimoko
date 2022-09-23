@@ -3,7 +3,7 @@ import { SidebarProps as TSidebarProps } from '@antmjs/vantui/types/sidebar';
 import { useExpressionScope } from '@formily/react';
 import { ITouchEvent } from '@tarojs/components';
 import { getItemPropsBySchema, IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useSchemaItems } from '@yimoko/store';
-import { ReactNode, useMemo, useState } from 'react';
+import { Key, ReactNode, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 import { templateConvertForProps } from '../tools/template';
@@ -20,7 +20,7 @@ export type SidebarProps = Omit<TSidebarProps, 'activeKey' | 'children'> & IOpti
   value?: number,
   onChange?: (value: any, e?: ITouchEvent) => void;
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
   children?: ReactNode
 };
 

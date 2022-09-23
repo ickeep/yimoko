@@ -3,7 +3,7 @@ import { ActionSheetItem, ActionSheetProps as TActionSheetProps } from '@antmjs/
 import { ButtonProps } from '@antmjs/vantui/types/button';
 import { ITouchEvent, View } from '@tarojs/components';
 import { IOptionsAPIProps, judgeIsEmpty, useAPIOptions, useSchemaChildren } from '@yimoko/store';
-import { useMemo, useState } from 'react';
+import { Key, useMemo, useState } from 'react';
 
 import { handleClick } from '../tools/handle-click';
 
@@ -13,7 +13,7 @@ export type ActionSheetProps = TActionSheetProps & IOptionsAPIProps<keyof Action
   onChange?: (value: any, e?: ITouchEvent) => void;
   button?: ButtonProps
   itemURLPrefix?: string
-  itemDefault?: Record<string, any>
+  itemDefault?: Record<Key, any>
 };
 
 const defaultKeys = {
