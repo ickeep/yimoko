@@ -9,7 +9,12 @@ export const StorePageList = observer(() => {
   const store = useListStore({
     fieldsConfig: {
       type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130, autoFilter: true } },
-      name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true, column: { autoFilter: true } },
+      name: {
+        type: 'string', title: '名称', tooltip: '定义提示',
+        'x-component': 'Input', 'x-decorator': 'FormItem',
+        'x-decorator-props': { tooltip: 'xxxx' },
+        required: true, column: { autoFilter: true },
+      },
     },
     // type: 'list',
     dictConfig: [

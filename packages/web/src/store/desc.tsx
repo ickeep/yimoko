@@ -5,10 +5,14 @@ import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { get } from 'lodash-es';
 import { Key, ReactNode, useMemo } from 'react';
 
+import { IconProps } from '../out/icon';
+
 export interface StoreDescProps<T extends object = Record<Key, any>> extends DescriptionsProps {
   fields?: Array<keyof T | string | (ISchema & { field: string } & Partial<DescriptionsItemProps>)>
   store?: IStore
   valuesTarget?: 'values' | 'response.data' | string
+  // todo: 未实现
+  tipIcon?: string | IconProps
 }
 
 export const StoreDesc = observer((props: StoreDescProps) => {

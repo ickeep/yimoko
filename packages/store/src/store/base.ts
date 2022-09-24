@@ -1,4 +1,5 @@
 import { Form } from '@formily/core';
+import { ISchema } from '@formily/react';
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
 
@@ -20,6 +21,9 @@ export interface IStoreTransform {
   reqParams?: ITransformRule | ITransformRule[] | ITransformFn
   resData?: ITransformRule | ITransformRule[] | ITransformFn
 }
+
+const { computed } = observable;
+
 export class BaseStore<V extends object = IStoreValues, R extends object = any> {
   isFilterEmptyAtRun = false;
   isBindSearch = false;
@@ -79,6 +83,8 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
       response: observable,
       loading: observable,
 
+      schemaDefinitions: computed,
+
       setValues: action,
       resetValues: action,
       resetValuesByFields: action,
@@ -99,6 +105,22 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
     });
 
     isRunNow && !isBindSearch && this.runAPI();
+  }
+
+  get schemaDefinitions() {
+    const { fieldsConfig } = this;
+    const configDefinitions: ISchema['definitions'] = {};
+    // 处理字段 tooltip
+    Object.keys(fieldsConfig).forEach((key) => {
+      const field = { ...fieldsConfig[key] };
+      const { tooltip, column, desc, ...args } = field;
+      if (!judgeIsEmpty(tooltip) && args['x-decorator'] === 'FormItem') {
+        configDefinitions[key] = { ...args, 'x-decorator-props': { tooltip, ...args['x-decorator-props'] } };
+      } else {
+        configDefinitions[key] = args;
+      }
+    });
+    return configDefinitions;
   }
 
   getDefaultValues = () => cloneDeep(this.defaultValues);

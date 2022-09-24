@@ -67,7 +67,7 @@ const StoreFormFields = observer((props: StoreFormFieldsProps) => {
     return <RecursionField schema={{ ...schema, 'x-component': undefined, 'x-decorator': undefined, properties }} />;
   }
 
-  return <SchemaField schema={{ type: 'object', definitions: curStore?.fieldsConfig, properties }} />;
+  return <SchemaField schema={{ type: 'object', definitions: curStore?.schemaDefinitions, properties }} />;
 });
 
 export interface StoreFormFieldsProps {

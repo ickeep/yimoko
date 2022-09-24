@@ -23,15 +23,15 @@ export function SchemaPage<T extends object = Record<Key, any>>(props: SchemaPag
   const SchemaField = useSchemaField(curComponents, scope);
 
   const { curStore } = scope ?? {};
-  const fieldsConfig = curStore?.fieldsConfig;
+  const schemaDefinitions = curStore?.schemaDefinitions;
 
   const curSchema = useMemo(() => {
     const { definitions = {}, ...args } = schema ?? {};
-    if (fieldsConfig) {
-      return { definitions: typeof definitions === 'object' ? { ...fieldsConfig, ...definitions } : fieldsConfig, ...args };
+    if (schemaDefinitions && typeof schemaDefinitions === 'object') {
+      return { definitions: typeof definitions === 'object' ? { ...schemaDefinitions, ...definitions } : schemaDefinitions, ...args };
     }
     return { definitions, ...args };
-  }, [fieldsConfig, schema]);
+  }, [schema, schemaDefinitions]);
 
   useEffect(() => {
     curStore && (curStore.form = curModel);

@@ -1,7 +1,8 @@
 import { ISchema } from '@formily/react';
+import { TooltipProps } from 'antd';
 import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { ColumnType } from 'antd/lib/table';
-import { Key } from 'react';
+import { Key, ReactNode } from 'react';
 
 import { DF_KEYS } from '../../tools/options';
 
@@ -59,10 +60,16 @@ export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => 
   return { ...DF_KEYS, ...fieldsConfig?.[field]?.['x-component-props']?.keys };
 };
 
+// 提示 用于字段作用的提示，可以字段级定义，或者在 column, desc 里定义
+type ITooltip = ReactNode | Record<Key, any> | (TooltipProps & { icon?: ReactNode });
+
 export type IFieldsConfig<P extends object = Record<Key, any>> = Record<keyof P | string, (ISchema<any> & {
-  // 用于配置表格列的属性
-  column?: ColumnType<P> & Record<Key, any>
-  desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema }
+  // 字段的提示
+  tooltip?: ITooltip
+  // 用于配置表格列的属性 列表页
+  column?: ColumnType<P> & Record<Key, any> & { tooltip?: ITooltip }
+  // 用于配置描述列表的属性 详情页
+  desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema, tooltip?: ITooltip }
 })>;
 
 export type IGetFields<P extends object = Record<Key, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];

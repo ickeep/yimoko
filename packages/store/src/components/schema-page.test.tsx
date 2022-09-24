@@ -3,11 +3,16 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 
 import { BaseStore } from '../store/base';
+import { JSONStringify } from '../tools/tool';
 
 import { SchemaPage } from './schema-page';
 
 describe('SchemaPage', () => {
-  const components = { A: ({ value }: any) => <p>{value}</p> };
+  const components = {
+    A: ({ value }: any) => <p>{value}</p>,
+
+  };
+
   test('empty', () => {
     const model = createForm({ values: { a: 'a' } });
     render(<SchemaPage components={components} model={model} />);
@@ -65,5 +70,27 @@ describe('SchemaPage', () => {
     />);
     expect(screen.getByText('a')).toBeInTheDocument();
     expect(screen.getByText('b')).toBeInTheDocument();
+  });
+
+  test('tooltip', () => {
+    const FormItem = jest.fn(({ tooltip }) => <p>{typeof tooltip === 'object' ? JSONStringify(tooltip) : tooltip}</p>);
+    const curStore = new BaseStore({
+      api: {}, fieldsConfig: {
+        a: { 'x-component': 'A', tooltip: '提示', 'x-decorator': 'FormItem' },
+        b: { 'x-component': 'A', tooltip: { color: 'red', title: '提示' }, 'x-decorator': 'FormItem' },
+      },
+    });
+    render(<SchemaPage
+      components={{ ...components, FormItem }}
+      options={{ values: { a: 'a', b: 'b' } }}
+      scope={{ curStore }}
+      schema={{
+        type: 'object',
+        properties: { a: { $ref: '#/definitions/a' }, b: { $ref: '#/definitions/b' } },
+      }}
+    />);
+    expect(FormItem).toBeCalledTimes(2);
+    expect(screen.getByText('提示')).toBeInTheDocument();
+    expect(screen.getByText(JSONStringify({ color: 'red', title: '提示' }))).toBeInTheDocument();
   });
 });
