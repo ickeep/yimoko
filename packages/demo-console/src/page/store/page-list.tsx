@@ -12,7 +12,7 @@ export const StorePageList = observer(() => {
       name: {
         type: 'string', title: '名称', tooltip: '定义提示',
         'x-component': 'Input', 'x-decorator': 'FormItem',
-        'x-decorator-props': { tooltip: 'xxxx' },
+        'x-decorator-props': { tooltip: '' },
         required: true, column: { autoFilter: true },
       },
     },

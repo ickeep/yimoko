@@ -1,4 +1,5 @@
 import { BaseStore, IHTTPRequest } from './base';
+import { IFieldsConfig } from './utils/field';
 
 describe('BaseStore', () => {
   const defaultValues = { id: 1, name: '', type: 't1' };
@@ -48,6 +49,22 @@ describe('BaseStore', () => {
     const fieldsConfig = { type: { type: 'string' } };
     const hasFieldsConfigStore = new BaseStore({ defaultValues, api: { url: '' }, fieldsConfig });
     expect(hasFieldsConfigStore.fieldsConfig).toEqual(fieldsConfig);
+  });
+
+  test('schemaDefinitions', () => {
+    const fieldsConfig: IFieldsConfig = {
+      str: { tooltip: 'str tip' },
+      strFormItem: { tooltip: 'str tip', 'x-decorator': 'FormItem' },
+      strFormItem2: { tooltip: 'str tip', 'x-decorator': 'FormItem', 'x-decorator-props': { tooltip: '' } },
+      objFormItem: { tooltip: { title: 'xxx' }, 'x-decorator': 'FormItem' },
+      objFormItem2: { tooltip: { title: 'xxx' }, 'x-decorator': 'FormItem', 'x-decorator-props': { tooltip: {} } },
+    };
+    const store = new BaseStore({ defaultValues, api: { url: '' }, fieldsConfig });
+    expect(store.schemaDefinitions.str).toEqual({});
+    expect(store.schemaDefinitions.strFormItem['x-decorator-props']).toEqual({ tooltip: 'str tip' });
+    expect(store.schemaDefinitions.strFormItem2['x-decorator-props']).toEqual({ tooltip: '' });
+    expect(store.schemaDefinitions.objFormItem['x-decorator-props']).toEqual({ tooltip: { title: 'xxx' } });
+    expect(store.schemaDefinitions.objFormItem2['x-decorator-props']).toEqual({ tooltip: {} });
   });
 
   test('defaultValues', () => {
