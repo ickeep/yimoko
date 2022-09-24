@@ -2,7 +2,6 @@ import { Form } from '@formily/core';
 import { ISchema } from '@formily/react';
 import { action, define, observable } from '@formily/reactive';
 import { cloneDeep, pick, pickBy } from 'lodash-es';
-
 import { Key } from 'react';
 
 import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
