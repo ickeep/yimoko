@@ -20,6 +20,9 @@ describe('api', () => {
     const res = { code: 0, msg: '', data: '' };
     const params = { a: 'a' };
     const apiExecutor = jest.fn(async () => res);
+
+    expect(await runStoreAPI()).toBeUndefined();
+
     const r1 = await runStoreAPI({ method: 'POST' }, apiExecutor, params);
     expect(r1).toEqual(res);
     expect(apiExecutor).toHaveBeenLastCalledWith({ method: 'POST', data: params });

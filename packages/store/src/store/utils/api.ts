@@ -5,7 +5,6 @@ export function runStoreAPI<V = any, P = any>(api?: IStoreAPI<V | undefined, P>,
   if (!api) {
     return undefined;
   }
-
   if (typeof api === 'function') {
     return api(params);
   };
