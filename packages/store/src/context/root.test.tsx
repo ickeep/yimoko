@@ -4,10 +4,10 @@ import { act, render, screen, renderHook } from '@testing-library/react';
 
 import { RootStore } from '../store/root';
 
-import { RootProvider, RootConsumer, useUesr, useRoot, useMenus, useData } from './root';
+import { RootProvider, RootConsumer, useUser as useUser, useRoot, useMenus, useData } from './root';
 
 const NameConsumer = observer(() => {
-  const { name } = useUesr();
+  const { name } = useUser();
   return <div>{name ?? 'unknown'}</div>;
 });
 
@@ -47,8 +47,8 @@ describe('RootStore', () => {
     expect(result.current.data).toEqual({});
   });
 
-  test('useUesr', () => {
-    const { result } = renderHook(() => useUesr());
+  test('useUser', () => {
+    const { result } = renderHook(() => useUser());
     expect(result.current).toEqual({});
   });
 

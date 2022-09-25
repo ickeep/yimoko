@@ -10,7 +10,7 @@ export const RootConsumer = RootContext.Consumer;
 
 export const useRoot = () => useContext(RootContext);
 
-export const useUesr = () => useContext(RootContext).user;
+export const useUser = () => useContext(RootContext).user;
 
 export const useMenus = () => useContext(RootContext).menus;
 
