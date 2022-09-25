@@ -1,6 +1,6 @@
 import { RecordScope, RecursionField, RecordsScope, observer, useExpressionScope } from '@formily/react';
-import { dataToOptions, IKeys, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
-import { Table as TTable, TableProps as TTableProps, Tooltip, TooltipProps } from 'antd';
+import { dataToOptions, IFieldsConfig, IKeys, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
+import { Table as TTable, TableProps as TTableProps } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { ColumnFilterItem } from 'antd/lib/table/interface';
 import { get } from 'lodash-es';
@@ -9,6 +9,7 @@ import { DataIndex, RenderExpandIconProps } from 'rc-table/lib/interface';
 import { cloneElement, isValidElement, Key, ReactNode, useMemo, useState } from 'react';
 
 import { Icon, IconProps } from './icon';
+import { Tooltip, TooltipProps } from './tooltip';
 
 // 表格增强
 // 自动筛选 自动排序 自动宽度
@@ -21,7 +22,7 @@ export interface TableProps<T extends object = Record<Key, any>> extends Omit<TT
   columns?: Array<string | IColumn<T>>
   store?: ListStore<any, T[]>
   isUserItems?: boolean;
-  tipIcon?: string | IconProps
+  tipIcon?: TooltipProps['icon']
   expandable?: TTableProps<T>['expandable'] & {
     isTitleControlsAll?: boolean;
     icon?: {
@@ -55,17 +56,29 @@ export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) 
 });
 
 // eslint-disable-next-line complexity
-const getTitle = (field: string | number = '', column: IColumn<any> = {}, store?: IStore, icon: string | IconProps = 'QuestionCircleOutlined'): ReactNode => {
-  const { title, tip } = column;
-  const curTitle = title ?? store?.fieldsConfig?.[`${field}`]?.title ?? field;
-  if (judgeIsEmpty(tip)) {
+const getTitle = (field: string | number = '', column: IColumn<any> = {}, store?: IStore, icon?: TooltipProps['icon']): ReactNode => {
+  const { title, tooltip } = column;
+  const fieldConfig = store?.fieldsConfig?.[`${field}`] as IFieldsConfig[Key] | undefined;
+  const curTitle = title ?? fieldConfig?.title ?? field;
+  let tooltipProps: TooltipProps = {};
+
+  [fieldConfig?.tooltip, fieldConfig?.column?.tooltip, tooltip].forEach((item) => {
+    if (!judgeIsEmpty(item)) {
+      if ((isValidElement(item) || typeof item !== 'object')) {
+        tooltipProps.title = item;
+      } else {
+        tooltipProps = { ...tooltipProps, ...item };
+      }
+    }
+  });
+
+  if (judgeIsEmpty(tooltipProps)) {
     return curTitle;
   }
-  const iconProps = typeof icon === 'string' ? { name: icon } : icon;
-  return <>{curTitle} {typeof tip === 'string'
-    ? <Tooltip title={tip}><Icon {...iconProps} /></Tooltip>
-    : <Tooltip {...tip}><Icon {...iconProps} /></Tooltip>}
-  </>;
+
+  judgeIsEmpty(tooltipProps.icon) && (tooltipProps.icon = icon);
+
+  return <>{curTitle} <Tooltip  {...tooltipProps} /></>;
 };
 
 export const useColumnsForSchema = () => {
@@ -149,7 +162,7 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
   store?: IStore,
   data?: T[],
   isUserItems = false,
-  tipIcon?: string | IconProps,
+  tipIcon?: TooltipProps['icon'],
 ) => {
   const itemsColumns = useColumnsForSchema() as IColumns<T>;
   const mixColumns = useMemo(() => {
@@ -369,7 +382,7 @@ export interface IColumnGroupType<T extends object = Record<Key, any>> extends O
   children: IColumns<T>;
 }
 
-export type IColumn<T extends object = Record<Key, any>> = (IColumnType<T> | IColumnGroupType<T>) & { tip?: string | TooltipProps };
+export type IColumn<T extends object = Record<Key, any>> = (IColumnType<T> | IColumnGroupType<T>) & { tooltip?: ReactNode | TooltipProps };
 
 export type IColumns<T extends object = Record<Key, any>> = IColumn<T>[];
 

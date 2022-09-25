@@ -12,7 +12,7 @@ export const StorePageList = observer(() => {
       name: {
         type: 'string', title: '名称', tooltip: '定义提示',
         'x-component': 'Input', 'x-decorator': 'FormItem',
-        'x-decorator-props': { tooltip: '' },
+        'x-decorator-props': { tooltip: 'xxx' },
         required: true, column: { autoFilter: true },
       },
     },
@@ -47,10 +47,10 @@ export const StorePageList = observer(() => {
             },
           }}
           columns={[
-            { dataIndex: 'id', autoSorter: 'number', fixed: 'left', tip: 'tip xxx' },
-            { dataIndex: 'name', tip: { title: 'xxxx', color: 'red' } },
-            { dataIndex: 'type' },
-            { dataIndex: 'date', title: 'date', autoSorter: 'date' },
+            { dataIndex: 'id', autoSorter: 'number', fixed: 'left', tooltip: 'tip xxx' },
+            { dataIndex: 'name', tooltip: { title: 'xxxx', color: 'red' } },
+            { dataIndex: 'type', tooltip: <>1234</> },
+            { dataIndex: 'date', title: 'date', autoSorter: 'date', tooltip: { icon: <>12</>, title: 'xxx' } },
             { dataIndex: 'time', title: 'time', autoSorter: 'time' },
             { dataIndex: 'percentage', title: 'percentage', autoSorter: 'percentage' },
             { dataIndex: 'zh', title: 'zh', autoSorter: 'string', sorterParams: 'zh' },
