@@ -16,7 +16,7 @@ describe('useCurForm', () => {
 
   test('empty', () => {
     const { result: { current } } = renderHook(() => useCurForm());
-    expect(current).toBeDefined();
+    expect(current).toBeNull();
   });
 
   test('form', () => {
