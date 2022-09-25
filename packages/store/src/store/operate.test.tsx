@@ -20,24 +20,31 @@ describe('OperateStore', () => {
     expect(store1.form).toEqual(form);
   });
 
-  test('runBefore', async () => {
+  test('runBefore true not form', async () => {
     const values = { name: '' };
-    const store = new OperateStore({ defaultValues: values, runBefore: { verify: true } });
-    expect(store.runBefore.verify).toBeTruthy();
+    const apiRes = { code: 0, msg: 'ok', data: { name: '123' } };
+    const api = () => new Promise(resolve => resolve(apiRes));
 
+    const store = new OperateStore({ api, defaultValues: values, runBefore: { verify: true } });
+    expect(store.runBefore.verify).toBeTruthy();
     const res = await store.runAPI();
-    expect(res).toBeUndefined();
+    expect(res).toEqual(apiRes);
 
     const form = createForm({ values: store.values, validateFirst: true });
     form.createField({ name: 'name', required: true });
     store.form = form;
-
     const res2 = await store.runAPI();
     expect(res2?.code).toBeUndefined();
 
-    store.setValuesByField('name', '123');
+    store.runBefore.verify = false;
     const res3 = await store.runAPI();
-    expect(res3).toBeUndefined();
+    expect(res3).toEqual(apiRes);
+
+    store.runBefore.verify = true;
+
+    form.setValues({ name: '123' });
+    const res4 = await store.runAPI();
+    expect(res4).toEqual(apiRes);
   });
 
   test('afterNotify', async () => {
@@ -106,5 +113,94 @@ describe('OperateStore', () => {
     expect(runOnSuccess).toBeCalledTimes(1);
     expect(runOnFail).toBeCalledWith(res, store);
     expect(run).toBeCalledWith(res, store);
+  });
+
+  test('runAfter resetValues df success', async () => {
+    const res = { code: 0, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual(defaultValues);
+  });
+
+  test('runAfter resetValues df fail', async () => {
+    const res = { code: 1, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual({ name: '123' });
+  });
+
+  test('runAfter resetValues true success', async () => {
+    const res = { code: 0, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: true } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual(defaultValues);
+  });
+
+  test('runAfter resetValues true fail', async () => {
+    const res = { code: 1, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: true } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual(defaultValues);
+  });
+
+
+  test('runAfter resetValues success success', async () => {
+    const res = { code: 0, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: 'success' } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual(defaultValues);
+  });
+
+  test('runAfter resetValues success fail', async () => {
+    const res = { code: 1, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: 'success' } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual({ name: '123' });
+  });
+
+  test('runAfter resetValues fail success', async () => {
+    const res = { code: 0, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: 'fail' } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual({ name: '123' });
+  });
+
+  test('runAfter resetValues fail fail', async () => {
+    const res = { code: 1, msg: 'ok', data: { name: '123' } };
+    const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
+    const defaultValues = { name: '' };
+    const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: 'fail' } });
+    store.setValuesByField('name', '123');
+    expect(store.values.name).toEqual('123');
+    await store.runAPI();
+    expect(store.values).toEqual(defaultValues);
   });
 });
