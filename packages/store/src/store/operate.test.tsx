@@ -198,9 +198,12 @@ describe('OperateStore', () => {
     const apiExecutor: IHTTPRequest = () => new Promise(resolve => setTimeout(() => resolve(res), 10));
     const defaultValues = { name: '' };
     const store = new OperateStore({ api: apiExecutor, defaultValues, runAfter: { resetValues: 'fail' } });
+    const from = createForm<any>({ values: store.values });
+    store.form = from;
     store.setValuesByField('name', '123');
     expect(store.values.name).toEqual('123');
     await store.runAPI();
     expect(store.values).toEqual(defaultValues);
+    expect(store?.form?.values).toEqual(defaultValues);
   });
 });

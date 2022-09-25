@@ -131,7 +131,11 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
     });
   };
 
-  resetValues = () => this.values = this.getDefaultValues();
+  resetValues = () => {
+    this.values = this.getDefaultValues();
+    // values 重置后，需要重置 form values
+    this.form?.setValues(this.values);
+  };
 
   resetValuesByFields = (fields: Array<keyof V>) => {
     this.setValues(pick(this.getDefaultValues(), fields));
