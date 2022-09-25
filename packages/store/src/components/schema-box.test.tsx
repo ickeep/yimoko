@@ -6,6 +6,7 @@ import { render, screen } from '@testing-library/react';
 import { SchemaBox } from './schema-box';
 
 describe('SchemaBox', () => {
+  jest.spyOn(console, 'error');
   const SchemaField = createSchemaField({
     components: {
       A: ({ value }: any) => <p>{value}</p>,
