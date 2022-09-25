@@ -101,13 +101,16 @@ describe('BoxStore', () => {
 
 
     const C = (props: any) => <div>{Object.keys(props).join(',')}</div>;
-    const Content = (props: any) => <div>{`${props.isBoxContent}`}</div>;
+    const Content = (props: any) => <div>{`${props.isBoxContent ? 'true' : 'false'}`}</div>;
 
     const { rerender } = render(<BoxContentRender isBind  ><C /></BoxContentRender>);
     expect(document.querySelector('body')?.textContent).toBe('onClose,isBoxContent');
 
     rerender(<BoxContentRender isBind={false}><C /></BoxContentRender>);
     expect(document.querySelector('body')?.textContent).toBe('');
+
+    rerender(<BoxContentRender isBind={false}><Content /></BoxContentRender>);
+    expect(screen.getByText('false')).toBeInTheDocument();
 
     rerender(<BoxContentRender   ><Content /></BoxContentRender>);
     expect(screen.getByText('true')).toBeInTheDocument();
@@ -118,8 +121,12 @@ describe('BoxStore', () => {
     rerender(<BoxContentRender isBind={false} content={<C />} />);
     expect(document.querySelector('body')?.textContent).toBe('');
 
+
     rerender(<BoxContentRender content={<Content />} />);
     expect(screen.getByText('true')).toBeInTheDocument();
+
+    rerender(<BoxContentRender isBind={false} content={<Content />} />);
+    expect(screen.getByText('false')).toBeInTheDocument();
 
     rerender(<BoxContentRender content={C} />);
     expect(document.querySelector('body')?.textContent).toBe('onClose,isBoxContent');
@@ -129,6 +136,9 @@ describe('BoxStore', () => {
 
     rerender(<BoxContentRender content={Content} />);
     expect(screen.getByText('true')).toBeInTheDocument();
+
+    rerender(<BoxContentRender isBind={false} content={Content} />);
+    expect(screen.getByText('false')).toBeInTheDocument();
   });
 });
 
