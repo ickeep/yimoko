@@ -6,8 +6,12 @@ import { StoreDesc, StorePage } from '@yimoko/web';
 export const StorePageDetail = observer(() => {
   const store = useBaseStore({
     fieldsConfig: {
-      type: { title: '类型', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130, autoFilter: true } },
-      name: { type: 'string', title: '名称', 'x-component': 'Input', 'x-decorator': 'FormItem', required: true, column: { autoFilter: true } },
+      type: { title: '类型', tooltip: 'xxx', type: 'string', 'x-component': 'Input', 'x-decorator': 'FormItem', column: { width: 130, autoFilter: true } },
+      name: {
+        type: 'string', title: '名称', tooltip: 'xxx',
+        'x-component': 'Input', 'x-decorator': 'FormItem', required: true, column: { autoFilter: true },
+        desc: { tooltip: { icon: <>123</>, title: 'xxxx' } },
+      },
     },
     // type: 'list',
     dictConfig: [
@@ -21,7 +25,7 @@ export const StorePageDetail = observer(() => {
   });
   return (
     <StorePage store={store} schema={{}} >
-      <StoreDesc fields={['type', 'name']}></StoreDesc>
+      <StoreDesc fields={['type', 'name', { field: 'name', tooltip: { color: 'red', title: 'xxx' } }]}></StoreDesc>
     </StorePage>
   );
 });
