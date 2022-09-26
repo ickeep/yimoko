@@ -1,7 +1,7 @@
 import { Form } from '@formily/core';
 import { ISchema } from '@formily/react';
 import { action, define, observable } from '@formily/reactive';
-import { cloneDeep, pick, pickBy } from 'lodash-es';
+import { cloneDeep, pick, pickBy, set } from 'lodash-es';
 import { Key } from 'react';
 
 import { IAPIRequestConfig, IHTTPResponse } from '../tools/api';
@@ -134,14 +134,14 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
   resetValues = () => {
     this.values = this.getDefaultValues();
     // values 重置后，需要重置 form values
-    this.form?.setValues(this.values);
+    this.form?.setValues(this.values, 'overwrite');
   };
 
   resetValuesByFields = (fields: Array<keyof V>) => {
     this.setValues(pick(this.getDefaultValues(), fields));
   };
 
-  setValuesByField = (field: IField<V>, value: any) => this.values[field] = value;
+  setValuesByField = (field: IField<V>, value: any) => set(this.values, field, value);
 
   // type all undefined 则填默认值  "" 则填空字符串
   setValuesBySearch = (search: string | Partial<Record<Key, any>>, type: 'all' | 'part' = 'all') => {

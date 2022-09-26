@@ -1,3 +1,5 @@
+import { createForm } from '@formily/core';
+
 import { BaseStore, IHTTPRequest } from './base';
 import { IFieldsConfig } from './utils/field';
 
@@ -90,6 +92,29 @@ describe('BaseStore', () => {
     store.resetValues();
     expect(store.values).toEqual(defaultValues);
   });
+
+  test('resetValues ant form', () => {
+    const values = { a: 'a', b: { b: 'b' }, c: { c: { c: 'c' } } };
+    const store = new BaseStore({ defaultValues: values });
+    const form = createForm({ values: store.values });
+    store.form = form;
+
+    store.setValuesByField('a', 'aa');
+    store.setValuesByField('b', { b: 'bb' });
+    store.setValuesByField('c', { c: { c: 'cc' } });
+    expect(form.values).toEqual({ a: 'aa', b: { b: 'bb' }, c: { c: { c: 'cc' } } });
+
+    store.resetValues();
+    expect(form.values).toEqual(values);
+
+    store.setValuesByField('a', 'aa');
+    expect(form.values.a).toBe('aa');
+
+    form.setValuesIn('a', 'aaa');
+    expect(store.values.a).toBe('aaa');
+    expect(store.values).toBe(form.values);
+  });
+
 
   test('setValuesByField', () => {
     store.setValuesByField('name', 'name');
