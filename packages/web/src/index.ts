@@ -10,6 +10,7 @@ export * from './out/ok-trigger';
 export * from './out/page-error';
 export * from './out/run-trigger';
 export * from './out/table';
+export * from './out/tooltip';
 export * from './out/trigger';
 
 export * from './store/desc';

@@ -32,6 +32,8 @@ export * from './hooks/use-store';
 
 export * from './store/utils/field';
 
+export * from './store/utils/api';
+export * from './store/utils/field';
 export * from './store/base';
 export * from './store/box';
 export * from './store/config';
