@@ -100,6 +100,7 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
       runAPIByField: action,
       runAPIByValues: action,
       runAPIDataBySearch: action,
+
       ...defineConfig,
     });
 
@@ -218,6 +219,11 @@ export class BaseStore<V extends object = IStoreValues, R extends object = any> 
   runAPIDataBySearch = async (search: string | Partial<Record<Key, any>>) => {
     this.setValuesBySearch(search);
     return this.runAPI();
+  };
+
+  setForm = (form?: Form<IV<V>>) => {
+    this.form = form;
+    this.form?.setValues(this.values, 'overwrite');
   };
 }
 

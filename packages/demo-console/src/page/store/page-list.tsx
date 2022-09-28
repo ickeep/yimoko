@@ -5,6 +5,22 @@ import { Drawer, Icon, Modal, StoreForm, StorePage, StorePageContent, StoreTable
 import { Space } from 'antd';
 
 
+const CStore = observer((props: any) => {
+  const operateStore = useOperateStore({
+    defaultValues: { a: 'a', configs: [] },
+  });
+  const { values, form } = operateStore;
+  console.log('values', form?.values, values);
+  console.log('===', form?.values === values);
+
+  return (
+    <StorePage store={operateStore}>
+      <>{form?.values?.a}</>
+    </StorePage>
+  );
+});
+
+
 export const StorePageList = observer(() => {
   const store = useListStore({
     fieldsConfig: {
@@ -31,8 +47,12 @@ export const StorePageList = observer(() => {
       <StoreForm fields={['name']}>
         <Space>
           <Submit>查询</Submit>
+
         </Space>
       </StoreForm>
+      <Drawer destroyOnClose isBindStore footer title="关联规则" width={800}  >
+        <CStore />
+      </Drawer>
       <StorePageContent >
         <StoreTable
           tipIcon={{ name: 'QuestionOutlined', style: { color: 'red' } }}

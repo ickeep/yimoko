@@ -34,7 +34,7 @@ export function SchemaPage<T extends object = Record<Key, any>>(props: SchemaPag
   }, [schema, schemaDefinitions]);
 
   useEffect(() => {
-    curStore && (curStore.form = curModel);
+    curStore && curModel && curStore.setForm?.(curModel);
   }, [curModel, curStore]);
 
   return (

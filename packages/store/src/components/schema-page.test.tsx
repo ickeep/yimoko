@@ -35,10 +35,9 @@ describe('SchemaPage', () => {
   });
 
   test('curStore', () => {
-    const curStore = new BaseStore({ api: {}, fieldsConfig: { a: { 'x-component': 'A' } } });
+    const curStore = new BaseStore({ api: {}, defaultValues: { a: 'a' }, fieldsConfig: { a: { 'x-component': 'A' } } });
     render(<SchemaPage
       components={components}
-      options={{ values: { a: 'a' } }}
       scope={{ curStore }}
       schema={{ type: 'object', properties: { a: { $ref: '#/definitions/a' } } }}
     />);
@@ -46,10 +45,9 @@ describe('SchemaPage', () => {
   });
 
   test('definitions str', () => {
-    const curStore = new BaseStore({ api: {}, fieldsConfig: { a: { 'x-component': 'A' } } });
+    const curStore = new BaseStore({ api: {}, defaultValues: { a: 'a' }, fieldsConfig: { a: { 'x-component': 'A' } } });
     render(<SchemaPage
       components={components}
-      options={{ values: { a: 'a' } }}
       scope={{ curStore }}
       schema={{ type: 'object', definitions: 'xxx', properties: { a: { $ref: '#/definitions/a' } } }}
     />);
@@ -58,10 +56,9 @@ describe('SchemaPage', () => {
 
 
   test('definitions assign', () => {
-    const curStore = new BaseStore({ api: {}, fieldsConfig: { a: { 'x-component': 'A' } } });
+    const curStore = new BaseStore({ api: {}, defaultValues: { a: 'a', b: 'b' }, fieldsConfig: { a: { 'x-component': 'A' } } });
     render(<SchemaPage
       components={components}
-      options={{ values: { a: 'a', b: 'b' } }}
       scope={{ curStore }}
       schema={{
         type: 'object', definitions: { b: { 'x-component': 'A' } },
@@ -75,6 +72,7 @@ describe('SchemaPage', () => {
   test('tooltip', () => {
     const FormItem = jest.fn(({ tooltip }) => <p>{typeof tooltip === 'object' ? JSONStringify(tooltip) : tooltip}</p>);
     const curStore = new BaseStore({
+      defaultValues: { a: 'a', b: 'b' },
       api: {}, fieldsConfig: {
         a: { 'x-component': 'A', tooltip: '提示', 'x-decorator': 'FormItem' },
         b: { 'x-component': 'A', tooltip: { color: 'red', title: '提示' }, 'x-decorator': 'FormItem' },
@@ -82,14 +80,12 @@ describe('SchemaPage', () => {
     });
     render(<SchemaPage
       components={{ ...components, FormItem }}
-      options={{ values: { a: 'a', b: 'b' } }}
       scope={{ curStore }}
       schema={{
         type: 'object',
         properties: { a: { $ref: '#/definitions/a' }, b: { $ref: '#/definitions/b' } },
       }}
     />);
-    expect(FormItem).toBeCalledTimes(2);
     expect(screen.getByText('提示')).toBeInTheDocument();
     expect(screen.getByText(JSONStringify({ color: 'red', title: '提示' }))).toBeInTheDocument();
   });
