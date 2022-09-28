@@ -21,7 +21,7 @@ export interface TableProps<T extends object = Record<Key, any>> extends Omit<TT
   defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
   columns?: Array<string | IColumn<T>>
   store?: ListStore<any, T[]>
-  isUserItems?: boolean;
+  isMergedColumns?: boolean;
   tipIcon?: TooltipProps['icon']
   expandable?: TTableProps<T>['expandable'] & {
     isTitleControlsAll?: boolean;
@@ -33,7 +33,7 @@ export interface TableProps<T extends object = Record<Key, any>> extends Omit<TT
 }
 
 export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
-  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isUserItems = true, expandable, rowKey = 'id', ...args } = props;
+  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isMergedColumns = true, expandable, rowKey = 'id', ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
   const { listData } = curStore ?? {};
@@ -43,7 +43,7 @@ export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) 
     return Array.isArray(val) ? val : [];
   }, [listData, dataSource, value]) as any[];
 
-  const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isUserItems, tipIcon);
+  const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isMergedColumns, tipIcon);
   const curScroll = useTableScroll(scroll, curColumns, defaultColumnsWidth);
 
   const curExpandable = useExpandable(expandable, listData, rowKey);
@@ -104,6 +104,31 @@ export const useColumnsForSchema = () => {
 
 export const dataIndexToKey = (dataIndex?: DataIndex) => (Array.isArray(dataIndex) ? dataIndex.join('.') : dataIndex) as string | number;
 
+export const mergeColumnsConfig = (columns: Array<string | IColumn<any>>, store?: IStore) => {
+  // eslint-disable-next-line complexity
+  const handleItem = (item: string | IColumn<any>) => {
+    if (typeof item === 'string') {
+      if (store?.fieldsConfig?.[item]?.column) {
+        return { ...store?.fieldsConfig?.[item]?.column, dataIndex: item };
+      }
+      return { dataIndex: item };
+    }
+    if (typeof item === 'object') {
+      if ('dataIndex' in item) {
+        const { dataIndex } = item;
+        if (dataIndex) {
+          return { ...store?.fieldsConfig?.[dataIndexToKey(dataIndex)]?.column, ...item };
+        }
+      }
+      if ('children' in item) {
+        item.children?.map(handleItem);
+      }
+    }
+    return item;
+  };
+  return columns.map(handleItem);
+};
+
 export const judgeIsAutoFilter = (column: IColumnType<any>) => {
   const { autoFilter, onFilter, filters } = column;
   return autoFilter && !onFilter && !filters;
@@ -161,35 +186,15 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
   columns: Array<string | IColumn<T>> = [],
   store?: IStore,
   data?: T[],
-  isUserItems = false,
+  isMergedColumns = false,
   tipIcon?: TooltipProps['icon'],
 ) => {
   const itemsColumns = useColumnsForSchema() as IColumns<T>;
-  const mixColumns = useMemo(() => {
-    const arr = isUserItems ? [...columns, ...itemsColumns] : columns;
-    // eslint-disable-next-line complexity
-    const handleItem = (item: string | IColumn<T>) => {
-      if (typeof item === 'string') {
-        if (store?.fieldsConfig?.[item]?.column) {
-          return { ...store?.fieldsConfig?.[item]?.column, dataIndex: item };
-        }
-        return item;
-      }
-      if (typeof item === 'object') {
-        if ('dataIndex' in item) {
-          const { dataIndex } = item;
-          if (dataIndex) {
-            return { ...store?.fieldsConfig?.[dataIndexToKey(dataIndex)]?.column, ...item };
-          }
-        }
-        if ('children' in item) {
-          item.children?.map(handleItem);
-        }
-      }
-      return item;
-    };
-    return arr.map(handleItem);
-  }, [columns, isUserItems, itemsColumns, store?.fieldsConfig]);
+
+  const mixColumns = useMemo(
+    () => (isMergedColumns ? columns : mergeColumnsConfig([...columns, ...itemsColumns], store)),
+    [columns, isMergedColumns, itemsColumns, store],
+  );
 
   const filterConfigs = useMemo(() => {
     const arr: IAutoFilterConfig[] = [];
@@ -254,7 +259,8 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
 
   return useMemo(() => {
     const getAutoColumn = (column: string | IColumn<T>): IColumn<T> => {
-      const col = typeof column === 'string' ? { dataIndex: column } : column as IColumn<T>;
+      // col 必须浅拷贝，否则会导致 columns 里的 title 重复增加图标
+      const col: IColumn<T> = typeof column === 'string' ? { dataIndex: column } : { ...column };
 
       if ('dataIndex' in col) {
         col.title = getTitle(dataIndexToKey(col.dataIndex), col, store, tipIcon);

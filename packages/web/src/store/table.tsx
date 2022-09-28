@@ -1,4 +1,5 @@
 import { useExpressionScope, observer, RecordsScope } from '@formily/react';
+import { define, observable } from '@formily/reactive';
 import { ListStore, getFieldSplitter, getFieldType, IPageData, useListData } from '@yimoko/store';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
 import { TableCurrentDataSource, FilterValue, SorterResult } from 'antd/lib/table/interface';
@@ -7,7 +8,7 @@ import { Key, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DF_PAGINATION } from '../config';
-import { dataIndexToKey, IColumn, IColumnType, Table, TableProps, useColumnsForSchema } from '../out/table';
+import { dataIndexToKey, IColumn, IColumnType, mergeColumnsConfig, Table, TableProps, useColumnsForSchema } from '../out/table';
 
 export type StoreTableProps<T extends object = Record<Key, any>> =
   Omit<TableProps<T>, 'loading' | 'value' | 'dataSource' | 'onChange' | 'ColumnsType'>
@@ -20,6 +21,39 @@ export type StoreTableProps<T extends object = Record<Key, any>> =
     onSort?: (pagination: SorterResult<T> | SorterResult<T>[]) => void | Promise<void>;
     onFilter?: (pagination: Record<string, FilterValue | null>) => void | Promise<void>;
   };
+
+class ColumnsStore {
+  store: ListStore<any, any>;
+  columnsConfig: Array<string | IColumn<any>> = [];
+  isControlled = true;
+  constructor(store: ListStore<any, any>, columnsConfig: Array<any>, isControlled: boolean) {
+    this.store = store;
+    this.columnsConfig = columnsConfig;
+    this.isControlled = isControlled;
+
+    define(this, {
+      columns: observable.computed,
+    });
+  }
+
+
+  // 实现根据依赖更新
+  get columns() {
+    if (!this.isControlled || !this.store) {
+      return mergeColumnsConfig(this.columnsConfig, this.store);
+    }
+    const autoColumns = (item: IColumn<any> | string): IColumn<any> => {
+      const col = typeof item === 'string' ? { dataIndex: item } : item;
+      const filterProps = getFilterProps(col, this.store);
+      const sortProps = getSortProps(col, this.store);
+      if ('children' in col) {
+        col.children = col.children?.map?.(autoColumns);
+      }
+      return { ...col, ...filterProps, ...sortProps };
+    };
+    return mergeColumnsConfig(this.columnsConfig, this.store)?.map(autoColumns);
+  }
+}
 
 export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTableProps<T>) => React.ReactElement | null = observer((props) => {
   const { isControlled = true, store, columns = [], pagination, rowSelection, onPage, onSort, onFilter, ...args } = props;
@@ -35,17 +69,17 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
     keysConfig: { total, page, pageSize, sortOrder } = {},
   } = curStore;
 
-  const curRowSelection = useMemo(() => ((rowSelection && isControlled)
+  const curRowSelection = useMemo(() => (rowSelection
     ? {
-      ...rowSelection,
       selectedRowKeys,
+      ...rowSelection,
       onChange: (keys: Key[], selectedRows: any[], info: any) => {
         rowSelection?.onChange?.(keys, selectedRows, info);
         setSelectedRowKeys?.(keys);
       },
     }
     : rowSelection
-  ), [isControlled, rowSelection, selectedRowKeys, setSelectedRowKeys]);
+  ), [rowSelection, selectedRowKeys, setSelectedRowKeys]);
 
   const curPagination = useMemo(() => {
     if (pagination === false) {
@@ -61,25 +95,18 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
   }, [data, isControlled, page, pageSize, pagination, total]);
 
   const itemsColumns = useColumnsForSchema();
-  const curColumns = useMemo(() => {
-    const autoColumns = (item: IColumn<any> | string): IColumn<any> => {
-      const col = typeof item === 'string' ? { dataIndex: item } : item;
-      const filterProps = getFilterProps(col, curStore, isControlled);
-      const sortProps = getSortProps(col, curStore, isControlled);
-      if ('children' in col) {
-        col.children = col.children?.map?.(autoColumns);
-      }
-      return { ...col, ...filterProps, ...sortProps };
-    };
-    return [...columns, ...itemsColumns]?.map(autoColumns);
-  }, [columns, curStore, isControlled, itemsColumns]);
+
+  const { columns: curColumns } = useMemo(
+    () => new ColumnsStore(curStore, [...columns, ...itemsColumns], isControlled),
+    [columns, curStore, isControlled, itemsColumns],
+  );
 
   if (!curStore) {
     return null;
   }
   const queryData = () => {
     runAPI();
-    setSelectedRowKeys();
+    setSelectedRowKeys?.();
     if (isBindSearch) {
       const { pathname, search } = location;
       const valSearch = getURLSearch();
@@ -140,7 +167,7 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
       <Table
         {...args}
         store={curStore}
-        isUserItems={false}
+        isMergedColumns={true}
         loading={curStore.loading}
         columns={curColumns}
         dataSource={dataSource}
@@ -156,10 +183,10 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
   );
 });
 
-export const getFilterProps = (col: IColumnType<any>, store: ListStore<any, any>, isControlled?: boolean) => {
+export const getFilterProps = (col: IColumnType<any>, store: ListStore<any, any>) => {
   const props: ColumnType<any> = {};
   const { dataIndex } = col;
-  if (isControlled && col.autoFilter) {
+  if (col.autoFilter) {
     const field = dataIndexToKey(dataIndex);
     props.filteredValue = getFilteredValue(field, store);
   }
@@ -177,14 +204,12 @@ export const getFilteredValue = (field: string | number, store: ListStore<any, a
   return null;
 };
 
-export const getSortProps = (col: ColumnType<any>, store: ListStore<any, any>, isControlled?: boolean) => {
+export const getSortProps = (col: ColumnType<any>, store: ListStore<any, any>) => {
   const { values, keysConfig } = store;
-  if (isControlled) {
-    const { sorter, dataIndex } = col;
-    if (sorter) {
-      const val = values[keysConfig.sortOrder]?.find?.((item: ISortOrder) => item.field === `${dataIndex}`);
-      return { sortOrder: val?.order };
-    }
+  const { sorter, dataIndex } = col;
+  if (sorter) {
+    const val = values?.[keysConfig?.sortOrder]?.find?.((item: ISortOrder) => item.field === `${dataIndex}`);
+    return { sortOrder: val?.order };
   }
   return {};
 };
