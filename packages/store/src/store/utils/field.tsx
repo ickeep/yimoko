@@ -4,7 +4,7 @@ import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { ColumnType } from 'antd/lib/table';
 import { Key, ReactNode } from 'react';
 
-import { DF_KEYS } from '../../tools/options';
+import { DF_KEYS, IKeys } from '../../tools/options';
 
 import { JSONParse, JSONStringify } from '../../tools/tool';
 import { BaseStore, IField } from '../base';
@@ -63,14 +63,28 @@ export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => 
 // 提示 用于字段作用的提示，可以字段级定义，或者在 column, desc 里定义
 type ITooltip = ReactNode | Record<Key, any> | (TooltipProps & { icon?: ReactNode });
 
-export type IFieldsConfig<P extends object = Record<Key, any>> = Record<keyof P | string, (ISchema<any> & {
+export type IFieldConfig<P extends object = Record<Key, any>> = ISchema<any> & {
   // 字段的提示
   tooltip?: ITooltip
   // 用于配置表格列的属性 列表页
-  column?: ColumnType<P> & Record<Key, any> & { tooltip?: ITooltip }
+  column?: ColumnType<P> & {
+    tooltip?: ITooltip,
+    autoFilter?: boolean;
+    isFilterContains?: boolean,
+    filterSplitter?: string
+    // 取 store dict 时 使用 filterKeys 进行转换
+    filterKeys?: IKeys<'text' | 'value'>;
+    // 非受控模式下自动排序
+    autoSorter?: 'number' | 'string' | 'percentage' | 'date' | 'time' | 'length';
+    sorterParams?: 'zh' | any;
+    [key: Key]: any;
+  }
   // 用于配置描述列表的属性 详情页
   desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema, tooltip?: ITooltip }
-})>;
+};
+
+
+export type IFieldsConfig<P extends object = Record<Key, any>> = Record<keyof P | string, IFieldConfig<P>>;
 
 export type IGetFields<P extends object = Record<Key, any>> = (fieldNames: IFieldNames<P>, config: IFieldsConfig) => ISchema[];
 

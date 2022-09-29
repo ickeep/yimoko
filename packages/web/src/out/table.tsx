@@ -1,5 +1,5 @@
 import { RecordScope, RecursionField, RecordsScope, observer, useExpressionScope } from '@formily/react';
-import { dataToOptions, IFieldsConfig, IKeys, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
+import { dataToOptions, IFieldConfig, IFieldsConfig, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
 import { Table as TTable, TableProps as TTableProps } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { ColumnFilterItem } from 'antd/lib/table/interface';
@@ -39,7 +39,7 @@ export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) 
   const { listData } = curStore ?? {};
 
   const curDataSource = useMemo(() => {
-    const val = !judgeIsEmpty(dataSource) ? dataSource : (value ?? listData);
+    const val = dataSource ?? value ?? listData;
     return Array.isArray(val) ? val : [];
   }, [listData, dataSource, value]) as any[];
 
@@ -207,7 +207,7 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
             arr.push({ dataIndex, autoFilter, isFilterContains, filterSplitter });
           }
         } else if ('children' in column) {
-          column.children?.forEach(item => handle(item));
+          column.children?.forEach((item: IColumn<T>) => handle(item));
         }
       }
     };
@@ -268,7 +268,7 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
         return { ...args, ...getAutoFilterProps(col, filtersMap, store), sorter: getAutoSorter(col) };
       }
       if ('children' in col) {
-        return { ...col, children: col.children?.map(item => getAutoColumn(item)) };
+        return { ...col, children: col.children?.map((item: IColumn<T>) => getAutoColumn(item)) };
       }
       return col;
     };
@@ -373,17 +373,7 @@ const useExpandable = (
 };
 
 
-export type IColumnType<T extends object = Record<Key, any>> = ColumnType<T> & {
-  autoFilter?: boolean;
-  isFilterContains?: boolean,
-  filterSplitter?: string
-  // 取 store dict 时 使用 filterKeys 进行转换
-  filterKeys?: IKeys<'text' | 'value'>;
-
-  // 非受控模式下自动排序
-  autoSorter?: 'number' | 'string' | 'percentage' | 'date' | 'time' | 'length';
-  sorterParams?: 'zh' | any;
-};
+export type IColumnType<T extends object = Record<Key, any>> = ColumnType<T> & IFieldConfig<T>['column'];
 export interface IColumnGroupType<T extends object = Record<Key, any>> extends Omit<ColumnType<T>, 'dataIndex'> {
   children: IColumns<T>;
 }
