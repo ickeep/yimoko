@@ -131,13 +131,10 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
       if (isControlled) {
         const newValues: Record<Key, any> = { [page]: 1 };
         Object.entries(filters).forEach(([key, value]) => {
-          let val: any = value;
-          if (value !== null) {
-            const type = getFieldType(key, curStore) ?? 'string';
-            const splitter = getFieldSplitter(key, curStore);
-            type === 'string' && (val = value.join(splitter));
-          }
-          newValues[key] = val;
+          const val = value === null ? [] : value;
+          const type = getFieldType(key, curStore) ?? 'string';
+          const splitter = getFieldSplitter(key, curStore);
+          newValues[key] = type === 'string' ? val.join(splitter) : val;
         });
         setValues(newValues);
         queryData();

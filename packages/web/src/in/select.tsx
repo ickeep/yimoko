@@ -14,6 +14,7 @@ export const Select = observer((props: SelectProps) => {
     ? useAPISearchOptions(searchVal, value, options, api, labelAPI, searchConfig, keys, splitter)
     : useAPIOptions(options, api, keys, splitter);
 
+  // todo 搜索时 支持 label 并且不分大小写
   const searchProps = useMemo(() => (apiType !== 'search'
     ? {}
     : {

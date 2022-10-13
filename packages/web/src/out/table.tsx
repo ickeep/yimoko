@@ -33,7 +33,7 @@ export interface TableProps<T extends object = Record<Key, any>> extends Omit<TT
 }
 
 export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
-  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isMergedColumns = true, expandable, rowKey = 'id', ...args } = props;
+  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isMergedColumns = false, expandable, rowKey = 'id', ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
   const { listData } = curStore ?? {};
@@ -45,8 +45,7 @@ export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) 
 
   const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isMergedColumns, tipIcon);
   const curScroll = useTableScroll(scroll, curColumns, defaultColumnsWidth);
-
-  const curExpandable = useExpandable(expandable, listData, rowKey);
+  const curExpandable = useExpandable(expandable, curDataSource, rowKey);
 
   return (
     <RecordsScope getRecords={() => curDataSource}>

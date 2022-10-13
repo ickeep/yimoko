@@ -62,7 +62,7 @@ import { Space } from 'antd';
 
 export const StorePageList = observer(() => (
   <StorePage
-    store={{ type: 'list', api: { url: '/api/page/list' } }}
+    store={{ type: 'list', api: { url: '/api/page/list' }, defaultValues: { tag: '', arr: '' } }}
     options={{ validateFirst: true }}
     schema={{
       type: 'object',
@@ -95,7 +95,7 @@ export const StorePageList = observer(() => (
               type: 'void',
               'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
               'x-component-props': {
-                isControlled: false,
+                // isControlled: false,
                 rowSelection: { fixed: true },
                 expandable: {
                   isTitleControlsAll: true,
@@ -107,7 +107,7 @@ export const StorePageList = observer(() => (
                   expandedRowRender: (record: any) => <div>{record.id}</div>,
                 },
                 columns: ['name',
-                  { dataIndex: 'tag', width: 200, autoFilter: true, isFilterContains: true },
+                  { dataIndex: 'tag', width: 200, autoFilter: true, filterMultiple: false, isFilterContains: true },
                   { dataIndex: 'arr', width: 200, autoFilter: true, isFilterContains: true },
                   {
                     title: '合并', children: [
