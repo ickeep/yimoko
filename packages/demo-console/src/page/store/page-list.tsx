@@ -62,7 +62,7 @@ import { Space } from 'antd';
 
 export const StorePageList = observer(() => (
   <StorePage
-    store={{ type: 'list', api: { url: '/api/page/list' }, defaultValues: { tag: '', arr: '' } }}
+    store={{ type: 'list', api: { url: '/api/page/list' }, defaultValues: { tag: '', arr: '' }, dictConfig: [{ field: 'tag', data: 'tag1,tag2' }] }}
     options={{ validateFirst: true }}
     schema={{
       type: 'object',

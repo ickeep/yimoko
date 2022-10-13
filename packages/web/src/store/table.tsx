@@ -163,6 +163,7 @@ export const StoreTable: <T extends object = Record<Key, any>>(props: StoreTable
     <RecordsScope getRecords={() => dataSource}>
       <Table
         {...args}
+        isControlled={isControlled}
         store={curStore}
         isMergedColumns={true}
         loading={curStore.loading}

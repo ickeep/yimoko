@@ -2,11 +2,11 @@ import { RecordScope, RecursionField, RecordsScope, observer, useExpressionScope
 import { dataToOptions, IFieldConfig, IFieldsConfig, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
 import { Table as TTable, TableProps as TTableProps } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import { ColumnFilterItem } from 'antd/lib/table/interface';
-import { get } from 'lodash-es';
+import { ColumnFilterItem, FilterValue } from 'antd/lib/table/interface';
+import { get, isEqual } from 'lodash-es';
 import moment from 'moment';
 import { DataIndex, RenderExpandIconProps } from 'rc-table/lib/interface';
-import { cloneElement, isValidElement, Key, ReactNode, useMemo, useState } from 'react';
+import { cloneElement, isValidElement, Key, ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Icon, IconProps } from './icon';
 import { Tooltip, TooltipProps } from './tooltip';
@@ -17,6 +17,7 @@ import { Tooltip, TooltipProps } from './tooltip';
 type IExpandableIcon = string | ReactNode | IconProps;
 
 export interface TableProps<T extends object = Record<Key, any>> extends Omit<TTableProps<T>, 'columns' | 'expandable'> {
+  isControlled?: boolean;
   value?: TTableProps<T>['dataSource'];
   defaultColumnsWidth?: number; // 自动计算 scroll.x 时的默认列宽
   columns?: Array<string | IColumn<T>>
@@ -33,23 +34,69 @@ export interface TableProps<T extends object = Record<Key, any>> extends Omit<TT
 }
 
 export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) => React.ReactElement | null = observer((props) => {
-  const { defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, isMergedColumns = false, expandable, rowKey = 'id', ...args } = props;
+  const {
+    isControlled = false, isMergedColumns = false, rowKey = 'id',
+    defaultColumnsWidth, tipIcon, scroll, value, columns, dataSource, store, expandable, onChange, loading, ...args } = props;
   const scope = useExpressionScope() ?? {};
   const curStore = store ?? scope.curStore as ListStore<any, any>;
   const { listData } = curStore ?? {};
+  const [localFiltersValue, setLocalFiltersValue] = useState<Record<string, FilterValue | null>>({});
+
+  const curLoading = useMemo(() => loading ?? curStore?.loading, [loading, curStore?.loading]);
 
   const curDataSource = useMemo(() => {
     const val = dataSource ?? value ?? listData;
     return Array.isArray(val) ? val : [];
   }, [listData, dataSource, value]) as any[];
 
-  const curColumns = useTableColumns<any>(columns, curStore, curDataSource, isMergedColumns, tipIcon);
-  const curScroll = useTableScroll(scroll, curColumns, defaultColumnsWidth);
+  const tableColumns = useTableColumns<any>(columns, curStore, curDataSource, isMergedColumns, tipIcon);
+  const curScroll = useTableScroll(scroll, tableColumns, defaultColumnsWidth);
   const curExpandable = useExpandable(expandable, curDataSource, rowKey);
+
+  const curColumns = useMemo(() => {
+    if (isControlled) {
+      return tableColumns;
+    }
+    // eslint-disable-next-line complexity
+    const setFilteredValue = (column: IColumn): IColumn => {
+      const item = column;
+      if ('dataIndex' in column && column.dataIndex && !judgeIsEmpty(column.filters)) {
+        const val = get(localFiltersValue, column.dataIndex);
+        item.filteredValue = judgeIsEmpty(val) ? null : val;
+      }
+      if ('children' in column) {
+        item.children = column.children.map(setFilteredValue);
+      }
+      return item;
+    };
+    return tableColumns.map(setFilteredValue);
+  }, [isControlled, tableColumns, localFiltersValue]);
+
+  // 重新获取数据 清空本地筛选
+  useEffect(() => {
+    if (!isControlled && curLoading) {
+      !isEqual({}, localFiltersValue) && setLocalFiltersValue({});
+    }
+  }, [curLoading, isControlled, localFiltersValue]);
+
+  const change: TTableProps<any>['onChange'] = (pagination, filters, sorter, extra) => {
+    onChange?.(pagination, filters, sorter, extra);
+    !isControlled && !isEqual(filters, localFiltersValue) && setLocalFiltersValue(filters);
+  };
 
   return (
     <RecordsScope getRecords={() => curDataSource}>
-      <TTable size='small' {...args} expandable={curExpandable} rowKey={rowKey} scroll={curScroll} columns={curColumns} dataSource={curDataSource} />
+      <TTable
+        size='small'
+        {...args}
+        loading={curLoading}
+        onChange={change}
+        expandable={curExpandable}
+        rowKey={rowKey}
+        scroll={curScroll}
+        columns={curColumns}
+        dataSource={curDataSource}
+      />
     </RecordsScope>
   );
 });
@@ -202,7 +249,7 @@ export const useTableColumns = <T extends object = Record<Key, any>>(
       if (typeof column === 'object') {
         if ('dataIndex' in column) {
           const { dataIndex = '', autoFilter, isFilterContains, filterSplitter } = column;
-          if (judgeIsAutoFilter(column) && !get(store?.dict, dataIndexToKey(dataIndex))) {
+          if (judgeIsAutoFilter(column) && judgeIsEmpty(get(store?.dict, dataIndexToKey(dataIndex)))) {
             arr.push({ dataIndex, autoFilter, isFilterContains, filterSplitter });
           }
         } else if ('children' in column) {
