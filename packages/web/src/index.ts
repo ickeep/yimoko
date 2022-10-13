@@ -1,3 +1,7 @@
+export * from './common/load-depend';
+
+export * from './hook/use-load-depend';
+
 export * from './in/select';
 export * from './in/transfer';
 
@@ -24,5 +28,6 @@ export * from './store/table';
 export * from './components';
 export * from './config';
 export * from './http';
+export * from './load';
 export * from './notifier';
 

@@ -112,7 +112,7 @@ export const StorePageList = observer(() => (
                   {
                     title: '合并', children: [
                       { dataIndex: 'name', sorter: true, autoFilter: true },
-                      { dataIndex: 'id', autoSorter: 'number' },
+                      { dataIndex: 'id', autoSorter: 'number', tooltip: 'xxxx' },
                     ],
                   }],
               },

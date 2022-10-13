@@ -1,4 +1,5 @@
 import { observer } from '@formily/react';
+import { judgeIsEmpty } from '@yimoko/store';
 import { Typography } from 'antd';
 import { LinkProps as ALinkProps } from 'antd/lib/typography/Link';
 import { forwardRef, useMemo } from 'react';
@@ -6,12 +7,24 @@ import { LinkProps as RLinkProps, useHref, useLinkClickHandler } from 'react-rou
 
 const { Link: ALink } = Typography;
 
-export type LinkProps = Pick<RLinkProps, 'to' | 'reloadDocument' | 'replace' | 'state'> & ALinkProps & React.RefAttributes<HTMLElement>;
+export type LinkProps = Pick<RLinkProps, 'to' | 'reloadDocument' | 'replace' | 'state'> & ALinkProps & React.RefAttributes<HTMLElement> & { value?: RLinkProps['to'] };
 
 export const Link = observer((props: LinkProps) => {
-  const { href, to, target, ...args } = props;
+  const { href, to, value, target, ...args } = props;
 
-  const isExternal = useMemo(() => href && /^[\w]+:\/\//.test(href), [href]);
+  const curTo = useMemo(() => {
+    const val = to ?? href ?? value;
+    if (typeof val === 'string') {
+      return val;
+    }
+    if (judgeIsEmpty(val)) {
+      return '';
+    }
+    const { pathname = '', search = '', hash = '' } = val;
+    return pathname + search + hash;
+  }, [to, href, value]);
+
+  const isExternal = useMemo(() => curTo && /^[\w]+:\/\//.test(curTo), [curTo]);
 
   const curTarget = useMemo(() => {
     if (target) {
@@ -21,10 +34,10 @@ export const Link = observer((props: LinkProps) => {
   }, [isExternal, target]);
 
   if (!isExternal) {
-    return (<LinkAdapter {...args} target={curTarget} to={href ?? to} />);
+    return (<LinkAdapter {...args} target={curTarget} to={curTo} />);
   }
 
-  return <ALink rel="noopener noreferrer" {...args} href={href} target={curTarget} />;
+  return <ALink rel="noopener noreferrer" {...args} href={curTo} target={curTarget} />;
 });
 
 export const LinkAdapter = forwardRef<any, LinkProps>((props, ref) => {
