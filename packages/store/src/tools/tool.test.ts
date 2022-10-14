@@ -1,6 +1,6 @@
 import { Key } from 'react';
 
-import { JSONParse, JSONStringify, judgeIsEmpty } from './tool';
+import { getAutoArr, JSONParse, JSONStringify, judgeIsEmpty } from './tool';
 
 describe('judgeIsEmpty', () => {
   test('judgeIsEmpty', () => {
@@ -58,3 +58,23 @@ describe('JSONStringify', () => {
   });
 });
 
+
+describe('getAutoArr', () => {
+  test('getAutoArr', () => {
+    expect(getAutoArr('')).toEqual([]);
+    expect(getAutoArr(null)).toEqual([]);
+    expect(getAutoArr(undefined)).toEqual([]);
+    expect(getAutoArr(0)).toEqual([0]);
+    expect(getAutoArr(1)).toEqual([1]);
+    expect(getAutoArr(NaN)).toEqual([NaN]);
+    expect(getAutoArr(false)).toEqual([false]);
+    expect(getAutoArr(true)).toEqual([true]);
+    expect(getAutoArr([])).toEqual([]);
+    expect(getAutoArr([1])).toEqual([1]);
+    expect(getAutoArr({})).toEqual([]);
+    expect(getAutoArr({ a: 1 })).toEqual([{ a: 1 }]);
+    expect(getAutoArr(BigInt('1'))).toEqual([BigInt('1')]);
+    const fn = () => '';
+    expect(getAutoArr(fn)).toEqual([fn]);
+  });
+});
