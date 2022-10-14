@@ -1,14 +1,11 @@
 import { observer } from '@formily/react';
-import { Icon, loadJS, LoadDepend } from '@yimoko/web';
-import { useEffect } from 'react';
+import { Icon, AntPlots } from '@yimoko/web';
 
 export const IndexPage = observer(() => {
   console.log('IndexPage');
   return <div>
     IndexPage
-    <LoadDepend js={[{ name: 'xxx' }]} spin={{}}>
-      123
-    </LoadDepend>
     <Icon name='MinusCircleFilled' fill="#F04352" />
+    <AntPlots.Line data={[{ value: 1, type: '1' }, { value: 2, type: '2' }]} xField="type" yField='value' />
   </div>;
 });

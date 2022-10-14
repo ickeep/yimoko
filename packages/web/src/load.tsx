@@ -6,9 +6,8 @@ export const loadElement = (name: string, attrs: HTMLAttributes<any> & Record<st
     attrs && (Object.keys(attrs) as Array<keyof typeof attrs>).forEach(key => el.setAttribute(key, attrs[key]));
     el.onload = () => resolve(true);
     el.onerror = (e, source, lineno, colno, error) => {
-      console.error(`Error loading ${name} element: ${error}`, e, source, lineno, colno);
       el.remove();
-      resolve(error ?? false);
+      resolve(error ?? new Error(`加载: ${el.outerHTML} 失败`));
     };
     if (place instanceof HTMLElement) {
       place.appendChild(el);

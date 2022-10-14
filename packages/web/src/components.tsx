@@ -10,6 +10,10 @@ import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaP
 import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination, Modal } from 'antd';
 import { Key } from 'react';
 
+import { LoadDepend } from './common/load-depend';
+import { RemoteComponent } from './common/remote-component';
+
+
 import { Select } from './in/select';
 import { Transfer } from './in/transfer';
 import { CancelTrigger } from './out/cancel-trigger';
@@ -31,6 +35,8 @@ const { Header, Footer, Sider, Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 export const components: Record<Key, any> = {
+  LoadDepend,
+  RemoteComponent,
   // in 组件 自定义，对其增强了 api options 的支持
   Select,
   Transfer,

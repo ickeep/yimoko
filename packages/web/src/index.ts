@@ -1,4 +1,7 @@
+export * from './charts/ant-plots';
+
 export * from './common/load-depend';
+export * from './common/remote-component';
 
 export * from './hook/use-load-depend';
 

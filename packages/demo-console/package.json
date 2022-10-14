@@ -6,7 +6,7 @@
     "build": "SKIP_PREFLIGHT_CHECK=true craco build",
     "mock": "mocker ./mock",
     "npm-to-cos": "ts-node ./devops/npm-to-cos.ts",
-    "start": "SKIP_PREFLIGHT_CHECK=true PORT=8083 craco start",
+    "start": "SKIP_PREFLIGHT_CHECK=true PORT=6083 craco start",
     "test": "SKIP_PREFLIGHT_CHECK=true craco test"
   },
   "browserslist": {
@@ -42,7 +42,7 @@
     "antd": "^4.23.0",
     "axios": "^0.27.2",
     "lodash-es": "^4.17.21",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",

@@ -1,9 +1,8 @@
-import { useConfig } from '@yimoko/store';
+import { getAutoArr, getAutoHref, useConfig } from '@yimoko/store';
 import { useEffect, useMemo, useState } from 'react';
 
 import { loadCSS, loadJS } from '../load';
 import { IConfig } from '../store/config';
-import { getAutoHref } from '../tool';
 
 export interface IJS {
   name: string;
@@ -14,17 +13,20 @@ export type JSDeep = IJS[] | IJS;
 export type CSSDeeps = string | string[];
 
 export const useLoadDepend = (deep: [(JSDeep | undefined), CSSDeeps | undefined]): [boolean, Array<false | Error>, () => Promise<Array<boolean | Error>>] => {
-  const { static: { js, css } } = useConfig<IConfig>();
+  const { static: { js, css }, version, versionKey } = useConfig<IConfig>();
   const [isLoading, setLoading] = useState(true);
   const [errs, setErrs] = useState<Array<false | Error>>([]);
   const [jsDeep, cssDeep] = deep;
+
   const jsArr = useMemo(
-    () => (!jsDeep
-      ? []
-      : (Array.isArray(jsDeep) ? jsDeep : [jsDeep]).map(({ name, src }) => ({ name, src: src ? getAutoHref(src, js) : `${js + name}.js` }))),
-    [js, jsDeep],
+    () => (getAutoArr(jsDeep)).map(({ name, src }) => ({ name, src: src ? getAutoHref(src, js, version.js, name, versionKey) : `${js + name}.js` })),
+    [js, jsDeep, version.js, versionKey],
   );
-  const cssArr = useMemo(() => (!cssDeep ? [] : (Array.isArray(cssDeep) ? cssDeep : [cssDeep]).map(href => getAutoHref(href ?? '', css))), [css, cssDeep]);
+
+  const cssArr = useMemo(
+    () => (getAutoArr(cssDeep)).map(href => getAutoHref(href ?? '', css, version.css, versionKey)),
+    [css, cssDeep, version.css, versionKey],
+  );
 
   const load = useMemo(() => () => {
     const pArr = [
