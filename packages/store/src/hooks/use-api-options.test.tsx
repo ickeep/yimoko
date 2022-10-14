@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { render, screen, act } from '@testing-library/react';
 
 import { ConfigStore, ConfigStoreProvider } from '../store/config';

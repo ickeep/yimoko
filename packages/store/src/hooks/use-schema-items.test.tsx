@@ -1,5 +1,4 @@
 import { createSchemaField, ISchema } from '@formily/react';
-import '@testing-library/jest-dom';
 import { render, screen, renderHook } from '@testing-library/react';
 
 import { SchemaPage } from '../components/schema-page';

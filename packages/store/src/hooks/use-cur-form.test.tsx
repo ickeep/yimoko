@@ -1,6 +1,5 @@
 import { createForm } from '@formily/core';
 import { observer } from '@formily/react';
-import '@testing-library/jest-dom';
 import { render, screen, renderHook } from '@testing-library/react';
 
 import { SchemaBox } from '../components/schema-box';

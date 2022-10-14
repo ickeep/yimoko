@@ -1,6 +1,5 @@
 import { createForm } from '@formily/core';
 import { createSchemaField } from '@formily/react';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 
 import { SchemaFieldProvider } from '../context/schema-field';

@@ -18,7 +18,14 @@
   ],
   "scripts": {
     "build": "tsc && VITE_LIB=web vite build -c ../../vite.config.ts",
-    "dev": "VITE_LIB=web VITE_WATCH=true  vite build -c ../../vite.config.ts"
+    "dev": "VITE_LIB=web VITE_WATCH=true  vite build -c ../../vite.config.ts",
+    "test:unit": "react-scripts test --maxWorkers=1 --coverage --watchAll=false",
+    "test:watch": "react-scripts test --maxWorkers=1 --watchAll --coverage"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^lodash-es$": "lodash"
+    }
   },
   "devDependencies": {
     "@formily/antd": "^2.0.0",

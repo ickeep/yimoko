@@ -1,5 +1,4 @@
 import { observer } from '@formily/reactive-react';
-import '@testing-library/jest-dom';
 import { screen, render, renderHook } from '@testing-library/react';
 import { ReactNode } from 'react';
 

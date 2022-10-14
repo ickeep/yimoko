@@ -1,5 +1,4 @@
 import { observer } from '@formily/react';
-import '@testing-library/jest-dom';
 import { act, render, screen, renderHook } from '@testing-library/react';
 
 import { RootStore } from '../store/root';
