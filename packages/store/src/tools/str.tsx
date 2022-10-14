@@ -15,11 +15,14 @@ export type IVersion = string | number | Record<Key, string | number>;
 export const getAutoHref = (href: string, host = '', version?: IVersion, name?: string, versionKey?: string) => {
   const isExternal = /^[\w]+:\/\//.test(href);
   const url = isExternal ? href : host + href;
+
   if (judgeIsEmpty(version)) {
     return url;
   }
-  const versionStr = typeof version === 'object' ? version[name ?? href] : version;
+  const versionStr = typeof version === 'object' ? (version[name ?? href] ?? '') : version;
+  if (!versionStr) {
+    return url;
+  }
   const versionMark = /\?/.test(url) ? '&' : '?';
-
   return `${url}${versionMark}${versionKey ? versionKey : '__ver__'}=${versionStr}`;
 };
