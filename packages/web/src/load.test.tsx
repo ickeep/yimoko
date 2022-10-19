@@ -1,6 +1,6 @@
 import { fireEvent, act, cleanup } from '@testing-library/react';
 
-import { loadElement, loadJS } from './load';
+import { loadElement, loadJS, loadCSS } from './load';
 
 describe('loadElement', () => {
   beforeEach(() => {
@@ -128,6 +128,52 @@ describe('loadJs', () => {
     globalThis.Concurrency = () => 'Loaded';
     await act(async () => {
       scriptEls[0] && fireEvent.load(scriptEls[0]);
+    });
+    expect(fn).toBeCalledTimes(4);
+    expect(fn).toHaveBeenLastCalledWith(true);
+  });
+});
+
+describe('loadCss', () => {
+  test('success', async () => {
+    const fn = jest.fn();
+    loadCSS('https://www.baidu.com/css').then(result => fn(result));
+    const linkEl = document.querySelector('link[href="https://www.baidu.com/css"]');
+    expect(linkEl).toBeInTheDocument();
+    expect(linkEl?.outerHTML).toBe('<link rel="stylesheet" href="https://www.baidu.com/css">');
+    await act(async () => {
+      linkEl && fireEvent.load(linkEl);
+    });
+    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenLastCalledWith(true);
+
+    loadCSS('https://www.baidu.com/css').then(result => fn(result));
+    expect(document.querySelectorAll('link[href="https://www.baidu.com/css"]').length).toBe(1);
+  });
+
+  test('error', async () => {
+    const fn = jest.fn();
+    loadCSS('https://www.baidu.com/err').then(result => fn(result));
+    const linkEl = document.querySelector('link[href="https://www.baidu.com/err"]');
+    expect(linkEl).toBeInTheDocument();
+    await act(async () => {
+      linkEl && fireEvent.error(linkEl);
+    });
+    expect(document.querySelector('link[href="https://www.baidu.com/err"]')).not.toBeInTheDocument();
+    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenLastCalledWith(expect.any(Error));
+  });
+
+  test('Concurrency', async () => {
+    const fn = jest.fn();
+    loadCSS('https://www.baidu.com/concurrency').then(result => fn(result));
+    loadCSS('https://www.baidu.com/concurrency').then(result => fn(result));
+    loadCSS('https://www.baidu.com/concurrency').then(result => fn(result));
+    loadCSS('https://www.baidu.com/concurrency').then(result => fn(result));
+    const linkEls = document.querySelectorAll('link[href="https://www.baidu.com/concurrency"]');
+    expect(linkEls.length).toBe(1);
+    await act(async () => {
+      linkEls[0] && fireEvent.load(linkEls[0]);
     });
     expect(fn).toBeCalledTimes(4);
     expect(fn).toHaveBeenLastCalledWith(true);
