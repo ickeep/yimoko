@@ -1,5 +1,5 @@
 import { RecordScope, RecursionField, RecordsScope, observer, useExpressionScope } from '@formily/react';
-import { dataToOptions, IFieldConfig, IFieldsConfig, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems } from '@yimoko/store';
+import { dataToOptions, IFieldConfig, IFieldsConfig, IStore, judgeIsEmpty, ListStore, useDeepMemo, useSchemaItems, toNumber } from '@yimoko/store';
 import { Table as TTable, TableProps as TTableProps } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { ColumnFilterItem, FilterValue } from 'antd/lib/table/interface';
@@ -61,7 +61,7 @@ export const Table: <T extends object = Record<Key, any>>(props: TableProps<T>) 
     const setFilteredValue = (column: IColumn): IColumn => {
       const item = column;
       if ('dataIndex' in column && column.dataIndex && !judgeIsEmpty(column.filters)) {
-        const val = get(localFiltersValue, column.dataIndex);
+        const val = get(localFiltersValue, dataIndexToKey(column.dataIndex));
         item.filteredValue = judgeIsEmpty(val) ? null : val;
       }
       if ('children' in column) {
@@ -213,8 +213,10 @@ const getAutoSorter = (column: IColumnType<any>) => {
   if (!autoSorter) {
     return undefined;
   }
-  const fnMap: Record<Required<IColumnType>['autoSorter'], (a: any, b: any) => number> = {
-    number: (a, b) => Number(a) - Number(b),
+
+
+  const fnMap: Record<Key, (a: any, b: any) => number> = {
+    number: (a, b) => toNumber(a, sorterParams) - toNumber(b, sorterParams),
     string: (a, b) => (sorterParams ? a?.localeCompare(b, ...(Array.isArray(sorterParams) ? sorterParams : [sorterParams])) : a?.localeCompare(b)),
     percentage: (a, b) => Number(a.replace('%', '')) - Number(b.replace('%', '')),
     date: (a, b) => (moment(a).isBefore(b) ? -1 : 1),

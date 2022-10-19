@@ -8,6 +8,7 @@ module.exports = {
     const data = {
       "data": [
         {
+          obj: { id: 'o1', name: 'obj1' },
           "id": "4" + i,
           "name": "微信",
           tag: 't1,t2,t3',
@@ -19,6 +20,7 @@ module.exports = {
           length: 'aaaaa'
         },
         {
+          obj: { id: 'o2', name: 'obj2' },
           "id": "2" + i,
           "name": "QQ",
           tag: 't1,t22,t3',
@@ -30,6 +32,7 @@ module.exports = {
           length: 'bbbb'
         },
         {
+          obj: { id: 'o3', name: 'obj3' },
           "id": "1" + i,
           "name": "钉钉",
           tag: 't1,t2,t33',

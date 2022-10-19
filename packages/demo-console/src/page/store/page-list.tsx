@@ -95,7 +95,7 @@ export const StorePageList = observer(() => (
               type: 'void',
               'x-component': 'StoreTable', 'x-decorator': 'RedirectListData',
               'x-component-props': {
-                // isControlled: false,
+                isControlled: false,
                 rowSelection: { fixed: true },
                 expandable: {
                   isTitleControlsAll: true,
@@ -107,6 +107,8 @@ export const StorePageList = observer(() => (
                   expandedRowRender: (record: any) => <div>{record.id}</div>,
                 },
                 columns: ['name',
+                  { dataIndex: ['obj', 'id'], autoSorter: 'number' },
+                  { dataIndex: ['obj', 'name'], autoFilter: true },
                   { dataIndex: 'tag', width: 200, autoFilter: true, filterMultiple: false, isFilterContains: true },
                   { dataIndex: 'arr', width: 200, autoFilter: true, isFilterContains: true },
                   {

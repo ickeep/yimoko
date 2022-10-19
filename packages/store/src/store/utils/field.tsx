@@ -4,6 +4,8 @@ import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { ColumnType } from 'antd/lib/table';
 import { Key, ReactNode } from 'react';
 
+import { IToNumberOption } from '../../tools/num';
+
 import { DF_KEYS, IKeys } from '../../tools/options';
 
 import { JSONParse, JSONStringify } from '../../tools/tool';
@@ -75,9 +77,15 @@ export type IFieldConfig<P extends object = Record<Key, any>> = ISchema<any> & {
     // 取 store dict 时 使用 filterKeys 进行转换
     filterKeys?: IKeys<'text' | 'value'>;
     // 非受控模式下自动排序
-    autoSorter?: 'number' | 'string' | 'percentage' | 'date' | 'time' | 'length';
-    sorterParams?: 'zh' | any;
     [key: Key]: any;
+  } & {
+    autoSorter?: 'string'
+    sorterParams?: 'zh' | any;
+  } & {
+    autoSorter?: 'number',
+    sorterParams?: IToNumberOption;
+  } & {
+    autoSorter?: 'percentage' | 'date' | 'time' | 'length';
   }
   // 用于配置描述列表的属性 详情页
   desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema, tooltip?: ITooltip }
