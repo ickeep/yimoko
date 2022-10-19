@@ -1,4 +1,4 @@
-import { changeNumInRange } from './num';
+import { changeNumInRange, toNumber } from './num';
 
 describe('num', () => {
   test('changeNumInRange', () => {
@@ -23,5 +23,17 @@ describe('num', () => {
     expect(x).not.toBe(0);
     x = changeNumInRange(x, -1);
     expect(x).toBe(0);
+  });
+
+  test('toNumber', () => {
+    expect(toNumber(1)).toBe(1);
+    expect(toNumber('1')).toBe(1);
+    expect(toNumber('1.1')).toBe(1.1);
+    expect(toNumber('1.1.1')).toBeNaN();
+    expect(toNumber('1.1.1', { pattern: '.[^.]+.[^.]' })).toBe(1);
+    expect(toNumber([])).toBe(0);
+    expect(toNumber({}, { defaults: 1 })).toBe(1);
+    expect(toNumber('1123', { pattern: '1', flags: '' })).toBe(123);
+    expect(toNumber('1123', { pattern: '1' })).toBe(23);
   });
 });
