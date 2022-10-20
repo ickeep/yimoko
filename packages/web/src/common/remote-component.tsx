@@ -1,25 +1,26 @@
 import { observer } from '@formily/react';
 import { RenderValue } from '@yimoko/store';
+import { Key } from 'react';
 
 import { CSSDeeps, JSDeep } from '../hook/use-load-depend';
 
 import { LoadDepend, LoadDependProps } from './load-depend';
 
-export interface RemoteComponentProps extends Omit<LoadDependProps, 'js' | 'children' | 'component'> {
+export type RemoteComponentProps<T extends object = Record<Key, any>> = T & Omit<LoadDependProps, 'js' | 'children' | 'component'> & {
   name: string
   js?: string
   css?: string
   jsDeep?: JSDeep
   cssDeep?: CSSDeeps
-}
+};
 
-export const RemoteComponent = observer((props: RemoteComponentProps) => {
-  const { name, js, css, props: p, jsDeep, cssDeep } = props;
+export const RemoteComponent: <T extends object = Record<Key, any>>(props: RemoteComponentProps<T>) => React.ReactElement | null = observer((props: RemoteComponentProps) => {
+  const { name, js, css, props: p, jsDeep, cssDeep, spin, alert, ...args } = props;
 
   return (
     <LoadDepend js={jsDeep} css={cssDeep}>
-      <LoadDepend js={{ name, src: js }} css={css}>
-        <Component name={name} props={p} />
+      <LoadDepend js={{ name, src: js }} css={css} spin={spin} alert={alert}>
+        <Component name={name} props={{ ...args, ...p }} />
       </LoadDepend>
     </LoadDepend>
   );
