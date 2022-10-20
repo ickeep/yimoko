@@ -1,4 +1,4 @@
-import { getAutoArr, getAutoHref, useConfig } from '@yimoko/store';
+import { getAutoArr, getAutoHref, useConfig, useDeepMemo } from '@yimoko/store';
 import { useEffect, useMemo, useState } from 'react';
 
 import { loadCSS, loadJS } from '../load';
@@ -12,8 +12,10 @@ export interface IJS {
 export type JSDeep = IJS[] | IJS;
 export type CSSDeeps = string | string[];
 
-export const useLoadDepend = (deep: [(JSDeep | undefined), CSSDeeps | undefined]): [boolean, Array<false | Error>, () => Promise<Array<boolean | Error>>] => {
-  const { static: { js, css }, version, versionKey } = useConfig<IConfig>();
+export type IDeep = [JSDeep | undefined, CSSDeeps | undefined] | [JSDeep];
+
+export const useLoadDepend = (deep: IDeep): [boolean, Array<false | Error>, () => Promise<Array<boolean | Error>>] => {
+  const { static: { js = '', css = '' } = {}, version = {}, versionKey } = useConfig<IConfig>();
   const [isLoading, setLoading] = useState(true);
   const [errs, setErrs] = useState<Array<false | Error>>([]);
   const [jsDeep, cssDeep] = deep;
@@ -24,25 +26,28 @@ export const useLoadDepend = (deep: [(JSDeep | undefined), CSSDeeps | undefined]
   );
 
   const cssArr = useMemo(
-    () => (getAutoArr(cssDeep)).map(href => getAutoHref(href ?? '', css, version.css, versionKey)),
+    () => (getAutoArr(cssDeep)).map(href => getAutoHref(href, css, version.css, versionKey)),
     [css, cssDeep, version.css, versionKey],
   );
 
-  const load = useMemo(() => () => {
+  const load = useDeepMemo(() => () => {
+    setLoading(true);
     const pArr = [
       ...cssArr.map(href => loadCSS(href)),
       ...jsArr.map(({ name, src }) => loadJS(name, src)),
     ];
-    return Promise.all(pArr);
-  }, [jsArr, cssArr]);
 
-  useEffect(() => {
-    setLoading(true);
-    load().then((result) => {
+    const p = Promise.all(pArr);
+    p.then((result) => {
       setLoading(false);
       const err = result.filter(r => r !== true) as Array<false | Error>;
       setErrs(err);
     });
+    return p;
+  }, [jsArr, cssArr]);
+
+  useEffect(() => {
+    load();
   }, [load]);
 
   return [isLoading, errs, load];
