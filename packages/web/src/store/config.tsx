@@ -5,11 +5,11 @@ import { LoadDependProps } from '../common/load-depend';
 import { httpRequest } from '../http';
 import { notifier } from '../notifier';
 
-export type IDeep = Pick<LoadDependProps, 'js' | 'css'>;
+export type IDeepConfig = Pick<LoadDependProps, 'js' | 'css'>;
 
 const staticConfig: { img: string, icon: string, js: string, css: string } = { img: '', icon: '', js: '', css: '' };
 const versionConfig: { img?: IVersion, icon?: IVersion, js?: IVersion, css?: IVersion } = {};
-const deepConfig: { antPlots?: IDeep } = {
+const deepConfig: { antPlots?: IDeepConfig } = {
   antPlots: { js: { name: 'Plots', src: 'https://unpkg.com/@ant-design/plots@1.2.2/dist/plots.min.js' } },
 };
 

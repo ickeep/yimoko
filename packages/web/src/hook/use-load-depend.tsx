@@ -12,9 +12,9 @@ export interface IJS {
 export type JSDeep = IJS[] | IJS;
 export type CSSDeeps = string | string[];
 
-export type IDeep = [JSDeep | undefined, CSSDeeps | undefined] | [JSDeep];
+export type ILoadDepend = [JSDeep | undefined, CSSDeeps | undefined] | [JSDeep];
 
-export const useLoadDepend = (deep: IDeep): [boolean, Array<Error>, () => Promise<Array<true | Error>>] => {
+export const useLoadDepend = (deep: ILoadDepend): [boolean, Array<Error>, () => Promise<Array<true | Error>>] => {
   const { static: { js = '', css = '' } = {}, version = {}, versionKey } = useConfig<IConfig>();
   const [isLoading, setLoading] = useState(true);
   const [errs, setErrs] = useState<Array<Error>>([]);
