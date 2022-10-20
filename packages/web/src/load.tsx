@@ -1,6 +1,6 @@
 import { HTMLAttributes, LinkHTMLAttributes, ScriptHTMLAttributes } from 'react';
 
-export const loadElement = (name: string, attrs: HTMLAttributes<any> & Record<string, any>, place: 'body' | 'head' | HTMLElement = 'body'): Promise<boolean | Error> => (
+export const loadElement = (name: string, attrs: HTMLAttributes<any> & Record<string, any>, place: 'body' | 'head' | HTMLElement = 'body'): Promise<true | Error> => (
   new Promise((resolve) => {
     const el = document.createElement(name);
     attrs && (Object.keys(attrs) as Array<keyof typeof attrs>).forEach(key => el.setAttribute(key, attrs[key]));
@@ -17,7 +17,7 @@ export const loadElement = (name: string, attrs: HTMLAttributes<any> & Record<st
   })
 );
 
-const loadingJSMap: Record<string, Promise<boolean | Error>> = {};
+const loadingJSMap: Record<string, Promise<true | Error>> = {};
 
 export const loadJS = async (name: string, src: string, attrs?: ScriptHTMLAttributes<any>) => {
   const global: Record<string, any> = globalThis;
@@ -37,7 +37,7 @@ export const loadJS = async (name: string, src: string, attrs?: ScriptHTMLAttrib
   return result;
 };
 
-const loadingCSSMap: Record<string, Promise<boolean | Error>> = {};
+const loadingCSSMap: Record<string, Promise<true | Error>> = {};
 
 export const loadCSS = async (href: string, attrs?: LinkHTMLAttributes<any>) => {
   const selector = `link[href='${href}']`;

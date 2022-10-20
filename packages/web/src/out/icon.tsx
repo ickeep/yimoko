@@ -19,7 +19,7 @@ export const Icon = (props: IconProps) => {
   const { name, value, ...args } = props;
   const http = useAPIExecutor();
   const [loading, setLoading] = useState(false);
-  const { static: { icon } } = useConfig<IConfig>();
+  const { static: { icon = '' } = {} } = useConfig<IConfig>();
 
   const file = name ?? value ?? '';
   const src = useMemo(() => (file.includes('://') ? file : `${icon + file}.svg`), [file, icon]);

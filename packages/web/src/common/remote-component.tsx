@@ -1,16 +1,14 @@
 import { observer } from '@formily/react';
 import { RenderValue } from '@yimoko/store';
-import { Key } from 'react';
 
 import { CSSDeeps, JSDeep } from '../hook/use-load-depend';
 
-import { LoadDepend } from './load-depend';
+import { LoadDepend, LoadDependProps } from './load-depend';
 
-export interface RemoteComponentProps {
+export interface RemoteComponentProps extends Omit<LoadDependProps, 'js' | 'children' | 'component'> {
   name: string
   js?: string
   css?: string
-  props?: Record<Key, any>
   jsDeep?: JSDeep
   cssDeep?: CSSDeeps
 }

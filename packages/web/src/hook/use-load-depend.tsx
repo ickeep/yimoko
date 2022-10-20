@@ -14,10 +14,10 @@ export type CSSDeeps = string | string[];
 
 export type IDeep = [JSDeep | undefined, CSSDeeps | undefined] | [JSDeep];
 
-export const useLoadDepend = (deep: IDeep): [boolean, Array<false | Error>, () => Promise<Array<boolean | Error>>] => {
+export const useLoadDepend = (deep: IDeep): [boolean, Array<Error>, () => Promise<Array<true | Error>>] => {
   const { static: { js = '', css = '' } = {}, version = {}, versionKey } = useConfig<IConfig>();
   const [isLoading, setLoading] = useState(true);
-  const [errs, setErrs] = useState<Array<false | Error>>([]);
+  const [errs, setErrs] = useState<Array<Error>>([]);
   const [jsDeep, cssDeep] = deep;
 
   const jsArr = useMemo(
@@ -40,7 +40,7 @@ export const useLoadDepend = (deep: IDeep): [boolean, Array<false | Error>, () =
     const p = Promise.all(pArr);
     p.then((result) => {
       setLoading(false);
-      const err = result.filter(r => r !== true) as Array<false | Error>;
+      const err = result.filter(r => r !== true) as Array<Error>;
       setErrs(err);
     });
     return p;

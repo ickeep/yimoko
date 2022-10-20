@@ -1,6 +1,7 @@
 import { observer } from '@formily/react';
 import { judgeIsEmpty, RenderValue } from '@yimoko/store';
 import { Alert, AlertProps, Space, Spin, SpinProps, Typography } from 'antd';
+import { Key } from 'react';
 
 import { CSSDeeps, JSDeep, useLoadDepend } from '../hook/use-load-depend';
 import { Icon } from '../out/icon';
@@ -10,7 +11,7 @@ export interface LoadDependProps {
   css?: CSSDeeps
   children?: any
   component?: any
-  props?: Record<string, any>
+  props?: Record<Key, any>
   spin?: Omit<SpinProps, 'spinning'>
   alert?: Omit<AlertProps, 'message'>
 }
@@ -24,21 +25,10 @@ export const LoadDepend = observer((props: LoadDependProps) => {
   }
 
   if (!judgeIsEmpty(errs)) {
-    const errMsg = errs.filter(e => e !== false);
-    let description: AlertProps['description'] = <Typography.Text>js/css依赖加载失败</Typography.Text>;
-
-    if (!judgeIsEmpty(errMsg)) {
-      description = (
-        <Space direction="vertical">
-          {errMsg.map((e, i) => <Typography.Text key={i}>{String(e)}</Typography.Text>)}
-        </Space>
-      );
-    }
-
+    const description = (<Space direction="vertical">{errs.map((e, i) => <Typography.Text key={i}>{String(e)}</Typography.Text>)}</Space>);
     const retry = () => {
       load();
     };
-
     return (
       <Alert
         type="error"
