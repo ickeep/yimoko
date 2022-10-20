@@ -12,6 +12,7 @@ const externals = {
   'react-router-dom': 'ReactRouterDOM',
   antd: 'antd',
   '@ant-design/icons': 'icons',
+  '@ant-design/plots': 'Plots',
   moment: 'moment',
   axios: 'axios',
   'lodash-es': '_',
