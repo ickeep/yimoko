@@ -1,6 +1,6 @@
 {
   "name": "@yimoko/web",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "private": false,
   "exports": {
     ".": {
@@ -53,6 +53,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons": "^4.0.0",
+    "@ant-design/plots": "^1.2.2",
     "@formily/antd": "^2.0.0",
     "@formily/core": "^2.0.0",
     "@formily/path": "^2.0.0",

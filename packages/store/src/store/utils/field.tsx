@@ -65,6 +65,14 @@ export const getFieldKeys = (field: IField<any>, store: BaseStore<any, any>) => 
 // 提示 用于字段作用的提示，可以字段级定义，或者在 column, desc 里定义
 type ITooltip = ReactNode | Record<Key, any> | (TooltipProps & { icon?: ReactNode });
 
+type IAutoSorter = ({
+  autoSorter?: 'percentage' | 'date' | 'time' | 'length';
+}) | ({
+  autoSorter?: 'string', sorterParams?: 'zh' | any,
+}) | ({
+  autoSorter?: 'number', sorterParams?: IToNumberOption;
+});
+
 export type IFieldConfig<P extends object = Record<Key, any>> = ISchema<any> & {
   // 字段的提示
   tooltip?: ITooltip
@@ -78,15 +86,7 @@ export type IFieldConfig<P extends object = Record<Key, any>> = ISchema<any> & {
     filterKeys?: IKeys<'text' | 'value'>;
     // 非受控模式下自动排序
     [key: Key]: any;
-  } & {
-    autoSorter?: 'string'
-    sorterParams?: 'zh' | any;
-  } & {
-    autoSorter?: 'number',
-    sorterParams?: IToNumberOption;
-  } & {
-    autoSorter?: 'percentage' | 'date' | 'time' | 'length';
-  }
+  } & IAutoSorter
   // 用于配置描述列表的属性 详情页
   desc?: Partial<DescriptionsItemProps> & Record<Key, any> & { schema?: ISchema, tooltip?: ITooltip }
 };
