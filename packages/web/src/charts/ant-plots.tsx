@@ -16,8 +16,8 @@ const getAntPlotsComponent = (key: string) => observer((props: any) => {
   return <LoadDependAntPlots component={() => <RenderValue value={g.Plots?.[key]} props={props} />} />;
 });
 
-// @ts-ignore
-export const AntPlots: Omit<typeof plots, 'FUNNEL_CONVERSATION_FIELD', 'adaptors' | 'default' | 'flow' | 'getCanvasPattern' | 'measureTextWidth'> = {};
+// @ts-ignore 使用 Omit Pick 会导致类型推断 any
+export const AntPlots: typeof plots = {};
 [
   'Area', 'Bar', 'BidirectionalBar', 'Box', 'Bullet', 'Chord', 'CirclePacking', 'Column', 'DualAxes',
   'Facet', 'Funnel', 'G2', 'Gauge', 'Heatmap', 'Histogram', 'Line', 'Liquid', 'Mix', 'MultiView', 'Pie', 'Plot', 'Progress', 'Radar',
