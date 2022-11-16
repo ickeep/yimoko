@@ -1,5 +1,5 @@
 import { useField } from '@formily/react';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction, Key } from 'react';
 
 import { useAPIExecutor } from '../store/config';
 
@@ -13,7 +13,7 @@ import { useDeepMemo } from './use-deep-memo';
 export interface IOptionsAPIProps<T extends string = 'label' | 'value'> {
   splitter?: string
   keys?: IKeys<T>
-  options?: IOptions<T>
+  options?: IOptions<T> | Record<Key, any>
   api?: IOptionsAPI
   valueType?: 'none' | 'string' | 'array'
 }

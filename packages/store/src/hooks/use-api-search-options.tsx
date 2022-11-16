@@ -97,9 +97,10 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
   // 当值变化是，反向查找 options,
   useDeepEffect(() => {
     const ifFetch = () => !input && !loading && value && fetchOptionsForValue;
-    const curKeys = (searchConfig?.keys ?? keys) as IKeys<T>;
+    // const curKeys = (searchConfig?.keys ?? keys) as IKeys<T>;
+    // options 格式已处理，不需要再传 keys
     // @ts-ignore
-    if (ifFetch() && !judgeValueInOptions(value, options, curKeys)) {
+    if (ifFetch() && !judgeValueInOptions(value, options)) {
       fetchOptionsForValue?.(value);
     }
   }, [fetchOptionsForValue, input, keys, loading, options, searchConfig?.keys, value]);
