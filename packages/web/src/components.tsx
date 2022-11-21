@@ -1,13 +1,13 @@
 import {
   Form, FormLayout, FormItem, FormGrid, FormButtonGroup, Space,
-  Submit, Reset, Cascader, Checkbox, DatePicker, Input, NumberPicker,
+  Reset, Cascader, Checkbox, DatePicker, Input, NumberPicker,
   Password, Radio, Switch, TimePicker, TreeSelect, Upload,
   ArrayCards, ArrayItems, ArrayTable, ArrayTabs, Editable, FormCollapse,
   FormDialog, FormDrawer, FormStep, FormTab, PreviewText,
 } from '@formily/antd';
 
-import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage, SchemaTemplate } from '@yimoko/store';
-import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination, Modal } from 'antd';
+import { SchemaBox, RedirectValues, RedirectListData, withValueChildren, SchemaPage, SchemaTemplate, TransformScope } from '@yimoko/store';
+import { Layout, Typography, Button, Divider, Col, Row, Affix, Pagination } from 'antd';
 import { Key } from 'react';
 
 import { LoadDepend } from './common/load-depend';
@@ -17,14 +17,21 @@ import { RemoteComponent } from './common/remote-component';
 import { Select } from './in/select';
 import { Transfer } from './in/transfer';
 import { CancelTrigger } from './out/cancel-trigger';
+import { DateOut } from './out/date';
+import { DetailLink } from './out/detail-link';
 import { Drawer } from './out/drawer';
+import { EditLink } from './out/edit-link';
 import { Icon } from './out/icon';
+import { KeyToVal } from './out/key-to-val';
 import { Link } from './out/link';
+import { Modal } from './out/modal';
 import { OkTrigger } from './out/ok-trigger';
 import { PageError } from './out/page-error';
 import { RunTrigger } from './out/run-trigger';
+import { Submit } from './out/submit';
 import { Table } from './out/table';
 import { Trigger } from './out/trigger';
+import { PageBreadcrumb } from './page/page-breadcrumb';
 import { StoreDesc } from './store/desc';
 import { StoreForm } from './store/form';
 import { StorePage } from './store/page';
@@ -41,18 +48,26 @@ export const components: Record<Key, any> = {
   Select,
   Transfer,
 
+  // out 组件
   CancelTrigger,
+  DateOut,
+  DetailLink,
   Drawer,
+  EditLink,
   Icon,
-  Link: withValueChildren(Link),
+  KeyToVal,
+  Link,
   Modal,
   OkTrigger,
   PageError,
   RunTrigger,
+  Submit,
   Table,
   Trigger,
 
-  SchemaPage,
+  // page 组件
+  PageBreadcrumb,
+
 
   StoreDesc,
   StoreForm,
@@ -61,10 +76,12 @@ export const components: Record<Key, any> = {
   StoreTable,
 
   // yimoko/store 组件
+  SchemaPage,
   RedirectListData,
   RedirectValues,
   SchemaBox,
   SchemaTemplate,
+  TransformScope,
 
   // antd 组件
   Button: withValueChildren(Button),
@@ -99,7 +116,6 @@ export const components: Record<Key, any> = {
   FormGrid,
   FormButtonGroup,
   Space,
-  Submit,
   Reset,
   Input,
   Password,

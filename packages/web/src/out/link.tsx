@@ -7,13 +7,13 @@ import { LinkProps as RLinkProps, useHref, useLinkClickHandler } from 'react-rou
 
 const { Link: ALink } = Typography;
 
-export type LinkProps = Pick<RLinkProps, 'to' | 'reloadDocument' | 'replace' | 'state'> & ALinkProps & React.RefAttributes<HTMLElement> & { value?: RLinkProps['to'] };
+export type LinkProps = Pick<RLinkProps, 'to' | 'reloadDocument' | 'replace' | 'state'> & ALinkProps & React.RefAttributes<HTMLElement> & { value?: RLinkProps['children'] };
 
 export const Link = observer((props: LinkProps) => {
-  const { href, to, value, target, ...args } = props;
+  const { href, to, value, target, children, ...args } = props;
 
   const curTo = useMemo(() => {
-    const val = to ?? href ?? value;
+    const val = to ?? href;
     if (typeof val === 'string') {
       return val;
     }
@@ -22,7 +22,7 @@ export const Link = observer((props: LinkProps) => {
     }
     const { pathname = '', search = '', hash = '' } = val;
     return pathname + search + hash;
-  }, [to, href, value]);
+  }, [to, href]);
 
   const isExternal = useMemo(() => curTo && /^[\w]+:\/\//.test(curTo), [curTo]);
 
@@ -34,7 +34,7 @@ export const Link = observer((props: LinkProps) => {
   }, [isExternal, target]);
 
   if (!isExternal) {
-    return (<LinkAdapter {...args} target={curTarget} to={curTo} />);
+    return (<LinkAdapter {...args} target={curTarget} to={curTo} children={children ?? value} />);
   }
 
   return <ALink rel="noopener noreferrer" {...args} href={curTo} target={curTarget} />;

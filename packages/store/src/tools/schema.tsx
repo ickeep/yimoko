@@ -14,20 +14,29 @@ export function getItemPropsBySchema(schema: Schema, componentName: string, sche
     ...args
   } = schema;
 
+  if (judgeIsEmpty(component)) {
+    return decoratorProps ?? {};
+  }
+
   if (component === componentName) {
     if (judgeIsEmpty(schema.properties)) {
       return componentProps;
     }
     return {
       ...componentProps,
-      children: <RecursionField schema={{ ...args, type: 'void' }} onlyRenderProperties name={schemaKey} />,
+      children: <RecursionField schema={{ ...args, type: 'void' }} name={schemaKey} />,
     };
   }
+
+  const getSchema = (s: Schema) => ({ type: 'void', properties: { [schema.name ?? '']: s } });
 
   if (!decorator || decorator === componentName) {
     return {
       ...decoratorProps,
-      children: <RecursionField name={schemaKey} schema={{ ...args, 'x-component': component, 'x-component-props': componentProps }} />,
+      children: <RecursionField
+        name={schemaKey}
+        schema={getSchema({ ...args, 'x-component': component, 'x-component-props': componentProps })}
+      />,
     };
   }
 

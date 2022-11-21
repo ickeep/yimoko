@@ -6,6 +6,7 @@ export * from './components/schema-box';
 export * from './components/schema-page';
 export * from './components/schema-template';
 export * from './components/store-dict';
+export * from './components/transform-scope';
 
 export * from './context/root';
 export * from './context/schema-field';
@@ -45,6 +46,7 @@ export * from './store/root';
 export * from './store/theme';
 
 export * from './tools/api';
+export * from './tools/date';
 export * from './tools/num';
 export * from './tools/options';
 export * from './tools/schema';

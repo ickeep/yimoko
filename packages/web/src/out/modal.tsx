@@ -1,4 +1,4 @@
-import { observer } from '@formily/react';
+import { observer, useExpressionScope } from '@formily/react';
 import { BoxContentProvider, IStore, useBoxStore, BoxContentRender, useBoxContent, useCurForm, judgeIsEmpty } from '@yimoko/store';
 import { Modal as AModal, ModalProps as AModalProps } from 'antd';
 import { ModalFunc } from 'antd/lib/modal/confirm';
@@ -33,6 +33,9 @@ export const Modal = observer((props: ModalProps) => {
 
   const boxStore = useBoxStore({ isOpen: open, onClose, onOpen });
   const { isOpen, openUp } = boxStore;
+  const scope = useExpressionScope();
+  console.log('props.title', props.title);
+  console.log('record', scope.$record.name);
 
   return (
     <BoxContentProvider value={boxStore}>

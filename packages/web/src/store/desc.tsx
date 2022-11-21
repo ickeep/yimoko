@@ -1,9 +1,9 @@
-import { ISchema, observer } from '@formily/react';
+import { ISchema, observer, RecursionField } from '@formily/react';
 import { getItemPropsBySchema, IFieldsConfig, IStore, judgeIsEmpty, useCurStore, useSchemaField, useSchemaItems } from '@yimoko/store';
 import { Descriptions, DescriptionsProps, Space } from 'antd';
 import { DescriptionsItemProps } from 'antd/lib/descriptions/Item';
 import { get } from 'lodash-es';
-import { isValidElement, Key, ReactNode, useMemo } from 'react';
+import { isValidElement, Key, ReactNode, useCallback, useMemo } from 'react';
 
 import { Tooltip, TooltipProps } from '../out/tooltip';
 
@@ -26,53 +26,58 @@ export const StoreDesc: <T extends object = Record<Key, any>>(props: StoreDescPr
   const curStore = useCurStore(store);
   const curItems = useSchemaItems();
 
-  const fieldsItems: DescriptionsItemProps[] = useMemo(() => {
-    // eslint-disable-next-line complexity
-    const getItemProps = (field: Key, item?: IFieldObj): DescriptionsItemProps => {
-      const fieldConfig = curStore?.fieldsConfig?.[`${field}`] as IFieldsConfig[Key] | undefined;
-      const { field: iField, schema, tooltip, ...args } = item ?? {};
-      const { title, tooltip: fTooltip, desc: { schema: dSchema = undefined, tooltip: dTooltip = undefined, ...dArgs } = {} } = fieldConfig ?? {};
-      const props = { label: title, ...dArgs, ...args };
+  const data = get(curStore, valuesTarget);
 
-      let tooltipProps: TooltipProps = {};
-      [fTooltip, dTooltip, tooltip].forEach((item) => {
-        if (!judgeIsEmpty(item)) {
-          if ((isValidElement(item) || typeof item !== 'object')) {
-            tooltipProps.title = item;
-          } else {
-            tooltipProps = { ...tooltipProps, ...item };
-          }
+  // eslint-disable-next-line complexity
+  const getItemProps = useCallback((field: Key, item?: IFieldObj): DescriptionsItemProps => {
+    const fieldConfig = curStore?.fieldsConfig?.[`${field}`] as IFieldsConfig[Key] | undefined;
+    const { field: iField, schema, tooltip, ...args } = item ?? {};
+    const { title, tooltip: fTooltip, desc: { schema: dSchema = undefined, tooltip: dTooltip = undefined, ...dArgs } = {} } = fieldConfig ?? {};
+    const props = { label: title, ...dArgs, ...args };
+
+    let tooltipProps: TooltipProps = {};
+    [fTooltip, dTooltip, tooltip].forEach((item) => {
+      if (!judgeIsEmpty(item)) {
+        if ((isValidElement(item) || typeof item !== 'object')) {
+          tooltipProps.title = item;
+        } else {
+          tooltipProps = { ...tooltipProps, ...item };
         }
-      });
-      if (!judgeIsEmpty(tooltipProps)) {
-        judgeIsEmpty(tooltipProps.icon) && (tooltipProps.icon = tipIcon);
-        props.label = <Space size={4} ><span>{props.label}</span><Tooltip  {...tooltipProps} /></Space >;
       }
+    });
+    if (!judgeIsEmpty(tooltipProps)) {
+      judgeIsEmpty(tooltipProps.icon) && (tooltipProps.icon = tipIcon);
+      props.label = <Space size={4} ><span>{props.label}</span><Tooltip  {...tooltipProps} /></Space >;
+    }
 
-      const curSchema = schema ?? dSchema;
+    const curSchema = schema ?? dSchema;
 
-      let children: ReactNode = null;
-      if (!judgeIsEmpty(curSchema)) {
-        children = <SchemaField schema={curSchema} />;
-      } else if (judgeIsEmpty(props.children)) {
-        const data = get(curStore, valuesTarget);
-        children = get(data, field) ?? '';
-      }
-      return { ...props, children };
-    };
+    let children: ReactNode = null;
+    if (!judgeIsEmpty(curSchema)) {
+      children = <SchemaField schema={{ type: 'object', properties: { [field]: curSchema } }} />;
+    } else if (judgeIsEmpty(props.children)) {
+      children = get(data, field) ?? '';
+    }
+    return { ...props, children };
+  }, [SchemaField, curStore?.fieldsConfig, data, tipIcon]);
 
-    return fields?.map((field) => {
-      if (typeof field === 'string') {
-        return getItemProps(field);
-      }
-      if (typeof field === 'object') {
-        return getItemProps(field.field, field);
-      }
-      return { children: null };
-    }) ?? [];
-  }, [fields, curStore, valuesTarget, tipIcon, SchemaField]);
+  const fieldsItems: DescriptionsItemProps[] = useMemo(() => fields?.map((field) => {
+    if (typeof field === 'string') {
+      return getItemProps(field);
+    }
+    if (typeof field === 'object') {
+      return getItemProps(field.field, field);
+    }
+    return { children: null };
+  }) ?? [], [fields, getItemProps]);
 
-  const itemsProps = useMemo(() => curItems.map(item => getItemPropsBySchema(item, 'DescItem')), [curItems]);
+  const itemsProps = useMemo(
+    () => curItems.map(item => ({
+      ...(item.name ? getItemProps(item.name) : {}),
+      ...getItemPropsBySchema(item, 'DescItem'),
+    })),
+    [curItems, getItemProps],
+  );
 
   return (
     <Descriptions {...args}>

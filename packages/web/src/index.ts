@@ -9,16 +9,23 @@ export * from './in/select';
 export * from './in/transfer';
 
 export * from './out/cancel-trigger';
+export * from './out/date';
+export * from './out/detail-link';
 export * from './out/drawer';
+export * from './out/edit-link';
 export * from './out/icon';
 export * from './out/link';
+export * from './out/key-to-val';
 export * from './out/modal';
 export * from './out/ok-trigger';
 export * from './out/page-error';
 export * from './out/run-trigger';
+export * from './out/submit';
 export * from './out/table';
 export * from './out/tooltip';
 export * from './out/trigger';
+
+export * from './page/page-breadcrumb';
 
 export * from './store/desc';
 export * from './store/config';

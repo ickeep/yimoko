@@ -89,16 +89,19 @@ describe('useSchemaItemsOut', () => {
           'x-component': 'A',
           'x-component-props': { componentName: 'div' },
           items: {
+            // 'x-decorator' 无效的
             'x-decorator': 'button',
             'x-decorator-props': { className: 'button' },
+            'x-component': 'button',
             properties: {
-              button: { 'x-component': 'button', 'x-component-props': { children: 'button' } },
+              button: { type: 'void', 'x-component': 'button', 'x-component-props': { children: 'button' } },
             },
           },
         },
       },
     }} />);
     expect(screen.getByText('button')).toBeInTheDocument();
+
     expect(document.querySelector('.button')).toBeNull();
   });
 });
