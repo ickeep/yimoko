@@ -136,18 +136,11 @@ export const useColumnsForSchema = () => {
       const field = name;
       const col: IColumns[number] = { dataIndex: field, ...colProps };
       if (component) {
-        col.render = (v, r, i) => {
-          console.log('component', component);
-          if (component === 'Modal') {
-            console.log('render', v, r, i);
-          }
-
-          return (
-            <RecordScope getRecord={() => r ?? {}} getIndex={() => i ?? 0}>
-              <RecursionField schema={{ ...colSchema, name, 'x-component': component }} name={`${i}.${field}`} />
-            </RecordScope>
-          );
-        };
+        col.render = (v, r, i) => (
+          <RecordScope getRecord={() => r ?? {}} getIndex={() => i ?? 0}>
+            <RecursionField schema={{ ...colSchema, name, 'x-component': component }} name={`${i}.${field}`} />
+          </RecordScope>
+        );
       }
       tmpColumns.push(col);
     });
