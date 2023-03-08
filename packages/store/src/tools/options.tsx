@@ -77,6 +77,18 @@ export const judgeValueInOptions = (value: any, options: IOptions<'value'>, keys
   return options?.some(item => item[key] === value);
 };
 
+export const optionsToMap = <T extends Key = Key>(options: IOptions, keys?: { value?: string, label?: string }) => {
+  const map: Record<T, any> = Object({});
+  const valueKey = keys?.value ?? 'id' as T;
+  const labelKey = keys?.label ?? 'name';
+  if (!Array.isArray(options)) {
+    return options;
+  }
+  options.forEach(option => map[option[valueKey]] = option[labelKey]);
+  return map;
+};
+
+
 export type IOptions<T extends Key = 'label' | 'value'> = Array<IOption<T>>;
 
 

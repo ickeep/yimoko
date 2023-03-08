@@ -26,7 +26,6 @@ const StrKeyToVal = observer((props: Omit<KeyToValProps, 'value'> & { value: str
   const [newColor, setNewColor] = useState('');
   const [text, setText] = useState('');
 
-
   useEffect(() => {
     isTag && setNewColor(String(colors?.[value] ?? color));
   }, [color, colors, isTag, value]);

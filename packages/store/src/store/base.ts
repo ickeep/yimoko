@@ -265,6 +265,8 @@ export type IStoreDictConfig<V extends object = IStoreValues> = Array<IDictConfi
 
 export type IDictConfigItem<V extends object = IStoreValues> = {
   field: IField<V>,
+  isApiOptionsToMap?: boolean
+  toMapKeys?: { value?: string, label?: string }
 } & ({
   type?: 'self'
   data?: IOptions | any,

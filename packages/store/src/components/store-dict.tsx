@@ -9,7 +9,7 @@ import { runStoreAPI } from '../store/utils/api';
 import { getFieldIsMultiple, getFieldKeys, getFieldSplitter } from '../store/utils/field';
 import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
-import { dataToOptions, DF_KEYS } from '../tools/options';
+import { dataToOptions, DF_KEYS, optionsToMap } from '../tools/options';
 import { strToArr } from '../tools/str';
 import { judgeIsEmpty } from '../tools/tool';
 
@@ -22,12 +22,20 @@ export const StoreDict = observer((props: { store: IStore }) => {
   // 初始化字典数据
   useEffect(() => {
     dictConfig?.forEach((conf) => {
-      const { field, type } = conf;
+      const { field, type, isApiOptionsToMap, toMapKeys } = conf;
       if (type !== 'by') {
         const { data, api } = conf;
         store.setDictByField(field, data);
         if (api) {
-          runStoreAPI(api, apiExecutor)?.then?.((res: any) => judgeIsSuccess(res) && store.setDictByField(field, res.data));
+          runStoreAPI(api, apiExecutor)?.then?.((res: any) => {
+            if (judgeIsSuccess(res)) {
+              if (isApiOptionsToMap) {
+                store.setDictByField(field, optionsToMap(res.data, toMapKeys));
+              } else {
+                store.setDictByField(field, res.data);
+              }
+            }
+          });
         }
       }
     });
@@ -40,7 +48,7 @@ export const StoreDict = observer((props: { store: IStore }) => {
     dictConfig?.forEach((conf) => {
       const { type } = conf;
       if (type === 'by') {
-        const { field, getData, api, paramKey = conf.byField, isEmptyGetData = false } = conf;
+        const { field, getData, api, paramKey = conf.byField, isEmptyGetData = false, isApiOptionsToMap, toMapKeys } = conf;
         const byField = String(conf.byField);
         lastDisposerMap[byField] = 0;
 
@@ -62,7 +70,11 @@ export const StoreDict = observer((props: { store: IStore }) => {
               const params = { [paramKey]: newVal };
               runStoreAPI(api, apiExecutor, params)?.then((res: any) => {
                 if (last === lastDisposerMap[byField] && judgeIsSuccess(res)) {
-                  store.setDictByField(field, res.data);
+                  if (isApiOptionsToMap) {
+                    store.setDictByField(field, optionsToMap(res.data, toMapKeys));
+                  } else {
+                    store.setDictByField(field, res.data);
+                  }
                   updateValueByDict(conf, res.data, store);
                 }
               });
