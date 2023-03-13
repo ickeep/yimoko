@@ -8,6 +8,7 @@ import { runStoreAPI } from '../store/utils/api';
 import { judgeIsSuccess } from '../tools/api';
 import { changeNumInRange } from '../tools/num';
 import { IKeys, IOptions, dataToOptions, judgeValueInOptions } from '../tools/options';
+import { judgeIsEmpty } from '../tools/tool';
 
 import { IOptionsAPI, IOptionsAPIProps } from './use-api-options';
 import { useDeepEffect } from './use-deep-effect';
@@ -96,7 +97,7 @@ export const useAPISearchOptions = <T extends string = 'label' | 'value'>(
 
   // 当值变化是，反向查找 options,
   useDeepEffect(() => {
-    const ifFetch = () => !input && !loading && value && fetchOptionsForValue;
+    const ifFetch = () => !input && !loading && !judgeIsEmpty(value) && fetchOptionsForValue;
     // const curKeys = (searchConfig?.keys ?? keys) as IKeys<T>;
     // options 格式已处理，不需要再传 keys
     // @ts-ignore
